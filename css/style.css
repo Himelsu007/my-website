@@ -212,22 +212,15 @@ article#upcoming_runs_container_child  { border:1px solid black; height:144px; w
     animation: pulseGlow 5s ease-in-out infinite;
 }
 
-
 @keyframes pulseGlow {
-    0% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.8;
-        transform: scale(1.05);
-    }
-    100% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
 }
 
+
+/* ============================= */
+/* TOP SECTION                   */
+    /* ============================= */
 
 .event_type_container { height:81.5px; width:293px; border:1px solid white; display:flex; flex-direction:column; justify-content:space-between;}
 .event_details_container { min-height:108px; width:293px; border:1px solid white; display:flex; flex-wrap:wrap; gap:10px;}
@@ -289,7 +282,6 @@ article#upcoming_runs_container_child  { border:1px solid black; height:144px; w
     border: 1px solid white;
     height: 208px;
     width: 100%;
-    margin: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -358,14 +350,6 @@ article#upcoming_runs_container_child  { border:1px solid black; height:144px; w
         background: url('../assets/images/molten_asia.png') center/cover no-repeat; display:flex; 
     align-items:center; justify-content:center;  color:white; 
 }
-
-    /* .home_page_product_boxes:nth-child(4) > div {
-    border:1px solid red; height:28px; width:175px; display:flex; margin-left:-40px;
-    align-items:center; justify-content:space-between; margin-top:120px;
-    } */
-
-
-
 
 /* Buttons */
 .carousel_btn {
