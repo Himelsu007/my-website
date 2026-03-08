@@ -34,6 +34,8 @@
     <link rel="manifest" href="/site.webmanifest"/>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link rel="preconnect" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title> Lisbon's Premier Pick up Games </title>
@@ -58,291 +60,261 @@
 <nav id="side-menu" class="nav-overlay">
     <button id="menu-close" class="close-btn">&times;</button>
     <div class="nav-links">
-        <a href="#">HOME</a>
-        <a href="#store">STORE</a>
-        <a href="#test">TEST</a>
+        <a href="#"> Home </a>
+        <a href="#store"> VIEW MERCH </a>
+        <a href="#test"> LEGAL </a>
     </div>
 </nav>
 
-<main class="fbc-center-column"> 
-
-            <div id="lx-premier-container-hero"> 
-                <div class="sos_light_yellow"></div>
-                <h4 class="barlow-condensed-regular"> Lx's Premier Pickup Games </h4>
-            </div>  <!-- For the invisible Menu and lx´s premier pick up games -->
-            <div id="home_page_header_container"> 
-                <h1 class="barlow-condensed-black"> LOCKED IN <br> <span style="color: #FFD700;"> LX </span> </h1>  <!-- locked in lx header container -->
-                <p> Where elite ballers come to compete. <br> No excuses. Just hoops ! </p>. <!-- post header paragraph container -->
-                <!-- <button class="fbc-center-space-between "> 
-                    <a href="https://www.instagram.com/locked_in_lx/"> View  Merch </a>
-                    <lord-icon
-                            src="https://cdn.lordicon.com/mchvarrg.json"
-                            trigger="loop"
-                            delay="1000"
-                            stroke="bold"
-                            state="morph-open"
-                            colors="primary:#121331,secondary:#848484,tertiary:#92140c"
-                            style="width:24px;height:24px">
-                    </lord-icon>
-                </button> -->
-            </div>
-        <!-- <div id="insights_section"> 
-            <div class="insights_section_containers"> 
-                <div class="insights_box"> 
-                    <div> 
-                        <lord-icon
-                            src="https://cdn.lordicon.com/sbhkbqnq.json"
-                            trigger="loop"
-                            state="loop-cycle"
-                            colors="primary:#ffd700,secondary:#ffd700"
-                            style="width:250px;height:250px">
-                        </lord-icon>
-                    </div>
-                    <div> 
-                        <span style="color:var(--main-yellow); font-size:0.6rem;"> Competitive Runs </span>
-                    </div>
-                </div>
-                <div class="insights_box"> 
-                    <div> 
-                        <lord-icon
-                            src="https://cdn.lordicon.com/vgwutnhw.json"
-                            trigger="loop"
-                            colors="primary:#ffd700,secondary:#ffd700"
-                            style="width:250px;height:250px">
-                        </lord-icon>
-                    </div>
-                    <div> 
-                        <span style="color:var(--main-yellow); font-size:0.6rem;"> Organized Games </span>
-                    </div>
-                </div>
-            </div>
-            <div class="insights_section_containers"> 
-                <div class="insights_box"> 
-                    <div> 
-                        <lord-icon
-                            src="https://cdn.lordicon.com/onmwuuox.json"
-                            trigger="loop"
-                            state="loop-roll"
-                            colors="primary:#ffd700,secondary:#ffd700"
-                            style="width:44px;height:44px">
-                        </lord-icon>
-                    </div>
-                    <div> 
-                        <span style="color:var(--main-yellow); font-size:0.6rem;"> Prime Locations </span>
-                    </div>
-                </div>
-                <div class="insights_box"> 
-                    <div> 
-                        <lord-icon
-                            src="https://cdn.lordicon.com/edcgvlnw.json"
-                            trigger="loop"
-                            delay="300"
-                            state="in-reaveal"
-                            colors="primary:#ffd700,secondary:#ffd700"
-                            style="width:250px;height:250px">
-                        </lord-icon>
-                    </div>
-                    <div> 
-                        <span style="color:var(--main-yellow); font-size:0.6rem;"> Elite Community </span>
-                    </div>
-                </div>
-            </div> 
-        </div> Insights section -->
-
-        <div id="social_proof_container">  <!-- Social Proof container -->
-                <div class="fbc-center-column"> 
-                    <h2> 100+ </h2>
-                    <p> Games Played </p>
-                </div>
-                <div class="fbc-center-column"> 
-                    <h2> 250+ </h2>
-                    <p> Players </p>
-                </div>
-                <div class="fbc-center-column"> 
-                    <h2> 4.7 </h2>
-                    <p> Rating </p>
-                </div>
+<div class="hero-container" id="heroContainer">
+        <!-- Background System -->
+        <div class="hero-background" id="heroBackground">
+            <!-- Image slides will be added by JavaScript -->
         </div>
 
-        <div id="scroll_container">
-            <div> <p> SCROLL </p> </div>
-            <div> <img src="assets/icons/donwards_arrow.svg" alt=""> </div>
-        </div> 
-</main>
+        <!-- Obsidian Overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- Film Grain (The \"moving square\" effect) -->
+        <div class="film-grain"></div>
+
+        <!-- Hero Content -->
+        <div class="hero-content" id="heroContent">
+            <div class="hero-inner">
+                <!-- Phase Indicator -->
+                <div class="phase-indicator">
+                    <div class="phase-dot"></div>
+                    <span class="phase-text"> lisbon's premier pick up games  </span>
+                </div>
+
+                <!-- Main Headline -->
+                <h1 class="hero-title">
+                    <span style="color:white;"> Are you  </span><br> locked in? 
+                </h1>
+
+                <!-- Subheadline -->
+                <h2 class="hero-subheadline">
+                    Curated for the 1% of the Game.
+                </h2>
+
+                <!-- Body Copy -->
+                <p class="hero-body">
+                    Exclusive runs. Professional-grade gear.<br>
+                    By invitation only.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="hero-cta">
+                    <button class="cta-button">
+                        <span class="cta-text">Request Access</span>
+                    </button>
+                    <button class="cta-button secondary">
+                        <span class="cta-text"> <a href="#" style="text-decoration:none; color:#A1A1AA;"> Explore the Collection  </a></span>
+                    </button>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">01%</div>
+                        <div class="stat-label">Elite Selection</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <div class="stat-value"> 100+ </div>
+                        <div class="stat-label"> Games  </div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <div class="stat-value"> 80+ </div>
+                        <div class="stat-label"> Players all over the world </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-discover">
+            <div class="scroll-line"></div>
+            <span class="scroll-text">DISCOVER</span>
+            <div class="scroll-arrow">↓</div>
+        </div>
+    </div>
 
 <section id="upcoming_runs_container">
     <article id="upcoming_runs_container_child">
-        <h3>Upcoming Runs</h3>
-        <h1> BOOK YOUR SPOT </h1>
-        <p> Lorem ipsum dolor sit amet conse hic ex accusamus numquam? Repellat, fugiat!</p>
+        <h3 class="barlow-condensed-regular">UPCOMING RUNS </h3>
+        <h2 class="barlow-condensed-black"> BOOK YOUR <span style="color:#3FFF6F;">SPOT</span> </h2>
+        <p class="inter-regular"> Limited spots. Real competition. Secure your place before they're gone.</p>
     </article>
 </section>
+
+
+<!-- Original Code:
 
 <article class="schedule_component_father"> 
     <div class="event_type_container"> 
         <div class="event_type_indicator"> 
-            <div class="event_type_indicator_container_02"> <p>King of the court </p> </div>
-            <div> <div class="red_dot"> </div> <p> This is a test</p></div>
+            <div > <p class="inter-black"> PICKUP GAME </p> </div>
+            <div> <div class="red_dot"> </div> <p class="inter-regular"> Limited spots available </p></div>
         </div>
-        <div class="event_type_title"> <h2> Pro Skills Clinic </h2> </div>
+        <div class="event_type_title"> <h2 class="inter-black"> FULL COURT 5V5 </h2> </div>
     </div>
         <div class="event_details_container"> 
             <div class="event_details_small_container"> 
                 <div> <img src="assets/icons/clock.svg" alt="clock"> </div>
                 <div> 
-                    <h4> 2026 - 02 - 10 </h4> 
-                    <p> 8:30PM - 10PM </p> 
+                    <h4 class="inter-medium"> 2026 - 02 - 10 </h4> 
+                    <p class="inter-regular"> 8:30PM - 10PM </p> 
                 </div>
             </div>
             <div class="event_details_small_container"> 
                 <div> <img src="assets/icons/location_pin.svg" alt=""> </div>
-                <div> <h4> 2026 - 02 - 10 </h4> 
-                        <p> View Loaction </p>
+                <div> <h4 class="inter-medium"> Pavilhão das ... </h4> 
+                        <a href="#" class="inter-regular"> View Loaction </a>
                 </div>
             </div>
             <div class="event_details_small_container"> 
                 <div> <img src="assets/icons/people_icon.svg" alt=""> </div>
                 <div> 
-                    <h4> <span style="color:green;"> 2</span>/15</h4>
-                    <p> Spots Available </p> 
+                    <h4 class="inter-medium"> <span style="color:#3FFF6F;"> 4 </span>/20</h4>
+                    <p class="inter-regular"> Spots Available </p> 
                 </div>
             </div>
             <div class="event_details_small_container"> 
                 <div> <img src="assets/icons/euro_icon.svg" alt=""> </div>
                 <div> 
-                    <h4> €100</h4>
-                    <p> For The Winner </p>
+                    <h4 class="inter-medium"> €6</h4>
+                    <p class="inter-regular"> Entry Fee </p>
                 </div>
             </div>
         </div>
-        <button class="sold_out_like_button"> SOLD OUT </button>
+        <button class="join_now_like_button"> JOIN NOW </button>
 </article>
+-->
 
-<article class="schedule_component_father"> 
-    <div class="event_type_container"> 
-        <div class="event_type_indicator"> 
-            <div class="event_type_indicator_container_02"> <p> PICK UP GAME </p> </div>
-            <div> <div class="red_dot"> </div> <p> This is a test</p></div>
-        </div>
-        <div class="event_type_title"> <h2> Pro Skills Clinic </h2> </div>
-    </div>
-        <div class="event_details_container"> 
-            <div class="event_details_small_container"> 
-                <div> </div>
-                <div> 
-                    <h4> 2026 - 02 - 10 </h4> 
-                    <p> 8:30PM - 10PM </p> 
-                </div>
-            </div>
-            <div class="event_details_small_container"> 
-                <div> </div>
-                <div> <h4> 2026 - 02 - 10</h4> </div>
-            </div>
-            <div class="event_details_small_container"> 
-                <div> </div>
-                <div> <h4> 2026 - 02 - 10</h4> </div>
-            </div>
-            <div class="event_details_small_container"> 
-                <div> </div>
-                <div> <h4> 2026 - 02 - 10</h4> </div>
-            </div>
-        </div>
-    <div class="book_run_btn_container"> 
-        <button> BOOK NOW</button>
-    </div>
-</article>
+
+<!-- Events Container managed by JavaScript -->
+
+
+<section class="schedule_cards_container" id="events_container"></section>
+
 
 <section id="nike_elite_gear_heading_container">
     <article id="nike_elite_gear_heading_container_child">
-        <h3 class="barlow-condensed-regular" style="letter-spacing:4.2px;"> Nike Elite Gear  </h3> 
-        <h2 class="roboto_condensed" style="font-size:32px; letter-spacing:1.8px; font-weight:1000;"> Gear Up For </h2> 
-        <h3 class="barlow-condensed-black" style="font-size:25.5px; letter-spacing:1.8px;"> Game Day </h3>
-        <p class="barlow-condensed-regular"> Premium athletic wear engineered for peak performance. Look elite, play elite. </p>
+        <h4 class="barlow-condensed-regular"> NIKE ELITE GEAR  </h4> 
+        <h2 class="barlow-condensed-black"> Gear Up For </h2> 
+        <h3 class="barlow-condensed-black" > Game Day </h3>
+        <p class="barlow-condensed-regular"> Premium athletic wear engineered for <br> peak performance. Look elite, play elite. </p>
     </article>
 </section>
 
-
 <section class="home_page_product_father_container">
-
     <button class="carousel_btn prev"></button>
 
-    <div class="carousel_viewport">
-        <div class="carousel_track">
-            <div class="home_page_product_boxes"> 
-                <div>
-                    <span class="barlow-condensed-black" style="letter-spacing:1px;"> Elite Pro Socks ›</span>
-                </div>
+<div class="carousel_viewport">
+    <div class="carousel_track">
+        <a href="merch.html" class="home_page_product_boxes item-socks">
+            <div class="label_container">
+                <span class="barlow-condensed-black">Elite Pro Socks ›</span>
             </div>
+        </a>
 
-            <div class="home_page_product_boxes">
-                <div>
-                    <span class="barlow-condensed-black" style="letter-spacing:1px;"> Tank Tops ›</span>
-                </div>
+        <a href="merch.html" class="home_page_product_boxes item-tank">
+            <div class="label_container">
+                <span class="barlow-condensed-black">Tank Tops ›</span>
             </div>
-            <div class="home_page_product_boxes">
-                <div>
-                    <span class="barlow-condensed-black" style="letter-spacing:1px;"> Nba T-Shirt ›</span>
-                </div>
-            </div>
+        </a>
 
-            <!-- <div class="home_page_product_boxes">
-                <div>
-                    <span class="barlow-condensed-black" style="letter-spacing:1px;"> Basketballs ›</span>
-                </div>
-            </div> -->
-        </div>
+        <a href="merch.html" class="home_page_product_boxes item-tshirt">
+            <div class="label_container">
+                <span class="barlow-condensed-black">Nba T-Shirt ›</span>
+            </div>
+        </a>
+
+                <a href="merch.html" class="home_page_product_boxes item-tshirt">
+            <div class="label_container">
+                <span class="barlow-condensed-black">Nba T-Shirt ›</span>
+            </div>
+        </a>
+
+                <a href="merch.html" class="home_page_product_boxes item-tshirt">
+            <div class="label_container">
+                <span class="barlow-condensed-black">Nba T-Shirt ›</span>
+            </div>
+        </a>
+
+                <a href="merch.html" class="home_page_product_boxes item-tshirt">
+            <div class="label_container">
+                <span class="barlow-condensed-black">Nba T-Shirt ›</span>
+            </div>
+        </a>
+
+                <a href="merch.html" class="home_page_product_boxes item-tshirt">
+            <div class="label_container">
+                <span class="barlow-condensed-black">Nba T-Shirt ›</span>
+            </div>
+        </a>
     </div>
+</div>
 
     <button class="carousel_btn next"></button>
 
 </section>
     <button id="home_page_merch_button">
-        <span> VIEW MERCH </span>
-        
+        <span class="barlow-condensed-bold"> VIEW MERCH </span>
+        <lord-icon
+            src="https://cdn.lordicon.com/kezeezyg.json"
+            trigger="loop"
+            delay="1000"
+            state="squeeze"
+            colors="primary:#FFFFFF,secondary:#c71f16"
+            style="width:25px;height:25px">
+        </lord-icon>
     </button>
 
     <article id="got_questions_container">
-        <h3 class="barlow-condensed-regular"> Got Questions? </h3> <br>
-        <h1 class="barlow-condensed-black"> We Got <span style="color:#FFD700;"> Answers </span> </h1> <br>
+        <h3 class="barlow-condensed-regular"> GOT QUESTIONS ? </h3> <br>
+        <h2 class="barlow-condensed-black"> WE GOT <span style="color:#FFD700;"> ANSWERS </span> </h2> <br>
     </article>
 
 <div class="faq">
     <div class="accordion-item">
         <button class="accordion-header">
-            <span>How can I join ?</span>
+            <span class="barlow-condensed-regular">How can I join ?</span>
                     <span class="icon"> <img src="assets/icons/donwards_arrow.svg" alt="" srcset=""></span>
         </button>
         
         <div class="accordion-content">
-            <p> By reaching out to us or send a request to join the WhatsApp group. <br> <br></p>
+            <p class="inter-regular"> By reaching out to us or send a request to join the WhatsApp group. <br> <br></p>
         </div>
     </div>
         <div class="accordion-item">
             <button class="accordion-header">
-                <span> How much does it cost ?</span>
+                <span class="barlow-condensed-regular"> How much does it cost ?</span>
                     <span class="icon"> <img src="assets/icons/donwards_arrow.svg" alt="" srcset=""></span>
             </button>
             <div class="accordion-content">
-                <p> The default fee is 5€, which can go up to 6€ depending on the basketball gym. <br> <br> </p>
+                <p class="inter-regular"> The default fee is 5€, which can go up to 6€ depending on the basketball gym. <br> <br> </p>
             </div>
         </div>
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span> Where are the games located ?</span>
+                    <span class="barlow-condensed-regular"> Where are the games located ?</span>
                     <span class="icon"> <img src="assets/icons/donwards_arrow.svg" alt="" srcset=""></span>
                 </button>
                 <div class="accordion-content">
-                    <p> The facilities are located in Lisbon, often near a train or subway station which can help in some ways. <br> <br> </p>
+                    <p class="inter-regular"> The facilities are located in Lisbon, often near a train or subway station which can help in some ways. <br> <br> </p>
                 </div>
             </div>
 
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span>  ?</span>
+                    <span class="barlow-condensed-regular"> How do I sign up? </span>
                     <span class="icon"> <img src="assets/icons/donwards_arrow.svg" alt="" srcset=""></span>
                 </button>
                 <div class="accordion-content">
-                    <p> You can join by registering on our website and completing the onboarding process. <br> <br> </p>
+                    <p class="inter-regular"> You can join by registering on our website and completing the onboarding process. <br> <br> </p>
                 </div>
             </div>
 </div>
@@ -350,7 +322,7 @@
 <footer>
     <section class="home_footer_container_01">
         <div> <img src="assets/icons/locked_in_lx.svg" alt=""> </div>
-        <div> <p> LX's premier basketball pickup games, where ballers meet and compete. </p> </div>
+        <div> <p class="inter-regular"> LX's premier basketball pickup games, where ballers meet and compete. </p> </div>
         <div> 
             <a href="#" class="footer_logo_container"> 
                 <img src="assets/icons/instagram-footer.svg" alt="instagram logo">
@@ -369,27 +341,27 @@
 
     <section class="contact_us_container">
         <div> 
-            <h2> CONTACT US </h2> 
+            <h2 class="barlow-condensed-bold"> CONTACT US </h2> 
         </div>
         <div> 
-            <span style="color:white;"> Lisboa, portugal</span>
-            <a style="color:white;"> +351 911 861 637</a>
-            <a style="color:white;"> support@lockedinlx.com </a>
-            <a href="#"> FAQ </a>
+            <span class="inter-regular" style="color:#A1A1AA;"> Lisboa, portugal</span>
+            <a href="#" class="inter-regular"> +351 911 861 637</a>
+            <a href="#" class="inter-regular"> support@lockedinlx.com </a>
+            <a href="#" class="inter-regular"> FAQ </a>
         </div>
     </section>
 
     <section class="all_rights_reserved_container">
-        <div> <p>© 2026 Locked In Lx. All rights reserved.</p> </div>
+        <div> <p class="inter-regular"> © 2026 Locked In Lx. All rights reserved.</p> </div>
         <div> 
-            <a href="#"> Terms </a> 
-            <a href="#"> Privacy </a> 
-            <a href="#"> Cookies </a>
+            <a class="inter-regular" href="#"> Terms </a> 
+            <a class="inter-regular" href="privacy_policy.html"> Privacy </a> 
+            <a class="inter-regular" href="#"> Cookies </a>
         </div>
 
         <div>
-            <a href="#"> Injury Waiver </a> 
-            <a href="#"> WhatsApp Sales Disclaimer </a> 
+            <a class="inter-regular" href="#"> Injury Waiver </a> 
+            <a class="inter-regular" href="#"> WhatsApp Sales Disclaimer </a> 
         </div>
     </section>
 </footer>
@@ -397,9 +369,11 @@
 
 <!-- Accordition JS  -->
 <script src="https://cdn.lordicon.com/lordicon.js" defer></script>
+<script src="javascript/hero_section.js" defer></script>
+<script src="javascript/events.js" defer></script>
 <script src="javascript/accordition.js" defer></script>
 <script src="javascript/carousel.js" defer></script>
 <script src="javascript/scroll_detection_menu.js" defer></script>
-</body>
+</body> 
 
 </html>

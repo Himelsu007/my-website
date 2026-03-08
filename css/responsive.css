@@ -1,0 +1,98 @@
+/* BASE MOBILE STYLES (0px - 767px)
+   Your existing code is already here.
+*/
+
+
+/* ==========================================================================
+   1. TABLETS (Portrait) & LARGE PHONES
+   Breakpoint: 768px
+   Usage: Scale up the card width and adjust grid from 1 to 2 columns.
+   ========================================================================== */
+@media screen and (min-width:768px){
+
+.schedule_cards_container{
+
+display:flex;
+flex-direction:row;
+
+gap:24px;
+
+overflow-x:auto;
+overflow-y:hidden;
+
+scroll-snap-type:x mandatory;
+scroll-behavior:smooth;
+
+padding:10px 20px;
+
+}
+
+/* each card */
+.schedule_component_father{
+
+flex:0 0 340px;
+scroll-snap-align:start;
+
+}
+
+/* hide scrollbar */
+.schedule_cards_container::-webkit-scrollbar{
+display:none;
+}
+
+.schedule_cards_container{
+-ms-overflow-style:none;
+scrollbar-width:none;
+}
+
+}
+
+/* ==========================================================================
+   2. TABLETS (Landscape) & SMALL LAPTOPS
+   Breakpoint: 1024px
+   Usage: This is where the design starts to feel "Desktop." 
+   Perfect for moving to a 3-column layout.
+   ========================================================================== */
+@media screen and (min-width: 1024px) {
+    .schedule_grid_container {
+        /* Change layout behavior */
+    }
+
+    .schedule_component_father {
+        /* Make the card feel more premium/spacious */
+    }
+
+    .sold_out_like_button, 
+    .join_now_like_button {
+        /* Larger interaction targets */
+    }
+}
+
+
+/* ==========================================================================
+   3. LARGE DESKTOPS / MONITORS
+   Breakpoint: 1440px
+   Usage: For ultra-wide screens. Prevents the content from looking 
+   lost in too much white space.
+   ========================================================================== */
+@media screen and (min-width: 1440px) {
+    #upcoming_runs_container {
+        /* Increase max-width of the whole section */
+    }
+
+    .schedule_component_father {
+        /* Maximum scale of the card */
+    }
+}
+
+
+/* ==========================================================================
+   4. 4K & ULTRA-WIDE (Optional)
+   Breakpoint: 2560px
+   Usage: Only use if you want the cards to remain massive on 4K TVs.
+   ========================================================================== */
+@media screen and (min-width: 2560px) {
+    body {
+        /* Sometimes useful to scale the root font-size here */
+    }
+}
