@@ -43,11 +43,7 @@ html,body {
     
 p,h1,h3,h4, h2 { text-decoration:none; color:var(--white-color);  }
 
-main {
-    height:700px; min-width:200px; 
-    background-image:url('../assets/images/hero_bg_2.png'); background-size:cover; 
-    background-repeat:no-repeat; padding:50px;
-}
+
 
 
 header {
@@ -127,53 +123,6 @@ button {
 }
 
 
-#lx-premier-container-hero {
-    border: 1px solid #ffd9007c;
-    background-color: rgba(255, 217, 0, 0.156); /* 24% opacity */
-    height: 38px;
-    width: 343px; 
-    border-radius: 38px;
-    display:flex; justify-content:center; gap:8px; align-items:center;
-}
-#lx-premier-container-hero > .sos_light_yellow { height:8px; width:8px; border-radius: 50%; background-color: var(--main-yellow); }
-#lx-premier-container-hero > h4 { color:var(--main-yellow); letter-spacing:1.4px;}
-
-.flex-container { display:flex; justify-content:space-between; align-items:center; flex-direction:row; }
-.fbc-center-column {  display:flex; justify-content:space-around; align-items:center; flex-direction:column; }   
-
-.fbc-center-space-between { display:flex; justify-content:center; align-items:center; gap:10px; }
-
-#home_page_header_container { 
-    height:187.21px; width:317px;  display:flex; 
-    flex-direction:column; justify-content:space-between; align-items:center;
-}
-#home_page_header_container > h1 { text-align:center; letter-spacing:-1.2px; font-size:72px; line-height:60px; }
-#home_page_header_container > p { margin-top:22px;  text-align:center; font-family:'Inter';}
-#home_page_header_container > button { 
-    height:46px; width:184px; border-radius:12px; border:2px solid #7D7D7D; background-color:#181818; 
-    
-}
-
-#social_proof_container { height:52px; min-width:290px; border:1px solid white; display:flex; justify-content:space-between; align-items:center; }
-    #social_proof_container > :nth-child(1) { height:52px;  min-width:110px;  }
-    #social_proof_container > :nth-child(2) { height:52px; width:57px;  }
-    #social_proof_container > :nth-child(3) { height:52px; width:47.55px;  }
-
-#scroll_container { border:1px solid white; 
-    min-width:47px; min-height:21px; display:flex; align-items:center; justify-content:center; flex-direction:column;
-}
-    #scroll_container > div:nth-child(1) { 
-        border:1px solid red; 
-        min-height:16px;
-        min-width:37px; 
-        display:flex; 
-        align-items:center; justify-content:center; }
-    #scroll_container > div:nth-child(2) { 
-        border:1px solid red; 
-        min-height:34px;
-        min-width:21px; 
-        display:flex; 
-        align-items:center; justify-content:center;}
 
 section#upcoming_runs_container { 
     height:auto; width:343px;
@@ -575,7 +524,7 @@ button{ border:none;}
 /* ============================= */
 
 #home_page_merch_button lord-icon {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; width:25px;height:25px
 }
 
 #home_page_merch_button:hover lord-icon {
@@ -607,12 +556,12 @@ button{ border:none;}
     left: 120%;
 }
 
-#got_questions_container { 
+.got_questions_container { 
      height:100px; width:317px; margin:auto; margin-top:30px;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
 }
 
-#got_questions_container > h3 { color:#FFD700; letter-spacing:4.2px;}
+.got_questions_container > h3 { color:#FFD700; letter-spacing:4.2px;}
 #got_questions_container > h2 { color:#FFFFFF;  font-size:36px; }
 
 .faq {
