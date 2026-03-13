@@ -171,46 +171,9 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 /* SCHEDULE CARD COMPONENT       */
 /* ============================= */
 
-/* ============================= */
-/* MERCH PAGE - STYLE */
 
 
 
-#products_selection_buttons_container 
-    { border:1px solid violet; 
-    height:121px; width:343px; margin:auto; display:flex; flex-wrap:wrap; 
-    align-items:center; gap:13px;
-    justify-content:space-between; 
-}
-#product_selection_button_01 {  
-            background-color:#FFD700; height:46px; 
-            width:90px; border-radius:99px; box-shadow: 0 0 0 1px #FFD700;
-            display:flex; justify-content:center;  align-items:center; 
-        }
-#product_selection_button_02 { 
-            height:46px; width:170px; border-radius:99px; background-color:#18181B; 
-            color:white; display:flex; justify-content:center;  align-items:center; 
-            box-shadow: 0 0 0 1px #FFFFFF; flex-grow:1;
-        }
-#product_selection_button_03 { 
-                height:46px; width:150px; border-radius:99px; background-color:#18181B;
-                color:white; display:flex; justify-content:center; flex-grow:1;
-                align-items:center;  box-shadow: 0 0 0 1px #FFFFFF;
-            }
-
-        #product_selection_button_04 { 
-            height:46px; width:130px; border-radius:99px; background-color:#18181B;
-            color:white; display:flex; justify-content:center; 
-            align-items:center;  box-shadow: 0 0 0 1px #FFFFFF;
-        }
-
-#merch_product_container { 
-    height:420px; width:490px; margin:auto; display:flex; flex-wrap:wrap;
-    align-items:center; justify-content:space-between; border:1px solid whiite;
-}
-
-
-#merch_product_container :nth-child(1) { height:200px; width:200px; background-image:url('../assets/images/home_page_elite_socks.png'); background-size:cover; background-position:center; border-radius:8px;}
 /* ============================= */
 
 .schedule_component_father {
@@ -561,7 +524,7 @@ button{ border:none;}
     transform: translateX(5px);
 }
 
-
+#home_page_merch_button > a { text-decoration:none; color:white; font-size:17px;}
 /* ============================= */
 /* PREMIUM LIGHT SWEEP           */
 /* ============================= */

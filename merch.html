@@ -32,9 +32,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
     <meta name="apple-mobile-web-app-title" content="LI"/>
     <link rel="manifest" href="/site.webmanifest"/>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/merch.css">
     <link rel="stylesheet" href="css/fonts.css">
-    <link rel="stylesheet" href="css/merch-hero.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link rel="preconnect" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -48,7 +47,7 @@
         <img src="assets/icons/menu.svg" alt="">
     </button>
 
-    <a href="#" class="logo-link">
+    <a href="index.html" class="logo-link">
         <img src="assets/icons/locked_in_small.svg" alt="Locked In Logo">
     </a>
 
@@ -60,77 +59,47 @@
 <nav id="side-menu" class="nav-overlay">
     <button id="menu-close" class="close-btn">&times;</button>
     <div class="nav-links">
-        <a href="#"> Home </a>
+        <a href="index.html"> Home </a>
         <a href="#store"> VIEW MERCH </a>
         <a href="#test"> LEGAL </a>
     </div>
 </nav>
 
-<div class="hero-container" id="heroContainer">
-        <!-- Background System -->
-        <div class="hero-background" id="heroBackground">
-            <!-- Image slides will be added by JavaScript -->
+
+<section id="drop_down_menu_container">
+<div class="sort-dropdown">
+    <button class="sort-trigger" id="sortTrigger">
+        Sort by
+        <span class="sort-arrow">▾</span>
+    </button>
+
+    <div class="sort-menu" id="sortMenu">
+        <div class="sort-option">Most Popular</div>
+        <div class="sort-option">Newest</div>
+        <div class="sort-option">Price: Low → High</div>
+        <div class="sort-option">Price: High → Low</div>
+    </div>
+</div>
+
+</section>
+
+<section id="products_show_case_container">
+
+    <!-- Featured Product -->
+    <div id="products_show_case_main_child_container">
+
+        <div class="featured_content">
+            <button class="featured_cta">
+                Shop Now →
+            </button>
         </div>
 
-        <!-- Obsidian Overlay -->
-        <div class="hero-overlay"></div>
-
-        <!-- Film Grain (The \"moving square\" effect) -->
-        <div class="film-grain"></div>
-
-        <!-- Hero Content -->
-        <div class="hero-content" id="heroContent">
-            <div class="hero-inner">
-                <!-- Phase Indicator -->
-                <div class="phase-indicator">
-                    <div class="phase-dot"></div>
-                    <span class="phase-text"> 32 Purchases in the past 24h  </span>
-                </div>
-
-                <!-- Main Headline -->
-                <h1 class="hero-title">
-                    <span style="color:white;"> nba  Elite  </span><br> pro Gear  
-                </h1>
-
-                <!-- Subheadline -->
-                <h2 class="hero-subheadline">
-                    Curated for the 1% of the Game.
-                </h2>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="scroll-discover">
-            <div class="scroll-line"></div>
-            <span class="scroll-text"> SHOP NOW</span>
-            <div class="scroll-arrow">↓</div>
-        </div>
     </div>
 
-<section id="products_selection_buttons_container">
-    <div id="product_selection_button_01"> 
-        <span class="barlow-condensed-bold"> All </span> 
-    </div>
-    <div id="product_selection_button_02" class="barlow-condensed-bold"> Upper-Body Power </div>
-    <div id="product_selection_button_03" class="barlow-condensed-bold"> Lower-Body Power </div>
-    <div id="product_selection_button_04" class="barlow-condensed-bold"> Basketballs </div>
 </section>
 
-<section class="merch_product_container">
-            <div> </div>
+</div>
 </section>
-
-<section id="upcoming_runs_container">
-    <article id="upcoming_runs_container_child">
-        <h3 class="barlow-condensed-regular">UPCOMING RUNS </h3>
-        <h2 class="barlow-condensed-black"> BOOK YOUR <span style="color:#3FFF6F;">SPOT</span> </h2>
-        <p class="inter-regular">Secure your place before they're gone.</p>
-    </article>
-</section>
-
-
-
-
 
 <footer>
     <section class="home_footer_container_01">
@@ -185,7 +154,8 @@
 <script src="javascript/merch-hero.js" defer></script>
 <script src="javascript/events.js" defer></script>
 <script src="javascript/accordition.js" defer></script>
-<script src="javascript/carousel.js" defer></script>
+<script src="javascript/dropdown-menu.js" defer></script>
+<script src="javascript/product-data.js" defer></script>
 <script src="javascript/scroll_detection_menu.js" defer></script>
 </body> 
 

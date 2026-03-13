@@ -2,12 +2,12 @@
          // ============================================
         // LUXURY BASKETBALL IMAGES
         // ============================================
-        const luxuryImages = [
-            'https://images.unsplash.com/photo-1640528979293-e44c218b044d', // Dramatic nighttime court
-            'https://images.unsplash.com/photo-1685296871172-71e99714be5b', // Minimalist hoop
-            'https://images.unsplash.com/photo-1741940513798-4ce04b95ffda', // Sunlight gymnasium
-            'https://images.unsplash.com/photo-1564842505181-8862a3b9b173', // Leather texture
-            'https://images.unsplash.com/photo-1595066989325-465d1db69c99'  // Premium texture
+        const luxuryImages = [            
+            'assets/images/nba-elite-tank-top-bg.jpg', 
+            'assets/images/merch-animated-video-bg.gif',
+            'assets/images/nba-elite-tank-top-bg-04.jpg', 
+            'assets/images/nba-elite-tank-top-bg-03.jpg', 
+            'assets/images/nba-elite-tank-top-bg-02.jpg', 
         ];
 
         let currentImageIndex = 0;
