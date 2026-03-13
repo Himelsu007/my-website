@@ -71,42 +71,61 @@ image:"../assets/images/products/nike-elite-socks-white.png"
 // PRODUCT LOADER
 // ========================================
 
-function loadProducts(){
+function loadProducts() {
+    const container = document.getElementById("products_show_case_container");
 
-const container = document.getElementById(
-"products_show_case_container"
-);
+    products.forEach((product, index) => {
+        const card = document.createElement("div");
+        card.className = "products_box";
+        // Store the index so we can find the data later
+        card.setAttribute("data-product-index", index);
 
-products.forEach(product => {
+        card.innerHTML = `
+            <div class="product_image" style="background-image:url('${product.image}')"></div>
+            <div class="product_info">
+                <span class="product_name barlow-condensed-regular">${product.name}</span>
+                <span class="product_price barlow-condensed-regular">${product.price}</span>
+            </div>
+        `;
+        container.appendChild(card);
+    });
 
-const card = document.createElement("div");
+    // Initialize Modal Logic after products are loaded
+    initModal();
+}
 
-card.className = "products_box";
+function initModal() {
+    const modal = document.getElementById("product_modal");
+    const modalBody = document.getElementById("modal_body");
+    const container = document.getElementById("products_show_case_container");
+    const closeBtn = document.querySelector(".close_modal");
 
-card.innerHTML = `
+    // Event Delegation: Listen for clicks on the container
+    container.addEventListener("click", (e) => {
+        const card = e.target.closest(".products_box");
+        if (!card) return; // Exit if user clicked container but not a card
 
-<div class="product_image"
-style="background-image:url('${product.image}')">
-</div>
+        const index = card.getAttribute("data-product-index");
+        const product = products[index];
 
-<div class="product_info">
+        // Inject content into modal
+        modalBody.innerHTML = `
+            <img src="${product.image}" style="width:100%; max-height:300px; object-fit:contain;">
+            <h2 class="barlow-condensed-black">${product.name}</h2>
+            <p class="product_price">${product.price}</p>
+            <p class="inter-regular">Premium quality materials designed for elite performance on the court.</p>
+            <button class="featured_cta">Add to Cart</button>
+        `;
 
-<span class="product_name barlow-condensed-regular">
-${product.name}
-</span>
+        modal.classList.add("active");
+    });
 
-<span class="product_price barlow-condensed-regular">
-${product.price}
-</span>
-
-</div>
-
-`;
-
-container.appendChild(card);
-
-});
-
+    // Close Logic
+    closeBtn.onclick = () => modal.classList.remove("active");
+    
+    window.onclick = (e) => {
+        if (e.target === modal) modal.classList.remove("active");
+    };
 }
 
 
