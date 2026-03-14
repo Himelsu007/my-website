@@ -558,7 +558,7 @@ button{ border:none;}
 .got_questions_container > h2 { color:#FFFFFF;  font-size:36px; }
 
 .faq {
-    width: 350px; border:1px solid white;
+    width: 350px; 
     margin: auto; margin-top:30px; margin-bottom:40px;
 }
 
@@ -636,13 +636,13 @@ justify-content:space-between;
 
 .footer_logo_container { border-radius:50%; background-color:#18181B; height:44px; width:44px; display:flex; align-items:center; justify-content:center;}
 
-.contact_us_container {   height:172px; width:343px; margin:auto; display:flex; flex-direction:column; justify-content:space-between; }
+.contact_us_container {   height:145px; width:343px; margin:auto; display:flex; flex-direction:column; justify-content:space-between; }
 
 .contact_us_container > :nth-child(1) { height:36px; width:162px; }  
 
 .contact_us_container > :nth-child(2) { height:112px; width:187px; flex-direction:column; display:flex; align-items:flex-start; justify-content:space-around;}  
 
-.contact_us_container > :nth-child(2) > a { color:#A1A1AA; font-size:14px; text-decoration:none;}
+.contact_us_container > :nth-child(2) > a { color:#A1A1AA; font-size:17px; text-decoration:none;}
 
 .all_rights_reserved_container { 
     border-top:1px solid #27272A; min-height:90px; width:343px; margin:auto; 

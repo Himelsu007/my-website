@@ -167,45 +167,177 @@ MAIN GRID
 /* ===============================
 FEATURED PRODUCT
 =============================== */
-
-.modal_overlay {
+#product_modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Dimmed background */
+    background: rgba(0, 0, 0, 0.85); /* Darker backdrop */
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    z-index: 1000;
+    z-index: 9999;
 }
 
-.modal_overlay.active {
+#product_modal.active {
     opacity: 1;
     pointer-events: auto;
 }
 
+/* ========================================
+   MODAL CONTAINER (The Card)
+   ======================================== */
 .modal_content {
-    background: #18181b; /* Match your site's dark theme */
-    padding: 40px;
-    border-radius: 16px;
+    background: #1c1c1e; /* Deep Apple-style dark gray */
+    width: 100%;
+    max-width: 420px;
+    max-height: 90vh; /* Prevents it from going off-screen */
+    overflow-y: auto; /* Scrollable if screen is tiny */
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+#product_modal.active .modal_content {
+    transform: translateY(0) scale(1);
+}
+
+/* Hide scrollbar for a cleaner look */
+.modal_content::-webkit-scrollbar { display: none; }
+.modal_content { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ========================================
+   TOP IMAGE SECTION
+   ======================================== */
+.modal_image_wrapper {
     position: relative;
-    max-width: 500px;
-    width: 90%;
-    border: 1px solid #27272a;
+    width: 100%;
+    height: 320px;
+    background: #000;
+}
+
+.modal_image_wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fills the space beautifully */
+    border-radius: 12px 12px 0 0;
 }
 
 .close_modal {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 2rem;
-    color: white;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    font-size: 1.2rem;
     cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close_modal:hover { color: white; }
+
+/* The little grey tag from the screenshot */
+.cdn_preview_badge {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
+    font-size: 0.7rem;
+    font-family: sans-serif;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* ========================================
+   DETAILS SECTION (Typography & Spacing)
+   ======================================== */
+.modal_details {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal_title {
+    color: white;
+    font-size: 1.6rem;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.modal_reviews {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: -8px; /* Pulls it closer to the title */
+}
+
+.stars { color: #FFD700; font-size: 0.9rem; }
+.review_count { color: #a1a1aa; font-size: 0.85rem; }
+
+.modal_price {
+    color: #FFD700; /* Yellow to match screenshot */
+    font-size: 2.2rem;
+    margin: 4px 0;
+}
+
+.modal_description {
+    color: #a1a1aa;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+/* ========================================
+   VARIANT PILLS (Size / Color)
+   ======================================== */
+.modal_variant_group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal_variant_group h4 {
+    color: white;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.variant_pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.pill {
+    background: #27272a; /* Dark gray */
+    border: 1.5px solid transparent;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pill:hover {
+    background: #3f3f46;
+}
+
+.pill.active {
+    border-color: #FFD700; /* Yellow border for selected state */
+    background: #18181b;
 }
 
 #products_show_case_main_child_container{
@@ -246,6 +378,66 @@ FEATURED PRODUCT
     z-index:1;
 }
 
+
+
+.whatsapp_container {
+    margin-top: 24px;
+    width: 100%; 
+}
+
+.whatsapp_btn {
+    background: #25D366; /* Official WhatsApp Green */
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 18px;
+    border-radius: 99px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    position: relative; /* Needed to anchor the SVG */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px; margin:a;
+}
+
+.whatsapp_btn svg {
+    position: absolute;
+    left: 24px; /* Pins the icon to the left side */
+}
+
+.whatsapp_btn:hover {
+    background: #1EBE57; /* Slightly darker green on hover */
+    transform: translateY(-2px);
+}
+
+/* Disabled State (Before size is picked) */
+.whatsapp_btn.disabled {
+    background: #3f3f46;
+    color: #a1a1aa;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.whatsapp_btn.disabled svg {
+    opacity: 0.5;
+}
+
+/* Shake Animation for when they try to click without a size */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
 /* LIGHT SWEEP */
 
 #products_show_case_main_child_container::after{
@@ -288,6 +480,47 @@ FEATURED PRODUCT
     0 10px 30px rgba(0,0,0,.45);
 }
 
+
+/* The "Limited Edition" Badge */
+.product_badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: #FFD700; /* Yellow */
+    color: black;
+    font-weight: 800;
+    font-size: 0.7rem;
+    padding: 6px 12px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    font-family: 'Barlow Condensed', sans-serif;
+    z-index: 10;
+}
+
+/* Grayscale effect for sold out items */
+.sold_out_img img {
+    filter: grayscale(100%) brightness(0.6);
+}
+
+/* The Sold Out Button inside the Modal */
+.sold_out_btn {
+    width: 100%;
+    padding: 18px;
+    background: transparent;
+    border: 2px solid #3f3f46;
+    color: #ef4444; /* Red text */
+    border-radius: 99px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: not-allowed;
+    text-transform: uppercase;
+}
+
+/* Optional: Make the card in the main grid look sold out too */
+.products_box.is_sold_out {
+    opacity: 0.7;
+    filter: grayscale(0.8);
+}
 
 /* ======================
 FEATURED CONTENT
