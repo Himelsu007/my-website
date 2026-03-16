@@ -175,9 +175,17 @@ section#upcoming_runs_container {
     display:flex; align-items:center; justify-content:center; 
     margin:auto;margin-bottom:30px; margin-top:30px;
 }
-article#upcoming_runs_container_child > h3 { color:#FFD700; letter-spacing:3.2px; font-size:20px;}
-article#upcoming_runs_container_child > h2 { color:#FFFFFF; letter-spacing:1.8px; font-size:46px; }
-article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:20px; line-height:27px; text-align:center; width:290px; }
+
+article#upcoming_runs_container_child  { 
+    border:1px solid violet; height:180px; 
+    width:370px; display:flex;  
+    align-items:center; justify-content:center;  
+    flex-direction:column; gap:15px;
+}
+
+article#upcoming_runs_container_child > h3 { color:#FFD700; letter-spacing:3.2px; font-size:27px;}
+article#upcoming_runs_container_child > h2 { color:#FFFFFF; letter-spacing:1.8px; font-size:50px; }
+article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:24px; line-height:27px; text-align:center; width:290px; }
 
 header {
     display: flex;

@@ -78,41 +78,96 @@ button {
     padding: 0;
 }
 
-/* Full-screen Nav Overlay */
 .nav-overlay {
     position: fixed;
     top: 0;
-    right: -100%; /* Hidden by default */
+    left: 0; /* Changed from right for better transform logic */
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(20px);
+    background: rgba(15, 15, 18, 0.95); /* Matched to your deep dark theme */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px); /* Safari support */
     z-index: 2000;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: right 0.5s ease-in-out;
+    
+    /* Hardware-accelerated slide */
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Premium easing curve */
 }
 
 .nav-overlay.open {
-    right: 0;
+    transform: translateX(0);
+}
+
+/* ========================================
+   CLOSE BUTTON
+   ======================================== */
+.close-btn {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    font-size: 3.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #ffffff;
+    transform: rotate(90deg) scale(1.1); /* Nice interactive twist */
+}
+
+/* ========================================
+   NAV LINKS & STAGGERED ANIMATION
+   ======================================== */
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px; /* Replaces margin for cleaner spacing */
 }
 
 .nav-links a {
+    /* Force the custom font and weight */
+    font-family: 'Barlow Condensed', sans-serif !important; 
+    font-weight: 900 !important; /* 900 is usually the "Black" weight */
+    text-transform: uppercase;   /* Ensures it stays capitalized */
+    
+    /* ... keep your other existing styles like size, color, animation ... */
     display: block;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: white;
-    margin: 20px 0;
+    font-size: 3rem;
+    color: #e4e4e7;
+    text-decoration: none;
     letter-spacing: 5px;
-    transition: transform 0.3s;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: color 0.3s ease, opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Hover State */
 .nav-links a:hover {
-    transform: scale(1.1);
-    color: #ff3e3e; /* Accent color */
+    color: #FFD700; /* Using your store's yellow accent */
+    transform: scale(1.05) translateY(-2px);
 }
+
+/* THE MAGIC: When the menu opens, fade the links in and slide them up.
+   We delay them slightly so they cascade in.
+*/
+.nav-overlay.open .nav-links a {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.nav-overlay.open .nav-links a:nth-child(1) { transition-delay: 0.15s; }
+.nav-overlay.open .nav-links a:nth-child(2) { transition-delay: 0.25s; }
+.nav-overlay.open .nav-links a:nth-child(3) { transition-delay: 0.35s; }
 
 .close-btn {
     position: absolute;
@@ -121,7 +176,6 @@ button {
     font-size: 3rem;
     color: white;
 }
-
 
 
 #drop_down_menu_container 

@@ -32,16 +32,15 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
     <meta name="apple-mobile-web-app-title" content="LI"/>
     <link rel="manifest" href="/site.webmanifest"/>
-    <link rel="stylesheet" href="css/merch.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/fonts.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/private-run-sign-up.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link rel="preconnect" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <title> Explore the Merch </title>
+    <title> Injury Waiver </title>
 </head>
 
 <body>
-
 <header id="main-header">
     <button class="menu-trigger" id="menu-open" aria-label="Open Menu">
         <img src="assets/icons/menu.svg" alt="">
@@ -59,50 +58,76 @@
 <nav id="side-menu" class="nav-overlay">
     <button id="menu-close" class="close-btn">&times;</button>
     <div class="nav-links">
-        <a href="index.html" target="_self" class="barlow-condensed-black"> HOME </a>
-        <a href="merch.html" target="_self" class="barlow-condensed-black"> SHOP </a>
-        <a href="legal.html" target="_self" class="barlow-condensed-black"> CONTACT </a>
+        <a href="#"> Home </a>
+        <a href="#store"> VIEW MERCH </a>
+        <a href="#test"> LEGAL </a>
     </div>
 </nav>
 
 
-<section id="drop_down_menu_container">
-<div class="sort-dropdown">
-    <button class="sort-trigger" id="sortTrigger">
-        Sort by
-        <span class="sort-arrow">▾</span>
-    </button>
-
-    <div class="sort-menu" id="sortMenu">
-        <div class="sort-option">Most Popular</div>
-        <div class="sort-option">Newest</div>
-        <div class="sort-option">Price: Low → High</div>
-        <div class="sort-option">Price: High → Low</div>
+<div class="auth-container" id="signup-container">
+    <h3 class="barlow-condensed-black auth-title">SECURE YOUR SPOT</h3>
+    
+    <div class="input-group">
+        <label class="inter-medium">SELECTED EVENT</label>
+        <input type="text" id="event-name" class="auth-input" readonly placeholder="Loading event...">
     </div>
-</div>
 
-</section>
+    <div class="input-group">
+        <label class="inter-medium">FIRST NAME</label>
+        <input type="text" id="player-name" class="auth-input" placeholder="Enter your name">
+    </div>
 
-<section id="products_show_case_container">
+    <div class="input-group">
+        <label class="inter-medium">AGE GROUP</label>
+        <div class="age-selector">
+            <input type="radio" id="age-14" name="age_group" value="14 - 17" class="hidden-radio">
+            <label for="age-14" class="age-pill inter-black">14 - 17</label>
 
-    <!-- Featured Product -->
-    <div id="products_show_case_main_child_container">
+            <input type="radio" id="age-18" name="age_group" value="18 - 24" class="hidden-radio">
+            <label for="age-18" class="age-pill inter-black">18 - 24</label>
 
-        <div class="featured_content">
-            <button class="featured_cta">
-                Shop Now →
-            </button>
+            <input type="radio" id="age-25" name="age_group" value="25 - 40" class="hidden-radio">
+            <label for="age-25" class="age-pill inter-black">25 - 40</label>
         </div>
     </div>
 
-</section>
-
-<div id="product_modal" class="modal_overlay">
-    <div class="modal_content">
-        <span class="close_modal">&times;</span>
-        <div id="modal_body">
-            </div>
+    <div class="input-group">
+        <label class="inter-medium">BRINGING GUESTS?</label>
+        <div class="guest-counter-wrapper">
+            <button type="button" class="guest-btn" id="guest-minus">&minus;</button>
+            <span id="guest-count" class="barlow-condensed-bold">0</span>
+            <button type="button" class="guest-btn" id="guest-plus">&plus;</button>
+        </div>
     </div>
+
+    <div class="payment-block">
+        <p class="inter-medium payment-title">PAYMENT DETAILS</p>
+        <div class="payment-method">
+            <span class="barlow-condensed-black"> MBWAY:</span>
+            <strong class="barlow-condensed-bold">+351 911 871 619</strong>
+        </div>
+        <div class="payment-method">
+            <span class="barlow-condensed-black"> REVOLUT:</span>
+            <a href="https://revolut.me/juelmawz7r" target="_blank" class="revolut-link inter-black">@juelmawz7r</a>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label class="inter-medium">UPLOAD RECEIPT SCREENSHOT</label>
+        <label for="receipt-upload" class="custom-file-upload">
+            <span id="upload-text">Tap to select image</span>
+        </label>
+        <input type="file" id="receipt-upload" accept="image/*" style="display: none;">
+        
+        <div id="preview-container" style="display: none; margin-top: 15px; text-align: center;">
+            <img id="receipt-preview" src="" alt="Receipt Preview">
+        </div>
+    </div>
+
+    <button id="generate-pdf" class="whatsapp_btn">
+        FINALIZE & SEND REGISTRATION
+    </button>
 </div>
 
 <footer>
@@ -147,20 +172,12 @@
         
         <div>
             <a class="inter-regular" href="injury_waiver.html"> Injury Waiver </a> 
-            <a class="inter-regular" href="whatsapp_sales_disclaimer.html"> WhatsApp Sales Disclaimer </a> 
+            <a class="inter-regular" href="whatsap_merchandise_disclaimer.html"> WhatsApp Sales Disclaimer </a> 
         </div>
     </section>
 </footer>
 
-
-<!-- Accordition JS  -->
-<script src="https://cdn.lordicon.com/lordicon.js" defer></script>
-<script src="javascript/merch-hero.js" defer></script>
-<script src="javascript/events.js" defer></script>
-<script src="javascript/accordition.js" defer></script>
-<script src="javascript/dropdown-menu.js" defer></script>
-<script src="javascript/product-data.js" defer></script>
-<script src="javascript/scroll_detection_menu.js" defer></script>
-</body> 
-
-</html>
+    <script src="https://cdn.lordicon.com/lordicon.js" defer></script>
+    <script src="javascript/scroll_detection_menu.js" defer></script>
+    <script src="javascript/sign-up-form.js" defer></script>
+</body>

@@ -185,7 +185,7 @@ section#upcoming_runs_container {
 }
 
 article#upcoming_runs_container_child  { 
-    border:1px solid black; height:144px; 
+    border:1px solid violet; height:144px; 
     width:343px; display:flex; 
     align-items:center; justify-content:center;  
     flex-direction:column; gap:15px;
@@ -212,8 +212,8 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 }
 
 .legal_heading_container { 
-    height:40px; border-radius:99px; background-color:#ffd90041; 
-    width:351px; margin:auto; display:flex;  box-shadow:inset 0 0 0 1px #FFD700;
+    height:40px; border-radius:99px; background-color:#ffd90041; padding-left:13px; padding-right:13px;
+    width:365px; margin:auto; display:flex;  box-shadow:inset 0 0 0 1px #FFD700;
     align-items:center; justify-content:center; display:flex;
     margin-top:80px; 
 }
@@ -231,8 +231,6 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 /* ============================= */
 /* SCHEDULE CARD COMPONENT       */
 /* ============================= */
-
-
 
 
 /* ============================= */
@@ -259,10 +257,6 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
     box-shadow: 0 0 0 1.4px #D6A700;
 }
 
-#test:hover{
-        transform: translateY(-4px);
-    box-shadow: 0 0 0 1.4px #EF4444;
-}
 
 /* Glow Effect */
 .schedule_component_father::before {
@@ -585,8 +579,8 @@ button{ border:none;}
     transform: translateX(5px);
 }
 
-#home_page_merch_button > a { text-decoration:none; color:white; font-size:17px;}
-/* ============================= */
+#home_page_merch_button > a { text-decoration:none; color:white; font-size:17px; }
+
 /* PREMIUM LIGHT SWEEP           */
 /* ============================= */
 
@@ -620,16 +614,15 @@ button{ border:none;}
 
 .faq {
     width: 350px; 
-    margin: auto; margin-top:30px; margin-bottom:40px;
+    margin: auto; margin-top:30px; margin-bottom:40px; 
 }
 
 .accordion-item {
     border-radius: 12px;
-    background: #0f1117;
+    background: #101012; box-shadow:inset 0 0 0 1px #27272A;
     overflow: hidden;
     margin-bottom: 20px;
     transition: border 0.3s ease; 
-    border: 2px solid transparent; 
 }
 
 .accordion-item.active {
