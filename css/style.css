@@ -144,7 +144,7 @@ button {
     
     /* ... keep your other existing styles like size, color, animation ... */
     display: block;
-    font-size: 3rem;
+    font-size: 2.3rem;
     color: #e4e4e7;
     text-decoration: none;
     letter-spacing: 5px;
@@ -671,6 +671,19 @@ button{ border:none;}
     line-height: 1.4;
 }
 
+.reveal {
+    position: relative;
+    transform: translateY(160px);
+    opacity: 0;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform, opacity;
+}
+
+.reveal.active {
+    transform: translateY(0); 
+    opacity: 1;
+}
 /* ------------------------------------------------- ( Footer ) --------------------------------------------------------- */
  
 .home_footer_container_01 { 

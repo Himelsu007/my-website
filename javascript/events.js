@@ -69,7 +69,7 @@ events.forEach(event => {
     }
 
     const card = `
-        <article class="schedule_component_father">
+        <article class="schedule_component_father reveal">
             <div class="event_type_container">
                 <div class="event_type_indicator">
                     <div>
