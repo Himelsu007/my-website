@@ -5,7 +5,7 @@
 const luxuryImages = [            
     'assets/images/nba-elite-tank-top-bg.jpg', 
     'assets/images/merch-animated-video-bg.gif',
-    'assets/images/nba-elite-tank-top-bg-04.jpg', 
+    'assets/images/nba-elite-tank-top-bg-05.jpg', 
     'assets/images/nba-elite-tank-top-bg-03.jpg', 
     'assets/images/nba-elite-tank-top-bg-02.jpg', 
 ];

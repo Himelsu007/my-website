@@ -197,9 +197,7 @@ MAIN GRID
     display:flex;
     flex-wrap:wrap;
     justify-content:space-between;
-
     gap:22px;
-
     margin-bottom:40px;
 }
 
@@ -207,13 +205,10 @@ MAIN GRID
 
     max-width:1100px;
     margin:auto;
-
     display:flex;
     flex-wrap:wrap;
     gap:22px;
-
     justify-content:space-between;
-
     margin-bottom:40px;
 }
 
@@ -247,9 +242,9 @@ FEATURED PRODUCT
    ======================================== */
 .modal_content {
     background: #1c1c1e; /* Deep Apple-style dark gray */
-    width: 100%;
+    width: 92%;
     max-width: 420px;
-    max-height: 90vh; /* Prevents it from going off-screen */
+    max-height: 98vh; /* Prevents it from going off-screen */
     overflow-y: auto; /* Scrollable if screen is tiny */
     border-radius: 12px;
     display: flex;
@@ -290,7 +285,7 @@ FEATURED PRODUCT
     right: 16px;
     background: transparent;
     border: none;
-    color: #a1a1aa;
+    color: #a20606;
     font-size: 1.2rem;
     cursor: pointer;
     transition: color 0.2s ease;
@@ -391,7 +386,7 @@ FEATURED PRODUCT
 
 .pill.active {
     border-color: #FFD700; /* Yellow border for selected state */
-    background: #18181b;
+    background: #FFD400; color: #0F0F12;
 }
 
 #products_show_case_main_child_container{
@@ -399,18 +394,14 @@ FEATURED PRODUCT
     width:100%;
     height:320px;
 
-    background-image:url('../assets/images/socks_main_merch_container.png');
-    background-size:cover;
-    background-position:center;
+    background-image:url('../assets/images/socks_main_merch_container.jpg');
+    background-size:cover; background-position-y:970px;
 
     border-radius:12px;
     border:1px solid #27272A;
-
     position:relative;
     overflow:hidden;
-
     cursor:pointer;
-
     transition:border-color .35s ease;
 }
 
@@ -627,22 +618,14 @@ FEATURED CONTENT
 .featured_cta{
 
     margin-top:6px;
-
     width:120px;
     height:36px;
-
     border-radius:20px;
-
     border:1px solid #FFD400;
-
     background:transparent;
-
     color:#FFD400;
-
     font-size:13px;
-
     cursor:pointer;
-
     transition:.25s;
 }
 
@@ -672,7 +655,6 @@ PRODUCT CARD
 .products_box:hover{
 
     border-color:#FFD400;
-
     box-shadow:0 8px 20px rgba(0,0,0,.45);
 }
 
@@ -684,17 +666,12 @@ PRODUCT IMAGE
 .product_image{
 
     flex:1;
-
     background-size:cover;
     background-position:center;
-
     transition:.4s;
 }
 
-.products_box:hover .product_image{
-
-    filter:brightness(1.1);
-}
+.products_box:hover .product_image{ filter:brightness(1.1); }
 
 
 /* ===============================
@@ -704,11 +681,8 @@ PRODUCT INFO
 .product_info{
 
     height:64px;
-
     background:#18181B;
-
     padding:12px;
-
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -729,25 +703,6 @@ PRODUCT INFO
 }
 
 
-/* ===============================
-RESPONSIVE
-=============================== */
-
-@media (min-width:768px){
-
-.products_box{
-    width:calc(33.33% - 15px);
-}
-
-}
-
-@media (min-width:1100px){
-
-.products_box{
-    width:calc(25% - 16px);
-}
-
-}
 
 
 .sort-dropdown{
@@ -831,59 +786,135 @@ RESPONSIVE
 
 
 /* ------------------------------------------------- ( Footer ) --------------------------------------------------------- */
- 
-.home_footer_container_01 { 
- 
-height:255px; width:343px; 
-margin:auto;  display:flex;
-flex-direction:column; margin-bottom:20px;
-justify-content:space-between;
+
+/* ========================================
+   LX FOOTER STYLES
+   ======================================== */
+.lx-footer {
+    background-color: #050505; /* Deep luxury black */
+    color: #ffffff;
+    padding: 60px 20px 20px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator line */
 }
 
-.home_footer_container_01 > :nth-child(1) { 
-    min-height:36px; width:140px; 
-    display:flex; 
-    align-items:center; justify-content:flex-start;
+/* The Main Grid Container */
+.lx-footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile: 1 column */
+    gap: 48px;
+    padding-bottom: 48px;  }
+
+/* -- Column 1: Brand -- */
+.footer-logo {
+    width: 95px;
+    height: auto;
+    margin-bottom: 20px;
 }
 
-.home_footer_container_01 > :nth-child(2) { height:52px; width:300px; display:flex; align-items:center; justify-content:center;}
-
-.home_footer_container_01 > :nth-child(3) { 
-    min-height:44px; width:224px; margin-top:15px;
-    display:flex; align-items:flex-end; justify-content:space-between;}
-
-.footer_logo_container { border-radius:50%; background-color:#18181B; margin-bottom:15px; height:44px; width:44px; display:flex; align-items:center; justify-content:center;}
-
-.contact_us_container {   height:152px; width:343px; margin:auto; display:flex; flex-direction:column; justify-content:space-between; }
-
-.contact_us_container > :nth-child(1) { height:36px; width:162px; }  
-
-.contact_us_container > :nth-child(2) { height:112px; width:187px; flex-direction:column; display:flex; align-items:flex-start; justify-content:space-around;}  
-
-.contact_us_container > :nth-child(2) > a { color:#A1A1AA; font-size:14px; text-decoration:none;}
-
-.all_rights_reserved_container { 
-    border-top:1px solid #27272A; min-height:90px; width:343px; margin:auto; 
-    margin-top:30px; margin-bottom:20px;  justify-content:space-between; gap:20px;
-    display:flex; flex-direction:column; align-items:center;
+.footer-tagline {
+    color: #A1A1AA; /* Zinc-400 */
+    font-size: 1.1rem;
+    line-height: 1.5;
+    max-width: 300px;
+    margin-bottom: 24px;
 }
 
+.footer-socials {
+    display: flex;
+    gap: 16px;
+}
 
-.all_rights_reserved_container > div:nth-child(1) { height:20px; min-width:271px; margin-top:20px;}
-.all_rights_reserved_container > div:nth-child(1) > p { color:#52525B; font-size:14px;;  }
+.social-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 50%; /* Makes them cool circles */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-.all_rights_reserved_container > div:nth-child(2) {
-    height:20px; width:192px;  
-    text-align:center; display:flex; justify-content:space-between;
-}  
-.all_rights_reserved_container > div:nth-child(2) > a { color:#A1A1AA; font-size:14px; text-decoration:none;}
+.social-icon-link img {
+    width: 20px;
+    height: auto;
+    transition: filter 0.3s ease;
+}
 
+.social-icon-link:hover {
+    background-color: #ffffff;
+    transform: translateY(-3px); /* Lifts up on hover */
+}
 
-.all_rights_reserved_container > div:nth-child(3) { 
-    height:20px; 
-    width:300px; text-align:center; 
-    display:flex; justify-content:space-between;
-    align-items:center;}  
+.social-icon-link:hover img {
+    filter: invert(1); /* Flips icon color on hover */
+}
 
-.all_rights_reserved_container > div:nth-child(3) > a { color:#A1A1AA; font-size:14px; text-decoration:none;}
+/* -- Columns 2 & 3: Links -- */
+.footer-heading {
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
 
+.footer-link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.text-muted {
+    color: #A1A1AA;
+}
+
+.footer-link-list a {
+    color: #A1A1AA;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 1rem;
+}
+
+.footer-link-list a:hover {
+    color: #ffffff; /* Lights up on hover */
+}
+
+/* -- Bottom Bar -- */
+.lx-footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: #71717A; /* Zinc-500 */
+    font-size: 0.875rem;
+}
+
+/* ========================================
+   RESPONSIVE Footer (TABLET & DESKTOP)
+   ======================================== */
+@media (min-width: 768px) {
+    .lx-footer-content {
+        /* Tablet: 2 columns */
+        grid-template-columns: 1fr 1fr; 
+    }
+}
+
+@media (min-width: 1024px) {
+    .lx-footer-content {
+        /* Desktop: 3 columns. Brand takes up more space */
+        grid-template-columns: 2fr 1fr 1fr; 
+    }
+    
+    .lx-footer-bottom {
+        text-align: left; /* Aligns left on bigger screens */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

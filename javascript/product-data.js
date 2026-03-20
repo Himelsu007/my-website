@@ -3,104 +3,111 @@
 // ========================================
 
 const products = [
+
+
 {
-        name: "Nike Elite Pro T-Shirt",
-        price: "€49.99",
+        name: "Nike Nba Elite Pro Socks - Black",
+        price: "€24.99",
+        image:"../assets/images/products/nike-elite-socks-black.png",
+        description: "No slipping nor distractions, just lockdown performance from the ground up.",
+        isSoldOut: false,
+        optionTitle: "<strong> Size <strong>",
+        options: ["38 - 41", "42 - 45", "46 - 49"]
+    },
+{
+        name: "Nike Nba Elite Pro Socks - White",
+        price: "€24.99",
+        image:"../assets/images/products/nike-elite-socks-white.png",
+        description: "Maximum comfort on the court.",
+        isSoldOut: false,
+        optionTitle: "<strong> Size <strong>",
+        options: ["38 - 41", "42 - 45", "46 - 49"]
+},
+
+{
+        name: "Nike Nba Elite Pro Compression Shirt",
+        price: "€45",
         image: "../assets/images/products/nike-elite-tee-white.png",
-        description: "Engineered with Dri-FIT technology for high-intensity runs.",
+        description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA. ",
         tag: "LIMITED EDITION", // New Badge
-        isSoldOut: false        // This one is now sold out
+        isSoldOut: false     ,   
+        optionTitle: "Size", 
+        options: ["S", "M", "L"],
     },
 
     {
-        name: "Locked In Performance Socks",
-        price: "€14.99",
+        name: "Nike Nba Elite Pro Tank Top - Black ",
+        price:"SOLD OUT",
         image: "../assets/images/products/nike-elite-tank-top-black.png",
-        description: "Extra cushioning for maximum comfort on the court.",
-        tag: "NEW ARRIVAL",   
-        isSoldOut: true // This one is now sold out
+        description: "Designed for high-tempo runs where every possession matters.",
+        isSoldOut: true, // This one is now sold out
+        optionTitle: "Size", 
+        options: ["S", "M", "L"]
     },
-    
-
 
 {
-        name:"Elite Training Tank",
-        price:"€39.99",
+        name: "Nike NBA Elite Pro Compression Shirt ",
+        price:"SOLD OUT",
         image:"../assets/images/products/nike-elite-tee-black.png.webp",
-        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        tag: "LIMITED EDITION",
-        isSoldOut: true
-
+        description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA. ",
+        isSoldOut: true,
+        optionTitle: "Size", 
+        options: ["S", "M", "L"]
 },
 
 {
-        name:"Game Day Headband",
-        price:"€12.99",
+        name: "Nike Nba Elite Pro Tank Top - White ",
+        price:"SOLD OUT",
         image:"../assets/images/products/nike-elite-tank-top-white.jpeg",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        tag: "NEW ARRIVAL",
-        isSoldOut: true
-
+        isSoldOut: true,
+        optionTitle: "Size", 
+        options: ["S", "M", "L"]
 },
 
 {
-        name:"Game Day Headband",
-        price:"€12.99",
+        name:"Nike Nba Elite Pro Compression Long Sleeve - White  ",
+        price: "COMING SOON",
         image:"../assets/images/products/nike-elite-long-sleeve-white.png",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        tag: "NEW ARRIVAL",
-        isSoldOut: true
-
+        isSoldOut: true,
+        optionTitle: "Size", 
+        options: ["S", "M", "L"]
 },
 
 {
-        name:"Game Day Headband",
-        price:"€12.99",
+        name:"Nike Nba Elite Pro Compression Short Sleeve",
+        price: "COMING SOON",
         image:"../assets/images/products/nike-elite-short-sleeve-black.png",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        tag: "NEW ARRIVAL",
-        isSoldOut: true
+        isSoldOut: true,
+        optionTitle: "Size", 
+        options: ["S", "M", "L"]
 },
 
 {
-        name:"Game Day Headband",
-        price:"€12.99",
+        name:"Nike Nba Elite Pro Compression long Sleeve  ",
+        price: "COMING SOON",
         image:"../assets/images/products/nike-elite-long-sleeve-black.png",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        tag: "NEW ARRIVAL",
-        isSoldOut: true
+        isSoldOut: true,
+        optionTitle: "Size", 
+        options: ["S", "M", "L"]
 
 },
 
 {
-        name:"Game Day Headband",
-        price:"SOLD OUT",
+        name:"Nike Nba Elite Pro Compression Short Sleeve",
+        price: "COMING SOON",
         image:"../assets/images/products/nike-elite-short-sleeve-white.jpeg",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        tag: "NEW ARRIVAL",
-        isSoldOut: true
+        isSoldOut: true,
+        optionTitle: "Size", 
+        options: ["S", "M", "L"]
 
 },
 
-{
-        name:"Game Day Headband",
-        price:"€12.99",
-        image:"../assets/images/products/nike-elite-socks-black.png",
-        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        tag: "NEW ARRIVAL",
-        isSoldOut: true
 
-},
-
-{
-        name:"Game Day Headband",
-        price:"€12.99",
-        image:"../assets/images/products/nike-elite-socks-white.png",
-        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        tag: "NEW ARRIVAL",
-        isSoldOut: false
-
-},
 
 ];
 
@@ -129,58 +136,67 @@ function loadProducts() {
     
     initModal();
 }
-
 function initModal() {
     const modal = document.getElementById("product_modal");
     const container = document.getElementById("products_show_case_container");
 
-    // Open Modal Logic
+    // ==========================================
+    // 1. OPEN MODAL & BUILD HTML DYNAMICALLY
+    // ==========================================
     container.addEventListener("click", (e) => {
         const card = e.target.closest(".products_box");
         if (!card) return;
 
-const index = card.getAttribute("data-product-index");
-const product = products[index];
-const isSoldOut = product.isSoldOut;
+        const index = card.getAttribute("data-product-index");
+        const product = products[index];
+        const isSoldOut = product.isSoldOut;
 
-modal.innerHTML = `
-    <div class="modal_content">
-        <div class="modal_image_wrapper ${isSoldOut ? 'sold_out_img' : ''}">
-            <img src="${product.image}" alt="${product.name}">
-            ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ''}
-            <button class="close_modal">✕</button>
-        </div>
-        
-        <div class="modal_details">
-            <h2 class="modal_title barlow-condensed-black">${product.name.toUpperCase()}</h2>
-            <div class="modal_price barlow-condensed-black">${product.price}</div>
-            
-            <p class="modal_description inter-regular">
-                ${product.description || "Premium gear for elite performance."}
-            </p>
-            
-            <div class="modal_variant_group">
-                <h4 class="inter-medium">Size</h4>
-                <div class="variant_pills">
-                    <button class="pill" ${isSoldOut ? 'disabled' : ''}>S</button>
-                    <button class="pill" ${isSoldOut ? 'disabled' : ''}>M</button>
-                    <button class="pill" ${isSoldOut ? 'disabled' : ''}>L</button>
+        // DYNAMICALLY BUILD THE VARIANT PILLS HTML
+        let variantsHTML = "";
+        if (product.options && product.options.length > 0) {
+            const pillsHTML = product.options.map(opt => 
+                `<button class="pill" ${isSoldOut ? 'disabled' : ''}>${opt}</button>`
+            ).join('');
+
+            variantsHTML = `
+                <div class="modal_variant_group">
+                    <h4 class="inter-medium">${product.optionTitle || "Select Size"}</h4>
+                    <div class="variant_pills">
+                        ${pillsHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        modal.innerHTML = `
+            <div class="modal_content">
+                <div class="modal_image_wrapper ${isSoldOut ? 'sold_out_img' : ''}">
+                    <img src="${product.image}" alt="${product.name}">
+                    ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ''}
+                    <button class="close_modal">✕</button>
+                </div>
+                
+                <div class="modal_details">
+                    <h2 class="modal_title barlow-condensed-black">${product.name.toUpperCase()}</h2>
+                    <div class="modal_price barlow-condensed-black">${product.price}</div>
+                    
+                    <p class="modal_description inter-regular">
+                        ${product.description || "Premium gear for elite performance."}
+                    </p>
+                    
+                    ${variantsHTML}
+                    
+                    <div class="whatsapp_container">
+                        ${isSoldOut ? 
+                            `<button class="sold_out_btn" disabled>OUT OF STOCK</button>` :
+                            `<button id="whatsapp_order_btn" class="whatsapp_btn ${product.options ? 'disabled' : ''}">
+                                WhatsApp Order
+                            </button>`
+                        }
+                    </div>
                 </div>
             </div>
-            
-            <div class="whatsapp_container">
-                ${isSoldOut ? 
-                    `<button class="sold_out_btn" disabled>OUT OF STOCK</button>` : // Disabled button for sold out products
-                    `<button id="whatsapp_order_btn" class="whatsapp_btn disabled">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.472 14.382..."/> </svg>
-                        WhatsApp Order
-                    </button>`
-                }
-            </div>
-        </div>
-    </div>
-`;
+        `;
 
         modal.classList.add("active");
         document.body.style.overflow = "hidden";
@@ -221,7 +237,7 @@ modal.innerHTML = `
 
             // Build the URL
             const phoneNumber = "351911861637"; // <--- CHANGE THIS (e.g., 351912345678)
-            const textMessage = `Hello! I would like to order the ${productName} (${productPrice}). Size: ${selectedSize}.`;
+            const textMessage = `Hello! I would like to order the ${productName} (${productPrice}) - Size: ${selectedSize}.`;
             const encodedMessage = encodeURIComponent(textMessage);
             
             const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
@@ -237,10 +253,6 @@ modal.innerHTML = `
         }
     });
 }
-
-// ========================================
-// INITIALIZE
-// ========================================
 
 document.addEventListener("DOMContentLoaded", () => {
 

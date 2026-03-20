@@ -208,7 +208,7 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 
 .legal_container  { 
     min-height:144px;  margin:auto; padding:10px;
-    max-width:500px; display:flex; margin-top:40px;
+    width:373px; display:flex; margin-top:40px;
     align-items:center; justify-content:center;  
     flex-direction:column; 
 }
@@ -650,6 +650,13 @@ button{ border:none;}
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
+.accordion-item.active .accordion-content {
+
+    opacity: 1;
+    transform: translateY(0);
+    padding: 10px 20px 20px;
+
+}
 .accordion-header span {
    letter-spacing:0.8px;
 }
