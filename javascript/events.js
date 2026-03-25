@@ -2,14 +2,14 @@ const events = [
 
         {
         type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
-        date: "2026-02-10",
+        title: "FULL COURT 4V4",
+        date: "28-03-2026",
         time: "8:30PM - 10PM",
-        location: "Casal Vistoso...",
+        location: "AEIST",
         map: "#",
         spotsTaken: 2,
-        spotsTotal: 24,
-        price: "€6",
+        spotsTotal: 25,
+        price: "€5",
         priceLabel: "Entry Fee"
     },
 

@@ -102,7 +102,7 @@
 .input-group label {
     display: block;
     color: #a1a1aa;
-    font-size: 0.75rem;
+    font-size: 1.1rem;
     margin-bottom: 8px;
     letter-spacing: 1px;
 }
@@ -128,7 +128,7 @@
 
 #signature-pad {
     width: 100%;
-    height: 150px;
+    height: 300px;
     cursor: crosshair;
 }
 
@@ -155,11 +155,3 @@
 }
 
 }
-
-@media screen and (min-width: 1024px) {
-    
-}
-
-@media screen and (min-width: 2560px) {
-}
-

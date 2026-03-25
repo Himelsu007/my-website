@@ -3,11 +3,11 @@
 // ============================================
 
 const luxuryImages = [            
-    'assets/images/nba-elite-tank-top-bg.jpg', 
-    'assets/images/merch-animated-video-bg.gif',
     'assets/images/nba-elite-tank-top-bg-05.jpg', 
-    'assets/images/nba-elite-tank-top-bg-03.jpg', 
-    'assets/images/nba-elite-tank-top-bg-02.jpg', 
+    'assets/images/merch-animated-video-bg.gif',
+    'assets/images/IMG_0473.JPG', 
+    'assets/images/molten-ball-bg-03.JPG', 
+    'assets/images/IMG_0475.JPG', 
 ];
 
 

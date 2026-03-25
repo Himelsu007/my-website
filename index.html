@@ -208,34 +208,40 @@
 
 <section class="home_page_product_father_container">
 
-<div class="carousel_viewport">
-    <div class="carousel_track">
-        <a href="merch.html" class="home_page_product_boxes item-socks">
-            <div class="label_container">
-                <span class="barlow-condensed-black">Elite Pro Socks ›</span>
-            </div>
-        </a>
+<div class="carousel_master_wrapper">
+    <div class="carousel_viewport">
+        <div class="carousel_track">
 
-        <a href="merch.html" class="home_page_product_boxes item-tank">
-            <div class="label_container">
-                <span class="barlow-condensed-black">Tank Tops ›</span>
-            </div>
-        </a>
+            <a href="merch.html" class="home_page_product_boxes item-tank">
+                <div class="label_container">
+                    <span class="barlow-condensed-black">Tank Tops</span>
+                    <span class="hover-arrow">›</span>
+                </div>
+            </a>
 
-        <a href="merch.html" class="home_page_product_boxes item-tshirt">
-            <div class="label_container">
-                <span class="barlow-condensed-black">Nba T-Shirt ›</span>
-            </div>
-        </a>
+            <a href="merch.html" class="home_page_product_boxes item-socks">
+                <div class="label_container">
+                    <span class="barlow-condensed-black">Elite Pro Socks</span>
+                    <span class="hover-arrow">›</span>
+                </div>
+            </a>
 
-                <a href="merch.html" class="home_page_product_boxes item-molten">
-            <div class="label_container">
-                <span class="barlow-condensed-black"> basketballs ›</span>
-            </div>
-        </a>
-
-        </a>
+            <a href="merch.html" class="home_page_product_boxes item-tshirt">
+                <div class="label_container">
+                    <span class="barlow-condensed-black">NBA T-Shirts</span>
+                    <span class="hover-arrow">›</span>
+                </div>
+            </a>
+            
+            <a href="merch.html" class="home_page_product_boxes item-molten">
+                <div class="label_container">
+                    <span class="barlow-condensed-black">Basketballs</span>
+                    <span class="hover-arrow">›</span>
+                </div>
+            </a>
+        </div>
     </div>
+
 </div>
 
 
@@ -341,10 +347,10 @@
         <div class="footer-links-col">
             <h3 class="barlow-condensed-bold footer-heading"> EVENTS </h3>
             <ul class="footer-link-list">
-                <li><a href="terms_of_participation.html" class="barlow-condensed-regular"> King of The Court</a></li>
-                <li><a href="privacy_policy.html" class="barlow-condensed-regular"> Men 3x3 </a></li>
-                <li><a href="cookies.html" class="barlow-condensed-regular"> Dunk Context </a></li>
-                <li><a href="whatsapp_sales_disclaimer.html" class="barlow-condensed-regular"> Women 3x3 </a></li>
+                <li><a href="#" class="barlow-condensed-regular"> King of The Court</a></li>
+                <li><a href="#" class="barlow-condensed-regular"> Men 3x3 </a></li>
+                <li><a href="#" class="barlow-condensed-regular"> Dunk Context </a></li>
+                <li><a href="#" class="barlow-condensed-regular"> Women 3x3 </a></li>
             </ul>
         </div>
 
@@ -355,7 +361,7 @@
                 <li><a href="privacy_policy.html" class="barlow-condensed-regular">Privacy Policy</a></li>
                 <li><a href="cookies.html" class="barlow-condensed-regular">Cookies</a></li>
                 <li><a href="injury_waiver.html" class="barlow-condensed-regular">Injury Waiver</a></li>
-                <li><a href="whatsapp_sales_disclaimer.html" class="barlow-condensed-regular">WhatsApp Sales Disclaimer</a></li>
+                <li><a href="whatsap_merchandise_disclaimer.html" class="barlow-condensed-regular">WhatsApp Sales Disclaimer</a></li>
             </ul>
         </div>
     </div>
@@ -373,7 +379,21 @@
 <script src="javascript/carousel.js" defer></script>
 <script src="javascript/accordition.js" defer></script>
 <script src="javascript/scroll_detection_menu.js" defer></script>
-<script src="javascript/reveaal-animation.js" > </script>
-</body> 
+<script src="javascript/reveaal-animation.js" defer> </script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    // 1. Grab the button
+    const merchButton = document.getElementById("home_page_merch_button");
 
+    // 2. Safety check: ensure the button exists on this specific page
+    if (merchButton) {
+        // 3. Add the click listener
+        merchButton.addEventListener("click", () => {
+            // Instantly routes the user to the merch page
+            window.location.href = "merch.html";
+        });
+    }
+});
+</script>
+</body> 
 </html>

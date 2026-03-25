@@ -247,7 +247,8 @@ header.scrolled {
     transition: height 0.3s ease;
 }
 
-
+.auth-title { font-size:40px;}
+#auth-name { font-size:27px;}
 #home_page_merch_button {
     position: relative;
     height: 74px; 
@@ -409,8 +410,8 @@ header.scrolled {
 }
 
 .home_page_product_boxes {
-    flex: 0 0 350px;
-    height:300px;
+    flex: 0 0 360px;
+    height:390px;
   
 }
 
@@ -531,6 +532,8 @@ font-size:15px;
     width: 174px;
 
 }
+
+.auth-title { font-size:28px;}
 
 /* hide scrollbar */
 .schedule_cards_container::-webkit-scrollbar{
@@ -845,11 +848,10 @@ display:none;
 #home_page_merch_button:hover lord-icon {
     transform: translateX(5px);
 }
-.home_page_product_boxes {
-    flex: 0 0 350px;
-    height:300px;
-        animation: elitePulse 3s ease-in-out infinite;
 
+.home_page_product_boxes {
+    flex: 0 0 360px;
+    height:390px;
   
 }
 

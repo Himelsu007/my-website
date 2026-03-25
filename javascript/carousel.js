@@ -3,25 +3,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const indicator = document.querySelector(".carousel_progress_indicator");
     if (!viewport || !indicator) return;
 
-    // =========================================
     // 1. UPDATE THE PROGRESS BAR
-    // =========================================
     function updateProgressBar() {
-        // How far the user has scrolled left
         const scrollLeft = viewport.scrollLeft;
-        // Total scrollable distance (Total width minus what is currently visible)
         const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
         
-        // Calculate the percentage (0 to 100)
         let scrollPercentage = (scrollLeft / maxScrollLeft) * 100;
-        
-        // Safety catch for division by zero on very large screens
         if (maxScrollLeft === 0) scrollPercentage = 100; 
 
-        // Apply it to the CSS width
+        // Clamp values between 0 and 100 just in case of over-scrolling bounce on Macs
+        scrollPercentage = Math.max(0, Math.min(scrollPercentage, 100));
+
         indicator.style.width = `${scrollPercentage}%`;
 
-        // Elite Polish: Turn the bar gold if they reach the absolute end
+        // Elite Polish: Turn the bar gold if they reach the end
         if (scrollPercentage >= 99) {
             indicator.style.backgroundColor = "#FFD700";
         } else {
@@ -29,18 +24,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Listen to native scroll events (swiping, trackpad, mouse wheel)
     viewport.addEventListener("scroll", updateProgressBar, { passive: true });
-    
-    // Run once on load to set the initial width
-    updateProgressBar();
-    // Re-calculate if the user flips their phone or resizes their laptop window
     window.addEventListener("resize", updateProgressBar);
+    updateProgressBar();
 
-
-    // =========================================
     // 2. LAPTOP ENHANCEMENT: MOUSE DRAGGING
-    // =========================================
     let isDown = false;
     let startX;
     let scrollLeft;
@@ -49,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
         isDown = true;
         startX = e.pageX - viewport.offsetLeft;
         scrollLeft = viewport.scrollLeft;
-        // Disable scroll snapping temporarily while dragging for a smoother feel
         viewport.style.scrollSnapType = 'none'; 
     });
 
@@ -65,9 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     viewport.addEventListener('mousemove', (e) => {
         if (!isDown) return;
-        e.preventDefault(); // Stop text selection
+        e.preventDefault(); 
         const x = e.pageX - viewport.offsetLeft;
-        const walk = (x - startX) * 1.5; // Scroll speed multiplier
+        const walk = (x - startX) * 1.5; 
         viewport.scrollLeft = scrollLeft - walk;
     });
 });

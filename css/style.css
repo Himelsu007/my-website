@@ -208,7 +208,7 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 
 .legal_container  { 
     min-height:144px;  margin:auto; padding:10px;
-    width:373px; display:flex; margin-top:40px;
+    max-width:1100px; display:flex; margin-top:40px;
     align-items:center; justify-content:center;  
     flex-direction:column; 
 }
@@ -444,21 +444,27 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 
 /* ------------------------------------------------- ( Carousel ) --------------------------------------------------------- */
 
+
+.carousel_master_wrapper {
+    width: 100%;
+    position: relative;
+    padding: 20px 0;
+}
+
 .carousel_viewport {
-    overflow-x: auto; /* Enables native trackpad/swipe scrolling */
+    overflow-x: auto; 
     overflow-y: hidden;
     width: 100%;
     cursor: grab;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    
-    /* The "Elite" magnetic snap */
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
     scroll-snap-type: x mandatory; 
     scroll-behavior: smooth;
+    padding-bottom: 20px; /* Space for box-shadows on hover */
 }
 
 .carousel_viewport::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none; 
 }
 
 .carousel_viewport:active { 
@@ -467,73 +473,101 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 
 .carousel_track {
     display: flex;
-    gap: 20px;
-    padding-bottom: 10px; /* Slight breathing room */
+    gap: 16px; /* Slightly tighter gap looks more modern */
+    padding: 0 20px; /* Gives the first item breathing room off the screen edge */
 }
 
-.carousel_track > * {
-    scroll-snap-align: start; /* Makes the box magnetize to the left edge */
-    flex-shrink: 0; /* Prevents the browser from squishing your boxes */
-}
+/* ========================================
+   THE PRODUCT BOXES
+   ======================================== */
 
-/* Shared Box Styles */
 .home_page_product_boxes {
-    flex: 0 0 220px;
-    height: 190px;
-    border-radius: 8px;
-    border: 1px solid #7d7d7d76;
-    text-decoration: none; /* Remove link underline */
+    scroll-snap-align: start; 
+    flex: 0 0 240px; /* Slightly wider for a premium feel */
+    height: 300px; /* Taller boxes look more editorial/luxurious */
+    border-radius: 16px; /* Smoother corners */
+    text-decoration: none; 
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* Pushes content to the bottom */
+    justify-content: flex-end; 
     align-items: center;
-    padding-bottom: 20px; 
+    padding-bottom: 12px;   
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    user-select: none;
+    user-select: none; 
     -webkit-user-drag: none; 
+    position: relative;
+    overflow: hidden; /* Keeps the inner shadow contained */
+    
+    /* Hardware acceleration for buttery hover lift */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.3s ease, 
+                border-color 0.3s ease;
 }
 
-@keyframes elitePulse {
-    0% {
-        border-color: rgba(125, 125, 125, 0.5);
-        box-shadow: 0 0 0px rgba(255, 255, 255, 0);
-    }
-    50% {
-        /* Glows brighter in the middle of the cycle */
-        border-color: rgba(255, 255, 255, 0.8);
-        box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
-    }
-    100% {
-        border-color: rgba(125, 125, 125, 0.5);
-        box-shadow: 0 0 0px rgba(255, 255, 255, 0);
-    }
+/* Cinematic Dark Gradient to ensure bottom text pops */
+.home_page_product_boxes::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.8) 100%);
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* Label Styling - No more negative margins */
+/* Premium Hover Lift */
+.home_page_product_boxes:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    border-color: #FFD700; /* Subtle gold flash */
+}
+
+/* ========================================
+   THE "GLASS" TEXT LABEL
+   ======================================== */
 .label_container {
-    height: 28px;
-    width: 80%; 
+    width: calc(100% - 24px); 
+    position: relative;
+    z-index: 2; /* Sits above the cinematic gradient */
     display: flex;
     align-items: center;
-    justify-content: center;
-     /* Slight overlay for readability */
+    justify-content: space-between;
+    padding: 10px 16px;
+    
+    /* The Glassmorphism Magic */
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
 }
 
 .barlow-condensed-black {
     color: white;
-    letter-spacing: 1.3px;
-    font-size: 18px;
+    letter-spacing: 1.5px;
+    font-size: 1.1rem;
     text-transform: uppercase;
+    margin: 0;
+}
+
+.hover-arrow {
+    color: #FFD700;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+/* Push arrow right on hover */
+.home_page_product_boxes:hover .hover-arrow {
+    transform: translateX(4px);
 }
 
 /* Specific Backgrounds */
-.item-socks  { background-image: url('../assets/images/home_page_elite_socks.png'); }
-.item-tank   { background-image: url('../assets/images/home_page_tank_top.png'); }
-.item-tshirt { background-image: url('../assets/images/home_page_drift_tshirt.png'); }
-.item-molten { background-image: url('https://tiebreakertimes.com.ph/wp-content/uploads/2023/09/2023-FIBA-WC-Final-Molten-ball.jpg'); }
-
+.item-socks  { background-image: url('../assets/images/nba-elite-pro-socks-bg.jpg'); }
+.item-tank   { background-image: url('../assets/images/IMG_0470.jpg'); }
+.item-molten { background-image: url('../assets/images/wilson-ball-bg-02.JPG'); }
+.item-tshirt { background-image: url('../assets/images/IMG_0465.jpg'); }
 
 
 /* HOME PAGE MERCH BUTTON        */
@@ -554,8 +588,8 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
     border-radius: 14px;
     border: 1px solid #2a2a2e;
     box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.5),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
+    0 10px 25px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(255,255,255,0.04);
     cursor: pointer;
     overflow: hidden;
     transition:
@@ -564,7 +598,35 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
         background 0.3s ease;
 }
 
+@keyframes elitePulse {
 
+0% {
+
+border-color: rgba(125, 125, 125, 0.5);
+
+box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+
+}
+
+50% {
+
+/* Glows brighter in the middle of the cycle */
+
+border-color: rgba(255, 255, 255, 0.8);
+
+box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+
+}
+
+100% {
+
+border-color: rgba(125, 125, 125, 0.5);
+
+box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+
+}
+
+}
 /* ============================= */
 /* PREMIUM CLICK SPRING          */
 /* ============================= */

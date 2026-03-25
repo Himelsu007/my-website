@@ -127,8 +127,8 @@
 @media (min-width: 1100px) {
     .lx-footer-content {
         /* Desktop: 3 columns. Brand takes up more space */
-        grid-template-columns: 2fr 2fr 3fr 1zzzzzfr; 
-        padding:20px;border:1px solid white;
+        grid-template-columns: 2fr 1fr 1fr 1zzzzzfr; 
+        padding:20px;
     }
     
     .lx-footer-bottom {
