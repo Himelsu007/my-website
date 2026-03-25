@@ -359,7 +359,7 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 
 .event_details_small_container {
     width: calc(50% - 7px);
-    display: flex; 
+    display: flex;
     align-items: center;
     gap: 10px;
 }

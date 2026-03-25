@@ -76,18 +76,39 @@
         <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
         <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
         <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
+        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
+        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
+        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
     </div>
 </div>
 
     <!-- Featured Product -->
-    <div id="products_show_case_main_child_container">
+<div id="products_show_case_main_child_container">
+    
+    <div class="showcase-slide active" style="background-image: url('../assets/images/nba-elite-tank-top-bg-05.JPG');"></div>
+    <div class="showcase-slide" style="background-image: url('../assets/images/nba-elite-socks-blue.jpg');"></div>
+    <div class="showcase-slide" style="background-image: url('../assets/images/nba-elite-tank-top-bg.JPG');"></div>
+    <div class="showcase-slide" style="background-image: url('../assets/images/nba-elite-tank-top-bg.JPG');"></div>
 
-        <div class="featured_content">
-            <button class="featured_cta">
-                Nike Nba Elite Pro Socks →
-            </button>
+    <div class="showcase-hud">
+        <div class="glass-tag barlow-condensed-black">
+            <span class="pulse-dot"></span> NEW ARRIVAL
+        </div>
+        
+        <div class="hud-text-track">
+            <h2 class="hud-title barlow-condensed-black active">PRO TANK SERIES</h2>
+            <h2 class="hud-title barlow-condensed-black">ELITE CREW SOCKS</h2>
+            <h2 class="hud-title barlow-condensed-black">PERFORMANCE GEAR</h2>
+            <h2 class="hud-title barlow-condensed-black"> BASKETBALLS</h2>
         </div>
     </div>
+
+    <div class="slide-progress-container">
+        <div class="slide-progress-bar"></div>
+    </div>
+
+    <div class="cinematic-overlay"></div>
+</div>
 
 </section>
 
@@ -158,6 +179,43 @@
 <script src="javascript/dropdown-menu.js" defer></script>
 <script src="javascript/product-data.js" defer></script>
 <script src="javascript/scroll_detection_menu.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const slides = document.querySelectorAll(".showcase-slide");
+    const titles = document.querySelectorAll(".hud-title");
+    const progressBar = document.querySelector(".slide-progress-bar");
+    
+    let currentIndex = 0;
+    const duration = 3000; // 3 Seconds
+
+    function updateSlide() {
+        // Reset Progress Bar immediately
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
+        
+        // Use a tiny timeout to restart the CSS transition
+        setTimeout(() => {
+            progressBar.style.transition = `width ${duration}ms linear`;
+            progressBar.style.width = '100%';
+        }, 50);
+
+        // Update Slides and Titles
+        slides.forEach((s, i) => {
+            s.classList.toggle("active", i === currentIndex);
+            titles[i].classList.toggle("active", i === currentIndex);
+        });
+
+        // Move to next
+        currentIndex = (currentIndex + 1) % slides.length;
+    }
+
+    // Initial kick-off
+    updateSlide();
+    
+    // Set the loop
+    setInterval(updateSlide, duration);
+});
+</script>
 </body> 
 
 </html>

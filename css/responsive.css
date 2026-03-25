@@ -306,8 +306,8 @@ header.scrolled {
 
 }
 .products_box{
-    width:calc(50% - 20px);
-    height:480px;
+    width:calc(50% - 187px);
+    height:450px;
 
 }
 
@@ -341,6 +341,11 @@ header.scrolled {
 .modal_image_wrapper {
     width: 100%;
     height: 520px;
+}
+
+#products_show_case_main_child_container {
+    height: 680px; 
+
 }
 
 .modal_description {
@@ -381,7 +386,6 @@ header.scrolled {
 
 }
 
-.close_modal:hover { color: white; }
 #products_show_case_container { margin-top:100px;}
 
 .auth-container {
@@ -443,29 +447,8 @@ header.scrolled {
 
 }
 
-/* ==========================================================================
-   2. TABLETS (Landscape) & SMALL LAPTOPS
-   Breakpoint: 1024px
-   Usage: This is where the design starts to feel "Desktop." 
-   Perfect for moving to a 3-column layout.
-   ========================================================================== */
-   
-@media screen and (min-width: 1024px) {
-    .schedule_grid_container {
-        /* Change layout behavior */ 
-    }
-
-   /* Larger interaction targets */
-    }
 
 
-
-/* ==========================================================================
-   3. LARGE DESKTOPS / MONITORS
-   Breakpoint: 1440px
-   Usage: For ultra-wide screens. Prevents the content from looking 
-   lost in too much white space.
-   ========================================================================== */
 @media screen and (min-width: 1440px) {
 
 .schedule_cards_container{
@@ -489,6 +472,10 @@ scroll-snap-align:start;
 height: 440px;
     }
 
+    #products_show_case_main_child_container {
+    height: 1080px; 
+
+}
 
     /* King of the Court Badge */
 .event_type_indicator > :nth-child(1) {
@@ -613,7 +600,7 @@ scrollbar-width:none;
 }
 
 .got_questions_container { 
-     height:150px; width:417px; margin:auto; margin-top:50px;
+    height:150px; width:417px; margin:auto; margin-top:50px;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
 }
 
@@ -630,13 +617,6 @@ scrollbar-width:none;
 
 #legal_container_child p { font-size:25px;}
 #legal_container_child h3 { font-size:28px;}
-
-#products_show_case_main_child_container {
-    height:500px; background-position:center; background-size:cover; background-position-y:-740px; background-repeat:no-repeat;
-        background-image:url('../assets/images/socks_main_merch_container-2.jpg');
-
-}
-
 
 
 #nike_elite_gear_heading_container_child { text-align:center; display:flex; align-items:center; justify-content:space-between; 
@@ -846,7 +826,6 @@ header.scrolled {
 
 }
 
-.close_modal:hover { color: white; }
 
 
 #drop_down_menu_container 
@@ -919,6 +898,11 @@ display:none;
     display: flex;
     gap: 20px; align-items:center; justify-content:center;
     padding-bottom: 10px; /* Slight breathing room */
+}
+
+#products_show_case_main_child_container {
+    height: 680px; 
+
 }
 
 }
