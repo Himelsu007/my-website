@@ -2,14 +2,14 @@ const events = [
 
         {
         type: "PICKUP GAME",
-        title: "FULL COURT 4V4",
+        title: "FULL COURT 5V5",
         date: "28-03-2026",
-        time: "8:30PM - 10PM",
-        location: "AEIST",
-        map: "#",
-        spotsTaken: 2,
-        spotsTotal: 25,
-        price: "€5",
+        time: "9:45AM - 12PM",
+        location: "S.Sebastião",
+        map: "https://maps.app.goo.gl/7GcVBr2GbTnQ3R8aA",
+        spotsTaken: 16,
+        spotsTotal: 20,
+        price: "€6",
         priceLabel: "Entry Fee"
     },
 
@@ -28,7 +28,7 @@ const events = [
 
     {
         type: "PICKUP GAME",
-        title: "FULL COURT 4V4",
+        title: "HALF COURT 4V4",
         date: "2026-02-21",
         time: "8:30PM - 10PM",
         location: "Pavilhão...",
