@@ -52,30 +52,19 @@ document.addEventListener("DOMContentLoaded", () => {
     fileInput.addEventListener("change", function(e) {
 
         const file = e.target.files[0];
-
         if (!file) return;
-
         uploadLabelText.textContent = `✔ ${file.name}`;
-
         const reader = new FileReader();
-
         reader.onload = function(event) {
-
             receiptBase64 = event.target.result;
-
             previewImg.src = receiptBase64;
-            previewContainer.style.display = "block";
-
+            previewContainer.style.display = "block"; 
         };
 
         reader.readAsDataURL(file);
 
     });
 
-
-    /* =========================================
-       4. AGE GROUP SELECTION
-    ========================================= */
 
     function getSelectedAgeGroup() {
 
