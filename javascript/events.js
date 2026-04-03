@@ -24,17 +24,18 @@ const events = [
         spotsTotal: 24,
         price: "€5",
         priceLabel: "Entry Fee"
-    },
+    }
+    ,
 
     {
         type: "PICKUP GAME",
         title: "HALF COURT 4V4",
-        date: "2026-02-21",
-        time: "8:30PM - 10PM",
-        location: "Pavilhão...",
-        map: "#",
-        spotsTaken: 18,
-        spotsTotal: 18,
+        date: "April 18th",
+        time: "8PM - 9:40PM",
+        location: "Técnico",
+        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
+        spotsTaken: 0,
+        spotsTotal: 24,
         price: "€5",
         priceLabel: "Entry Fee"
     }
