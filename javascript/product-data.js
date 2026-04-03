@@ -5,7 +5,7 @@
 const products = [
 
     {
-        name: "Nike Nba Elite Pro Socks - Black",
+        name: "Elite Crew Socks - Black",
         price: "25€",
         image:"../assets/images/products/nike-elite-socks-black.png",
         description: "No slipping nor distractions, just lockdown performance from the ground up.",
@@ -33,7 +33,7 @@ const products = [
         options: ["7"]
 },
 {
-        name: "Nike Nba Elite Pro Socks - White",
+        name: "Elite Crew Socks - White",
         price: "SOLD OUT",
         image:"../assets/images/products/nike-elite-socks-white.png",
         description: "Maximum comfort on the court.",

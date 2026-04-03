@@ -16,12 +16,12 @@ const events = [
     {
         type: "PICK UP GAME",
         title: "HALF-COURT 4V4",
-        date: " March 28th",
+        date: " April 11th",
         time: "8PM - 9:45PM",
-        location: "AEIST ",
+        location: "Técnico ",
         map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
-        spotsTaken: 25,
-        spotsTotal: 25,
+        spotsTaken: 1,
+        spotsTotal: 24,
         price: "€5",
         priceLabel: "Entry Fee"
     },
