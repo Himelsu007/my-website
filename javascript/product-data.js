@@ -5,7 +5,7 @@
 const products = [
 
     {
-        name: "Elite Crew Socks - Black",
+        name: "Nba Elite Crew Socks - Black",
         price: "25€",
         image:"../assets/images/products/nike-elite-socks-black.png",
         description: "No slipping nor distractions, just lockdown performance from the ground up.",
@@ -15,7 +15,7 @@ const products = [
     },
     {
         name: "Wilson Alliance Series Platinum ",
-        price: "59.99€",
+        price: "80€",
         tag: "Exclusive", // New Badge
         image:"../assets/images/products/wilson-official-ball-silver.png",
         description: "Let professional autographs shine with the Wilson Alliance Series. ",
@@ -33,7 +33,7 @@ const products = [
         options: ["7"]
 },
 {
-        name: "Elite Crew Socks - White",
+        name: "Nba Elite Crew Socks - White",
         price: "SOLD OUT",
         image:"../assets/images/products/nike-elite-socks-white.png",
         description: "Maximum comfort on the court.",
