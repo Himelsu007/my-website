@@ -18,7 +18,7 @@ const products = [
     {
         name: "Wilson Alliance Series Platinum ",
         price: "80€",
-        tag: "Exclusive", // New Badge
+        tag: "Exclusive", 
         image:"../assets/images/products/wilson-silver/wilson-official-ball-silver.png",
         images: ["../assets/images/products/wilson-silver/wilson-silver0002.webp", "../assets/images/products/wilson-silver/wilson-silver0001.webp", "../assets/images/products/wilson-silver/wilson-silver0003.avif"],
         description: "Let professional autographs shine with the Wilson Alliance Series. ",
