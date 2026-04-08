@@ -1,0 +1,5 @@
+User-agent: *
+# Allow everything so your site looks great in search results
+Disallow: 
+
+Sitemap: https://www.lockedinlx.com/sitemap.xml
