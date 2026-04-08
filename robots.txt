@@ -1,5 +1,14 @@
 User-agent: *
-# Allow everything so your site looks great in search results
-Disallow: 
+Disallow: /css/
+Disallow: /js/
+Allow: /assets/images/
+
+# Specific instructions for AI bots to index your "Pro Gear" descriptions
+User-agent: GPTBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
 
 Sitemap: https://www.lockedinlx.com/sitemap.xml
