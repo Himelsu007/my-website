@@ -1,4 +1,17 @@
 const events = [
+        {
+        type: "PICK UP GAME",
+        title: "HALF-COURT 4V4",
+        date: " April 11th",
+        time: "8PM - 9:45PM",
+        location: "Técnico ",
+        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
+        spotsTaken: 14,
+        spotsTotal: 24,
+        price: "€5",
+        priceLabel: "Entry Fee"
+    }
+    ,
 
         {
         type: "PICKUP GAME",
@@ -13,19 +26,7 @@ const events = [
         priceLabel: "Entry Fee"
     },
 
-    {
-        type: "PICK UP GAME",
-        title: "HALF-COURT 4V4",
-        date: " April 11th",
-        time: "8PM - 9:45PM",
-        location: "Técnico ",
-        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
-        spotsTaken: 11,
-        spotsTotal: 24,
-        price: "€5",
-        priceLabel: "Entry Fee"
-    }
-    ,
+
 
     {
         type: "PICKUP GAME",
