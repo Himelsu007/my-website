@@ -3,6 +3,16 @@
 // ========================================
 
 const products = [
+    {
+        name: "Regular Elite Crew Socks #Black",
+        price: "18€",
+        image:"../assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks.webp",
+        images: ["../assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks02.webp", "../assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks03.webp", "../assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks-04.webp"], // <-- Array of images
+        description: "No slipping nor distractions, just lockdown performance from the ground up.",
+        isSoldOut: false,
+        optionTitle: "<strong> Size <strong>",
+        options: ["34 - 38", "38 - 42", "42 - 46"]
+    },
 
     {
         name: "Nba Elite Crew Socks #Black",
