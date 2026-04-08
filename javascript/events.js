@@ -26,8 +26,6 @@ const events = [
         priceLabel: "Entry Fee"
     },
 
-
-
     {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
@@ -99,7 +97,7 @@ events.forEach(event => {
                 </div>
 
                 <div class="event_details_small_container">
-                    <div><img src="assets/icons/location_pin.svg"></div>
+                    <div><img src="assets/icons/location_pin.svg" alt="Location Pin"></div>
                     <div>
                         <h4 class="inter-medium">${event.location}</h4>
                         <a href="${event.map}" class="inter-regular" target="_blank">View Location</a>
@@ -107,7 +105,7 @@ events.forEach(event => {
                 </div>
 
                 <div class="event_details_small_container">
-                    <div><img src="assets/icons/people_icon.svg"></div>
+                    <div><img src="assets/icons/people_icon.svg" alt="People Icon"></div>
                     <div>
                         <h4 class="inter-medium">
                             <span style="color:${spotColor};">${event.spotsTaken}</span>/${event.spotsTotal}
@@ -117,7 +115,7 @@ events.forEach(event => {
                 </div>
 
                 <div class="event_details_small_container">
-                    <div><img src="assets/icons/euro_icon.svg"></div>
+                    <div><img src="assets/icons/euro_icon.svg" alt="Euro Icon"></div>
                     <div>
                         <h4 class="inter-medium">${event.price}</h4>
                         <p class="inter-regular">${event.priceLabel}</p>
