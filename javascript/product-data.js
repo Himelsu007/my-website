@@ -16,7 +16,7 @@ const products = [
 
     {
         name: "Nba Elite Crew Socks #Black",
-        price: "25€ - Delivery in 24h",
+        price: "25€",
         tag: "Best Seller", 
         image:"../assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.png",
         images: ["../assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.png", "../assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.jpg.avif", "../assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.jpg.avif", , "../assets/images/ben-simons-bg.JPG"], // <-- Array of images
