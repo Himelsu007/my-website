@@ -1,4 +1,17 @@
 const events = [
+            {
+        type: "PICKUP GAME",
+        title: "FULL COURT 5V5",
+        date: "April 25th",
+        time: "7:45PM - 12PM",
+        location: "Técnico",
+        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
+        spotsTaken: 5,
+        spotsTotal: 20,
+        price: "€6",
+        priceLabel: "Entry Fee"
+    },
+
         {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
@@ -6,7 +19,7 @@ const events = [
         time: "7:45PM - 9:30PM",
         location: "Técnico",
         map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
-        spotsTaken: 20,
+        spotsTaken: 17,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee"
@@ -21,20 +34,6 @@ const events = [
         spotsTaken: 30,
         spotsTotal: 30,
         price: "€5",
-        priceLabel: "Entry Fee"
-    }
-    ,
-
-        {
-        type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
-        date: "April 5th",
-        time: "9:50AM - 12PM",
-        location: "S.Sebastião",
-        map: "https://maps.app.goo.gl/7GcVBr2GbTnQ3R8aA",
-        spotsTaken: 15,
-        spotsTotal: 15,
-        price: "€6",
         priceLabel: "Entry Fee"
     }
 

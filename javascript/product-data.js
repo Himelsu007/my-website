@@ -47,6 +47,16 @@ const products = [
         options: ["7"]
 },
 {
+        name: "Nba Nike Headband",
+        price: "30€",
+        image:"../assets/images/products/nike-nba-dri-fit-fury-classic-headband-black.jpg",
+        images: ["../assets/images/products/nba-nike-headband-bg-02.avif", "../assets/images/products/nba-nike-headband-bg.avif", "../assets/images/products/nba-nike-headband-bg-03.avif", "../assets/images/products/nba-nike-headband-bg-04.webp"],
+        description: "Compression support for a consistent shot and full control.",
+        isSoldOut: false,
+        optionTitle: "<strong> Quantity <strong>",
+        options: ["1", "2", "3", "4"]
+},
+{
         name: "Nba Nike Elite Shooting Sleeve",
         price: "35€",
         image:"../assets/images/products/nba-shooting-sleeve.avif",
