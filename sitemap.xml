@@ -1,53 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<!--  created with sitemap generator https://octopus.do  -->
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
-    <url>
-        <loc>https://www.lockedinlx.com</loc>
-        <lastmod>2026-04-02</lastmod>
-        <changefreq>always</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.lockedinlx.com/index</loc>
-        <lastmod>2026-04-02</lastmod>
-        <changefreq>always</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.lockedinlx.com/merch</loc>
-        <lastmod>2026-04-02</lastmod>
-        <changefreq>always</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.lockedinlx.com/terms_of_participation</loc>
-        <lastmod>2026-04-02</lastmod>
-        <changefreq>always</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.lockedinlx.com/cookies</loc>
-        <lastmod>2026-04-02</lastmod>
-        <changefreq>always</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.lockedinlx.com/privacy_policy</loc>
-        <lastmod>2026-04-02</lastmod>
-        <changefreq>always</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.lockedinlx.com/injury_waiver</loc>
-        <lastmod>2026-04-02</lastmod>
-        <changefreq>always</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.lockedinlx.com/whatsap_merchandise_disclaimer</loc>
-        <lastmod>2026-04-02</lastmod>
-        <changefreq>always</changefreq>
-        <priority>0.5</priority>
-    </url>
+
+<url>
+    <loc>https://www.lockedinlx.com/</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+</url>
+
+<url>
+    <loc>https://www.lockedinlx.com/merch.html</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+    <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.png</image:loc>
+    <image:title>NBA Elite Crew Socks - Black</image:title>
+    <image:caption>No slipping nor distractions, just lockdown performance from the ground up.</image:caption>
+    </image:image>
+    <image:image>
+    <image:loc>https://www.lockedinlx.com/assets/images/products/wilson-orange/wilson-official-ball.jpg</image:loc>
+    <image:title>Wilson NBA Authentic Series Indoor Ball</image:title>
+    <image:caption>NBA experiences can happen anytime, anyplace.</image:caption>
+</image:image>
+</url>
+
+
+<url>
+    <loc>https://www.lockedinlx.com/terms_of_participation.html</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.1</priority>
+</url>
+
+<url>
+    <loc>https://www.lockedinlx.com/cookies.html</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.1</priority>
+</url>
+
+<url>
+    <loc>https://www.lockedinlx.com/privacy_policy.html</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.1</priority>
+</url>
+
+<url>
+    <loc>https://www.lockedinlx.com/injury_waiver.html</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.1</priority>
+</url>
+
+<url>
+    <loc>https://www.lockedinlx.com/whatsapp_merchandise_disclaimer.html</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.1</priority>
+</url>
+
 </urlset>

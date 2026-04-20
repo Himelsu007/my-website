@@ -1,14 +1,69 @@
+# -----------------------------------------------
+# Locked In Lx — robots.txt
+# https://www.lockedinlx.com
+# -----------------------------------------------
+
+# === ALL BOTS — DEFAULT RULES ===
 User-agent: *
-Disallow: /css/
-Disallow: /js/
+Allow: /
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+
+# Block irrelevant system paths
+Disallow: /cgi-bin/
+Disallow: /*.log$
+Disallow: /*.tmp$
+
+# === GOOGLE ===
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
 Allow: /assets/images/
 
-# Specific instructions for AI bots to index your "Pro Gear" descriptions
+# Allow Google to render pages fully
+User-agent: Googlebot
+Allow: /css/
+Allow: /js/
+
+# === BING / MICROSOFT COPILOT ===
+User-agent: Bingbot
+Allow: /
+
+# === AI INDEXING BOTS ===
+# ChatGPT
 User-agent: GPTBot
 Allow: /
+
+# Google Gemini / AI Overviews
 User-agent: Google-Extended
 Allow: /
+
+# OpenAI Search
 User-agent: OAI-SearchBot
 Allow: /
 
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Apple Siri / Spotlight
+User-agent: Applebot
+Allow: /
+
+# === BLOCK JUNK / SCRAPER BOTS ===
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# === SITEMAP ===
 Sitemap: https://www.lockedinlx.com/sitemap.xml
