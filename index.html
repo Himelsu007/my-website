@@ -9,59 +9,149 @@
     <meta name="keywords" content="basketball, hooper, book, schedule, merchandise, elite pro, tank top, compression shorts, training, tournaments, Lisbon basketball">
     <meta name="robots" content="index, follow">
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+
     {
-        "@context": "https://schema.org",
-        "@type": "SportsStore",
-        "name": "Locked In Lx",
-        "alternateName": "LockedInLX",
-        "image": "https://www.lockedinlx.com/assets/images/og-image.jpg", 
-        "@id": "https://www.lockedinlx.com/#organization",
-        "url": "https://www.lockedinlx.com",
-        "telephone": "+351911861637", 
-        "priceRange": "$$",
-        "address": {
-                "@type": "PostalAddress",
-                    "streetAddress": "Optional: Add Street Name",
-                        "addressLocality": "Lisbon",
-                            "addressRegion": "Lisbon",
-                        "postalCode": "Your Zip Code",
-                    "addressCountry": "PT"
-                },
-    "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 38.7223,
-    "longitude": -9.1393
+      "@type": "WebSite",
+      "@id": "https://www.lockedinlx.com/#website",
+      "url": "https://www.lockedinlx.com",
+      "name": "Locked In Lx",
+      "alternateName": ["LockedInLX", "Locked In Hoops", "Locked In Lisbon"],
+      "description": "Lisbon's premier basketball hub for elite pickup games, private runs, and official NBA Elite Pro performance gear.",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://www.lockedinlx.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.lockedinlx.com/?q={search_term_string}"
         },
-        "sameAs": [
-    "https://www.instagram.com/lockedinlx"
-        ],
-        "description": "Lisbon's premier basketball hub for elite pickup games, private runs, and official NBA Elite Pro performance gear.",
-        "knowsAbout": ["NBA Elite Pro Gear", "Pick-up Basketball", "Elite Crew Socks"] [
-    "NBA Elite Pro Gear",
-    "Pickup Basketball Lisbon",
-    "Basketball Tournaments Portugal",
-    "Professional Basketball Training"
-        ],
-        "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Basketball Gear & Services",
-    "itemListElement": [
-            {
-        "@type": "Offer",
-        "itemOffered": {
-                "@type": "Service",
-                "name": "Private Basketball Runs"
+        "query-input": "required name=search_term_string"
+      }
+    },
+
+    {
+      "@type": "WebPage",
+      "@id": "https://www.lockedinlx.com/#webpage",
+      "url": "https://www.lockedinlx.com",
+      "name": "Locked In Lx – Pickup Basketball & NBA Gear in Lisbon, Portugal",
+      "description": "Join elite pickup basketball games in Lisbon. Private runs, indoor basketball sessions, and official NBA Elite Pro performance gear. Portugal's top basketball community.",
+      "inLanguage": "en",
+      "isPartOf": { "@id": "https://www.lockedinlx.com/#website" },
+      "about": { "@id": "https://www.lockedinlx.com/#organization" },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.lockedinlx.com/"
+          }
+        ]
+      }
+    },
+
+    {
+      "@type": ["SportsActivityLocation", "Store"],
+      "@id": "https://www.lockedinlx.com/#organization",
+      "name": "Locked In Lx",
+      "alternateName": ["LockedInLX", "Locked In Hoops"],
+      "url": "https://www.lockedinlx.com",
+      "logo": "https://www.lockedinlx.com/assets/images/og-image.jpg",
+      "image": "https://www.lockedinlx.com/assets/images/og-image.jpg",
+      "telephone": "+351911861637",
+      "priceRange": "$$",
+      "currenciesAccepted": "EUR",
+      "paymentAccepted": "Cash, Credit Card",
+      "sport": "Basketball",
+      "description": "Locked In Lx is Lisbon's premier pickup basketball community offering elite indoor basketball games, private runs, and official NBA Elite Pro performance gear. The best place for basketball in Portugal.",
+      "foundingDate": "2023",
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Lisbon"
+        },
+        {
+          "@type": "Country",
+          "name": "Portugal"
         }
-            },
-            {
-        "@type": "Offer",
-        "itemOffered": {
-                "@type": "Product",
-                "name": "NBA Elite Pro Performance Gear"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lisbon",
+        "addressRegion": "Lisboa",
+        "addressCountry": "PT"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.7223,
+        "longitude": -9.1393
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "21:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Saturday", "Sunday"],
+          "opens": "10:00",
+          "closes": "18:00"
         }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/lockedinlx"
+      ],
+      "knowsAbout": [
+        "Pickup Basketball",
+        "Indoor Basketball Lisbon",
+        "Basketball Portugal",
+        "NBA Elite Pro Gear",
+        "Private Basketball Runs",
+        "Basketball Training",
+        "Elite Crew Socks",
+        "Wilson NBA Balls"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Basketball Games & NBA Gear",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "SportsEvent",
+              "name": "Elite Pickup Basketball Run - Lisbon",
+              "description": "Competitive indoor pickup basketball games in Lisbon. Open to all levels."
             }
-    ]
-        }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Private Basketball Runs Lisbon",
+              "description": "Book private indoor basketball sessions in Lisbon for your crew."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "NBA Elite Pro Performance Gear",
+              "description": "Official NBA Elite Pro gear including crew socks and Wilson basketballs."
+            }
+          }
+        ]
+      }
+    }
+
+  ]
 }
 </script>
     <meta property="og:type" content="website">
