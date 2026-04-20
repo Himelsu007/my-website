@@ -3,7 +3,7 @@ const events = [
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
         date: "April 25th",
-        time: "7:45PM - 12PM",
+        time: "7:45PM - 9:30PM",
         location: "Técnico",
         map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
         spotsTaken: 5,
