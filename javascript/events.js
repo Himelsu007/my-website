@@ -6,13 +6,13 @@ const events = [
         time: "10AM - 11:45AM",
         location: "Técnico",
         map: "https://maps.apple/p/KA1ei5NIRign3-",
-        spotsTaken: 7,
+        spotsTaken: 16,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee"
     },
 
-        {
+    {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
         date: "May 10th",
