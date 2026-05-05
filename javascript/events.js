@@ -19,7 +19,7 @@ const events = [
         time: "10AM - 12:30PM",
         location: "CIL",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 3,
+        spotsTaken: 13,
         spotsTotal: 20,
         price: "€6",
         priceLabel: "Entry Fee"
