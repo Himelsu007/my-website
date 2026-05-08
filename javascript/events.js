@@ -7,7 +7,7 @@ const events = [
         time: "7:15PM - 9:00PM",
         location: "Manuel CastelBranco",
         map: "https://maps.apple/p/4s78.LUWnt8Ggq",
-        spotsTaken: 15,
+        spotsTaken: 19,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee"
