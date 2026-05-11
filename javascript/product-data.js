@@ -15,13 +15,13 @@ const products = [
     },
 
     {
-        name: "Nba Elite Crew Socks #Black",
-        price: "SOLD OUT",
+        name: "Nba Elite Crew Socks",
+        price: "25€",
         tag: "Best Seller", 
         image:"assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.png",
         images: ["assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.png", "assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.jpg.avif", "assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.jpg.avif", , "assets/images/ben-simons-bg.avif"], // <-- Array of images
         description: "No slipping nor distractions, just lockdown performance from the ground up.",
-        isSoldOut: true,
+        isSoldOut: false,
         optionTitle: "<strong> Size <strong>",
         options: ["38 - 41", "42 - 45", "46 - 49"]
     },
