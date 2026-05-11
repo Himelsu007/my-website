@@ -333,8 +333,18 @@ header.scrolled {
 }
 
 #products_show_case_main_child_container {
-    height: 680px; 
+    height: 680px;
+}
 
+.showcase-slide {
+    transform: none !important;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.showcase-slide.active {
+    transform: none !important;
 }
 
 .modal_description {
@@ -462,8 +472,7 @@ height: 440px;
     }
 
     #products_show_case_main_child_container {
-    height: 1080px; 
-
+    height: 720px;
 }
 
     /* King of the Court Badge */
