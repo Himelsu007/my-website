@@ -3,19 +3,6 @@ const events = [
         {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date: "Available Soon",
-        time: "10AM - 11:45AM",
-        location: "Técnico",
-        map: "https://maps.apple/p/KA1ei5NIRign3-",
-        spotsTaken: 20,
-        spotsTotal: 20,
-        price: "€5",
-        priceLabel: "Entry Fee"
-    },
-
-        {
-        type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
         date: "May 9th",
         time: "7:15PM - 9:00PM",
         location: "Manuel CastelBranco",
@@ -25,6 +12,19 @@ const events = [
         price: "€5",
         priceLabel: "Entry Fee"
     },
+    {
+        type: "PICKUP GAME",
+        title: "FULL COURT 5V5",
+        date: "May 3rd",
+        time: "10AM - 11:45AM",
+        location: "Técnico",
+        map: "https://maps.apple/p/KA1ei5NIRign3-",
+        spotsTaken: 20,
+        spotsTotal: 20,
+        price: "€5",
+        priceLabel: "Entry Fee"
+    },
+
 
         {
         type: "PICK UP GAME",
