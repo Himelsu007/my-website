@@ -8,7 +8,7 @@ const events = [
         location: "Soon",
         map: "#",
         spotsTaken: 0,
-        spotsTotal: 20,
+        spotsTotal:0,
         price: "€5",
         priceLabel: "Entry Fee"
     },
