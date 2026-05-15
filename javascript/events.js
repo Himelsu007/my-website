@@ -3,12 +3,12 @@ const events = [
         {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date: "Available Soon",
+        date: "May 17th",
         time: "Available Soon",
-        location: "Soon",
-        map: "#",
-        spotsTaken: 0,
-        spotsTotal:0,
+        location: "Técnico",
+        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
+        spotsTaken: 5,
+        spotsTotal:20,
         price: "€5",
         priceLabel: "Entry Fee"
     },
