@@ -61,6 +61,14 @@ header {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother curve */
 }
 
+/* Hide menu + store icons until scrolled */
+#menu-open,
+.store-link {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* The Glass Effect on Scroll */
 header.scrolled {
     background-color: var(--glass-bg);
@@ -68,6 +76,13 @@ header.scrolled {
     -webkit-backdrop-filter: blur(var(--blur-strength)); /* Safari support */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle "edge" */
     height: 50px; /* Slight shrink effect on scroll */
+}
+
+/* Reveal menu + store icons once scrolled */
+header.scrolled #menu-open,
+header.scrolled .store-link {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* Reset buttons */
