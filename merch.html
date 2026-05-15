@@ -249,8 +249,8 @@
         <img src="assets/icons/locked_in_small.svg" alt="Locked In Logo">
     </a>
 
-    <a href="/store" class="store-link">
-        <img src="assets/icons/store.svg" alt="Store">
+    <a href="index.html" class="store-link" aria-label="Go to home">
+        <img src="assets/icons/store.svg" alt="">
     </a>
 </header>
 
@@ -264,50 +264,48 @@
 </nav>
 
 
-<section id="products_show_case_container">
-<div class="marquee-container">
-    <div class="marquee-track">
-        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
-        <span class="barlow-condensed-regular">DELIVERY IN 24 HOURS </span>
-        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
-        <span class="barlow-condensed-regular">DELIVERY IN 24 HOURS </span>
-        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
-        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
-        <span class="barlow-condensed-regular">DELIVERY IN 24 HOURS </span>
-        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
-        <span class="barlow-condensed-regular">FREE DELIVERY IN LISBON </span>
-    </div>
-</div>
+<section id="merch_hero_container">
+    <!-- Featured Product Showcase -->
+    <div id="products_show_case_main_child_container">
+        <div class="showcase-slide active" style="background-image: url('assets/images/IMG_0475.webp');"></div>
+        <div class="showcase-slide" style="background-image: url('assets/images/IMG_0919.avif');"></div>
+        <div class="showcase-slide" style="background-image: url('assets/images/IMG_0465.avif');"></div>
+        <div class="showcase-slide" style="background-image: url('assets/images/IMG_0913.avif');"></div>
 
-    <!-- Featured Product -->
-<div id="products_show_case_main_child_container">
-    <div class="showcase-slide" style="background-image: url('assets/images/IMG_0475.webp');"></div>
-    <div class="showcase-slide" style="background-image: url('assets/images/IMG_0919.avif');"></div>
-    <div class="showcase-slide active" style="background-image: url('assets/images/IMG_0465.avif');"></div>
-    <div class="showcase-slide" style="background-image: url('assets/images/IMG_0913.avif');"></div>
+        <div class="showcase-hud">
+            <div class="glass-tag barlow-condensed-black">
+                <span class="pulse-dot"></span> NEW ARRIVAL
+            </div>
 
-
-    <div class="showcase-hud">
-        <div class="glass-tag barlow-condensed-black">
-            <span class="pulse-dot"></span> NEW ARRIVAL
+            <div class="hud-text-track">
+                <h2 class="hud-title barlow-condensed-black active">PRO TANK SERIES</h2>
+                <h2 class="hud-title barlow-condensed-black">ELITE CREW SOCKS</h2>
+                <h2 class="hud-title barlow-condensed-black">PRO SHIRTS SERIES</h2>
+                <h2 class="hud-title barlow-condensed-black">BASKETBALLS</h2>
+            </div>
         </div>
-        
-        <div class="hud-text-track">
-            <h2 class="hud-title barlow-condensed-black active">PRO TANK SERIES </h2>
-            <h2 class="hud-title barlow-condensed-black">ELITE CREW SOCKS</h2>
-            <h2 class="hud-title barlow-condensed-black">PRO SHIRTS SERIES</h2>
-            <h2 class="hud-title barlow-condensed-black"> BASKETBALLS </h2>
+
+        <div class="slide-progress-container">
+            <div class="slide-progress-bar"></div>
         </div>
+
+        <div class="cinematic-overlay"></div>
     </div>
-
-    <div class="slide-progress-container">
-        <div class="slide-progress-bar"></div>
-    </div>
-
-    <div class="cinematic-overlay"></div>
-</div>
-
 </section>
+
+<!-- ===== FILTER CHIPS ===== -->
+<nav id="product_filter_bar" aria-label="Product categories">
+    <button class="filter_chip active" data-filter="all" type="button">All</button>
+    <button class="filter_chip" data-filter="socks" type="button">Socks</button>
+    <button class="filter_chip" data-filter="balls" type="button">Basketballs</button>
+    <button class="filter_chip" data-filter="apparel" type="button">Apparel</button>
+    <button class="filter_chip" data-filter="accessories" type="button">Accessories</button>
+    <button class="filter_chip" data-filter="coming-soon" type="button">Coming Soon</button>
+</nav>
+
+<!-- ===== PRODUCT GRID ===== -->
+<section id="products_grid" aria-label="Products"></section>
+<p id="products_empty_state" hidden>No products in this category yet.</p>
 
 <div id="product_modal" class="modal_overlay">
     <div class="modal_content">
@@ -346,10 +344,10 @@
                 <div class="footer-links-col">
             <h3 class="barlow-condensed-bold footer-heading">COMMUNITY</h3>
             <ul class="footer-link-list">
-                <li class="barlow-condensed-regular text-muted">Lisboa, Portugal</li>
-                <li><a href="tel:+351911861637" class="barlow-condensed-regular">911 861 637</a></li>
-                <li><a href="mailto:support@lockedinlx.com" class="barlow-condensed-regular">support@lockedinlx.com</a></li>
-                <li><a href="#" class="barlow-condensed-regular">FAQ</a></li>
+                <li><a href="https://chat.whatsapp.com/CyUq9WWLAnG3ighTghfdYV" target="_blank" rel="noopener" class="barlow-condensed-regular">WhatsApp Group</a></li>
+                <li><a href="https://www.instagram.com/" target="_blank" rel="noopener" class="barlow-condensed-regular">Instagram</a></li>
+                <li><a href="index.html#events_container" class="barlow-condensed-regular">Upcoming Runs</a></li>
+                <li><a href="merch.html" class="barlow-condensed-regular">Shop Gear</a></li>
             </ul>
         </div>
 
@@ -377,31 +375,31 @@
 <script src="javascript/product-data.js" defer></script>
 <script src="javascript/scroll_detection_menu.js" defer></script>
 <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const slides = document.querySelectorAll(".showcase-slide");
-            const titles = document.querySelectorAll(".hud-title");
-            const progressBar = document.querySelector(".slide-progress-bar");
-            
-            let currentIndex = 0;
-            const duration = 3000; 
+    document.addEventListener("DOMContentLoaded", () => {
+        const slides = document.querySelectorAll("#products_show_case_main_child_container .showcase-slide");
+        const titles = document.querySelectorAll("#products_show_case_main_child_container .hud-title");
+        const progressBar = document.querySelector("#products_show_case_main_child_container .slide-progress-bar");
+        if (!slides.length) return;
 
-            function updateSlide() {
+        let currentIndex = 0;
+        const duration = 3000;
+
+        function updateSlide() {
+            if (progressBar) {
                 progressBar.style.transition = 'none';
                 progressBar.style.width = '0%';
-                
                 setTimeout(() => {
                     progressBar.style.transition = `width ${duration}ms linear`;
                     progressBar.style.width = '100%';
                 }, 50);
-                slides.forEach((s, i) => {
-                    s.classList.toggle("active", i === currentIndex);
-                    titles[i].classList.toggle("active", i === currentIndex);
-                });
-                currentIndex = (currentIndex + 1) % slides.length;
             }
-            updateSlide();
-            setInterval(updateSlide, duration);
-        });
+            slides.forEach((s, i) => s.classList.toggle("active", i === currentIndex));
+            titles.forEach((t, i) => t.classList.toggle("active", i === currentIndex));
+            currentIndex = (currentIndex + 1) % slides.length;
+        }
+        updateSlide();
+        setInterval(updateSlide, duration);
+    });
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q80DNK1HPN"></script>
 <script>

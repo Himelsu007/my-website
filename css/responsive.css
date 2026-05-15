@@ -295,31 +295,25 @@ header.scrolled {
 
 }
 .products_box{
-    width:calc(50% - 14px);
-    height:550px;
-
+    /* width/height handled by CSS Grid (#products_grid) — no fixed sizing */
 }
 
 .product_info{
-
-    height:90px;
-    padding:15px;
+    padding:16px;
     display:flex;
-
+    flex-direction:column;
+    gap:6px;
 }
 
 .product_name{
-
-    font-size:22px;
+    font-size:18px;
     color:#E4E4E7;
-    margin-bottom:4px;
 }
 
 .product_price{
-
-    font-size:22px;
+    font-size:18px;
     color:#FFD400;
-    font-weight:600;
+    font-weight:700;
 }
 
 
@@ -375,7 +369,7 @@ header.scrolled {
 
 }
 
-#products_show_case_container { margin-top:100px;}
+#merch_hero_container { margin-top:100px;}
 
 .auth-container {
         margin-top:200px;
@@ -657,7 +651,7 @@ header {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother curve */
 }
 
-#products_show_case_container { margin-top:120px;
+#merch_hero_container { margin-top:120px;
 }
 
 /* The Glass Effect on Scroll */
@@ -744,31 +738,25 @@ header.scrolled {
 
 }
 .products_box{
-    width:calc(50% - 398px);
-    height:400px;
-
+    /* width/height handled by CSS Grid (#products_grid) — no fixed sizing */
 }
 
 .product_info{
-
-    height:80px;
-    padding:15px;
+    padding:18px;
     display:flex;
-
+    flex-direction:column;
+    gap:6px;
 }
 
 .product_name{
-
-    font-size:19px;
+    font-size:17px;
     color:#E4E4E7;
-    margin-bottom:4px;
 }
 
 .product_price{
-
-    font-size:22px;
+    font-size:18px;
     color:#FFD400;
-    font-weight:600;
+    font-weight:700;
 }
 .modal_content {
     max-width:700px;

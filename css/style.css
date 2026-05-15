@@ -556,28 +556,37 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
    ======================================== */
 
 .home_page_product_boxes {
-    scroll-snap-align: start; 
+    scroll-snap-align: start;
     flex: 0 0 240px; /* Slightly wider for a premium feel */
     height: 300px; /* Taller boxes look more editorial/luxurious */
     border-radius: 16px; /* Smoother corners */
-    text-decoration: none; 
+    text-decoration: none;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; 
+    justify-content: flex-end;
     align-items: center;
-    padding-bottom: 12px;   
+    padding-bottom: 12px;
+    user-select: none;
+    -webkit-user-drag: none;
+    position: relative;
+    overflow: hidden; /* Critical: clips the zoomed image inside */
+    isolation: isolate; /* Establishes a clean stacking context */
+    background-color: #0a0a0a; /* Fallback while image loads */
+
+    transition: box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* The IMAGE layer — sits below everything and scales on hover */
+.home_page_product_boxes::before {
+    content: "";
+    position: absolute;
+    inset: 0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    user-select: none; 
-    -webkit-user-drag: none; 
-    position: relative;
-    overflow: hidden; /* Keeps the inner shadow contained */
-    
-    /* Hardware acceleration for buttery hover lift */
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                box-shadow 0.3s ease, 
-                border-color 0.3s ease;
+    z-index: 0;
+    transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: transform;
 }
 
 /* Cinematic Dark Gradient to ensure bottom text pops */
@@ -590,12 +599,11 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
     pointer-events: none;
 }
 
-/* Premium Hover Lift */
-.home_page_product_boxes:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-    border-color: #FFD700; /* Subtle gold flash */
+/* Premium Hover — card stays anchored, only image zooms */
+.home_page_product_boxes:hover::before {
+    transform: scale(1.08);
 }
+
 
 /* ========================================
    THE "GLASS" TEXT LABEL
@@ -637,11 +645,11 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
     transform: translateX(4px);
 }
 
-/* Specific Backgrounds */
-.item-socks  { background-image: url('../assets/images/01822.avif'); }
-.item-tank   { background-image: url('../assets/images/IMG_0470.webp'); }
-.item-molten { background-image: url('../assets/images/wilson-ball-bg-02.avif'); }
-.item-tshirt { background-image: url('../assets/images/IMG_0465.avif'); }
+/* Specific Backgrounds — applied to the image layer (::before) so they can zoom */
+.item-socks::before  { background-image: url('../assets/images/01822.avif'); }
+.item-tank::before   { background-image: url('../assets/images/IMG_0470.webp'); }
+.item-molten::before { background-image: url('../assets/images/wilson-ball-bg-02.avif'); }
+.item-tshirt::before { background-image: url('../assets/images/IMG_0465.avif'); }
 
 
 /* HOME PAGE MERCH BUTTON        */
