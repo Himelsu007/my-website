@@ -21,11 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
     menuOpen.addEventListener('click', toggleMenu);
     menuClose.addEventListener('click', toggleMenu);
 
-    // 3. Close menu and restore scrolling if a link is clicked
-    document.querySelectorAll('.nav-links a').forEach(link => {
+    // 3. Close menu and restore scrolling if ANY link in the menu is clicked
+    document.querySelectorAll('#side-menu a').forEach(link => {
         link.addEventListener('click', () => {
             sideMenu.classList.remove('open');
             document.body.style.overflow = ''; // CRITICAL: Unlock scroll when navigating
         });
+    });
+
+    // 4. Highlight the current page in the menu
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('#side-menu .nav-link[data-page]').forEach(link => {
+        if (link.getAttribute('data-page') === path) {
+            link.classList.add('active');
+        }
     });
 });
