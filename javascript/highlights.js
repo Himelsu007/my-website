@@ -43,13 +43,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const img = item.type === "video" ? item.poster : item.src;
 
+            // Moving cover (GIF-loop technique). Supports .gif (native loop)
+            // and .mp4/.webm/.mov (muted autoplay loop, plays only in view).
+            const isVideoClip = item.clip && /\.(mp4|webm|mov)$/i.test(item.clip);
+            const isGifClip   = item.clip && /\.gif$/i.test(item.clip);
+
+            let mediaHTML;
+            if (isVideoClip) {
+                mediaHTML = `<video class="hl_clip" muted loop playsinline preload="none"
+                                    poster="${item.poster || ""}" data-src="${item.clip}"
+                                    aria-label="${item.caption}"></video>`;
+            } else if (isGifClip) {
+                mediaHTML = `<img class="hl_clip" src="${item.clip}" alt="${item.caption}" loading="lazy" decoding="async">`;
+            } else {
+                mediaHTML = `<img src="${img}" alt="${item.caption}" loading="lazy" decoding="async">`;
+            }
+
+            const hasClip = isVideoClip || isGifClip;
+
             card.innerHTML = `
                 <div class="hl_media">
-                    <img src="${img}" alt="${item.caption}" loading="lazy" decoding="async">
+                    ${mediaHTML}
                     ${item.type === "video" ? `
+                        ${hasClip ? "" : `
                         <span class="hl_play" aria-hidden="true">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                        </span>
+                        </span>`}
                         <span class="hl_ig_tag">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
                             Watch on IG
@@ -62,6 +81,32 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             grid.appendChild(card);
         });
+
+        setupClipObserver();
+    }
+
+    // Lazy autoplay: video clips only load + play while on screen,
+    // pause + release when scrolled away. Keeps the page light.
+    let clipObserver;
+    function setupClipObserver() {
+        if (clipObserver) clipObserver.disconnect();
+        const clips = grid.querySelectorAll("video.hl_clip");
+        if (!clips.length || !("IntersectionObserver" in window)) return;
+
+        clipObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const v = entry.target;
+                if (entry.isIntersecting) {
+                    if (!v.src && v.dataset.src) v.src = v.dataset.src;
+                    const p = v.play();
+                    if (p && p.catch) p.catch(() => {});
+                } else {
+                    v.pause();
+                }
+            });
+        }, { threshold: 0.25 });
+
+        clips.forEach(v => clipObserver.observe(v));
     }
 
     // ---- Filter chips ----

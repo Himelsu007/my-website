@@ -200,14 +200,20 @@ body { background: var(--hl-bg); }
     overflow: hidden;
     background: #0a0a0a;
 }
-.hl_media img {
+.hl_media img,
+.hl_media video.hl_clip {
     width: 100%;
     height: auto;
     display: block;
     vertical-align: bottom;
     transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1), filter 0.4s ease;
 }
-.hl_card:hover .hl_media img {
+.hl_media video.hl_clip {
+    object-fit: cover;
+    background: #0a0a0a;
+}
+.hl_card:hover .hl_media img,
+.hl_card:hover .hl_media video.hl_clip {
     transform: scale(1.05);
     filter: brightness(1.06);
 }
