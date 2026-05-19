@@ -1033,6 +1033,289 @@ box-shadow: 0 0 0px rgba(255, 255, 255, 0);
 }
 
 .reveal.active {
-    transform: translateY(0); 
+    transform: translateY(0);
     opacity: 1;
+}
+
+/* ============================================================
+   BOOKING CARDS  (rendered by events.js into #events_container)
+   ============================================================ */
+#events_container{
+    --bk-gold:#FFD700;
+    --bk-green:#3FFF6F;
+    --bk-amber:#FFB020;
+    --bk-red:#EF4444;
+    --bk-line:rgba(255,255,255,0.07);
+    --bk-dim:#a1a1aa;
+    --bk-ease:cubic-bezier(0.19,1,0.22,1);
+    max-width:1280px;
+    width:auto;
+    height:auto;
+    margin:10px auto 70px;
+    padding:0 24px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
+    gap:26px;
+    overflow:visible;
+}
+
+#events_container .bk-card{
+    position:relative;
+    background:linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.018));
+    border:1px solid var(--bk-line);
+    border-radius:18px;
+    padding:28px;
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    opacity:0; transform:translateY(28px);
+    transition:opacity .7s ease, transform .8s var(--bk-ease);
+}
+#events_container .bk-card.in{ opacity:1; transform:translateY(0); }
+#events_container .bk-card:nth-child(2).in{ transition-delay:.10s; }
+#events_container .bk-card:nth-child(3).in{ transition-delay:.20s; }
+#events_container .bk-card:nth-child(4).in{ transition-delay:.30s; }
+
+#events_container .bk-card::before{
+    content:""; position:absolute; inset:0; border-radius:inherit; z-index:0; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity:.38;
+}
+#events_container .bk-card > *{ position:relative; z-index:1; }
+#events_container .bk-body{ display:flex; flex-direction:column; gap:22px; }
+
+#events_container .bk-top{ display:flex; gap:18px; align-items:flex-start; }
+#events_container .bk-date{
+    flex-shrink:0; width:76px; text-align:center;
+    background:rgba(255,255,255,0.035);
+    border:1px solid var(--bk-line); border-radius:14px;
+    padding:13px 8px; display:flex; flex-direction:column; gap:2px;
+}
+#events_container .bk-weekday{ font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.18em; color:var(--bk-gold); }
+#events_container .bk-day{ font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:2.3rem; line-height:1; color:#fff; }
+#events_container .bk-month{ font-family:'Inter',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.2em; color:var(--bk-dim); text-transform:uppercase; }
+
+#events_container .bk-headline{ flex:1; min-width:0; padding-top:2px; }
+#events_container .bk-title{
+    font-family:'Barlow Condensed',sans-serif; font-weight:800;
+    font-size:1.75rem; color:#fff; text-transform:uppercase;
+    letter-spacing:0.02em; line-height:1.05; margin:0 0 9px;
+}
+#events_container .bk-time{ display:flex; align-items:center; gap:7px; font-family:'Inter',sans-serif; font-size:13px; color:var(--bk-dim); }
+#events_container .bk-time svg{ color:var(--bk-gold); flex-shrink:0; }
+
+#events_container .bk-status{
+    flex-shrink:0; display:inline-flex; align-items:center; gap:7px;
+    font-family:'Inter',sans-serif; font-size:11px; font-weight:700;
+    letter-spacing:0.08em; text-transform:uppercase;
+    padding:7px 13px; border-radius:99px;
+    background:rgba(255,255,255,0.04); border:1px solid var(--bk-line);
+}
+#events_container .bk-status .d{ width:7px;height:7px;border-radius:50%; animation:bk-pulse 2s ease-in-out infinite; }
+@keyframes bk-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.25)}}
+#events_container .bk-status--open{ color:var(--bk-green); border-color:rgba(63,255,111,.3); }
+#events_container .bk-status--open .d{ background:var(--bk-green); box-shadow:0 0 8px var(--bk-green); }
+#events_container .bk-status--filling{ color:var(--bk-amber); border-color:rgba(255,176,32,.35); }
+#events_container .bk-status--filling .d{ background:var(--bk-amber); box-shadow:0 0 8px var(--bk-amber); }
+#events_container .bk-status--full{ color:var(--bk-red); border-color:rgba(239,68,68,.35); }
+#events_container .bk-status--full .d{ background:var(--bk-red); box-shadow:0 0 8px var(--bk-red); animation:none; }
+#events_container .bk-status--soon{ color:var(--bk-dim); }
+#events_container .bk-status--soon .d{ background:var(--bk-dim); animation:none; }
+
+#events_container .bk-location{
+    display:flex; gap:14px; align-items:center;
+    padding:14px;
+    background:rgba(255,255,255,0.025);
+    border:1px solid var(--bk-line);
+    border-radius:14px;
+    text-decoration:none;
+    cursor:pointer;
+    transition:border-color .25s ease, background .25s ease, transform .25s var(--bk-ease);
+}
+#events_container .bk-location:hover{
+    border-color:rgba(255,215,0,0.45);
+    background:rgba(255,215,0,0.04);
+}
+#events_container .bk-location:active{ transform:scale(0.99); }
+#events_container .bk-location:focus-visible{
+    outline:2px solid var(--bk-gold);
+    outline-offset:2px;
+}
+#events_container .bk-map{ position:relative; width:80px; height:64px; flex-shrink:0; border-radius:10px; overflow:hidden; display:block; border:1px solid var(--bk-line); }
+#events_container .bk-map img{
+    width:100%; height:100%; object-fit:cover;
+    filter:brightness(.62) blur(1.5px);
+    transform:scale(1.08);          /* hides blur edge bleed */
+}
+/* Dark scrim so the gold pin always reads */
+#events_container .bk-map::after{
+    content:"";
+    position:absolute; inset:0; z-index:1;
+    background:radial-gradient(circle at 50% 45%, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.62) 100%);
+    pointer-events:none;
+}
+#events_container .bk-pin{ position:absolute; top:50%; left:50%; transform:translate(-50%,-60%); display:flex; color:var(--bk-gold); z-index:2; }
+#events_container .bk-pin svg{ filter:drop-shadow(0 2px 5px rgba(0,0,0,.85)); }
+#events_container .bk-loc-text{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+#events_container .bk-loc-name{ font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1.1rem; color:#fff; }
+#events_container .bk-loc-sub{
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:0.02em;
+    color:var(--bk-gold);
+}
+
+#events_container .bk-progress-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; }
+#events_container .bk-spots{ font-family:'Inter',sans-serif; font-size:13px; color:var(--bk-dim); }
+#events_container .bk-spots strong{ color:#fff; font-size:15px; }
+#events_container .bk-scarcity{ font-family:'Inter',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.03em; }
+#events_container .s-open{ color:var(--bk-green); }
+#events_container .s-filling{ color:var(--bk-amber); }
+#events_container .s-full{ color:var(--bk-red); }
+#events_container .s-soon{ color:var(--bk-dim); }
+#events_container .bk-bar{ height:6px; border-radius:99px; background:rgba(255,255,255,0.07); overflow:hidden; }
+#events_container .bk-fill{ display:block; height:100%; width:0; border-radius:99px; transition:width 1.1s var(--bk-ease) .2s; }
+#events_container .bk-card.in .bk-fill{ width:var(--pct); }
+#events_container .f-open{ background:linear-gradient(90deg,var(--bk-green),#00c44f); }
+#events_container .f-filling{ background:linear-gradient(90deg,var(--bk-amber),#ff7a00); }
+#events_container .f-full{ background:linear-gradient(90deg,var(--bk-red),#b91c1c); }
+#events_container .f-soon{ background:rgba(255,255,255,0.15); }
+
+#events_container .bk-footer{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding-top:20px; border-top:1px solid var(--bk-line); }
+#events_container .bk-price{ display:flex; flex-direction:column; }
+#events_container .bk-amount{ font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:2rem; color:var(--bk-gold); line-height:1; }
+#events_container .bk-price-label{ font-family:'Inter',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:var(--bk-dim); margin-top:4px; }
+
+#events_container .bk-cta{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:16px 30px; border-radius:99px;
+    background:var(--bk-gold); color:#0a0a0a; text-decoration:none;
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+    letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap;
+}
+#events_container .bk-cta svg{ flex-shrink:0; }
+#events_container .bk-cta--waitlist{ background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.25); }
+#events_container .bk-cta--soldout{
+    background:transparent;
+    color:var(--bk-dim);
+    border:1px solid var(--bk-line);
+    cursor:not-allowed;
+}
+
+@media (max-width:520px){
+    #events_container{ grid-template-columns:1fr; padding:0 16px; gap:18px; }
+    #events_container .bk-card{ padding:22px; }
+    #events_container .bk-title{ font-size:1.5rem; }
+}
+@media (prefers-reduced-motion:reduce){
+    #events_container .bk-card,
+    #events_container .bk-fill{ opacity:1!important; transform:none!important; transition:none!important; }
+    #events_container .bk-card.in .bk-fill{ width:var(--pct); }
+}
+
+/* ============================================================
+   UNIFIED SECTION HEADS  (training-style: eyebrow + title + sub)
+   Applied to the homepage title containers.
+   ============================================================ */
+section#upcoming_runs_container.lx-section-head,
+section#nike_elite_gear_heading_container.lx-section-head,
+article.got_questions_container.lx-section-head{
+    max-width:1280px;
+    width:auto;
+    height:auto;
+    margin:90px auto 30px;
+    padding:0 24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    text-align:center;
+}
+.lx-section-head .lx-section-sub{ margin-left:auto; margin-right:auto; }
+
+/* Extra breathing room between the GEAR title and the product carousel */
+section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
+@media (min-width:1440px){
+    section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:80px; }
+}
+
+.lx-section-head .lx-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:#FFD700;
+    margin:0;
+}
+.lx-section-head .lx-eyebrow::before{
+    content:"";
+    width:26px;
+    height:2px;
+    background:currentColor;
+    border-radius:2px;
+}
+.lx-section-head .lx-section-title{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:900;
+    font-size:clamp(2.6rem,6.5vw,4.4rem);
+    line-height:0.92;
+    color:#fff;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    margin:0;
+}
+.lx-section-head .lx-section-title .lx-accent-gold{ color:#FFD700; }
+.lx-section-head .lx-section-title .lx-accent-green{ color:#3FFF6F; }
+.lx-section-head .lx-section-sub{
+    font-family:'Inter',sans-serif;
+    color:#a1a1aa;
+    font-size:1rem;
+    line-height:1.6;
+    margin:6px 0 0;
+    max-width:560px;
+}
+
+/* ---- Large screens: enlarge cards + heads (macbook full screen) ---- */
+@media (min-width:1440px){
+    #events_container{
+        max-width:1440px;
+        grid-template-columns:repeat(auto-fill,minmax(420px,1fr));
+        gap:30px;
+    }
+    #events_container .bk-card{ padding:34px; }
+    #events_container .bk-body{ gap:26px; }
+    #events_container .bk-date{ width:88px; padding:16px 8px; }
+    #events_container .bk-day{ font-size:2.7rem; }
+    #events_container .bk-title{ font-size:2.05rem; }
+    #events_container .bk-time{ font-size:14px; }
+    #events_container .bk-status{ font-size:12px; padding:8px 15px; }
+    #events_container .bk-map{ width:92px; height:74px; }
+    #events_container .bk-loc-name{ font-size:1.2rem; }
+    #events_container .bk-spots strong{ font-size:16px; }
+    #events_container .bk-amount{ font-size:2.3rem; }
+    #events_container .bk-cta{ padding:18px 34px; font-size:14px; }
+
+    section#upcoming_runs_container.lx-section-head,
+    section#nike_elite_gear_heading_container.lx-section-head,
+    article.got_questions_container.lx-section-head{
+        max-width:1440px;
+        margin-top:110px;
+    }
+    .lx-section-head .lx-section-title{ font-size:clamp(3.6rem,4.6vw,5.2rem); }
+    .lx-section-head .lx-eyebrow{ font-size:14px; }
+    .lx-section-head .lx-section-sub{ font-size:1.05rem; }
+}
+
+@media (max-width:520px){
+    section#upcoming_runs_container.lx-section-head,
+    section#nike_elite_gear_heading_container.lx-section-head,
+    article.got_questions_container.lx-section-head{
+        padding:0 16px;
+        margin:60px auto 22px;
+    }
 }
