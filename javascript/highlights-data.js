@@ -36,19 +36,19 @@ const highlights = [
     // ───── PHOTOS (demo placeholders — swap for your own anytime) ─────
     {
         type: "photo",
-        src: "assets/images/highlights/IMG_9551.PNG",
+        src: "assets/images/highlights/IMG_9551.avif",
         caption: "Fastbreak.",
         venue: "Pavilhão Manuel CastelBranco"
     },
     {
         type: "photo",
-        src: "assets/images/highlights/IMG_7728.jpeg",
+        src: "assets/images/highlights/IMG_7728.avif",
         caption: "Post-Game",
         venue: "Pavilhão Municipal José Torres"
     },
         {
         type: "photo",
-        src: "assets/images/highlights/IMG_4569.PNG",
+        src: "assets/images/highlights/IMG_4569.avif",
         caption: "Mamba Mentality",
         venue: "Casal Vistoso Sports Complex"
     }

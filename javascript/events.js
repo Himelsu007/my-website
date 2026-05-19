@@ -7,12 +7,25 @@ const events = [
         time: "11AM - 12:30PM",
         location: "Técnico",
         map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
-        spotsTaken: 20,
+        spotsTaken: 16,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
 
+    },
+        {
+        type: "PICK UP GAME",
+        title: "HALF-COURT 4V4",
+        date: "May 11th",
+        time: "8PM - 9:35PM",
+        location: "Técnico",
+        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
+        spotsTaken: 30,
+        spotsTotal: 30,
+        price: "€5",
+        priceLabel: "Entry Fee",
+        waitlist: false
     },
 
     {
@@ -28,21 +41,8 @@ const events = [
         priceLabel: "Entry Fee",
         waitlist: false
 
-    },
-
-    {
-        type: "PICK UP GAME",
-        title: "HALF-COURT 4V4",
-        date: "April 11th",
-        time: "8PM - 9:35PM",
-        location: "Técnico",
-        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
-        spotsTaken: 30,
-        spotsTotal: 30,
-        price: "€5",
-        priceLabel: "Entry Fee",
-        waitlist: false
     }
+
 
 ];
 
@@ -58,8 +58,8 @@ const DEFAULT_EVENT_IMAGE = "assets/images/IMG_0916.avif";
 // Map a venue name → its photo (falls back to the default image)
 function venueImage(loc) {
     const l = (loc || "").toLowerCase();
-    if (l.includes("técnico") || l.includes("tecnico")) return "assets/images/tecnico.JPG";
-    if (l.includes("castel")) return "assets/images/castelbranco.JPG";
+    if (l.includes("técnico") || l.includes("tecnico")) return "assets/images/tecnico.avif";
+    if (l.includes("castel")) return "assets/images/castelbranco.avif";
     return DEFAULT_EVENT_IMAGE;
 }
 
@@ -147,17 +147,18 @@ if (container) {
 
         const card = `
         <article class="bk-card" data-status="${status}">
+            <span class="bk-beam" aria-hidden="true"></span>
             <div class="bk-body">
                 <div class="bk-top">
                     <div class="bk-date">${dateChip}</div>
                     <div class="bk-headline">
+                        <span class="bk-format">${event.type}</span>
                         <h3 class="bk-title">${event.title}</h3>
                         <div class="bk-time">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
                             ${event.time}
                         </div>
                     </div>
-                    <span class="bk-status bk-status--${status}"><span class="d"></span> ${statusLabel}</span>
                 </div>
 
                 <a class="bk-location" href="${event.map}" target="_blank" rel="noopener" aria-label="View ${event.location.trim()} on the map">
