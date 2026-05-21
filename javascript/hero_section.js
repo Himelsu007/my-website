@@ -16,6 +16,8 @@ let isAnimating = false;
 // ============================================
 // BACKGROUND SLIDESHOW & PARALLAX
 // ============================================
+
+
 function createImageSlides() {
     const background = document.getElementById('heroBackground');
     if (!background || background.children.length > 0) return; // Prevent double creation

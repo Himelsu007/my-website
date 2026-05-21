@@ -7,7 +7,7 @@ const events = [
         time: "8:30PM - 10PM",
         location: "Manuel CastelBranco",
         map: "https://maps.apple/p/4s78.LUWnt8Ggq",
-        spotsTaken: 3,
+        spotsTaken: 13,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
@@ -49,13 +49,17 @@ const events = [
 // ── Toggle the "Join Waitlist" button on sold-out games ──
 //   true  → sold-out cards show a clickable "Join Waitlist" button
 //   false → sold-out cards show a disabled "Sold Out" button
-//   (a single event can override this with `waitlist: true/false`)
+//   ( a single event can override this with `waitlist: true/false` )
+
+
 const SHOW_WAITLIST = true;
 
 // Default location thumbnail (used when an event has no `image`)
+
 const DEFAULT_EVENT_IMAGE = "assets/images/IMG_0916.avif";
 
 // Map a venue name → its photo (falls back to the default image)
+
 function venueImage(loc) {
     const l = (loc || "").toLowerCase();
     if (l.includes("técnico") || l.includes("tecnico")) return "assets/images/tecnico.avif";
