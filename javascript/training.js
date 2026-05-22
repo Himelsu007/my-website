@@ -22,4 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
 
     els.forEach(el => io.observe(el));
+
+    // ---- Proof clips: load + play only while on screen (saves CPU/bandwidth) ----
+    const clips = document.querySelectorAll("video.tr-proof-clip");
+    if (clips.length && "IntersectionObserver" in window
+        && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const vio = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const v = entry.target;
+                if (entry.isIntersecting) {
+                    const p = v.play();
+                    if (p && p.catch) p.catch(() => {});
+                } else {
+                    v.pause();
+                }
+            });
+        }, { threshold: 0.25 });
+        clips.forEach(v => vio.observe(v));
+    }
 });
