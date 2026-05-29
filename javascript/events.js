@@ -3,8 +3,22 @@ const events = [
     {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date: "May 23",
-        time: "8:30PM - 10PM",
+        date:  "May 31st",
+        time: "8:30PM-10PM",
+        location: "Pavilhão Islaámico de Lisboa",
+        map: "https://maps.apple/p/4s78.LUWnt8Ggq",
+        spotsTaken: 11,
+        spotsTotal: 20,
+        price: "€5",
+        priceLabel: "Entry Fee",
+        waitlist: false
+
+    },
+        {
+        type: "PICKUP GAME",
+        title: "FULL COURT 5V5",
+        date: "May 9th",
+        time: "7:15PM - 9:00PM",
         location: "Manuel CastelBranco",
         map: "https://maps.apple/p/4s78.LUWnt8Ggq",
         spotsTaken: 20,
@@ -12,8 +26,8 @@ const events = [
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
-
     },
+
         {
         type: "PICK UP GAME",
         title: "HALF-COURT 4V4",
@@ -26,24 +40,7 @@ const events = [
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
-    },
-
-    {
-        type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
-        date: "May 9th",
-        time: "7:15PM - 9:00PM",
-        location: "Manuel CastelBranco",
-        map: "https://maps.apple/p/4s78.LUWnt8Ggq",
-        spotsTaken: 20,
-        spotsTotal: 20,
-        price: "€5",
-        priceLabel: "Entry Fee",
-        waitlist: false
-
     }
-
-
 ];
 
 // ── Toggle the "Join Waitlist" button on sold-out games ──
@@ -64,6 +61,7 @@ function venueImage(loc) {
     const l = (loc || "").toLowerCase();
     if (l.includes("técnico") || l.includes("tecnico")) return "assets/images/tecnico.avif";
     if (l.includes("castel")) return "assets/images/castelbranco.avif";
+    if (l.includes("islaámico") || l.includes("islamico") || l.includes("islaamico")) return "assets/images/IMG_0487.avif";
     return DEFAULT_EVENT_IMAGE;
 }
 
@@ -125,11 +123,11 @@ if (container) {
         const d = parseEventDate(event.date);
         const dateChip = d
             ? `<span class="bk-weekday">${d.wk || "&nbsp;"}</span>
-               <span class="bk-day">${d.day}</span>
-               <span class="bk-month">${d.mon}</span>`
+                <span class="bk-day">${d.day}</span>
+                <span class="bk-month">${d.mon}</span>`
             : `<span class="bk-weekday">&nbsp;</span>
-               <span class="bk-day">•</span>
-               <span class="bk-month">SOON</span>`;
+                <span class="bk-day">•</span>
+                <span class="bk-month">SOON</span>`;
 
         const arrowSvg = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
