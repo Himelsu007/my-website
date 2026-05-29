@@ -17,7 +17,7 @@ const events = [
         {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date: "May 9th",
+        date: "May 23rd",
         time: "7:15PM - 9:00PM",
         location: "Manuel CastelBranco",
         map: "https://maps.apple/p/4s78.LUWnt8Ggq",
@@ -31,7 +31,7 @@ const events = [
         {
         type: "PICK UP GAME",
         title: "HALF-COURT 4V4",
-        date: "May 11th",
+        date: "May 16th",
         time: "8PM - 9:35PM",
         location: "Técnico",
         map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
