@@ -7,11 +7,11 @@ const events = [
         time: "8:30PM-10PM",
         location: "Pavilhão Islaámico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 19,
+        spotsTaken: 20,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
-        waitlist: false
+        waitlist: true
 
     },
         {
