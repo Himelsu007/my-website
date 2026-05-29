@@ -6,7 +6,7 @@ const events = [
         date:  "May 31st",
         time: "8:30PM-10PM",
         location: "Pavilhão Islaámico de Lisboa",
-        map: "https://maps.apple/p/4s78.LUWnt8Ggq",
+        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
         spotsTaken: 11,
         spotsTotal: 20,
         price: "€5",
