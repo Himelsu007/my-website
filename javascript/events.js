@@ -5,7 +5,7 @@ const events = [
         title: "FULL COURT 5V5",
         date:  "May 31st",
         time: "8:30PM-10PM",
-        location: "Pavilhão Islaámico de Lisboa",
+        location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
         spotsTaken: 20,
         spotsTotal: 20,

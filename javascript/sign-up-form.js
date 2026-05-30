@@ -5,9 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ========================================= */
     const urlParams = new URLSearchParams(window.location.search);
     const eventName = urlParams.get("event") || "Private Run";
+    const isWaitlist = urlParams.get("status") === "waitlist";
     const eventInput = document.getElementById("event-name");
-    
-    if(eventInput) eventInput.value = eventName;
+
+    if(eventInput) eventInput.value = isWaitlist ? `${eventName} (Waitlist)` : eventName;
 
     /* =========================================
        2. GUEST COUNTER
@@ -41,9 +42,14 @@ document.addEventListener("DOMContentLoaded", () => {
     ========================================= */
     const generateBtn = document.getElementById("generate-pdf");
 
+    // Waitlist users get a different button label up front
+    if (isWaitlist && generateBtn) {
+        generateBtn.innerText = "REQUEST WAITLIST SPOT";
+    }
+
     if(generateBtn) {
         generateBtn.addEventListener("click", function() {
-            
+
             const playerName = document.getElementById("player-name").value.trim();
             const ageGroup = getSelectedAgeGroup();
 
@@ -52,19 +58,26 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!ageGroup) return alert("Please select your age group.");
 
             /* ===== PREPARE MESSAGE ===== */
-            const message = `🏀 *LOCKED IN RUN REGISTRATION*\n\n` +
-                            `*Event:* ${eventName}\n` +
-                            `*Player:* ${playerName}\n` +
-                            `*Age Group:* ${ageGroup}\n` +
-                            `*Guests:* ${guests}\n\n` +
-                            `I've completed my registration. Let me know where to send the payment receipt!`;
+            const message = isWaitlist
+                ? `🏀 *LOCKED IN — WAITLIST REQUEST*\n\n` +
+                  `*Event:* ${eventName}\n` +
+                  `*Player:* ${playerName}\n` +
+                  `*Age Group:* ${ageGroup}\n` +
+                  `*Guests:* ${guests}\n\n` +
+                  `This run is sold out — please add me to the waitlist. I'll confirm and send payment the moment a spot opens up.`
+                : `🏀 *LOCKED IN RUN REGISTRATION*\n\n` +
+                  `*Event:* ${eventName}\n` +
+                  `*Player:* ${playerName}\n` +
+                  `*Age Group:* ${ageGroup}\n` +
+                  `*Guests:* ${guests}\n\n` +
+                  `I've completed my registration. Let me know where to send the payment receipt!`;
 
             const waUrl = `https://wa.me/351911861637?text=${encodeURIComponent(message)}`;
 
             /* ===== REDIRECT TO WHATSAPP ===== */
             // This works smoothly on both mobile and desktop
             window.open(waUrl, "_blank", "noopener,noreferrer");
-            
+
             // Subtle UI feedback letting the user know the action completed
             generateBtn.innerText = "OPENED IN WHATSAPP";
             generateBtn.style.opacity = "0.7";
