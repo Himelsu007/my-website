@@ -7,11 +7,11 @@ const events = [
         time: "8:30PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 20,
-        spotsTotal: 20,
+        spotsTaken: 25,
+        spotsTotal: 25,
         price: "€5",
         priceLabel: "Entry Fee",
-        waitlist: true
+        waitlist: false
 
     },
         {
@@ -61,7 +61,7 @@ function venueImage(loc) {
     const l = (loc || "").toLowerCase();
     if (l.includes("técnico") || l.includes("tecnico")) return "assets/images/tecnico.avif";
     if (l.includes("castel")) return "assets/images/castelbranco.avif";
-    if (l.includes("islaámico") || l.includes("islamico") || l.includes("islaamico")) return "assets/images/IMG_0487.avif";
+    if (l.includes("islaámico") || l.includes("islamico") || l.includes("islâmico")) return "assets/images/IMG_0487.avif";
     return DEFAULT_EVENT_IMAGE;
 }
 
