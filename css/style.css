@@ -1295,6 +1295,22 @@ box-shadow: 0 0 0px rgba(255, 255, 255, 0);
    UNIFIED SECTION HEADS  (training-style: eyebrow + title + sub)
    Applied to the homepage title containers.
    ============================================================ */
+/* Generic base layout — works for any element with .lx-section-head */
+.lx-section-head{
+    max-width:1280px;
+    width:auto;
+    height:auto;
+    margin:90px auto 30px;
+    padding:0 24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    text-align:center;
+}
+/* High-specificity overrides for legacy homepage IDs (keeps them winning over
+   any older rules in style.css/responsive.css that target the bare IDs) */
 section#upcoming_runs_container.lx-section-head,
 section#nike_elite_gear_heading_container.lx-section-head,
 article.got_questions_container.lx-section-head{
@@ -1311,6 +1327,22 @@ article.got_questions_container.lx-section-head{
     text-align:center;
 }
 .lx-section-head .lx-section-sub{ margin-left:auto; margin-right:auto; }
+
+/* About / SEO copy block under the section head */
+.lx-about-body{
+    max-width:720px;
+    margin:22px auto 0;
+    font-family:'Inter',sans-serif;
+    color:#a1a1aa;
+    font-size:0.98rem;
+    line-height:1.75;
+    display:flex; flex-direction:column; gap:14px;
+}
+.lx-about-body p{ margin:0; }
+.lx-about-body strong{ color:#fff; font-weight:600; }
+@media (max-width:520px){
+    .lx-about-body{ font-size:0.95rem; line-height:1.7; margin-top:16px; padding:0 4px; }
+}
 
 /* Extra breathing room between the GEAR title and the product carousel */
 section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
@@ -1378,6 +1410,7 @@ section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
     #events_container .bk-amount{ font-size:2.3rem; }
     #events_container .bk-cta{ padding:18px 34px; font-size:14px; }
 
+    .lx-section-head,
     section#upcoming_runs_container.lx-section-head,
     section#nike_elite_gear_heading_container.lx-section-head,
     article.got_questions_container.lx-section-head{
@@ -1390,6 +1423,7 @@ section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
 }
 
 @media (max-width:520px){
+    .lx-section-head,
     section#upcoming_runs_container.lx-section-head,
     section#nike_elite_gear_heading_container.lx-section-head,
     article.got_questions_container.lx-section-head{
