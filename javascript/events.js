@@ -1,4 +1,17 @@
 const events = [
+            {
+        type: "PICK UP GAME",
+        title: "FULL COURT 5V5",
+        date: "june 6th",
+        time: "8:15PM - 10:00PM",
+        location: "Técnico",
+        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
+        spotsTaken: 3,
+        spotsTotal: 20,
+        price: "€5",
+        priceLabel: "Entry Fee",
+        waitlist: false
+    },
 
     {
         type: "PICKUP GAME",
@@ -23,20 +36,6 @@ const events = [
         map: "https://maps.apple/p/4s78.LUWnt8Ggq",
         spotsTaken: 20,
         spotsTotal: 20,
-        price: "€5",
-        priceLabel: "Entry Fee",
-        waitlist: false
-    },
-
-        {
-        type: "PICK UP GAME",
-        title: "HALF-COURT 4V4",
-        date: "May 16th",
-        time: "8PM - 9:35PM",
-        location: "Técnico",
-        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
-        spotsTaken: 30,
-        spotsTotal: 30,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
