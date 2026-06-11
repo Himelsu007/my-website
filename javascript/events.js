@@ -1,13 +1,13 @@
 const events = [
         {
         type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
+        title: "HALF COURT 4V4",
         date:  "June 13th",
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 3,
-        spotsTotal: 20,
+        spotsTaken: 8,
+        spotsTotal: 24,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
