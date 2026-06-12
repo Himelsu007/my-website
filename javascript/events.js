@@ -6,8 +6,8 @@ const events = [
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 10,
-        spotsTotal: 24,
+        spotsTaken: 15,
+        spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
