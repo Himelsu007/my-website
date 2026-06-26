@@ -1,7 +1,7 @@
 const events = [
                 {
         type: "PICK UP GAME",
-        title: "FULL COURT 5V5",
+        title: "HALF COURT 4V4",
         date: "june 28th",
         time: "10AM - 11:45AM",
         location: "Técnico",
