@@ -6,7 +6,7 @@ const events = [
         time: "10AM - 11:45AM",
         location: "Técnico",
         map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
-        spotsTaken: 5,
+        spotsTaken: 12,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
