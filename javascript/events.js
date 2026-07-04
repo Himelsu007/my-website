@@ -1,12 +1,14 @@
 const events = [
-                {
-        type: "PICK UP GAME",
+
+    
+        {
+        type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date: "July 4th",
-        time: "8:15PM - 10PM",
-        location: "Técnico",
-        map: "https://maps.app.goo.gl/s8LQtmuZsGKivsxo6",
-        spotsTaken: 20,
+        date:  "July 11th",
+        time: "8:10PM-10PM",
+        location: "Pavilhão Islâmico de Lisboa",
+        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
+        spotsTaken: 5,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
@@ -14,7 +16,7 @@ const events = [
     },
         {
         type: "PICKUP GAME",
-        title: "Full COURT 5V5",
+        title: "FULL COURT 5V5",
         date:  "June 27th",
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
