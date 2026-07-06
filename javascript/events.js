@@ -17,9 +17,9 @@ const events = [
         {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date:  "June 27th",
+        date:  "July 4th",
         time: "8:15PM-10PM",
-        location: "Pavilhão Islâmico de Lisboa",
+        location: "Técnico Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
         spotsTaken: 20,
         spotsTotal: 20,
