@@ -3,7 +3,7 @@ const events = [
     
         {
         type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
+        title: "HALF COURT 4V4",
         date:  "July 15th",
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
