@@ -129,7 +129,7 @@ const products = [
         image: "assets/images/products/nike-elite-tee-white.png",
         description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA.",
         tag: "Limited Edition",
-        isSoldOut: true,
+        isSoldOut: false,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
