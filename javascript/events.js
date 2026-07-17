@@ -8,11 +8,7 @@ const events = [
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-<<<<<<< Updated upstream
-        spotsTaken: 20,
-=======
-        spotsTaken: 6,
->>>>>>> Stashed changes
+        spotsTaken: 8,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
