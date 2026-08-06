@@ -1,5 +1,17 @@
 const events = [
-
+        {
+        type: "PICKUP GAME",
+        title: "FULL COURT 5V5",
+        date:  "August 8th",
+        time: "8:15PM-10PM",
+        location: "Técnico Lisboa",
+        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
+        spotsTaken: 4,
+        spotsTotal: 20,
+        price: "€5",
+        priceLabel: "Entry Fee",
+        waitlist: false
+    },
     
         {
         type: "PICKUP GAME",
@@ -10,19 +22,6 @@ const events = [
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
         spotsTaken: 20,
         spotsTotal: 20,
-        price: "€5",
-        priceLabel: "Entry Fee",
-        waitlist: false
-    },
-        {
-        type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
-        date:  "July 9th",
-        time: "8:15PM-10PM",
-        location: "Técnico Lisboa",
-        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 25,
-        spotsTotal: 25,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
