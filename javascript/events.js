@@ -10,7 +10,7 @@ const events = [
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
-        waitlist: false
+        waitlist: true
     },    
     {
         type: "PICKUP GAME",
@@ -19,7 +19,7 @@ const events = [
         time: "8:00PM-9:45PM",
         location: "Técnico Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 4,
+        spotsTaken: 6,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
