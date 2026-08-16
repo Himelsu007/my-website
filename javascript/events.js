@@ -19,7 +19,7 @@ const events = [
         date:  "August 15th",
         time: "8:00PM-9:45PM",
         location: "Técnico Lisboa",
-        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
+        map: "https://maps.apple/p/LB2DKKvAarAnMM",
         spotsTaken: 20,
         spotsTotal: 20,
         price: "€5",
