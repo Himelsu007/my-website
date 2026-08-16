@@ -200,6 +200,7 @@
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/leaderboard.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -367,6 +368,33 @@
 
 
 <section class="schedule_cards_container" id="events_container"></section>
+
+<!-- =======================  LEADERBOARD  ======================= -->
+<section id="leaderboard_section" aria-labelledby="lb_title">
+    <div class="lx-section-head">
+        <span class="lx-eyebrow">Leaderboard</span>
+        <h2 id="lb_title" class="lx-section-title">Who Runs <span class="lx-accent-gold">The Court?</span></h2>
+        <p class="lx-section-sub">Ranked by win percentage across all Locked In runs.</p>
+        <span class="lb-season" id="lb_season">2026 Season</span>
+    </div>
+
+    <div class="lb-podium" id="lb_podium"></div>
+
+    <div class="lb-table" id="lb_table">
+        <div class="lb-table-inner">
+            <div class="lb-table-head">
+                <span class="lb-t">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                    Full Rankings
+                </span>
+                <span class="lb-c">Top 10</span>
+            </div>
+            <div id="lb_rows"></div>
+        </div>
+    </div>
+
+    <p class="lb-foot">Win % = wins ÷ games played · minimum 10 games to qualify</p>
+</section>
 
 <section id="nike_elite_gear_heading_container" class="lx-section-head">
     <span class="lx-eyebrow">Nike Elite Gear</span>
@@ -582,6 +610,8 @@
 <script src="https://cdn.lordicon.com/lordicon.js" defer></script>
 <script src="javascript/hero_section.js" defer></script>
 <script src="javascript/events.js" defer></script>
+<script src="javascript/leaderboard-data.js" defer></script>
+<script src="javascript/leaderboard.js" defer></script>
 <script src="javascript/carousel.js" defer></script>
 <script src="javascript/accordition.js" defer></script>
 <script src="javascript/scroll_detection_menu.js" defer></script>
