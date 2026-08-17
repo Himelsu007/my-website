@@ -1,5 +1,17 @@
 const events = [
-        
+                            {
+        type: "PICKUP GAME",
+        title: "FULL COURT 5V5",
+        date:  "August 22nd",
+        time: "8:15PM-10PM",
+        location: "Pavilhão Islâmico de Lisboa",
+        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
+        spotsTaken: 2,
+        spotsTotal: 20,
+        price: "€5",
+        priceLabel: "Entry Fee",
+        waitlist:true
+    }, 
                 {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
@@ -13,6 +25,7 @@ const events = [
         priceLabel: "Entry Fee",
         waitlist:true
     }, 
+
     {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
@@ -27,19 +40,19 @@ const events = [
         waitlist:false
     },
 
-        {
-        type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
-        date: "May 23rd",
-        time: "7:15PM - 9:00PM",
-        location: "Manuel CastelBranco",
-        map: "https://maps.apple/p/4s78.LUWnt8Ggq",
-        spotsTaken: 20,
-        spotsTotal: 20,
-        price: "€5",
-        priceLabel: "Entry Fee",
-        waitlist: false
-    }
+    //     {
+    //     type: "PICKUP GAME",
+    //     title: "FULL COURT 5V5",
+    //     date: "May 23rd",
+    //     time: "7:15PM - 9:00PM",
+    //     location: "Manuel CastelBranco",
+    //     map: "https://maps.apple/p/4s78.LUWnt8Ggq",
+    //     spotsTaken: 20,
+    //     spotsTotal: 20,
+    //     price: "€5",
+    //     priceLabel: "Entry Fee",
+    //     waitlist: false
+    // }
 ];
 
 
