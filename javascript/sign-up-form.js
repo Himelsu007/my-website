@@ -60,17 +60,17 @@ document.addEventListener("DOMContentLoaded", () => {
             /* ===== PREPARE MESSAGE ===== */
             const message = isWaitlist
                 ? `🏀 *LOCKED IN — WAITLIST REQUEST*\n\n` +
-                  `*Event:* ${eventName}\n` +
-                  `*Player:* ${playerName}\n` +
-                  `*Age Group:* ${ageGroup}\n` +
-                  `*Guests:* ${guests}\n\n` +
-                  `This run is sold out — please add me to the waitlist. I'll confirm and send payment the moment a spot opens up.`
+                `*Event:* ${eventName}\n` +
+                `*Player:* ${playerName}\n` +
+                `*Age Group:* ${ageGroup}\n` +
+                `*Guests:* ${guests}\n\n` +
+                `This run is sold out — please add me to the waitlist. I'll confirm and send payment the moment a spot opens up.`
                 : `🏀 *LOCKED IN RUN REGISTRATION*\n\n` +
-                  `*Event:* ${eventName}\n` +
-                  `*Player:* ${playerName}\n` +
-                  `*Age Group:* ${ageGroup}\n` +
-                  `*Guests:* ${guests}\n\n` +
-                  `I've completed my registration. Let me know where to send the payment receipt!`;
+                `*Event:* ${eventName}\n` +
+                `*Player:* ${playerName}\n` +
+                `*Age Group:* ${ageGroup}\n` +
+                `*Guests:* ${guests}\n\n` +
+                `I've completed my registration. Let me know where to send the payment receipt!`;
 
             const waUrl = `https://wa.me/351911861637?text=${encodeURIComponent(message)}`;
 

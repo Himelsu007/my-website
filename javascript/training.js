@@ -1,8 +1,4 @@
-// ========================================
-// TRAINING — scroll-reveal entrance
-// Adds .in when an element scrolls into view.
-// Stagger is handled in CSS (nth-child delays).
-// ========================================
+
 document.addEventListener("DOMContentLoaded", () => {
     const els = document.querySelectorAll(".tr-reveal");
     if (!els.length) return;

@@ -1,33 +1,25 @@
-// ========================================
-// LEADERBOARD DATA — edit this file only
-// ========================================
-// Ranking is calculated automatically from W/L:
-//     win % = w / (w + l)
-// The list re-sorts itself, so the order you type them in does NOT matter.
-// The podium (1st/2nd/3rd) and the Top 10 table both come from this array.
-//
-//   name  → full name shown on the card
-//   alias → nickname shown in quotes (use "" for none)
-//   pos   → PG / SG / SF / PF / C
-//   w     → wins
-//   l     → losses
-//
-// Players below MIN_GAMES are hidden (keeps the board legit).
-// ========================================
+
 
 const LEADERBOARD_SEASON = "2026 Season";
-const LEADERBOARD_MIN_GAMES = 10;
 const LEADERBOARD_MAX_ROWS = 10;
 
+const LEADERBOARD_STAT_LABEL = "Win Rate";
+
+const LEADERBOARD_FOOTNOTE = "Rated on skill, consistency and impact on the run.";
+
+    // { name: "Aitor", alias: "", pos: "", pct: 94, w: 14, l:2 , photo: "assets/images/fabio-silva.png" },
+
+
 const leaderboardPlayers = [
-    { name: "André Ferreira",  alias: "Dedé",    pos: "PG", w: 47, l: 8  },
-    { name: "Tomás Silva",     alias: "Flash",   pos: "SG", w: 43, l: 11 },
-    { name: "Rui Martins",     alias: "Jet",     pos: "SF", w: 41, l: 12 },
-    { name: "Miguel Costa",    alias: "Ice",     pos: "PF", w: 38, l: 14 },
-    { name: "João Pereira",    alias: "Torre",   pos: "C",  w: 35, l: 15 },
-    { name: "Diogo Almeida",   alias: "Dee",     pos: "SG", w: 33, l: 16 },
-    { name: "Pedro Sousa",     alias: "Sniper",  pos: "SF", w: 30, l: 16 },
-    { name: "Bruno Carvalho",  alias: "Muralha", pos: "C",  w: 28, l: 17 },
-    { name: "Ricardo Nunes",   alias: "Rico",    pos: "PG", w: 26, l: 18 },
-    { name: "Nuno Ribeiro",    alias: "Chef",    pos: "PF", w: 24, l: 19 }
+    { name: "Ivan Almeida", alias: "The Blueprint", pos: "", pct: 91, photo: "assets/images/ivan-almeida.png" },
+    { name: "Joel António", alias: "Sniper", pos: "", pct: 86, photo: "assets/images/joel-antónio.png" },
+    { name: "Aitor", alias: "", pos: "", pct: 79, photo: "assets/images/fabio-silva.png" },
+    { name: "Wagner", alias: "Sniper", pos: "", pct: 78.5, photo: "assets/images/wagner.png" },
+    { name: "Brock Davis", alias: "", pos: "", pct: 78.3, photo: "assets/images/brock-davis.png" },
+    { name: "Rui Martins", alias: "", pos: "", pct: 71, photo: "assets/images/rui-martins.png" },
+    { name: "Vasco Matos", alias: "", pos: "", pct: 68, photo: "assets/images/vasco-matos.png" },
+    { name: "Cedric",  alias: "", pos: "", pct: 65.5, photo: "assets/images/cedric.png" },
+    { name: "Nazário", alias: "",       pos: "", pct: 64, photo: "assets/images/nazário.png" },
+    { name: "Iuri", alias: "", pos: "", pct: 62.8, photo: "assets/images/iuri.png" },
+    { name: "Dinis Lascenco", alias: "", pos: "", pct: 58.7, photo: "assets/images/dinis-lascenco.png" }
 ];

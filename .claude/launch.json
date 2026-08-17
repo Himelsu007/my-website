@@ -10,7 +10,7 @@
     {
       "name": "locked-in-tracker",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "/Users/himelsuencoge/Desktop/routine-tracker", "run", "dev"],
+      "runtimeArgs": ["--prefix", "/Users/himelsuencoge/routine-tracker", "run", "dev"],
       "port": 5180
     },
     {
@@ -22,7 +22,7 @@
     {
       "name": "case-files",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "/Users/himelsuencoge/Desktop/case-files", "run", "dev"],
+      "runtimeArgs": ["--prefix", "/Users/himelsuencoge/case-files", "run", "dev"],
       "port": 5181
     }
   ]

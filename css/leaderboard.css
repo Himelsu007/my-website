@@ -59,7 +59,18 @@
 #leaderboard_section .lb-second .lb-pod-av{ border:2px solid var(--lb-silver); }
 #leaderboard_section .lb-third  .lb-pod-av{ border:2px solid var(--lb-bronze); }
 
+/* Optional player photo — layered over the initials fallback.
+   Self-clips via border-radius so the rank chip can still hang outside. */
+#leaderboard_section .lb-photo{
+    position:absolute; inset:0; z-index:1;
+    width:100%; height:100%;
+    object-fit:cover; object-position:center top;
+    border-radius:50%;
+    display:block;
+}
+
 #leaderboard_section .lb-pod-rank{
+    z-index:2;
     position:absolute; bottom:-9px; left:50%; transform:translateX(-50%);
     font-family:'Barlow Condensed',sans-serif; font-weight:800;
     font-size:11px; letter-spacing:.12em; text-transform:uppercase;
@@ -152,6 +163,7 @@
 #leaderboard_section .lb-top3 .lb-r-pos{ color:var(--lb-bronze); }
 
 #leaderboard_section .lb-r-av{
+    position:relative;
     width:38px; height:38px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
     background:linear-gradient(160deg,#1b1b20,#111114);
