@@ -197,14 +197,68 @@
 
 #leaderboard_section .lb-r-bar{ display:flex; flex-direction:column; gap:6px; }
 #leaderboard_section .lb-r-bar-track{
-    height:5px; border-radius:99px; background:rgba(255,255,255,.07); overflow:hidden;
+    height:5px; border-radius:99px; background:rgba(255,255,255,.07);
+    overflow:hidden; position:relative;
 }
 #leaderboard_section .lb-r-bar-fill{
     display:block; height:100%; width:0; border-radius:99px;
-    background:linear-gradient(90deg,var(--lb-gold),#ffb800);
-    transition:width 1.1s var(--lb-ease) .15s;
+    position:relative; overflow:hidden;
+    background:linear-gradient(90deg, var(--lb-c2), var(--lb-c1));
+    box-shadow:0 0 10px -2px var(--lb-glow);
+    /* default tier (4th and below) */
+    --lb-c1:#ffb800; --lb-c2:#8a6a00; --lb-glow:rgba(255,184,0,.5);
+    transition:width 1.25s var(--lb-ease);
 }
 #leaderboard_section .lb-table.in .lb-r-bar-fill{ width:var(--lb-pct); }
+
+/* Medal-tier bar colours — matches the podium rings + rank numbers */
+#leaderboard_section .lb-top1 .lb-r-bar-fill{
+    --lb-c1:#FFE86B; --lb-c2:#D4A200; --lb-glow:rgba(255,215,0,.75);
+}
+#leaderboard_section .lb-top2 .lb-r-bar-fill{
+    --lb-c1:#EDF1F5; --lb-c2:#8E959D; --lb-glow:rgba(199,203,209,.6);
+}
+#leaderboard_section .lb-top3 .lb-r-bar-fill{
+    --lb-c1:#E8A860; --lb-c2:#9C5A1E; --lb-glow:rgba(205,127,50,.6);
+}
+
+/* Cascading fill — each bar starts slightly after the one above it */
+#leaderboard_section .lb-row:nth-child(1)  .lb-r-bar-fill{ transition-delay:.10s; }
+#leaderboard_section .lb-row:nth-child(2)  .lb-r-bar-fill{ transition-delay:.18s; }
+#leaderboard_section .lb-row:nth-child(3)  .lb-r-bar-fill{ transition-delay:.26s; }
+#leaderboard_section .lb-row:nth-child(4)  .lb-r-bar-fill{ transition-delay:.34s; }
+#leaderboard_section .lb-row:nth-child(5)  .lb-r-bar-fill{ transition-delay:.42s; }
+#leaderboard_section .lb-row:nth-child(6)  .lb-r-bar-fill{ transition-delay:.50s; }
+#leaderboard_section .lb-row:nth-child(7)  .lb-r-bar-fill{ transition-delay:.58s; }
+#leaderboard_section .lb-row:nth-child(8)  .lb-r-bar-fill{ transition-delay:.66s; }
+#leaderboard_section .lb-row:nth-child(9)  .lb-r-bar-fill{ transition-delay:.74s; }
+#leaderboard_section .lb-row:nth-child(10) .lb-r-bar-fill{ transition-delay:.82s; }
+
+/* Light sweep travelling along the filled portion */
+#leaderboard_section .lb-r-bar-fill::after{
+    content:""; position:absolute; inset:0; border-radius:inherit;
+    background:linear-gradient(100deg,
+        transparent 0%, transparent 35%,
+        rgba(255,255,255,.75) 50%,
+        transparent 65%, transparent 100%);
+    transform:translateX(-100%);
+}
+#leaderboard_section .lb-table.in .lb-r-bar-fill::after{
+    animation:lb-sweep 3.2s var(--lb-ease) infinite;
+}
+#leaderboard_section .lb-top1 .lb-r-bar-fill::after{ animation-duration:2.4s; }
+@keyframes lb-sweep{
+    0%   { transform:translateX(-100%); }
+    55%  { transform:translateX(100%); }
+    100% { transform:translateX(100%); }
+}
+
+/* Row hover: bar brightens and the % pops */
+#leaderboard_section .lb-row:hover .lb-r-bar-fill{
+    filter:brightness(1.25);
+    box-shadow:0 0 14px -1px var(--lb-glow);
+}
+#leaderboard_section .lb-row:hover .lb-r-pct{ transform:scale(1.06); }
 #leaderboard_section .lb-r-bar-k{
     font-family:'Inter',sans-serif; font-size:9px; letter-spacing:.18em;
     color:var(--lb-dim); text-transform:uppercase;
@@ -213,8 +267,15 @@
 #leaderboard_section .lb-r-pct{
     text-align:right;
     font-family:'Barlow Condensed',sans-serif; font-weight:900;
-    font-size:1.5rem; color:var(--lb-gold); line-height:1;
+    font-size:1.5rem; color:#ffb800; line-height:1;
+    font-variant-numeric:tabular-nums;   /* stops width jitter while counting */
+    transition:transform .3s var(--lb-ease), color .3s ease;
 }
+#leaderboard_section .lb-top1 .lb-r-pct{
+    color:var(--lb-gold); text-shadow:0 0 16px rgba(255,215,0,.45);
+}
+#leaderboard_section .lb-top2 .lb-r-pct{ color:var(--lb-silver); }
+#leaderboard_section .lb-top3 .lb-r-pct{ color:#E8A860; }
 #leaderboard_section .lb-r-pct .lb-u{ font-size:.6em; opacity:.65; margin-left:1px; }
 
 #leaderboard_section .lb-foot{
@@ -259,4 +320,8 @@
         opacity:1!important; transform:none!important; transition:none!important;
     }
     #leaderboard_section .lb-table.in .lb-r-bar-fill{ width:var(--lb-pct); }
+    /* no sweeping light, no delays, no hover scaling */
+    #leaderboard_section .lb-table.in .lb-r-bar-fill::after{ animation:none; display:none; }
+    #leaderboard_section .lb-row .lb-r-bar-fill{ transition-delay:0s!important; }
+    #leaderboard_section .lb-row:hover .lb-r-pct{ transform:none; }
 }

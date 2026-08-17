@@ -7,11 +7,11 @@ const events = [
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 16,
+        spotsTaken: 20,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
-        waitlist:false
+        waitlist:true
     }, 
     {
         type: "PICKUP GAME",

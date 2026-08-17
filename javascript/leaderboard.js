@@ -67,6 +67,7 @@
                     <span class="lb-w">${p.w}W</span><span class="lb-sep">/</span><span class="lb-l">${p.l}L</span>
                 </div>` : ""}
             </div>`;
+        el._player = p;                 // used by the count-up on reveal
         podium.appendChild(el);
     });
 
@@ -94,18 +95,65 @@
         rowsEl.appendChild(row);
     });
 
+    // ---- Count-up: numbers tick from 0 up to their value ----
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function countUp(el, target, duration, delay) {
+        if (!el) return;
+        if (reduced) return;                       // leave the final value in place
+
+        // Rebuild as [number text node][% unit] so each frame is a cheap
+        // nodeValue write instead of re-parsing HTML.
+        const unit = el.querySelector(".lb-u");
+        const num = document.createTextNode(show(target));   // starts at the REAL value
+        el.textContent = "";
+        el.appendChild(num);
+        if (unit) el.appendChild(unit);
+
+        let done = false;
+        const finish = () => { if (!done) { done = true; num.nodeValue = show(target); } };
+
+        setTimeout(() => {
+            // Only blank to 0 once rAF has proven it's actually running — otherwise
+            // a throttled tab would leave the number stuck at 0 forever.
+            requestAnimationFrame(t0 => {
+                if (done) return;          // safety net already settled it — don't re-blank
+                num.nodeValue = "0";
+                (function step(now) {
+                    if (done) return;
+                    const t = Math.min((now - t0) / duration, 1);
+                    num.nodeValue = show(target * (1 - Math.pow(1 - t, 3)));  // ease-out cubic
+                    if (t < 1) requestAnimationFrame(step); else finish();
+                })(t0);
+            });
+            // Safety net: guarantee the true value even if frames never come.
+            setTimeout(finish, duration + 500);
+        }, delay);
+    }
+
     // ---- Reveal on scroll ----
     const table = document.getElementById("lb_table");
     const targets = [...podium.querySelectorAll(".lb-pod")];
     if (table) targets.push(table);
 
+    function activate(el) {
+        el.classList.add("in");
+        if (el === table) {
+            el.querySelectorAll(".lb-r-pct").forEach((n, i) => {
+                countUp(n, pct(ranked[i]), 900, 100 + i * 80);   // matches the bar cascade
+            });
+        } else if (el._player) {
+            countUp(el.querySelector(".lb-pod-pct"), pct(el._player), 1100, 150);
+        }
+    }
+
     if (!("IntersectionObserver" in window)) {
-        targets.forEach(t => t.classList.add("in"));
+        targets.forEach(activate);
         return;
     }
     const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
-            if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+            if (e.isIntersecting) { activate(e.target); io.unobserve(e.target); }
         });
     }, { threshold: 0.2 });
     targets.forEach(t => io.observe(t));
