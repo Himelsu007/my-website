@@ -97,9 +97,14 @@ const container = document.getElementById("events_container");
 if (container) {
     container.innerHTML = "";
 
-    events.forEach(event => {
+    // Forget locally-stored sign-ups for runs that no longer exist
+    if (typeof pruneLocalSignups === "function") pruneLocalSignups(events);
+
+    events.forEach((event, i) => {
         const total = event.spotsTotal || 0;
-        const taken = event.spotsTaken || 0;
+        // spotsTaken from this file + any registrations sent from THIS browser
+        const local = (typeof localSignupsFor === "function") ? localSignupsFor(event) : 0;
+        const taken = Math.min(total, (event.spotsTaken || 0) + local);
         const spotsLeft = total - taken;
         const fillPercent = total > 0 ? Math.min(100, Math.round((taken / total) * 100)) : 0;
         const img = event.image || venueImage(event.location);
@@ -144,13 +149,13 @@ if (container) {
         let ctaHTML;
         if (status === "full") {
             if (waitlistOn) {
-                const href = `private_run_sign_up.html?event=${encodeURIComponent(event.title)}&status=waitlist`;
+                const href = `private_run_sign_up.html?run=${i}&event=${encodeURIComponent(event.title)}&status=waitlist`;
                 ctaHTML = `<a class="bk-cta bk-cta--waitlist" href="${href}">Join Waitlist</a>`;
             } else {
                 ctaHTML = `<button class="bk-cta bk-cta--soldout" type="button" disabled>Sold Out</button>`;
             }
         } else {
-            const href = `private_run_sign_up.html?event=${encodeURIComponent(event.title)}`;
+            const href = `private_run_sign_up.html?run=${i}&event=${encodeURIComponent(event.title)}`;
             ctaHTML = `<a class="bk-cta" href="${href}">${ctaLabel} ${arrowSvg}</a>`;
         }
 

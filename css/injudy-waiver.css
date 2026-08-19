@@ -128,7 +128,7 @@
 
 #signature-pad {
     width: 100%;
-    height: 300px;
+    height: 200px;
     cursor: crosshair;
 }
 
@@ -147,7 +147,7 @@
 
 #signature-pad {
     width: 100%; 
-    height: 450px;
+    height: 220px;
     cursor: crosshair;
     /* This line stops the page from moving while signing */
     touch-action: none; 

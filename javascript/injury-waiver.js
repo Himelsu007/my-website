@@ -102,71 +102,120 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.beginPath();
     };
 
-    // 3. Generate & Download PDF
-document.getElementById('generate-pdf').onclick = async function() {
-    const element = document.querySelector('.auth-container');
-    const name = document.getElementById('auth-name').value.trim();
-    const originalLabel = this.innerText;
-
-    if(!name) return alert("Please enter your name first!");
-
-    // The PDF library is loaded from a CDN — if it's blocked or offline we must
-    // say so rather than leaving the button stuck on "PROCESSING...".
-    if (typeof html2pdf === 'undefined') {
-        alert("The PDF tool couldn't load. Please check your connection and refresh the page.");
-        return;
-    }
-
-    // 1. Visual Feedback (The "Processing" state)
-    this.innerText = "PROCESSING...";
-    this.classList.add('disabled');
-
-    const opt = {
-        margin: 0.5,
-        filename: `Authorization_${name.replace(/\s+/g, '_')}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, backgroundColor: '#1c1c1e' },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    try {
-        // 2. Generate PDF as a "Blob" (raw data) instead of just saving
-        const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
-
-        // 3. Create a File object from the Blob
-        const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
-
-        // 4. Use the Web Share API (Mobile Magic)
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
-                await navigator.share({
-                    files: [file],
-                    title: 'Signed Authorization',
-                    text: `Hello! Here is my signed authorization for ${name}.`
-                });
-                this.innerText = "SENT SUCCESSFULLY";
-                return;                              // done — leave the success label
-            } catch (err) {
-                // User cancelled or share failed → fall back to a download
-                console.error("Share failed:", err);
-                await html2pdf().set(opt).from(element).save();
-            }
-        } else {
-            // 5. Fallback for Desktop (computers can't "Share" to WhatsApp easily)
-            alert("Downloading your PDF… please attach it to WhatsApp in the next step.");
-            await html2pdf().set(opt).from(element).save();
-
-            // Open WhatsApp with a pre-filled message after download
-            const waMsg = encodeURIComponent(`Hello! I just downloaded my signed authorization for ${name}. I am attaching it now.`);
-            window.open(`https://wa.me/351911861637?text=${waMsg}`, '_blank');
+    // A waiver with no signature isn't a waiver — detect an untouched pad.
+    function isSignatureBlank() {
+        try {
+            const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            for (let i = 3; i < d.length; i += 4) if (d[i] !== 0) return false;
+            return true;
+        } catch (e) { return false; }   // never block signing on a read error
         }
-    } catch (err) {
-        console.error("PDF generation failed:", err);
-        alert("Sorry — the PDF could not be generated. Please try again.");
-    } finally {
-        // Always restore the button, whatever happened above
-        if (this.innerText === "PROCESSING...") this.innerText = originalLabel;
-        this.classList.remove('disabled');
+
+    // Save a generated blob to the user's device.
+    function downloadBlob(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
-};
+
+    // A waiver with no signature isn't a waiver — detect an untouched pad.
+    function isSignatureBlank() {
+        try {
+            const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            for (let i = 3; i < d.length; i += 4) if (d[i] !== 0) return false;
+            return true;
+        } catch (e) { return false; }   // never block signing on a read error
+    }
+
+    /* =========================================================
+       FINALIZE — capture the form as an image and send it.
+       An image sends inline in WhatsApp (a PDF arrives as a file
+       attachment), so it's both simpler and easier to receive.
+       ========================================================= */
+    document.getElementById('generate-pdf').onclick = async function () {
+        const element = document.querySelector('.auth-container');
+        const name = document.getElementById('auth-name').value.trim();
+        const originalLabel = this.innerText;
+
+        if (!name) return alert("Please enter your name first!");
+        if (isSignatureBlank()) return alert("Please sign in the box before finalizing.");
+
+        if (typeof html2canvas === 'undefined') {
+            alert("The capture tool couldn't load. Please check your connection and refresh the page.");
+            return;
+        }
+
+        this.innerText = "PROCESSING...";
+        this.classList.add('disabled');
+
+        const filename = `Waiver_${name.replace(/\s+/g, '_')}.png`;
+
+        // The <canvas> signature is swapped for a static image and the buttons
+        // are hidden, so neither shows up oddly in the capture.
+        const sigRect = canvas.getBoundingClientRect();
+        const sigImg = document.createElement('img');
+        sigImg.src = canvas.toDataURL('image/png');
+        sigImg.style.cssText =
+            `width:100%;height:${sigRect.height}px;display:block;object-fit:contain;background:#000;border-radius:8px;`;
+        canvas.parentNode.insertBefore(sigImg, canvas);
+        canvas.style.display = 'none';
+
+        const hidden = [document.getElementById('clear-signature'), this]
+            .filter(Boolean)
+            .map(el => { const prev = el.style.visibility; el.style.visibility = 'hidden'; return [el, prev]; });
+
+        const restoreDom = () => {
+            sigImg.remove();
+            canvas.style.display = '';
+            hidden.forEach(([el, prev]) => { el.style.visibility = prev; });
+        };
+
+        try {
+            if (!sigImg.complete) await new Promise(r => { sigImg.onload = r; sigImg.onerror = r; });
+
+            const shot = await html2canvas(element, {
+                scale: 2,                       // retina-sharp
+                backgroundColor: '#101013',
+                logging: false,
+                useCORS: true
+            });
+            restoreDom();
+
+            const blob = await new Promise(res => shot.toBlob(res, 'image/png'));
+            if (!blob) throw new Error('Could not create the image.');
+
+            const file = new File([blob], filename, { type: 'image/png' });
+
+            // Mobile: hand the image straight to WhatsApp via the share sheet
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Signed Waiver',
+                        text: `Hello! Here is my signed waiver for ${name}.`
+                    });
+                    this.innerText = "SENT SUCCESSFULLY";
+                    return;
+                } catch (err) {
+                    console.error("Share cancelled/failed:", err);
+                    downloadBlob(blob, filename);      // fall back to saving it
+                }
+            } else {
+                // Desktop: save the image, then open the chat to attach it
+                downloadBlob(blob, filename);
+                const waMsg = encodeURIComponent(
+                    `Hello! I just signed the waiver (${name}). Attaching the screenshot now.`);
+                window.open(`https://wa.me/351911861637?text=${waMsg}`, '_blank');
+            }
+        } catch (err) {
+            restoreDom();
+            console.error("Capture failed:", err);
+            alert("Sorry \u2014 the image could not be created. Please try again.");
+        } finally {
+            if (this.innerText === "PROCESSING...") this.innerText = originalLabel;
+            this.classList.remove('disabled');
+        }
+    };
 });
