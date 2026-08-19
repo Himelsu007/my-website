@@ -23,7 +23,7 @@ const events = [
         spotsTotal: 24,
         price: "€5",
         priceLabel: "Entry Fee",
-        waitlist:true
+        waitlist:false
     }, 
 
     {
