@@ -96,7 +96,7 @@ function parseEventDate(str) {
 
 const container = document.getElementById("events_container");
 
-function renderEvents(tally) {
+function renderEvents(tally, pending) {
     container.innerHTML = "";
 
     // Forget locally-stored sign-ups for runs that no longer exist
@@ -119,7 +119,13 @@ function renderEvents(tally) {
         let scarcity = "Spots available";
         let ctaLabel = "Join Now";
 
-        if (total <= 0) {
+        if (pending) {
+            // The Sheet hasn't answered yet - show the card without committing
+            // to a number, rather than flashing the events.js baseline.
+            status = "pending";
+            statusLabel = "Checking";
+            scarcity = "Checking availability\u2026";
+        } else if (total <= 0) {
             status = "soon";
             statusLabel = "Coming Soon";
             scarcity = "Date to be announced";
@@ -153,7 +159,9 @@ function renderEvents(tally) {
         const tick = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
 
         let ctaHTML;
-        if (registered && status !== "full") {
+        if (pending) {
+            ctaHTML = `<button class="bk-cta bk-cta--pending" type="button" disabled>Checking\u2026</button>`;
+        } else if (registered && status !== "full") {
             // This device already sent a registration for this run
             const href = `private_run_sign_up.html?run=${i}&event=${encodeURIComponent(event.title)}`;
             ctaHTML = `<a class="bk-cta bk-cta--registered" href="${href}">${tick} You\u2019re Registered</a>`;
@@ -198,10 +206,10 @@ function renderEvents(tally) {
 
                 <div class="bk-progress">
                     <div class="bk-progress-head">
-                        <span class="bk-spots"><strong>${taken}</strong>/${total} spots</span>
+                        <span class="bk-spots"><strong>${pending ? "\u2013" : taken}</strong>/${total} spots</span>
                         <span class="bk-scarcity s-${status}">${scarcity}</span>
                     </div>
-                    <div class="bk-bar"><span class="bk-fill f-${status}" style="--pct:${fillPercent}%"></span></div>
+                    <div class="bk-bar"><span class="bk-fill f-${status}" style="--pct:${pending ? 0 : fillPercent}%"></span></div>
                 </div>
 
                 <div class="bk-footer">
@@ -237,10 +245,16 @@ function revealCards() {
 }
 
 if (container) {
-    renderEvents({});                       // paint immediately from events.js
-    if (typeof fetchSignupTally === "function") {
-        fetchSignupTally().then(tally => {  // then fold in the shared count
-            if (tally && Object.keys(tally).length) renderEvents(tally);
-        });
+    const seed = (typeof cachedSignupTally === "function") ? cachedSignupTally() : null;
+
+    if (typeof fetchSignupTally !== "function") {
+        renderEvents({});                       // no Sheet configured - events.js only
+    } else {
+        // Seed from the last known Sheet count so the card opens on the right
+        // number. With nothing remembered yet, paint the card but leave the
+        // count blank until the Sheet answers (it takes a couple of seconds)
+        // so the first number a visitor reads is never the wrong one.
+        renderEvents(seed || {}, !seed);
+        fetchSignupTally().then(tally => renderEvents(tally || {}));
     }
 }

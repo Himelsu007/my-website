@@ -15,16 +15,27 @@ const SIGNUPS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxpYeaAJK4zxhb
     const isConfigured = () => typeof SIGNUPS_ENDPOINT === "string"
                              && /^https:\/\/script\.google\.com\//.test(SIGNUPS_ENDPOINT);
 
+    /* Apps Script takes 2-3s to answer, so the last known tally lives in
+       localStorage. It seeds the very first paint, which stops the card
+       from showing the events.js baseline and then jumping. */
+    function readStored() {
+        try { return JSON.parse(localStorage.getItem(CACHE_KEY) || "null"); }
+        catch (e) { return null; }
+    }
+
     function readCache() {
-        try {
-            const c = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
-            if (c && Date.now() - c.at < CACHE_MS) return c.tally;
-        } catch (e) {}
-        return null;
+        const c = readStored();
+        return (c && Date.now() - c.at < CACHE_MS) ? c.tally : null;
+    }
+
+    /** Last known tally at any age — good enough to paint with immediately. */
+    function cachedTally() {
+        const c = readStored();
+        return (c && c.tally && Object.keys(c.tally).length) ? c.tally : null;
     }
 
     function writeCache(tally) {
-        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), tally })); }
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), tally })); }
         catch (e) {}
     }
 
@@ -56,11 +67,12 @@ const SIGNUPS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxpYeaAJK4zxhb
                 headers: { "Content-Type": "text/plain;charset=utf-8" },
                 body: JSON.stringify(payload)
             }).catch(() => {});
-            try { sessionStorage.removeItem(CACHE_KEY); } catch (e) {}   // force a refresh next load
+            try { localStorage.removeItem(CACHE_KEY); } catch (e) {}     // force a refresh next load
         } catch (e) { /* never let logging break the flow */ }
     }
 
     global.signupsConfigured = isConfigured;
     global.fetchSignupTally  = fetchTally;
+    global.cachedSignupTally = cachedTally;
     global.postSignup        = postSignup;
 })(window);

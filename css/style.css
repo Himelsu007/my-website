@@ -1439,3 +1439,19 @@ section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
 }
 #events_container .bk-cta--registered svg{ color:var(--bk-green); animation:none; }
 #events_container .bk-card.in:hover .bk-cta--registered{ background:rgba(63,255,111,0.08); }
+
+/* Waiting on the shared Sheet count — card is live, numbers aren't known yet */
+#events_container .bk-card[data-status="pending"] .bk-spots strong,
+#events_container .bk-scarcity.s-pending{ color:#8a8a92; }
+#events_container .bk-fill.f-pending{ background:#3a3a42; }
+#events_container .bk-card[data-status="pending"] .bk-bar{
+    animation:bk-pending 1.4s ease-in-out infinite;
+}
+@keyframes bk-pending{ 0%,100%{ opacity:.45; } 50%{ opacity:.85; } }
+#events_container .bk-cta--pending{
+    background:transparent; color:#8a8a92;
+    border:1px solid rgba(255,255,255,0.14); cursor:default;
+}
+@media (prefers-reduced-motion: reduce){
+    #events_container .bk-card[data-status="pending"] .bk-bar{ animation:none; }
+}

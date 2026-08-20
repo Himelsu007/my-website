@@ -60,16 +60,25 @@ document.addEventListener("DOMContentLoaded", () => {
             mapImg.alt = loc;
         }
 
-        // Price + spots left
+        // Price + spots left. Same maths as the booking cards: the number in
+        // events.js is the manual count, the Sheet adds the form sign-ups.
         set("rs-price", run.price || "\u2014");
         const total = run.spotsTotal || 0;
-        const left  = Math.max(0, total - (run.spotsTaken || 0));
         const spotsEl = document.getElementById("rs-spots");
-        if (spotsEl) {
+
+        function showSpots(tally) {
+            if (!spotsEl) return;
+            const shared = (tally && typeof runKey === "function")
+                ? (Number(tally[runKey(run)]) || 0) : 0;
+            const taken = Math.min(total, (run.spotsTaken || 0) + shared);
+            const left  = Math.max(0, total - taken);
             spotsEl.textContent = total ? left : "\u2014";
             spotsEl.classList.toggle("is-full", total > 0 && left === 0);
             spotsEl.classList.toggle("is-low",  left > 0 && left <= 5);
         }
+
+        showSpots((typeof cachedSignupTally === "function") ? cachedSignupTally() : null);
+        if (typeof fetchSignupTally === "function") fetchSignupTally().then(showSpots);
 
         // Waitlist runs get a different step 2/3 wording
         if (isWaitlist) {
