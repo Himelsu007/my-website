@@ -282,7 +282,7 @@ body { background: var(--tr-bg); }
 .tr-pack-cta {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     margin-top: 28px; padding: 16px 24px; border-radius: 99px;
-    background: var(--tr-green); color: #fff; text-decoration: none;
+    background: var(--tr-gold); color: #0a0a0a; text-decoration: none;
     font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
     letter-spacing: 0.1em; text-transform: uppercase;
     position: relative; overflow: hidden;
@@ -294,15 +294,15 @@ body { background: var(--tr-bg); }
     position: absolute;
     top: 0; left: -75%;
     width: 50%; height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.38), transparent);
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.30), transparent);
     transform: skewX(-20deg);
     pointer-events: none;
     transition: left 0.7s cubic-bezier(0.19,1,0.22,1);
 }
 .tr-pack:hover .tr-pack-cta::after { left: 130%; }
 .tr-pack-cta:hover {
-    background: #1EBE57; transform: translateY(-2px);
-    box-shadow: 0 14px 30px rgba(37,211,102,0.32);
+    background: #FFDF3D; transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(255,215,0,0.28);
 }
 
 /* ============================ HOW IT WORKS ============================ */
@@ -384,3 +384,8 @@ body { background: var(--tr-bg); }
 }
 @media (max-width: 480px) {
 }
+/* Arrow nudges on hover, with a gentle idle drift (matches the booking cards) */
+.tr-pack-cta svg{ flex-shrink:0; transition:transform .3s cubic-bezier(0.19,1,0.22,1); animation:tr-arrow 2.6s ease-in-out infinite; }
+.tr-pack:hover .tr-pack-cta svg{ transform:translateX(5px); animation:none; }
+@keyframes tr-arrow{ 0%,100%{ transform:translateX(0); } 50%{ transform:translateX(3px); } }
+@media (prefers-reduced-motion: reduce){ .tr-pack-cta svg{ animation:none; } }

@@ -566,3 +566,23 @@ html,body {
     letter-spacing:0.02em;
 }
 .rs-registered svg{ flex-shrink:0; }
+
+/* ===== TRAINING PACK SUMMARY (training_sign_up.html) ===== */
+.rs-date--price{ width:auto; min-width:88px; padding:12px 14px; }
+.rs-date--price .rs-day{ font-size:1.9rem; color:var(--su-gold); }
+
+.tp-tagline{
+    font-family:'Inter',sans-serif; font-size:13.5px; line-height:1.6;
+    color:var(--su-dim); margin:-6px 0 0;
+}
+.tp-features{
+    list-style:none; margin:0; padding:16px 0 0;
+    border-top:1px solid var(--su-line);
+    display:flex; flex-direction:column; gap:11px;
+}
+.tp-features li{
+    display:flex; align-items:flex-start; gap:10px;
+    font-family:'Inter',sans-serif; font-size:13.5px; line-height:1.5; color:#e4e4e7;
+}
+.tp-features svg{ flex-shrink:0; margin-top:2px; color:var(--su-gold); }
+.tp-features + .rs-steps{ margin-top:16px; padding-top:16px; border-top:1px solid var(--su-line); }
