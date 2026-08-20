@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!run) run = events.find(e => e.title === eventName) || null;
         if (!run) return;                       // leave the neutral defaults in place
         selectedRun = run;
+        if (typeof hasRegistered === "function" && hasRegistered(run)) setTimeout(showRegisteredBadge, 0);
 
         const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
 
@@ -62,8 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Price + spots left
         set("rs-price", run.price || "\u2014");
         const total = run.spotsTotal || 0;
-        const localTaken = (typeof localSignupsFor === "function") ? localSignupsFor(run) : 0;
-        const left  = Math.max(0, total - ((run.spotsTaken || 0) + localTaken));
+        const left  = Math.max(0, total - (run.spotsTaken || 0));
         const spotsEl = document.getElementById("rs-spots");
         if (spotsEl) {
             spotsEl.textContent = total ? left : "\u2014";
@@ -120,6 +120,17 @@ document.addEventListener("DOMContentLoaded", () => {
     wireCounter("play",  "guest-play-plus",  "guest-play-minus");
     wireCounter("watch", "guest-watch-plus", "guest-watch-minus");
     refreshGuests();
+
+    /** Swap the summary card into a confirmed state after sending. */
+    function showRegisteredBadge() {
+        const card = document.querySelector(".rs-inner");
+        if (!card || card.querySelector(".rs-registered")) return;
+        const el = document.createElement("div");
+        el.className = "rs-registered";
+        el.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+                       "<span>You\u2019re registered \u2014 confirm on WhatsApp</span>";
+        card.insertBefore(el, card.firstChild);
+    }
 
     /* ===== Copy the MB WAY number ===== */
     (function wireCopy(){
@@ -211,21 +222,25 @@ document.addEventListener("DOMContentLoaded", () => {
             // This works smoothly on both mobile and desktop
             window.open(waUrl, "_blank", "noopener,noreferrer");
 
-            /* ===== COUNT THE SIGN-UP (this device only) =====
-               Waitlist requests don't take a spot, so they aren't counted. */
-            if (!isWaitlist && selectedRun && typeof addLocalSignup === "function") {
-                addLocalSignup(selectedRun, spotsNeeded);
-
-                // Reflect it straight away in the summary card
-                const total = selectedRun.spotsTotal || 0;
-                const taken = (selectedRun.spotsTaken || 0) + localSignupsFor(selectedRun);
-                const left = Math.max(0, total - taken);
-                const spotsEl = document.getElementById("rs-spots");
-                if (spotsEl) {
-                    spotsEl.textContent = total ? left : "\u2014";
-                    spotsEl.classList.toggle("is-full", total > 0 && left === 0);
-                    spotsEl.classList.toggle("is-low",  left > 0 && left <= 5);
+            /* ===== RECORD THE SIGN-UP =====
+               Logged to the shared Google Sheet (so the count is the same for
+               everyone) and remembered locally just to show a confirmation. */
+            if (!isWaitlist && selectedRun) {
+                if (typeof postSignup === "function") {
+                    postSignup({
+                        runKey: (typeof runKey === "function") ? runKey(selectedRun) : selectedRun.title,
+                        run:    selectedRun.title,
+                        when:   [selectedRun.date, selectedRun.time].filter(Boolean).join(" \u00B7 "),
+                        where:  (selectedRun.location || "").trim(),
+                        player: playerName,
+                        age:    ageGroup,
+                        guestsPlaying:  guests.play,
+                        guestsWatching: guests.watch,
+                        spots:  spotsNeeded
+                    });
                 }
+                if (typeof markRegistered === "function") markRegistered(selectedRun);
+                showRegisteredBadge();
             }
 
             // Subtle UI feedback letting the user know the action completed

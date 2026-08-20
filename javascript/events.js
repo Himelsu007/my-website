@@ -26,19 +26,19 @@ const events = [
         waitlist:false
     }, 
 
-    // {
-    //     type: "PICKUP GAME",
-    //     title: "FULL COURT 5V5",
-    //     date:  "August 15th",
-    //     time: "8:00PM-9:45PM",
-    //     location: "Técnico Lisboa",
-    //     map: "https://maps.apple/p/LB2DKKvAarAnMM",
-    //     spotsTaken: 24,
-    //     spotsTotal: 24,
-    //     price: "€5",
-    //     priceLabel: "Entry Fee",
-    //     waitlist:false
-    // },
+    {
+        type: "PICKUP GAME",
+        title: "FULL COURT 5V5",
+        date:  "August 15th",
+        time: "8:00PM-9:45PM",
+        location: "Técnico Lisboa",
+        map: "https://maps.apple/p/LB2DKKvAarAnMM",
+        spotsTaken: 24,
+        spotsTotal: 24,
+        price: "€5",
+        priceLabel: "Entry Fee",
+        waitlist:false
+    },
 
     //     {
     //     type: "PICKUP GAME",
@@ -94,7 +94,7 @@ function parseEventDate(str) {
 
 const container = document.getElementById("events_container");
 
-if (container) {
+function renderEvents(tally) {
     container.innerHTML = "";
 
     // Forget locally-stored sign-ups for runs that no longer exist
@@ -102,9 +102,11 @@ if (container) {
 
     events.forEach((event, i) => {
         const total = event.spotsTotal || 0;
-        // spotsTaken from this file + any registrations sent from THIS browser
-        const local = (typeof localSignupsFor === "function") ? localSignupsFor(event) : 0;
-        const taken = Math.min(total, (event.spotsTaken || 0) + local);
+        // spotsTaken from this file + confirmed signups from the shared sheet
+        const shared = (tally && typeof runKey === "function")
+            ? (Number(tally[runKey(event)]) || 0) : 0;
+        const taken = Math.min(total, (event.spotsTaken || 0) + shared);
+        const registered = (typeof hasRegistered === "function") && hasRegistered(event);
         const spotsLeft = total - taken;
         const fillPercent = total > 0 ? Math.min(100, Math.round((taken / total) * 100)) : 0;
         const img = event.image || venueImage(event.location);
@@ -146,8 +148,14 @@ if (container) {
         // Per-event override falls back to the global SHOW_WAITLIST toggle
         const waitlistOn = (typeof event.waitlist === "boolean") ? event.waitlist : SHOW_WAITLIST;
 
+        const tick = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+
         let ctaHTML;
-        if (status === "full") {
+        if (registered && status !== "full") {
+            // This device already sent a registration for this run
+            const href = `private_run_sign_up.html?run=${i}&event=${encodeURIComponent(event.title)}`;
+            ctaHTML = `<a class="bk-cta bk-cta--registered" href="${href}">${tick} You\u2019re Registered</a>`;
+        } else if (status === "full") {
             if (waitlistOn) {
                 const href = `private_run_sign_up.html?run=${i}&event=${encodeURIComponent(event.title)}&status=waitlist`;
                 ctaHTML = `<a class="bk-cta bk-cta--waitlist" href="${href}">Join Waitlist</a>`;
@@ -160,7 +168,7 @@ if (container) {
         }
 
         const card = `
-        <article class="bk-card" data-status="${status}">
+        <article class="bk-card" data-status="${status}"${registered ? ' data-registered="1"' : ''}>
             <span class="bk-beam" aria-hidden="true"></span>
             <div class="bk-body">
                 <div class="bk-top">
@@ -206,8 +214,10 @@ if (container) {
 
         container.insertAdjacentHTML("beforeend", card);
     });
+    revealCards();
+}
 
-    // ---- Scroll-reveal entrance ----
+function revealCards() {
     const cards = container.querySelectorAll(".bk-card");
     if (!("IntersectionObserver" in window)) {
         cards.forEach(c => c.classList.add("in"));
@@ -221,5 +231,14 @@ if (container) {
             });
         }, { threshold: 0.2 });
         cards.forEach(c => io.observe(c));
+    }
+}
+
+if (container) {
+    renderEvents({});                       // paint immediately from events.js
+    if (typeof fetchSignupTally === "function") {
+        fetchSignupTally().then(tally => {  // then fold in the shared count
+            if (tally && Object.keys(tally).length) renderEvents(tally);
+        });
     }
 }

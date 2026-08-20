@@ -1,14 +1,13 @@
 /* =====================================================
    LOCAL SIGN-UP COUNTER
    -----------------------------------------------------
-   When someone completes the form and sends their
-   WhatsApp registration, we remember it in this browser
-   and add it on top of `spotsTaken` from events.js.
+   Remembers, on THIS device only, which runs the visitor
+   has registered for — used to show them a "You're
+   registered" badge.
 
-   IMPORTANT: this is per-device. It is NOT shared between
-   visitors — each person only sees their own sign-ups
-   counted. `events.js` stays the source of truth, so keep
-   updating spotsTaken there as registrations are confirmed.
+   It deliberately does NOT affect the spot count: the
+   shared number comes from the Google Sheet (signups-api.js),
+   falling back to events.js.
    ===================================================== */
 (function (global) {
     const STORE = "lx_local_signups_v1";
@@ -39,23 +38,19 @@
         catch (e) { /* storage full or blocked — counting just won't persist */ }
     }
 
-    /** Spots this browser has already registered for the given run. */
-    function localSignupsFor(run) {
+    /** Has this device already registered for the given run? */
+    function hasRegistered(run) {
         const key = runKey(run);
-        if (!key) return 0;
-        const n = Number(readAll()[key]);
-        return Number.isFinite(n) && n > 0 ? n : 0;
+        return !!(key && readAll()[key]);
     }
 
-    /** Record a completed registration. `spots` = the player + any playing guests. */
-    function addLocalSignup(run, spots) {
+    /** Remember that this device registered for the run. */
+    function markRegistered(run) {
         const key = runKey(run);
-        if (!key) return 0;
-        const n = Math.max(1, parseInt(spots, 10) || 1);
+        if (!key) return;
         const data = readAll();
-        data[key] = (Number(data[key]) || 0) + n;
+        data[key] = { at: Date.now() };
         writeAll(data);
-        return data[key];
     }
 
     /** Drop stored counts for runs that no longer exist in events.js. */
@@ -71,7 +66,7 @@
     }
 
     global.runKey = runKey;
-    global.localSignupsFor = localSignupsFor;
-    global.addLocalSignup = addLocalSignup;
+    global.hasRegistered = hasRegistered;
+    global.markRegistered = markRegistered;
     global.pruneLocalSignups = pruneLocalSignups;
 })(window);
