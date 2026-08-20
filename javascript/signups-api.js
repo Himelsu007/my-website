@@ -34,7 +34,7 @@ const SIGNUPS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxpYeaAJK4zxhb
         const cached = readCache();
         if (cached) return cached;
         try {
-            const res = await fetch(SIGNUPS_ENDPOINT, { method: "GET" });
+            const res = await fetch(SIGNUPS_ENDPOINT, { method: "GET", cache: "no-store" });
             const data = await res.json();
             const tally = (data && data.ok && data.tally) ? data.tally : {};
             writeCache(tally);
