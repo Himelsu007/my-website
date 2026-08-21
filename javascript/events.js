@@ -23,7 +23,7 @@ const events = [
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
-        waitlist:true
+        waitlist:false
     }, 
     {
         type: "PICKUP GAME",
