@@ -1,4 +1,17 @@
-const events = [
+const events = [                
+    {
+        type: "PICKUP GAME",
+        title: "FULL COURT 5V5",
+        date:  "August 26th",
+        time: "8:15PM-10PM",
+        location: "Pavilhão Islâmico de Lisboa",
+        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
+        spotsTaken: 0,
+        spotsTotal: 20,
+        price: "€5",
+        priceLabel: "Entry Fee",
+        waitlist:false
+    }, 
                             {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
@@ -6,28 +19,12 @@ const events = [
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        // Manual sign-ups only (WhatsApp / in person).
-        // Everyone who used the website form is counted from the Sheet on top.
         spotsTaken: 14,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist:true
     }, 
-                {
-        type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
-        date:  "August 19th",
-        time: "8:15PM-10PM",
-        location: "Pavilhão Islâmico de Lisboa",
-        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 24,
-        spotsTotal: 24,
-        price: "€5",
-        priceLabel: "Entry Fee",
-        waitlist:false
-    }, 
-
     {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
