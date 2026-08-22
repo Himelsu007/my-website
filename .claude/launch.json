@@ -4,25 +4,46 @@
     {
       "name": "locked-in-website",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "/Users/himelsuencoge/Coding/locked_in_website"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8000",
+        "--directory",
+        "/Users/himelsuencoge/Coding/locked_in_website"
+      ],
       "port": 8000
     },
     {
       "name": "locked-in-tracker",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "/Users/himelsuencoge/routine-tracker", "run", "dev"],
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/himelsuencoge/routine-tracker",
+        "run",
+        "dev"
+      ],
       "port": 5180
     },
     {
       "name": "finance-app",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "/Users/himelsuencoge/Desktop/finance-app", "run", "dev"],
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/himelsuencoge/Desktop/finance-app",
+        "run",
+        "dev"
+      ],
       "port": 5173
     },
     {
-      "name": "case-files",
+      "name": "case-files-tmp",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "/Users/himelsuencoge/case-files", "run", "dev"],
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/himelsuencoge/case-files",
+        "run",
+        "dev"
+      ],
       "port": 5181
     }
   ]

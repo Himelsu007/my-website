@@ -4,7 +4,7 @@
 # Run this before pushing whenever you change spot counts, the leaderboard,
 # prices, or anything else in javascript/ or css/.
 cd "$(dirname "$0")" || exit 1
-VER=$(date +%Y%m%d%H%M)
+VER=$(date +%Y%m%d%H%M%S)
 python3 - "$VER" <<'PY'
 import re, sys, glob
 ver = sys.argv[1]
