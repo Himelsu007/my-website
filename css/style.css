@@ -1455,3 +1455,13 @@ section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
 @media (prefers-reduced-motion: reduce){
     #events_container .bk-card[data-status="pending"] .bk-bar{ animation:none; }
 }
+
+/* Finished run — history, no longer reads the shared Sheet */
+#events_container .s-done{ color:var(--bk-dim); }
+#events_container .f-done{ background:linear-gradient(90deg,#4a4a52,#33333a); }
+#events_container .bk-card[data-status="done"]{ opacity:0.72; }
+#events_container .bk-card[data-status="done"]:hover{ opacity:1; }
+#events_container .bk-cta--done{
+    background:transparent; color:#8a8a92;
+    border:1px solid rgba(255,255,255,0.12); cursor:default;
+}

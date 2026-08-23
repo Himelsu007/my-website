@@ -586,3 +586,5 @@ html,body {
 }
 .tp-features svg{ flex-shrink:0; margin-top:2px; color:var(--su-gold); }
 .tp-features + .rs-steps{ margin-top:16px; padding-top:16px; border-top:1px solid var(--su-line); }
+.rs-over{ color:#8a8a92 !important; border-color:rgba(255,255,255,0.14) !important;
+          background:rgba(255,255,255,0.04) !important; }

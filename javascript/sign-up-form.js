@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
        date / time / venue / price never drift from the booking cards.
     ========================================= */
     let selectedRun = null;
+    let isPastSelectedRun = false;
 
     (function fillRunSummary(){
         if (typeof events === "undefined" || !document.getElementById("run-summary")) return;
@@ -77,8 +78,15 @@ document.addEventListener("DOMContentLoaded", () => {
             spotsEl.classList.toggle("is-low",  left > 0 && left <= 5);
         }
 
-        showSpots((typeof cachedSignupTally === "function") ? cachedSignupTally() : null);
-        if (typeof fetchSignupTally === "function") fetchSignupTally().then(showSpots);
+        // A finished run reads its final number from events.js only, so an old
+        // link can't add rows to the Sheet for a game that already happened.
+        if (typeof isPastRun === "function" && isPastRun(run)) {
+            showSpots(null);
+            lockPastRun();
+        } else {
+            showSpots((typeof cachedSignupTally === "function") ? cachedSignupTally() : null);
+            if (typeof fetchSignupTally === "function") fetchSignupTally().then(showSpots);
+        }
 
         // Waitlist runs get a different step 2/3 wording
         if (isWaitlist) {
@@ -129,6 +137,34 @@ document.addEventListener("DOMContentLoaded", () => {
     wireCounter("play",  "guest-play-plus",  "guest-play-minus");
     wireCounter("watch", "guest-watch-plus", "guest-watch-minus");
     refreshGuests();
+
+    /** This run is over - stop it accepting any more registrations. */
+    function lockPastRun() {
+        isPastSelectedRun = true;
+
+        const tag = document.getElementById("rs-tag");
+        if (tag) tag.textContent = "Completed";
+
+        const steps = document.querySelector(".rs-steps");
+        if (steps) steps.remove();
+
+        const card = document.querySelector(".rs-inner");
+        if (card && !card.querySelector(".rs-over")) {
+            const el = document.createElement("div");
+            el.className = "rs-registered rs-over";
+            el.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>' +
+                           "<span>This run has already been played</span>";
+            card.insertBefore(el, card.firstChild);
+        }
+
+        const btn = document.getElementById("generate-pdf");
+        if (btn) {
+            btn.innerText = "THIS RUN IS OVER";
+            btn.disabled = true;
+            btn.style.opacity = "0.55";
+            btn.style.cursor = "default";
+        }
+    }
 
     /** Swap the summary card into a confirmed state after sending. */
     function showRegisteredBadge() {
@@ -183,6 +219,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(generateBtn) {
         generateBtn.addEventListener("click", function() {
+
+            if (isPastSelectedRun) return;          // finished run - nothing to send
 
             const playerName = document.getElementById("player-name").value.trim();
             const ageGroup = getSelectedAgeGroup();

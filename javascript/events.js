@@ -19,7 +19,9 @@ const events = [
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 14,
+        // This run is over - final headcount. The Sheet is no longer read for
+        // it, so its rows are safe to delete.
+        spotsTaken: 20,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
@@ -76,6 +78,45 @@ const MONTHS = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov
 const MONTH_LABEL = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 const WEEKDAYS = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
+/* When does this run actually finish?
+   Dates here carry no year, so assume the current one and roll forward if
+   that would put the run far in the past (handles the Dec -> Jan rollover).
+   The end of the time range is what counts: "8:15PM-10PM" finishes at 22:00. */
+function runEndsAt(event) {
+    const s = ((event && event.date) || "").trim().toLowerCase();
+    const m = s.match(/([a-z]+)\s*\.?\s*(\d{1,2})/);
+    if (!m) return null;
+    const monIdx = MONTHS.indexOf(m[1].slice(0, 3));
+    const day = parseInt(m[2], 10);
+    if (monIdx < 0 || !day) return null;
+
+    let h = 23, min = 59;
+    const t = ((event && event.time) || "").toLowerCase().replace(/\s+/g, "");
+    const end = t.split(/[-\u2013\u2014]/)[1] || "";
+    const tm = end.match(/(\d{1,2})(?::(\d{2}))?(am|pm)?/);
+    if (tm) {
+        h = parseInt(tm[1], 10);
+        min = tm[2] ? parseInt(tm[2], 10) : 0;
+        // "8:15PM-10PM" leaves the second half without a suffix - reuse the last one
+        const ap = tm[3] || (t.match(/(am|pm)/g) || []).pop();
+        if (ap === "pm" && h < 12) h += 12;
+        if (ap === "am" && h === 12) h = 0;
+    }
+
+    const now = new Date();
+    let dt = new Date(now.getFullYear(), monIdx, day, h, min, 0, 0);
+    if (dt.getTime() - now.getTime() < -180 * 864e5) {
+        dt = new Date(now.getFullYear() + 1, monIdx, day, h, min, 0, 0);
+    }
+    return dt;
+}
+
+/** A run is history once its end time has gone by. */
+function isPastRun(event) {
+    const end = runEndsAt(event);
+    return !!end && Date.now() > end.getTime();
+}
+
 function parseEventDate(str) {
     const s = (str || "").trim().toLowerCase();
     const m = s.match(/([a-z]+)\s*\.?\s*(\d{1,2})/);
@@ -101,8 +142,10 @@ function renderEvents(tally, pending) {
 
     events.forEach((event, i) => {
         const total = event.spotsTotal || 0;
-        // spotsTaken from this file + confirmed signups from the shared sheet
-        const shared = (tally && typeof runKey === "function")
+        const past  = isPastRun(event);
+        // A finished run is history - it reads its final number straight from
+        // this file and ignores the Sheet, so old rows can be deleted freely.
+        const shared = (!past && tally && typeof runKey === "function")
             ? (Number(tally[runKey(event)]) || 0) : 0;
         const taken = Math.min(total, (event.spotsTaken || 0) + shared);
         const registered = (typeof hasRegistered === "function") && hasRegistered(event);
@@ -116,7 +159,11 @@ function renderEvents(tally, pending) {
         let scarcity = "Spots available";
         let ctaLabel = "Join Now";
 
-        if (pending) {
+        if (past) {
+            status = "done";
+            statusLabel = "Completed";
+            scarcity = "Game done";
+        } else if (pending) {
             // The Sheet hasn't answered yet - show the card without committing
             // to a number, rather than flashing the events.js baseline.
             status = "pending";
@@ -156,7 +203,9 @@ function renderEvents(tally, pending) {
         const tick = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
 
         let ctaHTML;
-        if (pending) {
+        if (past) {
+            ctaHTML = `<button class="bk-cta bk-cta--done" type="button" disabled>Played</button>`;
+        } else if (pending) {
             ctaHTML = `<button class="bk-cta bk-cta--pending" type="button" disabled>Checking\u2026</button>`;
         } else if (registered && status !== "full") {
             // This device already sent a registration for this run
