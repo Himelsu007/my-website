@@ -12,8 +12,7 @@ const LEADERBOARD_FOOTNOTE = "Rated on skill, consistency and impact on the run.
 
 const leaderboardPlayers = [
     { name: "Ivan Almeida", alias: "The Blueprint", pos: "", pct: 91, photo: "assets/images/ivan-almeida.png" },
-    { name: "Joel António", alias: "Sniper", pos: "", pct: 86, photo: "assets/images/joel-antónio.png" },
-    { name: "Aitor", alias: "", pos: "", pct: 79, photo: "assets/images/fabio-silva.png" },
+    { name: "Lweis Boltan", alias: "Sniper", pos: "", pct: 86, photo: "assets/images/lweis-boltan.png" },
     { name: "Wagner", alias: "Sniper", pos: "", pct: 78.5, photo: "assets/images/wagner.png" },
     { name: "Brock Davis", alias: "", pos: "", pct: 78.3, photo: "assets/images/brock-davis.png" },
     { name: "Rui Martins", alias: "", pos: "", pct: 71, photo: "assets/images/rui-martins.png" },
