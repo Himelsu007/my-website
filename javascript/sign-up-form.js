@@ -103,11 +103,46 @@ document.addEventListener("DOMContentLoaded", () => {
     const guests = { play: 0, watch: 0 };
     const totalEl = document.getElementById("guest-total");
 
+    /** One name box per guest. Keeps whatever's already been typed. */
+    function renderGuestNames() {
+        const wrap = document.getElementById("guest-names");
+        if (!wrap) return;
+
+        const keep = {};
+        wrap.querySelectorAll("input[data-gn]").forEach(i => { keep[i.dataset.gn] = i.value; });
+
+        const group = (kind, label, n) => {
+            if (!n) return "";
+            let rows = "";
+            for (let i = 1; i <= n; i++) {
+                const id = kind + "-" + i;
+                const val = (keep[id] || "").replace(/"/g, "&quot;");
+                rows += `<div class="gn-row"><span class="gn-num">${i}</span>` +
+                        `<input type="text" data-gn="${id}" value="${val}" ` +
+                        `placeholder="Guest ${i} name" autocomplete="off"></div>`;
+            }
+            return `<div><p class="gn-group-label">${label}</p><div class="gn-group">${rows}</div></div>`;
+        };
+
+        const html = group("play", "Guests playing", guests.play) +
+                     group("watch", "Guests watching", guests.watch);
+        wrap.innerHTML = html;
+        wrap.hidden = !html;
+    }
+
+    /** Names typed for one guest kind, blanks dropped. */
+    function guestNames(kind) {
+        return [...document.querySelectorAll(`input[data-gn^="${kind}-"]`)]
+            .map(i => i.value.trim())
+            .filter(Boolean);
+    }
+
     function refreshGuests() {
         const play = document.getElementById("guest-play-count");
         const watch = document.getElementById("guest-watch-count");
         if (play)  play.textContent  = guests.play;
         if (watch) watch.textContent = guests.watch;
+        renderGuestNames();
         const spots = 1 + guests.play;                 // the player themselves + playing guests
         if (totalEl) totalEl.innerHTML = `Spots needed: <strong>${spots}</strong>`;
 
@@ -242,9 +277,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (selectedRun.location) runLines += `*Where:* ${selectedRun.location.trim()}\n`;
             }
 
+            const playNames  = guestNames("play");
+            const watchNames = guestNames("watch");
+
             let guestLines = "";
-            if (guests.play)  guestLines += `*Guests playing:* ${guests.play}\n`;
-            if (guests.watch) guestLines += `*Guests watching:* ${guests.watch}\n`;
+            if (guests.play) {
+                guestLines += `*Guests playing:* ${guests.play}`;
+                guestLines += playNames.length ? ` \u2014 ${playNames.join(", ")}\n` : `\n`;
+            }
+            if (guests.watch) {
+                guestLines += `*Guests watching:* ${guests.watch}`;
+                guestLines += watchNames.length ? ` \u2014 ${watchNames.join(", ")}\n` : `\n`;
+            }
             if (!guests.play && !guests.watch) guestLines = `*Guests:* none\n`;
 
             const message = isWaitlist
@@ -283,6 +327,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         age:    ageGroup,
                         guestsPlaying:  guests.play,
                         guestsWatching: guests.watch,
+                        playingNames:   playNames,
+                        watchingNames:  watchNames,
                         spots:  spotsNeeded
                     });
                 }

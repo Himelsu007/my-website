@@ -13,12 +13,12 @@ const LEADERBOARD_FOOTNOTE = "Rated on skill, consistency and impact on the run.
 const leaderboardPlayers = [
     { name: "Ivan Almeida", alias: "The Blueprint", pos: "", pct: 91, photo: "assets/images/ivan-almeida.png" },
     { name: "Lweis Boltan", alias: "Sniper", pos: "", pct: 86, photo: "assets/images/lweis-boltan.png" },
-    { name: "Wagner", alias: "Sniper", pos: "", pct: 78.5, photo: "assets/images/wagner.png" },
+    { name: "Luís Faial", alias: "", pos: "", pct: 78.5, photo: "assets/images/wagner.png" },
     { name: "Brock Davis", alias: "", pos: "", pct: 78.3, photo: "assets/images/brock-davis.png" },
     { name: "Rui Martins", alias: "", pos: "", pct: 71, photo: "assets/images/rui-martins.png" },
-    { name: "Vasco Matos", alias: "", pos: "", pct: 68, photo: "assets/images/vasco-matos.png" },
+    { name: "Vasco Matos", alias: "", pos: "", pct: 70, photo: "assets/images/vasco-matos.png" },
     { name: "Cedric",  alias: "", pos: "", pct: 65.5, photo: "assets/images/cedric.png" },
-    { name: "Nazário", alias: "",       pos: "", pct: 64, photo: "assets/images/nazário.png" },
-    { name: "Iuri", alias: "", pos: "", pct: 62.8, photo: "assets/images/iuri.png" },
+    { name: "Iuri", alias: "", pos: "", pct: 63, photo: "assets/images/iuri.png" },
+    { name: "Nazário", alias: "",       pos: "", pct: 60, photo: "assets/images/nazário.png" },
     { name: "Dinis Lascenco", alias: "", pos: "", pct: 58.7, photo: "assets/images/dinis-lascenco.png" }
 ];
