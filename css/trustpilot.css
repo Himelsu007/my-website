@@ -1,0 +1,131 @@
+/* =====================================================
+   REVIEWS / TRUSTPILOT — Locked In Lx
+   All selectors are tp-* prefixed / scoped to
+   #reviews_section to avoid collisions.
+   ===================================================== */
+
+#reviews_section{
+    --tp-gold:#FFD700;
+    --tp-green:#3FFF6F;
+    --tp-line:rgba(255,255,255,0.07);
+    --tp-dim:#a1a1aa;
+    --tp-surface:#0f0f12;
+    --tp-ease:cubic-bezier(0.19,1,0.22,1);
+    padding-bottom:30px;
+}
+
+/* Hidden until javascript/trustpilot.js finds a business unit ID. */
+#reviews_section[hidden]{ display:none; }
+
+/* ===================== PANEL ===================== */
+#reviews_section .tp-panel{
+    max-width:720px;
+    margin:34px auto 0;
+    padding:0 24px;
+}
+#reviews_section .tp-panel-inner{
+    border:1px solid var(--tp-line);
+    border-radius:18px;
+    background:var(--tp-surface);
+    overflow:hidden;
+}
+
+/* ---- rating strip: the score, stars and review count ---- */
+#reviews_section .tp-score{
+    padding:26px 24px 22px;
+    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));
+    border-bottom:1px solid var(--tp-line);
+}
+/* Trustpilot injects an iframe here; keep it from inheriting odd widths. */
+#reviews_section .tp-score .trustpilot-widget{ width:100%; }
+#reviews_section .tp-score iframe{ max-width:100%; }
+
+/* ---- collector + call to action ---- */
+#reviews_section .tp-collect{
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    text-align:center;
+}
+#reviews_section .tp-collect-copy{
+    font-family:'Inter',sans-serif;
+    color:var(--tp-dim);
+    font-size:0.95rem;
+    line-height:1.65;
+    margin:0;
+    max-width:440px;
+}
+#reviews_section .tp-collect-copy strong{ color:#fff; font-weight:600; }
+
+#reviews_section .tp-cta{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:13px 30px;
+    border-radius:99px;
+    border:1px solid rgba(63,255,111,0.30);
+    background:rgba(63,255,111,0.10);
+    color:var(--tp-green);
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    text-decoration:none;
+    transition:background .35s var(--tp-ease),
+               border-color .35s var(--tp-ease),
+               transform .35s var(--tp-ease);
+}
+#reviews_section .tp-cta:hover{
+    background:rgba(63,255,111,0.16);
+    border-color:rgba(63,255,111,0.55);
+    transform:translateY(-1px);
+}
+#reviews_section .tp-cta:focus-visible{
+    outline:2px solid var(--tp-green);
+    outline-offset:3px;
+}
+#reviews_section .tp-cta svg{ flex:none; }
+
+/* ---- footer link out to the full profile ---- */
+#reviews_section .tp-foot{
+    margin:20px auto 0;
+    text-align:center;
+    font-family:'Inter',sans-serif;
+    font-size:0.82rem;
+    color:var(--tp-dim);
+}
+#reviews_section .tp-foot a{
+    color:var(--tp-dim);
+    text-decoration:none;
+    border-bottom:1px solid rgba(255,255,255,0.16);
+    transition:color .3s var(--tp-ease), border-color .3s var(--tp-ease);
+}
+#reviews_section .tp-foot a:hover{
+    color:#fff;
+    border-color:rgba(255,255,255,0.45);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (min-width:1440px){
+    #reviews_section .tp-panel{ max-width:820px; }
+}
+@media (max-width:520px){
+    #reviews_section .tp-panel{ padding:0 14px; margin-top:26px; }
+    #reviews_section .tp-score{ padding:22px 16px 18px; }
+    #reviews_section .tp-collect{ padding:20px 16px; gap:16px; }
+    #reviews_section .tp-cta{ width:100%; padding:14px 20px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+    #reviews_section .tp-cta{ transition:none; }
+    #reviews_section .tp-cta:hover{ transform:none; }
+}
+
+/* A TrustBox that never rendered (ad blocker, offline, bad ID) collapses
+   instead of leaving a dead band inside the panel. */
+#reviews_section [data-tp-empty]{ display:none; }
+#reviews_section .tp-score[data-tp-empty]{ display:none; }
