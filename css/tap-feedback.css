@@ -1,0 +1,83 @@
+/* =====================================================
+   TAP FEEDBACK — the store buttons on the home page
+   -----------------------------------------------------
+   The four product cards and the VIEW MERCH button only
+   responded to :hover, which on a phone either does nothing
+   or sticks on after the tap. This gives them a press.
+
+   Three things happen together: the card sinks slightly, a
+   soft gold ripple opens from the point actually touched, and
+   the arrow kicks right. Then splash.js takes over and covers
+   the screen, so the press reads as the start of the journey
+   rather than a separate flourish.
+   ===================================================== */
+
+/* ---------- the press ---------- */
+.home_page_product_boxes{
+    transition:transform .34s cubic-bezier(0.34,1.12,0.42,1);
+}
+/* :active is the no-JS fallback; .lx-press is what actually fires on iOS,
+   where :active is unreliable on elements without a touch listener. */
+.home_page_product_boxes:active,
+.home_page_product_boxes.lx-press{
+    transform:scale(0.968);
+    transition-duration:.11s;
+    transition-timing-function:cubic-bezier(0.4,0,0.2,1);
+}
+
+/* The image leans in on press the way it does on hover, so touch gets the
+   same life that a mouse already had. */
+.home_page_product_boxes.lx-press::before{
+    transform:scale(1.05);
+}
+.home_page_product_boxes.lx-press .hover-arrow{
+    transform:translateX(7px);
+}
+
+/* ---------- the ripple ---------- */
+.lx-tapfx{
+    position:absolute;
+    inset:0;
+    z-index:2;            /* over the image and gradient, under the glass label */
+    overflow:hidden;
+    border-radius:inherit;
+    pointer-events:none;
+}
+.lx-tapfx::after{
+    content:"";
+    position:absolute;
+    left:var(--tx,50%);
+    top:var(--ty,50%);
+    width:10px; height:10px;
+    margin:-5px 0 0 -5px;
+    border-radius:50%;
+    /* Gold at low opacity with a soft edge. A solid gold disc at this size
+       reads as neon; this reads as light spreading under a finger. */
+    background:radial-gradient(circle,
+        rgba(255,215,0,0.42) 0%,
+        rgba(255,215,0,0.17) 45%,
+        rgba(255,215,0,0) 72%);
+    transform:scale(0);
+    opacity:0;
+}
+.lx-tapfx.lx-rippling::after{
+    animation:lxRipple 640ms cubic-bezier(0.22,1,0.36,1) forwards;
+}
+/* Bright while it is small, faint once it has spread. The other way round
+   gives a large flat gold wash at full strength, which is the neon look. */
+@keyframes lxRipple{
+    0%   { transform:scale(0);  opacity:1; }
+    30%  { opacity:0.6; }
+    100% { transform:scale(62); opacity:0; }
+}
+
+/* ---------- VIEW MERCH ----------
+   It already presses via its own nikePress animation, so it only needs the
+   ripple. Its own overflow:hidden clips it. */
+#home_page_merch_button .lx-tapfx{ z-index:0; border-radius:14px; }
+
+@media (prefers-reduced-motion: reduce){
+    .home_page_product_boxes{ transition:none; }
+    .home_page_product_boxes.lx-press::before{ transform:none; }
+    .lx-tapfx.lx-rippling::after{ animation:none; }
+}

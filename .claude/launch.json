@@ -4,8 +4,24 @@
     {
       "name": "site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4173"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4173"
+      ],
       "port": 4173
+    },
+    {
+      "name": "bd",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4177",
+        "--directory",
+        "/private/tmp/claude-501/-Users-himelsuencoge-Coding-locked-in-website/57226c07-044f-4fbb-82d2-87557499f075/scratchpad"
+      ],
+      "port": 4177
     }
   ]
 }

@@ -52,11 +52,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
-    <link rel="stylesheet" href="css/merch.css?v=20260831100220">
-    <link rel="stylesheet" href="css/fonts.css?v=20260831100220">
-    <link rel="stylesheet" href="css/footer.css?v=20260831100220">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20260831100220">
-    <link rel="stylesheet" href="css/responsive.css?v=20260831100220">
+    <script>
+        /* Splash flag, set before first paint — see javascript/splash.js */
+        try {
+            if (sessionStorage.getItem("lx_splash_active") === "1" &&
+                !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                document.documentElement.setAttribute("data-splash", "enter");
+            }
+        } catch (e) {}
+    </script>
+    <link rel="preload" as="image" href="assets/images/locked-in-crest.webp" type="image/webp">
+    <link rel="stylesheet" href="css/splash.css?v=20260902132738">
+    <link rel="stylesheet" href="css/merch.css?v=20260902132738">
+    <link rel="stylesheet" href="css/fonts.css?v=20260902132738">
+    <link rel="stylesheet" href="css/footer.css?v=20260902132738">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20260902132738">
+    <link rel="stylesheet" href="css/responsive.css?v=20260902132738">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script type="application/ld+json">
@@ -243,6 +254,12 @@
 </head>
 
 <body>
+
+<div class="lx-splash" aria-hidden="true">
+    <img class="lx-splash__mark" src="assets/images/locked-in-crest.webp"
+         alt="" width="600" height="800" decoding="async" fetchpriority="high">
+</div>
+
 
 <header id="main-header">
     <button class="menu-trigger" id="menu-open" aria-label="Open Menu">
@@ -434,9 +451,9 @@
 
 
 <!-- Accordition JS  -->
-<script src="javascript/merch-hero.js?v=20260831100220" defer></script>
-<script src="javascript/product-data.js?v=20260831100220" defer></script>
-<script src="javascript/scroll_detection_menu.js?v=20260831100220" defer></script>
+<script src="javascript/merch-hero.js?v=20260902132738" defer></script>
+<script src="javascript/product-data.js?v=20260902132738" defer></script>
+<script src="javascript/scroll_detection_menu.js?v=20260902132738" defer></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const slides = document.querySelectorAll("#products_show_case_main_child_container .showcase-slide");
@@ -464,6 +481,7 @@
         setInterval(updateSlide, duration);
     });
 </script>
-<script src="javascript/cookie-consent.js?v=20260831100220" defer></script>
+<script src="javascript/cookie-consent.js?v=20260902132738" defer></script>
+<script src="javascript/splash.js?v=20260902132738" defer></script>
 </body> 
 </html>

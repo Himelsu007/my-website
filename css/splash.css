@@ -1,0 +1,140 @@
+/* =====================================================
+   SPLASH — home → store, once per session
+   -----------------------------------------------------
+   Motion taken from the Jitter storyboard
+   (Logo & Assets/Animated/Locked-in-splash-screen.make):
+   the crest starts centred at 0.62 scale, fully transparent,
+   and settles up to full size — frames 1:4 → 1:6.
+
+   Around that, one continuous upward gesture across the page
+   boundary: the panel rises from the bottom to cover the home
+   page, the browser navigates while it is covered, the crest
+   resolves, then the panel keeps rising and exits the top of
+   the store page.
+
+   Sequence on arrival:
+     0        crest at 0.62, invisible
+     60-490   crest settles up to full size and fades in
+     490-870  it recoils from landing and shakes itself still,
+              each swing smaller than the last, ending on exact
+              zero — same position, same angle it started at
+     870-1020 hold
+     1020-1780 panel lifts away, crest lagging behind it
+
+   The reveal is driven purely by CSS off the data-splash
+   attribute, so the panel clears itself even if splash.js
+   never runs. Nothing here can leave the page covered.
+   ===================================================== */
+
+.lx-splash{
+    position:fixed;
+    inset:0;
+    /* Above everything on the site: header 1000, nav overlay 2000, product
+       modal 9999, cookie bar 9999 (which is later in the DOM, so an equal
+       z-index loses to it). */
+    z-index:10050;
+    display:grid;
+    place-items:center;
+    pointer-events:none;
+    visibility:hidden;
+    transform:translateY(100%);
+    /* The crest is the only colour in the frame. Everything behind it stays
+       flat near-black so nothing competes with it. */
+    background:#050506;
+}
+
+/* A single gold hairline on the leading edge. */
+.lx-splash::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:1px;
+    background:linear-gradient(90deg,transparent,#FFD700,transparent);
+    opacity:0.55;
+}
+
+.lx-splash__mark{
+    /* 245 of a 440pt frame in the storyboard — 56% of the width. */
+    width:min(56vw,300px);
+    height:auto;
+    display:block;
+    opacity:0;
+    transform:scale(0.62);
+    will-change:transform,opacity;
+}
+
+/* ---------- covering the home page ---------- */
+html[data-splash="cover"] .lx-splash{
+    visibility:visible;
+    pointer-events:auto;
+    animation:lxSplashIn 420ms cubic-bezier(0.5,0,0.2,1) forwards;
+}
+@keyframes lxSplashIn{
+    from{ transform:translateY(100%); }
+    to  { transform:translateY(0); }
+}
+
+/* ---------- the store page: crest resolves, then the panel leaves ---------- */
+html[data-splash="enter"] .lx-splash{
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateY(0);
+    /* Deliberately NOT a decelerating curve. An expo-out here puts half the
+       travel in the first 90ms and then creeps, which reads as a snap followed
+       by a stall. A gentle ease-in gives the panel weight before it leaves. */
+    animation:lxSplashOut 760ms 1020ms cubic-bezier(0.55,0,0.2,1) forwards;
+}
+@keyframes lxSplashOut{
+    from{ transform:translateY(0);     visibility:visible; }
+    to  { transform:translateY(-100%); visibility:hidden; }
+}
+
+/* Two phases on the crest. They do not overlap in time, and the second
+   starts from where the first ends, so nothing jumps between them.
+
+   The settle and the shake are ONE animation rather than two. Both drive
+   transform, so as separate animations they would fight over it — and folding
+   them together also makes the shake read as the recoil of landing instead of
+   an unrelated wobble tacked on afterwards. */
+html[data-splash="enter"] .lx-splash__mark{
+    animation:
+        lxCrestIn  900ms   60ms linear both,
+        lxCrestOut 760ms 1020ms cubic-bezier(0.55,0,0.2,1) forwards;
+}
+/* Offsets are percentages of the crest's own box, so the shake keeps the same
+   proportions on a phone as on a desktop. Amplitude decays ~30% per swing and
+   lands on exact zero — it finishes where it started, to the pixel. */
+@keyframes lxCrestIn{
+    0%    { opacity:0; transform:translate(0,0) rotate(0deg) scale(0.62);
+            animation-timing-function:cubic-bezier(0.34,1.12,0.42,1); }
+    48%   { opacity:1; transform:translate(0,0) rotate(0deg) scale(1);
+            animation-timing-function:linear; }
+    52.5% { transform:translate(1.6%,-0.4%)   rotate(-2deg)    scale(1); }
+    57.5% { transform:translate(-1.35%,0.35%) rotate(1.65deg)  scale(1); }
+    62.5% { transform:translate(1.05%,-0.28%) rotate(-1.25deg) scale(1); }
+    67.5% { transform:translate(-0.75%,0.2%)  rotate(0.9deg)   scale(1); }
+    72.5% { transform:translate(0.48%,-0.13%) rotate(-0.55deg) scale(1); }
+    78%   { transform:translate(-0.26%,0.07%) rotate(0.28deg)  scale(1); }
+    84%   { transform:translate(0.11%,0)      rotate(-0.12deg) scale(1); }
+    90%   { transform:translate(0,0)          rotate(0deg)     scale(1); }
+    100%  { opacity:1; transform:translate(0,0) rotate(0deg)   scale(1); }
+}
+/* The crest lags behind the panel it sits on. That difference in travel is
+   what reads as depth rather than a flat sheet moving. The lag has to be a
+   share of the panel's travel, not of the crest's own height. */
+@keyframes lxCrestOut{
+    0%   { opacity:1;   transform:translate(0,0)      rotate(0deg) scale(1); }
+    55%  { opacity:0.9; }
+    100% { opacity:0;   transform:translate(0,16vh)   rotate(0deg) scale(1); }
+}
+
+/* ---------- never leave anyone stuck behind it ---------- */
+html[data-splash="done"] .lx-splash{
+    visibility:hidden !important;
+    animation:none !important;
+    transform:translateY(-100%) !important;
+}
+
+@media (prefers-reduced-motion: reduce){
+    .lx-splash{ display:none !important; }
+}
