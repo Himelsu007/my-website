@@ -1,0 +1,49 @@
+/* =====================================================
+   DESKTOP SCALE
+   -----------------------------------------------------
+   The site was drawn large. This shrinks the whole page on
+   desktop to 90% — the same thing one press of Cmd+minus
+   does — without touching phones or tablets, where the
+   current sizes are right.
+
+   Why zoom and not a root font-size: the stylesheets are
+   about 1900 px values against 176 rem, so scaling the root
+   font would shrink the type and leave every padding, card
+   and gap at full size. zoom scales all of it at once.
+
+   MUST be the last stylesheet on the page — the vh
+   corrections below have to beat the originals.
+   ===================================================== */
+
+@media (min-width: 1024px){
+
+    /* On the root rather than body, so position:fixed children
+       (header, side menu, cookie bar, splash) scale with everything
+       else instead of being measured against an unscaled viewport. */
+    html{
+        zoom:0.9;
+    }
+
+    /* ---- vh correction ----
+       Viewport units are resolved against the real viewport and only then
+       scaled, so anything sized in vh lands 10% short — the hero would stop
+       short of the fold and leave a strip of background under it. Dividing
+       the zoom back out restores the intended height. */
+    .hero-container{
+        height:calc(100vh / 0.9);
+        height:calc(100dvh / 0.9);
+    }
+    .rules-hero{
+        min-height:calc(70vh / 0.9);
+        min-height:calc(70dvh / 0.9);
+    }
+    .tr-hero{
+        min-height:calc(62vh / 0.9);
+        min-height:calc(62dvh / 0.9);
+    }
+    .modal_content,
+    .lightbox_img{
+        max-height:calc(92vh / 0.9);
+        max-height:calc(92dvh / 0.9);
+    }
+}
