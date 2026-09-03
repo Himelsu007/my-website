@@ -74,15 +74,11 @@ function venueImage(loc) {
     return DEFAULT_EVENT_IMAGE;
 }
 
-// ---- Date parsing → calendar chip ----
 const MONTHS = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
 const MONTH_LABEL = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 const WEEKDAYS = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
-/* When does this run actually finish?
-   Dates here carry no year, so assume the current one and roll forward if
-   that would put the run far in the past (handles the Dec -> Jan rollover).
-   The end of the time range is what counts: "8:15PM-10PM" finishes at 22:00. */
+
 function runEndsAt(event) {
     const s = ((event && event.date) || "").trim().toLowerCase();
     const m = s.match(/([a-z]+)\s*\.?\s*(\d{1,2})/);

@@ -15,12 +15,8 @@
     "use strict";
 
     var CONFIG = {
-        /* ---- FILL THIS IN --------------------------------------------
-           Trustpilot Business > Integrations > TrustBox. Pick any widget,
-           and the generated snippet contains data-businessunit-id="...".
-           It is a 24-character hex string. Paste it here and the reviews
-           section appears on the homepage. Leave empty and it stays hidden. */
-        businessUnitId: "",
+        /* From the TrustBox snippet in Trustpilot Business > Share & promote. */
+        businessUnitId: "6a95441b93a7a59a46a4a010",
 
         /* Your domain as Trustpilot knows it — drives the profile and
            review links. */
@@ -28,23 +24,46 @@
 
         /* trustpilot.com is the global host; locale controls widget copy. */
         host:   "https://www.trustpilot.com",
-        locale: "en-GB",
+        locale: "en-US",
 
-        /* Template IDs identify which TrustBox to draw. These are the
-           defaults below, but ALWAYS confirm against the snippet your own
-           Trustpilot dashboard generates — availability depends on plan,
-           and the dashboard is the authority. */
         display: {
-            /* "Micro Combo" — stars + score + review count. Compact, and
-               available on the free plan. Swap for a richer TrustBox
-               (Carousel/Grid) once you have reviews and a plan that allows it. */
+            /* OFF until there are reviews to show. A rating widget backed by
+               zero reviews renders an empty / "no reviews yet" state, which
+               reads worse than showing nothing at all.
+
+               TO TURN ON, once a handful of reviews have landed:
+                 1. set enabled to true
+                 2. confirm templateId against the snippet your dashboard
+                    generates for the widget you actually want — this one is
+                    "Micro Combo" (stars + score + count) and is UNVERIFIED
+                    against your plan, unlike the collector below
+                 3. run ./bump-assets.sh */
+            enabled: false,
             templateId: "5419b6ffb0d04a076446a9af",
             height: "24px",
             width:  "100%"
         },
         collector: {
-            /* "Review Collector" — the box that asks people to leave one. */
+            /* "Review Collector" — Trustpilot's own "Review us on Trustpilot"
+               button.
+
+               OFF, deliberately. Two reasons:
+                 1. Trustpilot paints this TrustBox on an opaque white ground
+                    and ignores theme=dark, so it punches a white hole in the
+                    panel on a dark site.
+                 2. It buys nothing in return. Reviews left through it are
+                    ORGANIC, exactly like reviews from the plain /evaluate/
+                    link the CTA uses. Trustpilot reserves "Verified" for
+                    reviews tied to a confirmed transaction (name + email
+                    supplied through its invitation system) and "Invited" for
+                    invitations the business actually sent.
+
+               Values below are verbatim from the dashboard snippet, kept so
+               this can be switched back on. The token is public by design:
+               Trustpilot expects it in page source. */
+            enabled: false,
             templateId: "56278e9abfbbba0bdcd568bc",
+            token: "54ba0152-e491-4fd8-b237-cb420d210e75",
             height: "52px",
             width:  "100%"
         },
@@ -79,6 +98,7 @@
         el.setAttribute("data-style-height", spec.height);
         el.setAttribute("data-style-width", spec.width);
         el.setAttribute("data-theme", CONFIG.theme);
+        if (spec.token) el.setAttribute("data-token", spec.token);
 
         /* Trustpilot replaces the contents with an iframe. Until it does,
            this anchor is what a visitor (and a crawler) sees. */
@@ -141,8 +161,27 @@
         return !!f && f.getBoundingClientRect().height > 4;
     }
 
-    function collapse(w)   { if (w.parentNode) w.parentNode.setAttribute("data-tp-empty", ""); }
-    function uncollapse(w) { if (w.parentNode) w.parentNode.removeAttribute("data-tp-empty"); }
+    function collapse(w) {
+        if (!w.parentNode) return;
+        w.parentNode.setAttribute("data-tp-empty", "");
+        /* Trustpilot's own button is gone — fall back to our link so there is
+           still a way to leave a review. Those come in as organic rather than
+           invited reviews, but an organic review beats no review. */
+        if (w.parentNode.hasAttribute("data-tp-collector")) showFallbackCta(w);
+    }
+    function uncollapse(w) {
+        if (!w.parentNode) return;
+        w.parentNode.removeAttribute("data-tp-empty");
+        if (w.parentNode.hasAttribute("data-tp-collector")) hideFallbackCta(w);
+    }
+
+    function ctaFor(w) {
+        var section = w.closest ? w.closest("#reviews_section")
+                                : document.getElementById("reviews_section");
+        return section ? section.querySelector("[data-tp-cta]") : null;
+    }
+    function showFallbackCta(w) { var c = ctaFor(w); if (c) c.removeAttribute("hidden"); }
+    function hideFallbackCta(w) { var c = ctaFor(w); if (c) c.setAttribute("hidden", ""); }
 
     /** Collapse any slot the bootstrap did not draw into, so the panel never
         shows a dead band. Only called once Trustpilot is known to be present,
@@ -173,20 +212,32 @@
         if (profileLink) profileLink.href = profileUrl();
 
         var widgets = [];
-        if (displaySlot) {
+        if (displaySlot && CONFIG.display.enabled) {
             var d = buildWidget(CONFIG.display);
             displaySlot.appendChild(d);
             widgets.push(d);
+        } else if (displaySlot) {
+            displaySlot.setAttribute("data-tp-empty", "");
         }
-        if (collectorSlot) {
+        if (collectorSlot && CONFIG.collector.enabled) {
             var c = buildWidget(CONFIG.collector);
             collectorSlot.appendChild(c);
             widgets.push(c);
+            /* Trustpilot's button is the primary action while it renders,
+               because reviews collected through it are marked verified. */
+            if (cta) cta.setAttribute("hidden", "");
+        } else if (collectorSlot) {
+            collectorSlot.setAttribute("data-tp-empty", "");
         }
 
         section.removeAttribute("hidden");
         section.setAttribute("data-tp-state", "ready");
         injectSameAs();
+
+        /* Nothing to draw — don't pull Trustpilot's bootstrap at all. With
+           every TrustBox disabled the page makes no third-party request and
+           sets no third-party cookie; the section is our own markup. */
+        if (!widgets.length) return;
 
         withTrustpilot(
             function onReady() {

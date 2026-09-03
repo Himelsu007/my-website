@@ -40,6 +40,12 @@
         seasonEl.textContent = LEADERBOARD_SEASON;
     }
 
+    // ---- Row count chip ----
+    // The markup hardcoded "Top 10"; derive it so it cannot drift out of step
+    // with LEADERBOARD_MAX_ROWS or the number of players actually listed.
+    const countEl = document.querySelector("#lb_table .lb-c");
+    if (countEl) countEl.textContent = `Top ${ranked.length}`;
+
     // ---- Footnote ----
     const footEl = document.getElementById("lb_foot");
     if (footEl && typeof LEADERBOARD_FOOTNOTE !== "undefined") {

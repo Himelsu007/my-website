@@ -125,7 +125,11 @@
 #leaderboard_section .lb-table{ max-width:1000px; margin:34px auto 0; padding:0 24px; }
 #leaderboard_section .lb-table-inner{
     border:1px solid var(--lb-line); border-radius:18px;
-    background:var(--lb-surface); overflow:hidden;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.006)),
+        var(--lb-surface);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    overflow:hidden;
 }
 #leaderboard_section .lb-table-head{
     display:flex; align-items:center; justify-content:space-between;
@@ -145,7 +149,7 @@
 
 #leaderboard_section .lb-row{
     display:grid;
-    grid-template-columns:44px 46px 1fr 96px 128px 76px;
+    grid-template-columns:44px 64px 1fr 96px 128px 76px;
     align-items:center; gap:14px;
     padding:15px 24px; border-bottom:1px solid var(--lb-line);
     transition:background .25s ease;
@@ -164,13 +168,49 @@
 
 #leaderboard_section .lb-r-av{
     position:relative;
-    width:38px; height:38px; border-radius:50%;
+    /* Ranks 4 and below only ever appear here, so this is the one place their
+       photo is seen — it has to be big enough to actually read as a face. */
+    width:58px; height:58px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
     background:linear-gradient(160deg,#1b1b20,#111114);
     border:1px solid var(--lb-line); color:#fff;
-    font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:14px;
+    font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:20px;
+    transition:transform .3s var(--lb-ease), border-color .3s var(--lb-ease);
 }
-#leaderboard_section .lb-top1 .lb-r-av{ border-color:rgba(255,215,0,.55); }
+
+/* Medal rings, so the table reads as the same system as the podium. */
+#leaderboard_section .lb-top1 .lb-r-av{
+    border-color:rgba(255,215,0,.6);
+    box-shadow:0 0 0 3px rgba(255,215,0,.09);
+}
+#leaderboard_section .lb-top2 .lb-r-av{
+    border-color:rgba(199,203,209,.5);
+    box-shadow:0 0 0 3px rgba(199,203,209,.07);
+}
+#leaderboard_section .lb-top3 .lb-r-av{
+    border-color:rgba(205,127,50,.5);
+    box-shadow:0 0 0 3px rgba(205,127,50,.07);
+}
+
+/* A light catch on the top edge and a soft floor shadow, painted OVER the
+   photo — this is what stops a cropped headshot looking like a pasted cutout.
+   It has to be a pseudo-element: an inset shadow on the container would sit
+   underneath the image. */
+#leaderboard_section .lb-r-av::after,
+#leaderboard_section .lb-pod-av::after{
+    content:"";
+    position:absolute; inset:0; z-index:2;
+    border-radius:50%;
+    pointer-events:none;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.16),
+        inset 0 -10px 16px -10px rgba(0,0,0,.66);
+}
+
+#leaderboard_section .lb-row:hover .lb-r-av{
+    transform:translateY(-1px) scale(1.04);
+    border-color:rgba(255,255,255,.22);
+}
 
 #leaderboard_section .lb-r-id{ min-width:0; }
 #leaderboard_section .lb-r-name{
@@ -304,8 +344,9 @@
     #leaderboard_section .lb-pod-wl{ font-size:11.5px; }
 
     #leaderboard_section .lb-row{
-        grid-template-columns:30px 34px 1fr 66px; gap:10px; padding:13px 14px;
+        grid-template-columns:26px 50px 1fr 66px; gap:10px; padding:13px 14px;
     }
+    #leaderboard_section .lb-r-av{ width:46px; height:46px; font-size:16px; }
     #leaderboard_section .lb-r-bar,
     #leaderboard_section .lb-r-wl{ display:none; }
     #leaderboard_section .lb-table{ padding:0 14px; }
@@ -324,4 +365,5 @@
     #leaderboard_section .lb-table.in .lb-r-bar-fill::after{ animation:none; display:none; }
     #leaderboard_section .lb-row .lb-r-bar-fill{ transition-delay:0s!important; }
     #leaderboard_section .lb-row:hover .lb-r-pct{ transform:none; }
+    #leaderboard_section .lb-row:hover .lb-r-av{ transform:none; }
 }
