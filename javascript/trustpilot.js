@@ -58,12 +58,13 @@
                     supplied through its invitation system) and "Invited" for
                     invitations the business actually sent.
 
-               Values below are verbatim from the dashboard snippet, kept so
-               this can be switched back on. The token is public by design:
-               Trustpilot expects it in page source. */
+               If you ever switch this back on, Trustpilot's dashboard snippet
+               also carries a data-token — paste it in as `token: "..."` and
+               buildWidget will emit it. It is not kept here: secret scanners
+               flag a UUID assigned to something called `token`, and there is
+               no reason to carry the noise while the widget is off. */
             enabled: false,
             templateId: "56278e9abfbbba0bdcd568bc",
-            token: "54ba0152-e491-4fd8-b237-cb420d210e75",
             height: "52px",
             width:  "100%"
         },
