@@ -441,11 +441,14 @@ FILTER CHIPS
 PRODUCT GRID (modern CSS Grid — auto-responsive)
 ========================================= */
 #products_grid {
-    max-width: 1500px;
+    /* Capped narrower than 1500px so auto-fill tops out at 4 columns. At the
+       old width it made 5 narrow cards for 7 products — a sparse trailing row
+       and pack shots too small to judge. */
+    max-width: 1180px;
     margin: 0 auto;
     padding: 0 22px 60px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 22px;
 }
 
@@ -516,7 +519,9 @@ FEATURED PRODUCT
     border: 1px solid rgba(255, 255, 255, 0.08);
     max-width: 460px;
     max-height: 92vh;
-    overflow-y: auto;
+    /* The sheet itself no longer scrolls; .modal_scroll does, so the footer
+       and the close button can stay pinned outside the scrolling region. */
+    overflow: hidden;
     border-radius: 18px;
     display: flex;
     flex-direction: column;
@@ -574,7 +579,6 @@ FEATURED PRODUCT
     background: #000;
     overflow: hidden;
     border-radius: 18px 18px 0 0;
-    cursor: zoom-in;
     touch-action: pan-y;
 }
 
@@ -610,11 +614,8 @@ FEATURED PRODUCT
 }
 .modal_image_wrapper img.active { opacity: 1; z-index: 2; }
 
-/* Hover-zoom (desktop) */
-.modal_image_wrapper.zooming img.active {
-    transform: scale(1.45);
-    transition: transform 0.05s linear;
-}
+/* Hover-zoom removed — it fought the slideshow and made the product jump
+   under the cursor. The expand control still opens the full-size lightbox. */
 
 /* Slideshow ARROWS */
 .slide_arrow {
@@ -1842,3 +1843,213 @@ PRODUCT INFO
 
 
 
+
+/* ========================================
+   BACK SOON — sold out + coming soon
+   Kept off the main shelf so the storefront only shows what can be bought.
+   Deliberately quieter than the live grid: smaller cards, dimmed, so it reads
+   as a waiting list rather than stock.
+   ======================================== */
+#products_unavailable {
+    max-width: 1180px;
+    margin: 54px auto 0;
+    padding: 0 22px;
+}
+#products_unavailable[hidden] { display: none; }
+
+#products_unavailable .unavailable_head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+#products_unavailable .unavailable_head h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+}
+#products_unavailable .unavailable_head p {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: #a1a1aa;
+}
+
+#products_unavailable_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 18px;
+    opacity: 0.72;
+}
+#products_unavailable_grid .products_box { transition: opacity .3s ease; }
+#products_unavailable_grid:hover .products_box { opacity: 0.55; }
+#products_unavailable_grid .products_box:hover { opacity: 1; }
+
+@media (max-width: 768px) {
+    #products_unavailable { margin-top: 38px; padding: 0 14px; }
+    #products_unavailable_grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    #products_unavailable .unavailable_head h2 { font-size: 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #products_unavailable_grid .products_box { transition: none; }
+}
+
+/* ========================================
+   PRODUCT TILES
+   ----------------------------------------
+   The catalogue mixes three kinds of shot: cut-outs on transparent
+   backgrounds, pack shots on white studio backgrounds, and full-bleed
+   lifestyle photos. The card tile was a single dark colour, so every
+   white-background shot rendered as a white box punched into a dark card.
+
+   Each tile now matches its own image instead. Products whose own colour is
+   light (the white sleeve, the white socks) stay on the dark tile so they do
+   not disappear — the tile is picked for legibility, not uniformity.
+   ======================================== */
+
+/* Pack shots on white — the tile has to be the SAME white the photo was shot
+   on, or the image reads as a box inside a box. Not a near-white, not a
+   gradient: #FFFFFF, so the seam disappears entirely. */
+.product_image_wrapper.tile-light {
+    background: #FFFFFF;
+}
+/* Cut-outs of light products — dark keeps them readable. */
+.product_image_wrapper.tile-dark {
+    background: linear-gradient(180deg, #17171C 0%, #0F0F12 100%);
+}
+/* Lifestyle shots fill the frame as before. */
+.product_image_wrapper.tile-photo { background: #0F0F12; }
+
+/* Pack shots and cut-outs are objects, not scenes — never crop them. */
+.tile-light .product_image,
+.tile-dark  .product_image {
+    object-fit: contain;
+    padding: 12%;
+}
+.tile-photo .product_image { object-fit: cover; }
+
+/* A hairline keeps a light tile from bleeding into the dark card around it. */
+.product_image_wrapper.tile-light {
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+    .tile-light .product_image,
+    .tile-dark  .product_image { padding: 10%; }
+}
+
+/* The modal gallery gets the same tile treatment as the card, so a pack shot
+   does not sit in a black frame with its own white background showing, and is
+   never cropped by object-fit: cover. */
+.modal_image_wrapper.tile-light { background: #FFFFFF; }
+.modal_image_wrapper.tile-dark  { background: #0F0F12; }
+
+/* The photo fills the frame — chosen over `contain`, which showed the product
+   whole but left it floating small in the middle. Filling crops the very top
+   and bottom of a square pack shot; the tile colour still matches the photo's
+   own background so the edges never read as a seam. */
+.modal_image_wrapper.tile-light img,
+.modal_image_wrapper.tile-dark  img {
+    object-fit: cover;
+    padding: 0;
+}
+
+/* ========================================
+   MODAL — reachability and hit targets
+   ----------------------------------------
+   Audited against Apple's HIG floors. The product sheet was 1950px of content
+   in a 920px window, so the price, size and buy buttons all sat below the fold
+   on open; and three controls were under the 44px minimum touch target
+   (close 40, expand 32, the size-chart link only 13px tall).
+   ======================================== */
+
+/* position:sticky only held while its containing block was in view — measured
+   at 15%-45% of the scroll, then it let go. A real footer outside the scroll
+   region holds for the entire sheet. */
+.modal_scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-height: 0;               /* lets a flex child actually shrink and scroll */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; /* stops the page behind from scroll-chaining */
+}
+
+.modal_footer {
+    flex: 0 0 auto;
+    padding: 14px 24px 18px;
+    background: #131316;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -12px 24px -14px rgba(0, 0, 0, 0.9);
+}
+.modal_footer .whatsapp_container { margin: 0; width: 100%; }
+
+/* Dismiss is chrome: it floats above the content and never scrolls away.
+   Because arbitrary content now passes underneath it, it carries its own
+   surface — a bare outline stopped being legible over the related-products
+   grid. */
+.modal_content > .close_modal {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 8;
+    background: rgba(18, 18, 22, 0.72);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    backdrop-filter: saturate(160%) blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 50%;
+    color: #fff;
+    transition: background .2s ease, border-color .2s ease;
+}
+.modal_content > .close_modal:hover {
+    background: rgba(30, 30, 36, 0.9);
+    border-color: rgba(255, 255, 255, 0.28);
+}
+.modal_content > .close_modal:focus-visible {
+    outline: 2px solid #FFD700;
+    outline-offset: 2px;
+}
+
+/* ---- 44px minimum hit targets ---- */
+.close_modal {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+}
+.lightbox_trigger {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+}
+/* The link itself stays small; the tappable area around it does not. */
+.size_chart_link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 2px;
+}
+
+/* ---- the secondary action should read as available, not disabled ---- */
+.bag_btn {
+    background: rgba(255, 215, 0, 0.13);
+    border-color: rgba(255, 215, 0, 0.5);
+}
+.bag_btn:hover { background: rgba(255, 215, 0, 0.2); }
+
+/* Size pills are the most-tapped control in the sheet; they were 40px tall
+   on phones, under the 44px floor. */
+.variant_pills .pill { min-height: 44px; }
+
+/* ---- concentric corners: inner radii derive from the 18px sheet ---- */
+.modal_cta_row .whatsapp_btn,
+.modal_cta_row .bag_btn { border-radius: 12px; }
+.variant_pills .pill    { border-radius: 10px; }
+
+@media (max-width: 520px) {
+    .modal_footer { padding: 12px 18px 16px; }
+}

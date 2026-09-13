@@ -1,0 +1,209 @@
+/* =====================================================
+   BAG — floating pill, drawer, toast
+   Dark to match the store. Gold is kept to the count badge
+   and the total, so it reads as accent rather than fill.
+   ===================================================== */
+
+/* ---- the two CTAs in the modal ---- */
+.modal_cta_row { display: flex; gap: 10px; align-items: stretch; }
+.modal_cta_row .whatsapp_btn { flex: 1 1 auto; }
+
+.bag_btn {
+    flex: 0 0 auto;
+    padding: 0 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 215, 0, 0.38);
+    background: rgba(255, 215, 0, 0.08);
+    color: #FFD700;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .22s ease, border-color .22s ease, transform .22s ease;
+}
+.bag_btn:hover { background: rgba(255, 215, 0, 0.15); border-color: rgba(255, 215, 0, 0.6); }
+.bag_btn:active { transform: scale(0.97); }
+.bag_btn.disabled { opacity: 0.45; cursor: not-allowed; }
+.bag_btn:focus-visible { outline: 2px solid #FFD700; outline-offset: 2px; }
+
+@media (max-width: 520px) {
+    .modal_cta_row { flex-direction: column; }
+    .bag_btn { padding: 14px 20px; }
+}
+
+/* ---- floating pill ---- */
+#lx_bag_pill {
+    position: fixed;
+    right: 20px; bottom: 20px;
+    z-index: 10000;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 13px 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(180deg, #1a1a1f, #111114);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255,255,255,0.07);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    transition: transform .22s cubic-bezier(0.34,1.12,0.42,1), border-color .22s ease;
+}
+#lx_bag_pill:hover { transform: translateY(-2px); border-color: rgba(255,215,0,0.45); }
+#lx_bag_pill[hidden] { display: none; }
+#lx_bag_pill:focus-visible { outline: 2px solid #FFD700; outline-offset: 3px; }
+.lx_bag_count {
+    min-width: 21px; height: 21px; padding: 0 6px;
+    border-radius: 999px;
+    background: #FFD700; color: #0a0a0a;
+    font-weight: 800; font-size: 13px; line-height: 21px; text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---- backdrop + drawer ---- */
+#lx_bag_backdrop {
+    position: fixed; inset: 0; z-index: 10001;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+#lx_bag_backdrop[hidden], #lx_bag_drawer[hidden] { display: none; }
+
+#lx_bag_drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 10002;
+    width: min(400px, 100%);
+    display: flex; flex-direction: column;
+    background: #0d0d10;
+    border-left: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: -24px 0 60px -20px rgba(0,0,0,0.9);
+    animation: lxBagIn .34s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes lxBagIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+.lx_bag_head {
+    /* Explicitly static/auto so no global page-header rule can ever pull this
+       out of the drawer's flex column again. */
+    position: static;
+    width: auto;
+    height: auto;
+    flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 22px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.lx_bag_head h2 {
+    margin: 0; color: #fff; font-size: 1.5rem;
+    letter-spacing: 0.04em; text-transform: uppercase;
+}
+.lx_bag_close {
+    background: none; border: none; color: #a1a1aa;
+    font-size: 1.8rem; line-height: 1; cursor: pointer; padding: 0 4px;
+}
+.lx_bag_close:hover { color: #fff; }
+
+.lx_bag_list { flex: 1 1 auto; overflow-y: auto; padding: 8px 14px; }
+.lx_bag_empty {
+    color: #71717a; font-family: 'Inter', sans-serif;
+    font-size: .92rem; text-align: center; padding: 40px 0;
+}
+
+.lx_bag_item {
+    display: grid;
+    grid-template-columns: 54px 1fr auto auto;
+    align-items: center; gap: 12px;
+    padding: 13px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.lx_bag_item img {
+    width: 54px; height: 54px; object-fit: contain;
+    background: #141418; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.07);
+}
+.lx_bag_item_id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.lx_bag_item_name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    color: #fff; font-size: 1rem; line-height: 1.15;
+}
+.lx_bag_item_opt { font-family: 'Inter', sans-serif; font-size: 11px; color: #a1a1aa; }
+.lx_bag_item_price {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    color: #FFD700; font-size: .95rem; font-variant-numeric: tabular-nums;
+}
+
+.lx_bag_qty { display: flex; align-items: center; gap: 8px; }
+.lx_bag_qty button {
+    width: 25px; height: 25px; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: #17171c; color: #fff; cursor: pointer; line-height: 1;
+}
+.lx_bag_qty button:hover { border-color: rgba(255,215,0,0.5); }
+.lx_bag_qty span {
+    min-width: 16px; text-align: center; color: #fff;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+.lx_bag_remove {
+    background: none; border: none; color: #52525b;
+    font-size: 1.25rem; cursor: pointer; padding: 0 2px;
+}
+.lx_bag_remove:hover { color: #EF4444; }
+
+.lx_bag_foot {
+    position: static;
+    width: auto;
+    flex: 0 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 22px 22px;
+    display: flex; flex-direction: column; gap: 12px;
+}
+.lx_bag_total {
+    display: flex; align-items: baseline; justify-content: space-between;
+    font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase;
+    letter-spacing: 0.1em; color: #a1a1aa; font-size: .9rem;
+}
+.lx_bag_total strong {
+    color: #FFD700; font-size: 1.7rem; letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+}
+.lx_bag_order[disabled] { opacity: .45; cursor: not-allowed; }
+.lx_bag_clear {
+    background: none; border: none; color: #71717a;
+    font-family: 'Inter', sans-serif; font-size: .82rem;
+    cursor: pointer; text-decoration: underline; padding: 2px;
+}
+.lx_bag_clear:hover { color: #a1a1aa; }
+.lx_bag_note {
+    margin: 0; font-family: 'Inter', sans-serif;
+    font-size: .76rem; color: #5c5c66; line-height: 1.5; text-align: center;
+}
+
+/* ---- toast ---- */
+#lx_bag_toast {
+    position: fixed; left: 50%; bottom: 26px; z-index: 10003;
+    transform: translate(-50%, 14px);
+    opacity: 0;
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 13px 18px;
+    border-radius: 999px;
+    background: #17171c;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 14px 34px -14px rgba(0,0,0,0.9);
+    color: #fff;
+    font-family: 'Inter', sans-serif; font-size: .88rem;
+    transition: opacity .25s ease, transform .25s cubic-bezier(0.22,1,0.36,1);
+}
+#lx_bag_toast.in { opacity: 1; transform: translate(-50%, 0); }
+#lx_bag_toast[hidden] { display: none; }
+#lx_bag_toast button {
+    background: none; border: none; color: #FFD700; cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: .88rem; letter-spacing: .1em; text-transform: uppercase;
+}
+
+@media (max-width: 520px) {
+    #lx_bag_pill { right: 14px; bottom: 14px; }
+    #lx_bag_drawer { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #lx_bag_drawer { animation: none; }
+    #lx_bag_pill, #lx_bag_toast { transition: none; }
+}

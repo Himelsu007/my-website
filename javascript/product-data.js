@@ -5,7 +5,9 @@
 const products = [
     {
         name: "Regular Elite Crew Socks #Black",
-        price: "€18",
+        tile: "light",
+        priceEUR: 18,
+        status: "available",
         category: "socks",
         image: "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks.webp",
         images: [
@@ -14,197 +16,219 @@ const products = [
             "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks-04.webp"
         ],
         description: "No slipping nor distractions, just lockdown performance from the ground up.",
-        isSoldOut: false,
         optionTitle: "<strong>Size</strong>",
         options: ["34 - 38", "38 - 42", "42 - 46"]
     },
-        {
+    {
         name: "Nba Nike Headband",
-        price: "€30",
+        tile: "light",
+        priceEUR: 30,
+        status: "available",
         category: "accessories",
-        image: "assets/images/products/nike-nba-dri-fit-fury-classic-headband-black.jpg",
+        image: "assets/images/products/nike-nba-dri-fit-fury-classic-headband-black.webp",
         images: [
-            "assets/images/products/nba-nike-headband-bg-02.avif",
-            "assets/images/products/nba-nike-headband-bg.avif",
-            "assets/images/products/nba-nike-headband-bg-03.avif",
+            "assets/images/products/nba-nike-headband-bg-02.webp",
+            "assets/images/products/nba-nike-headband-bg.webp",
+            "assets/images/products/nba-nike-headband-bg-03.webp",
             "assets/images/products/nba-nike-headband-bg-04.webp"
         ],
         description: "Compression support for a consistent shot and full control.",
-        isSoldOut: false,
         optionTitle: "<strong>Quantity</strong>",
         options: ["1", "2", "3", "4"]
     },
-
+    {
+        name: "Nba Nike Wristbands",
+        tile: "light",
+        priceEUR: 35,
+        status: "available",
+        category: "accessories",
+        image: "assets/images/products/nba-wristband/nba-wristband.webp",
+        images: [
+            "assets/images/products/nba-wristband/nba-wristband.webp",
+            "assets/images/products/nba-wristband/nba-wristband-worn.webp"
+        ],
+        description: "Double-wide terry cloth that keeps sweat off your hands. Sold as a pair.",
+        optionTitle: "<strong>Quantity</strong>",
+        options: ["1", "2", "3", "4"]
+    },
     {
         name: "Wilson Alliance Series Platinum",
-        price: "€80",
+        tile: "light",
+        priceEUR: 80,
+        status: "available",
         category: "balls",
         tag: "Exclusive",
-        image: "assets/images/products/wilson-silver/wilson-official-ball-silver.png",
+        image: "assets/images/products/wilson-silver/wilson-official-ball-silver.webp",
         images: [
             "assets/images/products/wilson-silver/wilson-silver0002.webp",
             "assets/images/products/wilson-silver/wilson-silver0001.webp",
-            "assets/images/products/wilson-silver/wilson-silver0003.avif"
+            "assets/images/products/wilson-silver/wilson-silver0003.webp"
         ],
         description: "Let professional autographs shine with the Wilson Alliance Series.",
-        isSoldOut: false,
         optionTitle: "<strong>Size</strong>",
         options: ["7"]
     },
     {
         name: "Wilson NBA Authentic Series Indoor",
-        price: "€50",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
         category: "balls",
-        image: "assets/images/products/wilson-orange/wilson-official-ball.jpg",
+        image: "assets/images/products/wilson-orange/wilson-official-ball.webp",
         images: [
-            "assets/images/products/wilson-orange/wilson-orange0002.avif",
-            "assets/images/products/wilson-orange/wilson-orange0001.avif",
-            "assets/images/products/wilson-orange/wilson-orange0003.avif"
+            "assets/images/products/wilson-orange/wilson-orange0002.webp",
+            "assets/images/products/wilson-orange/wilson-orange0001.webp",
+            "assets/images/products/wilson-orange/wilson-orange0003.webp"
         ],
         description: "NBA experiences can happen anytime, anyplace.",
-        isSoldOut: false,
         optionTitle: "<strong>Size</strong>",
         options: ["7"]
     },
-
     {
         name: "Nba Nike Elite Shooting Sleeve (White)",
-        price: "€35",
+        tile: "dark",
+        priceEUR: 35,
+        status: "available",
         category: "accessories",
-        image: "assets/images/products/nba-shooting-sleeve.avif",
+        image: "assets/images/products/nba-shooting-sleeve.webp",
         images: [
             "assets/images/white-shooting-sleeve-bg.avif",
-            "assets/images/products/nba-shooting-sleeve.avif"
+            "assets/images/products/nba-shooting-sleeve.webp"
         ],
         description: "Compression support for a consistent shot and full control.",
-        isSoldOut: false,
         optionTitle: "<strong>Quantity</strong>",
         options: ["1", "2", "3", "4"]
     },
-        {
+    {
         name: "Nba Elite Crew Socks",
-        price: "€25",
+        tile: "light",
+        priceEUR: 25,
+        status: "available",
         category: "socks",
         tag: "Best Seller",
-        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.png",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
         images: [
-            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.png",
-            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.jpg.avif",
-            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.jpg.avif",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
+            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.webp",
+            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp",
             "assets/images/ben-simons-bg.avif"
         ],
         description: "No slipping nor distractions, just lockdown performance from the ground up.",
-        isSoldOut: false,
         optionTitle: "<strong>Size</strong>",
         options: ["38 - 41", "42 - 45", "46 - 49"]
     },
     {
         name: "Nba Nike Elite Shooting Sleeve (Black)",
-        price: "€35",
+        tile: "light",
+        priceEUR: 35,
+        status: "available",
         category: "accessories",
-        image: "assets/images/products/shooting-sleeve-black.avif",
+        image: "assets/images/products/shooting-sleeve-black.webp",
         images: [
             "assets/images/black-shooting-sleeve-bg.avif",
-            "assets/images/products/shooting-sleeve-black.avif"
+            "assets/images/products/shooting-sleeve-black.webp"
         ],
         description: "Compression support for a consistent shot and full control.",
-        isSoldOut: false,
         optionTitle: "<strong>Quantity</strong>",
         options: ["1", "2", "3", "4"]
     },
     {
         name: "Nba Elite Crew Socks #SW",
-        price: "SOLD OUT",
+        tile: "dark",
+        priceEUR: null,
+        status: "soldout",
         category: "socks",
-        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white.png",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white.webp",
         description: "Maximum comfort on the court.",
-        isSoldOut: true,
         optionTitle: "<strong>Size</strong>",
         options: ["38 - 41", "42 - 45", "46 - 49"]
     },
     {
         name: "Nike Nba Elite Pro Compression #SW",
-        price: "SOLD OUT",
+        tile: "photo",
+        priceEUR: null,
+        status: "soldout",
         category: "apparel",
-        image: "assets/images/products/nike-elite-tee-white.png",
+        image: "assets/images/products/nike-elite-tee-white.webp",
         description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA.",
         tag: "Limited Edition",
-        isSoldOut: false,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
     {
         name: "Nike Nba Elite Pro Tank Top #TB",
-        price: "COMING SOON",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
         category: "apparel",
-        comingSoon: true,
-        image: "assets/images/products/nike-elite-tank-top-black.png",
+        image: "assets/images/products/nike-elite-tank-top-black.webp",
         description: "Designed for high-tempo runs where every possession matters.",
-        isSoldOut: true,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
     {
         name: "Nike NBA Elite Pro Compression #SB",
-        price: "SOLD OUT",
+        tile: "photo",
+        priceEUR: null,
+        status: "soldout",
         category: "apparel",
-        image: "assets/images/products/nike-elite-tee-black.png.webp",
+        image: "assets/images/products/nike-elite-tee-black.webp",
         description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA.",
-        isSoldOut: true,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
     {
         name: "Nike Nba Elite Pro Tank Top #TW",
-        price: "SOLD OUT",
+        tile: "photo",
+        priceEUR: null,
+        status: "soldout",
         category: "apparel",
-        image: "assets/images/products/nike-elite-tank-top-white.jpeg",
+        image: "assets/images/products/nike-elite-tank-top-white.webp",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        isSoldOut: true,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
     {
         name: "Nike Nba Elite Pro Compression #LSW",
-        price: "COMING SOON",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
         category: "apparel",
-        comingSoon: true,
-        image: "assets/images/products/nike-elite-long-sleeve-white.png",
+        image: "assets/images/products/nike-elite-long-sleeve-white.webp",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        isSoldOut: true,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
     {
         name: "Nike Nba Elite Pro Compression #SHB",
-        price: "COMING SOON",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
         category: "apparel",
-        comingSoon: true,
-        image: "assets/images/products/nike-elite-short-sleeve-black.png",
+        image: "assets/images/products/nike-elite-short-sleeve-black.webp",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        isSoldOut: true,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
     {
         name: "Nike Nba Elite Pro Compression #LHB",
-        price: "COMING SOON",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
         category: "apparel",
-        comingSoon: true,
-        image: "assets/images/products/nike-elite-long-sleeve-black.png",
+        image: "assets/images/products/nike-elite-long-sleeve-black.webp",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        isSoldOut: true,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
     {
         name: "Nike Nba Elite Pro Compression #SHW",
-        price: "COMING SOON",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
         category: "apparel",
-        comingSoon: true,
-        image: "assets/images/products/nike-elite-short-sleeve-white.jpeg",
+        image: "assets/images/products/nike-elite-short-sleeve-white.webp",
         description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
-        isSoldOut: true,
         optionTitle: "Size",
         options: ["S", "M", "L"]
     }
@@ -214,55 +238,104 @@ const products = [
 // ========================================
 // PRODUCT LOADER
 // ========================================
+// Builds one card. Shared by the main shelf and the "Back Soon" rail so the
+// two can never drift apart.
+function buildProductCard(product) {
+    const absoluteIndex = products.indexOf(product);
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = `products_box ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
+    card.setAttribute("data-product-index", absoluteIndex);
+    card.setAttribute("aria-label", `View details for ${product.name}, ${displayPrice(product)}`);
+    card.innerHTML = `
+        <div class="product_image_wrapper tile-${product.tile || "photo"}">
+            <img src="${product.image}" alt="${product.name}" class="product_image" loading="lazy" decoding="async">
+        </div>
+        <div class="product_info">
+            <span class="product_name barlow-condensed-regular">${product.name}</span>
+            <span class="product_price barlow-condensed-regular">${displayPrice(product)}</span>
+        </div>`;
+    return card;
+}
+
 function loadProducts(filter = "all") {
     const container = document.getElementById("products_grid");
     const emptyState = document.getElementById("products_empty_state");
+    const soonSection = document.getElementById("products_unavailable");
+    const soonGrid = document.getElementById("products_unavailable_grid");
     if (!container) return;
 
     container.innerHTML = "";
+    if (soonGrid) soonGrid.innerHTML = "";
 
-    const visible = products.filter(p => {
+    const inFilter = p => {
         if (filter === "all") return true;
-        if (filter === "coming-soon") return !!p.comingSoon;
+        if (filter === "coming-soon") return isSoon(p);
         return p.category === filter;
-    });
+    };
 
-    if (emptyState) emptyState.hidden = visible.length > 0;
+    // The shelf only shows what can actually be bought. Anything sold out or
+    // still coming drops to its own section underneath, so the storefront does
+    // not read as picked over — more than half the catalogue is unbuyable.
+    // The "Coming Soon" chip is the one filter where unavailable IS the intent.
+    const wantsUnavailable = filter === "coming-soon";
+    const visible = products.filter(p => inFilter(p) && (wantsUnavailable || isBuyable(p)));
+    const unavailable = wantsUnavailable
+        ? []
+        : products.filter(p => inFilter(p) && !isBuyable(p));
+
+    if (emptyState) {
+        emptyState.hidden = visible.length > 0;
+        // "No products in this category yet" is wrong when the category is full
+        // of sold-out stock — say what is actually true.
+        emptyState.textContent = unavailable.length
+            ? "Nothing in stock in this category right now — see Back Soon below."
+            : "No products in this category yet.";
+    }
+
+    if (soonSection) {
+        soonSection.hidden = unavailable.length === 0;
+        unavailable.forEach(product => soonGrid.appendChild(buildProductCard(product)));
+    }
 
     visible.forEach((product) => {
-        // Use the absolute index in `products` so the modal handler can find the right item
-        const absoluteIndex = products.indexOf(product);
-
-        const card = document.createElement("button");
-        card.type = "button";
-        card.className = `products_box ${product.isSoldOut ? "is_sold_out" : ""} ${product.comingSoon ? "is_coming_soon" : ""}`;
-        card.setAttribute("data-product-index", absoluteIndex);
-        card.setAttribute("aria-label", `View details for ${product.name}, ${product.price}`);
-
-        card.innerHTML = `
-            <div class="product_image_wrapper">
-                <img src="${product.image}" alt="${product.name}" class="product_image" loading="lazy" decoding="async">
-            </div>
-            <div class="product_info">
-                <span class="product_name barlow-condensed-regular">${product.name}</span>
-                <span class="product_price barlow-condensed-regular">${product.price}</span>
-            </div>
-        `;
-        container.appendChild(card);
+        container.appendChild(buildProductCard(product));
     });
 }
 
 // ========================================
 // IMAGE PRELOADER (avoids modal slideshow stutter)
+// ----------------------------------------
+// This used to fetch every image of every product 1.5s after load, which
+// pulled the entire catalogue down on arrival and made the lazy-loading on the
+// grid pointless. Now a product's gallery is fetched only when someone shows
+// intent to open it, so the slideshow is still warm without the up-front cost.
 // ========================================
-function preloadProductImages() {
-    products.forEach(p => {
-        const list = p.images || [p.image];
-        list.forEach(src => {
-            if (!src) return;
-            const img = new Image();
-            img.src = src;
-        });
+const _preloaded = new Set();
+
+function preloadProduct(product) {
+    if (!product || _preloaded.has(product.name)) return;
+    _preloaded.add(product.name);
+    (product.images || [product.image]).forEach(src => {
+        if (!src) return;
+        const img = new Image();
+        img.decoding = "async";
+        img.src = src;
+    });
+}
+
+// Hovering or starting a tap on a card is a strong signal the modal is next.
+function initPreloadOnIntent() {
+    const warm = e => {
+        const card = e.target.closest("[data-product-index]");
+        if (!card) return;
+        preloadProduct(products[Number(card.dataset.productIndex)]);
+    };
+    ["products_grid", "products_unavailable_grid"].forEach(id => {
+        const grid = document.getElementById(id);
+        if (!grid) return;
+        grid.addEventListener("pointerenter", warm, true);
+        grid.addEventListener("pointerdown", warm, true);
     });
 }
 
@@ -302,6 +375,25 @@ function parsePrice(priceStr) {
 
 function formatPrice(value) {
     return `€${Number.isInteger(value) ? value : value.toFixed(2)}`;
+}
+
+// ---- status ----
+// `status` is the single source of truth: "available" | "soldout" | "soon".
+// It replaced a price string that doubled as a status ("SOLD OUT"), which meant
+// the price field could not be used for schema, sorting or totals — and had
+// already drifted out of step with the old isSoldOut flag on one product.
+const STATUS_LABEL = { available: "", soldout: "Sold Out", soon: "Coming Soon" };
+
+const isBuyable   = p => p && p.status === "available";
+const isSoon      = p => p && p.status === "soon";
+const isSoldOutP  = p => p && p.status === "soldout";
+
+// Shows the price when one is known, otherwise the status. Sold-out items with
+// a recorded price will show the price and the badge together.
+function displayPrice(p) {
+    if (!p) return "";
+    if (p.priceEUR != null) return formatPrice(p.priceEUR);
+    return STATUS_LABEL[p.status] || "";
 }
 
 // ========================================
@@ -414,19 +506,22 @@ function openProductModal(index, opener) {
     const product = products[index];
     if (!modal || !product) return;
 
+    // Covers the paths that bypass the grid (related-product clicks, deep links).
+    preloadProduct(product);
+
     if (opener) slideshowState.openerElement = opener;
 
-    const isSoldOut = product.isSoldOut;
-    const isComingSoon = !!product.comingSoon;
-    const isAvailable = !isSoldOut && !isComingSoon;
+    const isSoldOut = isSoldOutP(product);
+    const isComingSoon = isSoon(product);
+    const isAvailable = isBuyable(product);
     const isQuantity = (product.optionTitle || "").toLowerCase().includes("quantity");
     const titleId = `modal_title_${slugify(product.name)}`;
-    const unitPrice = parsePrice(product.price);
+    const unitPrice = product.priceEUR;
 
     // ---- IMAGES + SKELETON ----
     const imagesToLoad = (product.images || [product.image]).filter(Boolean);
     const imagesHTML = imagesToLoad.map((src, i) =>
-        `<img src="${src}" alt="${product.name} — view ${i + 1}" class="${i === 0 ? "active" : ""}" draggable="false">`
+        `<img src="${src}" alt="${product.name} — view ${i + 1}" class="${i === 0 ? "active" : ""}" draggable="false" loading="${i === 0 ? "eager" : "lazy"}" decoding="async">`
     ).join("");
 
     // ---- DOTS / ARROWS ----
@@ -461,8 +556,9 @@ function openProductModal(index, opener) {
                 </div>
             `;
         } else {
+            const onlyOne = product.options.length === 1;
             const pillsHTML = product.options.map(opt =>
-                `<button class="pill" type="button" ${!isAvailable ? "disabled" : ""}>${opt}</button>`
+                `<button class="pill${onlyOne ? " active" : ""}" type="button" ${!isAvailable ? "disabled" : ""}>${opt}</button>`
             ).join("");
             variantsHTML = `
                 <div class="modal_variant_group">
@@ -484,11 +580,21 @@ function openProductModal(index, opener) {
     } else if (isSoldOut) {
         ctaHTML = `<button class="sold_out_btn" type="button" disabled>OUT OF STOCK</button>`;
     } else {
-        const requiresPick = !!product.options;
-        ctaHTML = `<button id="whatsapp_order_btn" class="whatsapp_btn ${requiresPick ? "disabled" : ""}" type="button">
-            <span class="cta_label">WhatsApp Order</span>
-            <span class="cta_total" data-unit-price="${unitPrice ?? ""}"></span>
-        </button>`;
+        // A quantity stepper already has a valid default of 1, and a product
+        // offered in exactly one size (both Wilson balls, size 7) has nothing
+        // to choose — gating the CTAs on either left the buy buttons dead at
+        // 45% opacity with no obvious way to wake them.
+        const requiresPick = !!product.options && !isQuantity && product.options.length > 1;
+        // Two paths on purpose: order this one thing now, or collect several and
+        // send them as a single message from the bag.
+        ctaHTML = `<div class="modal_cta_row">
+            <button id="add_to_bag_btn" class="bag_btn ${requiresPick ? "disabled" : ""}" type="button"
+                    data-index="${products.indexOf(product)}">Add to Bag</button>
+            <button id="whatsapp_order_btn" class="whatsapp_btn ${requiresPick ? "disabled" : ""}" type="button">
+                <span class="cta_label">WhatsApp Order</span>
+                <span class="cta_total" data-unit-price="${unitPrice ?? ""}"></span>
+            </button>
+        </div>`;
     }
 
     // ---- URGENCY LINE (only for available items) ----
@@ -507,7 +613,7 @@ function openProductModal(index, opener) {
                       <img src="${r.image}" alt="${r.name}" loading="lazy">
                       <div class="modal_related_meta">
                           <span class="barlow-condensed-regular">${r.name}</span>
-                          <span class="barlow-condensed-bold">${r.price}</span>
+                          <span class="barlow-condensed-bold">${displayPrice(r)}</span>
                       </div>
                   </button>`;
               }).join("")}</div>
@@ -517,7 +623,15 @@ function openProductModal(index, opener) {
     // ---- BUILD ----
     modal.innerHTML = `
         <div class="modal_content" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
-            <div class="modal_image_wrapper ${isSoldOut ? "sold_out_img" : ""}" data-zoomable="true">
+            <button class="close_modal" type="button" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+
+            <div class="modal_scroll">
+            <div class="modal_image_wrapper tile-${product.tile || "photo"} ${isSoldOut ? "sold_out_img" : ""}" data-zoomable="true">
                 <div class="modal_image_skeleton"></div>
                 ${imagesHTML}
                 ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ""}
@@ -527,17 +641,11 @@ function openProductModal(index, opener) {
                 <button class="lightbox_trigger" type="button" aria-label="Open fullscreen view">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
                 </button>
-                <button class="close_modal" type="button" aria-label="Close">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
             </div>
 
             <div class="modal_details">
                 <h2 id="${titleId}" class="modal_title barlow-condensed-black">${product.name.toUpperCase()}</h2>
-                <div class="modal_price barlow-condensed-black">${product.price}</div>
+                <div class="modal_price barlow-condensed-black">${displayPrice(product)}</div>
 
                 ${urgencyHTML}
 
@@ -546,10 +654,6 @@ function openProductModal(index, opener) {
                 </p>
 
                 ${variantsHTML}
-
-                <div class="whatsapp_container">
-                    ${ctaHTML}
-                </div>
 
                 <div class="modal_trust_row">
                     <div class="trust_item">
@@ -570,6 +674,14 @@ function openProductModal(index, opener) {
 
                 <p class="modal_backdrop_hint inter-regular">Press <kbd>Esc</kbd> or click outside to close</p>
             </div>
+            </div><!-- /.modal_scroll -->
+
+            <!-- Pinned: the sheet exists to sell this, so the action never scrolls away. -->
+            <div class="modal_footer">
+                <div class="whatsapp_container">
+                    ${ctaHTML}
+                </div>
+            </div>
         </div>
 
         <!-- LIGHTBOX -->
@@ -580,7 +692,7 @@ function openProductModal(index, opener) {
     `;
 
     modal.classList.add("active");
-    document.body.style.overflow = "hidden";
+    if (window.LXScrollLock) LXScrollLock.lock("productModal");
 
     // ---- INIT SLIDESHOW STATE ----
     slideshowState.currentIndex = 0;
@@ -592,7 +704,6 @@ function openProductModal(index, opener) {
     updateQuantityTotal(modal);
 
     // ---- IMAGE HOVER ZOOM (desktop only) ----
-    initImageZoom(modal);
 
     // ---- SWIPE GESTURES (mobile) ----
     initSwipe(modal);
@@ -610,7 +721,7 @@ function closeProductModal() {
     const modal = document.getElementById("product_modal");
     if (!modal || !modal.classList.contains("active")) return;
     modal.classList.remove("active");
-    document.body.style.overflow = "";
+    if (window.LXScrollLock) LXScrollLock.release("productModal");
     clearSlideshow();
     if (slideshowState._releaseFocusTrap) {
         slideshowState._releaseFocusTrap();
@@ -641,29 +752,6 @@ function updateQuantityTotal(modal) {
     } else {
         totalEl.textContent = "";
     }
-}
-
-// ========================================
-// IMAGE HOVER ZOOM (desktop)
-// ========================================
-function initImageZoom(modal) {
-    const wrapper = modal.querySelector(".modal_image_wrapper");
-    if (!wrapper) return;
-    if (window.matchMedia("(hover: none)").matches) return; // skip on touch devices
-    wrapper.addEventListener("mousemove", (e) => {
-        if (!wrapper.classList.contains("zooming")) return;
-        const rect = wrapper.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        wrapper.querySelectorAll("img").forEach(img => {
-            img.style.transformOrigin = `${x}% ${y}%`;
-        });
-    });
-    wrapper.addEventListener("mouseenter", () => wrapper.classList.add("zooming"));
-    wrapper.addEventListener("mouseleave", () => {
-        wrapper.classList.remove("zooming");
-        wrapper.querySelectorAll("img").forEach(img => (img.style.transformOrigin = "center"));
-    });
 }
 
 // ========================================
@@ -755,13 +843,16 @@ function initModal() {
     const container = document.getElementById("products_grid");
     if (!modal || !container) return;
 
-    // Open from product grid
-    container.addEventListener("click", (e) => {
+    // Open from either shelf — the main grid or the "Back Soon" rail.
+    const openFromCard = (e) => {
         const card = e.target.closest(".products_box");
         if (!card) return;
         const index = parseInt(card.getAttribute("data-product-index"), 10);
         openProductModal(index, card);
-    });
+    };
+    container.addEventListener("click", openFromCard);
+    document.getElementById("products_unavailable_grid")
+        ?.addEventListener("click", openFromCard);
 
     // All modal interactions are delegated here
     modal.addEventListener("click", (e) => {
@@ -822,6 +913,8 @@ function initModal() {
             e.target.classList.add("active");
             const orderBtn = document.getElementById("whatsapp_order_btn");
             if (orderBtn) orderBtn.classList.remove("disabled");
+            const bagBtn = document.getElementById("add_to_bag_btn");
+            if (bagBtn) bagBtn.classList.remove("disabled");
             return;
         }
 
@@ -839,6 +932,8 @@ function initModal() {
             updateQuantityTotal(modal);
             const orderBtn = document.getElementById("whatsapp_order_btn");
             if (orderBtn) orderBtn.classList.remove("disabled");
+            const bagBtn = document.getElementById("add_to_bag_btn");
+            if (bagBtn) bagBtn.classList.remove("disabled");
             return;
         }
 
@@ -857,6 +952,32 @@ function initModal() {
         }
 
         // WHATSAPP ORDER
+        // ---- ADD TO BAG ----
+        const bagBtn = e.target.closest("#add_to_bag_btn");
+        if (bagBtn) {
+            if (bagBtn.classList.contains("disabled")) {
+                const variantGroup = modal.querySelector(".modal_variant_group");
+                if (variantGroup) {
+                    variantGroup.classList.add("needs-attention");
+                    variantGroup.scrollIntoView({ behavior: "smooth", block: "center" });
+                    setTimeout(() => variantGroup.classList.remove("needs-attention"), 1400);
+                }
+                return;
+            }
+            const product = products[Number(bagBtn.dataset.index)];
+            if (!product || typeof LXBag === "undefined") return;
+            const activePill = modal.querySelector(".variant_pills .pill.active");
+            const qtyInput = modal.querySelector(".qty_input");
+            LXBag.add({
+                name: product.name,
+                option: activePill ? activePill.innerText.trim() : "",
+                price: product.priceEUR,
+                qty: qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1,
+                image: product.image
+            });
+            return;
+        }
+
         const waBtn = e.target.closest("#whatsapp_order_btn");
         if (waBtn) {
             if (waBtn.classList.contains("disabled")) {
@@ -913,6 +1034,8 @@ function initModal() {
             updateQuantityTotal(modal);
             const orderBtn = document.getElementById("whatsapp_order_btn");
             if (orderBtn) orderBtn.classList.remove("disabled");
+            const bagBtn = document.getElementById("add_to_bag_btn");
+            if (bagBtn) bagBtn.classList.remove("disabled");
         }
     });
 
@@ -947,5 +1070,5 @@ document.addEventListener("DOMContentLoaded", () => {
     initFilterBar();
     initModal();
     // Preload secondary images after a short delay so it doesn't compete with the LCP
-    setTimeout(preloadProductImages, 1500);
+    initPreloadOnIntent();
 });

@@ -30,6 +30,15 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
         <image:title>NBA Elite Crew Socks lifestyle shot 1</image:title>
     </image:image>
     <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nba-wristband/nba-wristband.webp</image:loc>
+        <image:title>NBA Nike Wristbands – Black</image:title>
+        <image:caption>Double-wide terry cloth that keeps sweat off your hands.</image:caption>
+    </image:image>
+    <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nba-wristband/nba-wristband-worn.webp</image:loc>
+        <image:title>NBA Nike Wristbands worn on court</image:title>
+    </image:image>
+    <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/wilson-orange/wilson-official-ball.jpg</image:loc>
         <image:title>Wilson NBA Authentic Series Indoor Basketball – Orange</image:title>
         <image:caption>NBA experiences can happen anytime, anyplace.</image:caption>
@@ -87,13 +96,6 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-</url>
-
-<url>
-    <loc>https://www.lockedinlx.com/order-tracker.html</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
 </url>
 
 <url>
