@@ -323,11 +323,7 @@ header.scrolled {
 
 .modal_image_wrapper {
     width: 100%;
-    /* Tied to viewport height so the sheet fits without scrolling. A fixed
-       520px left the buy controls below the fold. Tuned for the shortest case
-       in this range (1024x768) where a product can carry both a colour row and
-       a size row. */
-    height: clamp(190px, 28vh, 430px);
+    height: 520px;
 }
 
 #products_show_case_main_child_container {
@@ -768,10 +764,7 @@ header.scrolled {
 
 .modal_image_wrapper {
     width: 100%;
-    /* Sized to the viewport so the sheet fits without scrolling, but generous:
-       on a 900px-tall laptop this is ~430px, not the cramped 260 it was while
-       I was chasing a phantom overflow. */
-    height: clamp(260px, 44vh, 520px);
+    height: 520px;
 }
 
 .modal_description {

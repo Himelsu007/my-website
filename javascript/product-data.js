@@ -1,8 +1,238 @@
 // ========================================
-// PRODUCT RENDERING
+// PRODUCT DATA
 // ========================================
-// The catalogue itself lives in product-catalog.js — edit prices, colours and
-// stock there. This file only turns it into a storefront.
+
+const products = [
+    {
+        name: "Regular Elite Crew Socks #Black",
+        tile: "light",
+        priceEUR: 18,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks.webp",
+        images: [
+            "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks02.webp",
+            "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks03.webp",
+            "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks-04.webp"
+        ],
+        description: "No slipping nor distractions, just lockdown performance from the ground up.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["34 - 38", "38 - 42", "42 - 46"]
+    },
+    {
+        name: "Nba Nike Headband",
+        tile: "light",
+        priceEUR: 30,
+        status: "available",
+        category: "accessories",
+        image: "assets/images/products/nike-nba-dri-fit-fury-classic-headband-black.webp",
+        images: [
+            "assets/images/products/nba-nike-headband-bg-02.webp",
+            "assets/images/products/nba-nike-headband-bg.webp",
+            "assets/images/products/nba-nike-headband-bg-03.webp",
+            "assets/images/products/nba-nike-headband-bg-04.webp"
+        ],
+        description: "Compression support for a consistent shot and full control.",
+        optionTitle: "<strong>Quantity</strong>",
+        options: ["1", "2", "3", "4"]
+    },
+    {
+        name: "Nba Nike Wristbands",
+        tile: "light",
+        priceEUR: 35,
+        status: "available",
+        category: "accessories",
+        image: "assets/images/products/nba-wristband/nba-wristband.webp",
+        images: [
+            "assets/images/products/nba-wristband/nba-wristband.webp",
+            "assets/images/products/nba-wristband/nba-wristband-worn.webp"
+        ],
+        description: "Double-wide terry cloth that keeps sweat off your hands. Sold as a pair.",
+        optionTitle: "<strong>Quantity</strong>",
+        options: ["1", "2", "3", "4"]
+    },
+    {
+        name: "Wilson Alliance Series Platinum",
+        tile: "light",
+        priceEUR: 80,
+        status: "available",
+        category: "balls",
+        tag: "Exclusive",
+        image: "assets/images/products/wilson-silver/wilson-official-ball-silver.webp",
+        images: [
+            "assets/images/products/wilson-silver/wilson-silver0002.webp",
+            "assets/images/products/wilson-silver/wilson-silver0001.webp",
+            "assets/images/products/wilson-silver/wilson-silver0003.webp"
+        ],
+        description: "Let professional autographs shine with the Wilson Alliance Series.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["7"]
+    },
+    {
+        name: "Wilson NBA Authentic Series Indoor",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "balls",
+        image: "assets/images/products/wilson-orange/wilson-official-ball.webp",
+        images: [
+            "assets/images/products/wilson-orange/wilson-orange0002.webp",
+            "assets/images/products/wilson-orange/wilson-orange0001.webp",
+            "assets/images/products/wilson-orange/wilson-orange0003.webp"
+        ],
+        description: "NBA experiences can happen anytime, anyplace.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["7"]
+    },
+    {
+        name: "Nba Nike Elite Shooting Sleeve (White)",
+        tile: "dark",
+        priceEUR: 35,
+        status: "available",
+        category: "accessories",
+        image: "assets/images/products/nba-shooting-sleeve.webp",
+        images: [
+            "assets/images/white-shooting-sleeve-bg.avif",
+            "assets/images/products/nba-shooting-sleeve.webp"
+        ],
+        description: "Compression support for a consistent shot and full control.",
+        optionTitle: "<strong>Quantity</strong>",
+        options: ["1", "2", "3", "4"]
+    },
+    {
+        name: "Nba Elite Crew Socks",
+        tile: "light",
+        priceEUR: 25,
+        status: "available",
+        category: "socks",
+        tag: "Best Seller",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
+        images: [
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
+            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.webp",
+            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp",
+            "assets/images/ben-simons-bg.avif"
+        ],
+        description: "No slipping nor distractions, just lockdown performance from the ground up.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["38 - 41", "42 - 45", "46 - 49"]
+    },
+    {
+        name: "Nba Nike Elite Shooting Sleeve (Black)",
+        tile: "light",
+        priceEUR: 35,
+        status: "available",
+        category: "accessories",
+        image: "assets/images/products/shooting-sleeve-black.webp",
+        images: [
+            "assets/images/black-shooting-sleeve-bg.avif",
+            "assets/images/products/shooting-sleeve-black.webp"
+        ],
+        description: "Compression support for a consistent shot and full control.",
+        optionTitle: "<strong>Quantity</strong>",
+        options: ["1", "2", "3", "4"]
+    },
+    {
+        name: "Nba Elite Crew Socks #SW",
+        tile: "dark",
+        priceEUR: null,
+        status: "soldout",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white.webp",
+        description: "Maximum comfort on the court.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["38 - 41", "42 - 45", "46 - 49"]
+    },
+    {
+        name: "Nike Nba Elite Pro Compression #SW",
+        tile: "photo",
+        priceEUR: null,
+        status: "soldout",
+        category: "apparel",
+        image: "assets/images/products/nike-elite-tee-white.webp",
+        description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA.",
+        tag: "Limited Edition",
+        optionTitle: "Size",
+        options: ["S", "M", "L"]
+    },
+    {
+        name: "Nike Nba Elite Pro Tank Top #TB",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
+        category: "apparel",
+        image: "assets/images/products/nike-elite-tank-top-black.webp",
+        description: "Designed for high-tempo runs where every possession matters.",
+        optionTitle: "Size",
+        options: ["S", "M", "L"]
+    },
+    {
+        name: "Nike NBA Elite Pro Compression #SB",
+        tile: "photo",
+        priceEUR: null,
+        status: "soldout",
+        category: "apparel",
+        image: "assets/images/products/nike-elite-tee-black.webp",
+        description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA.",
+        optionTitle: "Size",
+        options: ["S", "M", "L"]
+    },
+    {
+        name: "Nike Nba Elite Pro Tank Top #TW",
+        tile: "photo",
+        priceEUR: null,
+        status: "soldout",
+        category: "apparel",
+        image: "assets/images/products/nike-elite-tank-top-white.webp",
+        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        optionTitle: "Size",
+        options: ["S", "M", "L"]
+    },
+    {
+        name: "Nike Nba Elite Pro Compression #LSW",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
+        category: "apparel",
+        image: "assets/images/products/nike-elite-long-sleeve-white.webp",
+        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        optionTitle: "Size",
+        options: ["S", "M", "L"]
+    },
+    {
+        name: "Nike Nba Elite Pro Compression #SHB",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
+        category: "apparel",
+        image: "assets/images/products/nike-elite-short-sleeve-black.webp",
+        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        optionTitle: "Size",
+        options: ["S", "M", "L"]
+    },
+    {
+        name: "Nike Nba Elite Pro Compression #LHB",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
+        category: "apparel",
+        image: "assets/images/products/nike-elite-long-sleeve-black.webp",
+        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        optionTitle: "Size",
+        options: ["S", "M", "L"]
+    },
+    {
+        name: "Nike Nba Elite Pro Compression #SHW",
+        tile: "photo",
+        priceEUR: null,
+        status: "soon",
+        category: "apparel",
+        image: "assets/images/products/nike-elite-short-sleeve-white.webp",
+        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        optionTitle: "Size",
+        options: ["S", "M", "L"]
+    }
+];
 
 
 // ========================================
@@ -23,7 +253,7 @@ function buildProductCard(product) {
         </div>
         <div class="product_info">
             <span class="product_name barlow-condensed-regular">${product.name}</span>
-            <span class="product_price">${displayPrice(product)}</span>
+            <span class="product_price barlow-condensed-regular">${displayPrice(product)}</span>
         </div>`;
     return card;
 }
@@ -127,16 +357,14 @@ function initFilterBar() {
 // ========================================
 // HELPERS
 // ========================================
-// Colour names come from the catalogue, but anything interpolated into markup
-// gets escaped — cheap insurance against a stray quote breaking an attribute.
-function esc(s) {
-    return String(s == null ? "" : s)
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
 function slugify(s) {
     return (s || "").toLowerCase().replace(/[^\w]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function getRelatedProducts(currentProduct, count = 4) {
+    const sameCat = products.filter(p => p !== currentProduct && p.category === currentProduct.category);
+    const rest = products.filter(p => p !== currentProduct && p.category !== currentProduct.category);
+    return [...sameCat, ...rest].slice(0, count);
 }
 
 // Parses a price string like "€18" → 18. Returns null for COMING SOON / SOLD OUT.
@@ -145,9 +373,8 @@ function parsePrice(priceStr) {
     return match ? parseFloat(match[1]) : null;
 }
 
-// Euro after the figure, the way it is written in Portugal.
 function formatPrice(value) {
-    return `${Number.isInteger(value) ? value : value.toFixed(2)}€`;
+    return `€${Number.isInteger(value) ? value : value.toFixed(2)}`;
 }
 
 // ---- status ----
@@ -311,28 +538,6 @@ function openProductModal(index, opener) {
            <button class="slide_arrow next" type="button" aria-label="Next image">›</button>`
         : "";
 
-    // ---- COLOUR (optional second dimension) ----
-    // Add or remove a colour by editing the `colors` array on the product in the
-    // catalogue above — same style as events.js. Whatever is picked here rides
-    // along on the WhatsApp message and the bag line automatically.
-    let colorHTML = "";
-    if (product.colors && product.colors.length) {
-        const onlyOneColor = product.colors.length === 1;
-        const swatches = product.colors.map(c =>
-            `<button class="pill color_pill${onlyOneColor ? " active" : ""}" type="button"
-                     data-color="${esc(c)}" ${!isAvailable ? "disabled" : ""}>
-                <span class="color_dot" data-swatch="${esc(c.toLowerCase())}"></span>${esc(c)}
-             </button>`
-        ).join("");
-        colorHTML = `
-            <div class="modal_variant_group modal_color_group">
-                <div class="modal_variant_header">
-                    <h4 class="inter-medium">Colour</h4>
-                </div>
-                <div class="variant_pills color_pills">${swatches}</div>
-            </div>`;
-    }
-
     // ---- VARIANT UI (pills OR quantity stepper) ----
     let variantsHTML = "";
     if (product.options && product.options.length > 0) {
@@ -379,22 +584,41 @@ function openProductModal(index, opener) {
         // offered in exactly one size (both Wilson balls, size 7) has nothing
         // to choose — gating the CTAs on either left the buy buttons dead at
         // 45% opacity with no obvious way to wake them.
-        const needsSize  = !!product.options && !isQuantity && product.options.length > 1;
-        const needsColor = !!product.colors && product.colors.length > 1;
-        const requiresPick = needsSize || needsColor;
+        const requiresPick = !!product.options && !isQuantity && product.options.length > 1;
         // Two paths on purpose: order this one thing now, or collect several and
         // send them as a single message from the bag.
         ctaHTML = `<div class="modal_cta_row">
             <button id="add_to_bag_btn" class="bag_btn ${requiresPick ? "disabled" : ""}" type="button"
                     data-index="${products.indexOf(product)}">Add to Bag</button>
-            <button id="whatsapp_order_btn" class="whatsapp_btn ${requiresPick ? "disabled" : ""}" type="button"
-                    data-index="${products.indexOf(product)}">
+            <button id="whatsapp_order_btn" class="whatsapp_btn ${requiresPick ? "disabled" : ""}" type="button">
                 <span class="cta_label">WhatsApp Order</span>
                 <span class="cta_total" data-unit-price="${unitPrice ?? ""}"></span>
             </button>
         </div>`;
     }
 
+    // ---- URGENCY LINE (only for available items) ----
+    const urgencyHTML = isAvailable
+        ? `<div class="modal_urgency"><span class="urgency_dot"></span> Recently popular — order before it goes</div>`
+        : "";
+
+    // ---- RELATED PRODUCTS ----
+    const related = getRelatedProducts(product, 4);
+    const relatedHTML = related.length
+        ? `<div class="modal_related">
+              <h4 class="barlow-condensed-bold">You might also like</h4>
+              <div class="modal_related_track">${related.map(r => {
+                  const idx = products.indexOf(r);
+                  return `<button class="modal_related_card" type="button" data-related-index="${idx}" aria-label="View ${r.name}">
+                      <img src="${r.image}" alt="${r.name}" loading="lazy">
+                      <div class="modal_related_meta">
+                          <span class="barlow-condensed-regular">${r.name}</span>
+                          <span class="barlow-condensed-bold">${displayPrice(r)}</span>
+                      </div>
+                  </button>`;
+              }).join("")}</div>
+           </div>`
+        : "";
 
     // ---- BUILD ----
     modal.innerHTML = `
@@ -421,27 +645,32 @@ function openProductModal(index, opener) {
 
             <div class="modal_details">
                 <h2 id="${titleId}" class="modal_title barlow-condensed-black">${product.name.toUpperCase()}</h2>
-                <div class="modal_price">${displayPrice(product)}</div>
+                <div class="modal_price barlow-condensed-black">${displayPrice(product)}</div>
+
+                ${urgencyHTML}
 
                 <p class="modal_description inter-regular">
                     ${product.description || "Premium gear for elite performance."}
                 </p>
 
-                <div class="modal_options">
-                    ${colorHTML}
-                    ${variantsHTML}
-                </div>
+                ${variantsHTML}
 
                 <div class="modal_trust_row">
                     <div class="trust_item">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>Authentic Nike &amp; Wilson</span>
+                    </div>
+                    <div class="trust_item">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                        <span>12h delivery in Lisbon</span>
+                        <span>24h Lisbon delivery</span>
                     </div>
                     <div class="trust_item">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
                         <span>30-day returns</span>
                     </div>
                 </div>
+
+                ${relatedHTML}
 
                 <p class="modal_backdrop_hint inter-regular">Press <kbd>Esc</kbd> or click outside to close</p>
             </div>
@@ -606,18 +835,6 @@ function closeLightbox() {
     lightbox.setAttribute("aria-hidden", "true");
 }
 
-// Enables the CTAs only once every pill group in the sheet has a selection.
-function refreshCtaGate(modal) {
-    let ready = true;
-    modal.querySelectorAll(".variant_pills").forEach(g => {
-        if (!g.querySelector(".pill.active")) ready = false;
-    });
-    ["whatsapp_order_btn", "add_to_bag_btn"].forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) btn.classList.toggle("disabled", !ready);
-    });
-}
-
 // ========================================
 // MAIN MODAL CONTROLLER
 // ========================================
@@ -694,9 +911,10 @@ function initModal() {
             const pillContainer = e.target.closest(".variant_pills");
             pillContainer.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
             e.target.classList.add("active");
-            // Two dimensions now: picking a colour must not unlock the CTAs
-            // while the size is still unchosen, and vice versa.
-            refreshCtaGate(modal);
+            const orderBtn = document.getElementById("whatsapp_order_btn");
+            if (orderBtn) orderBtn.classList.remove("disabled");
+            const bagBtn = document.getElementById("add_to_bag_btn");
+            if (bagBtn) bagBtn.classList.remove("disabled");
             return;
         }
 
@@ -719,6 +937,20 @@ function initModal() {
             return;
         }
 
+        // RELATED PRODUCT click — swap modal content
+        const relatedCard = e.target.closest(".modal_related_card");
+        if (relatedCard) {
+            const idx = parseInt(relatedCard.dataset.relatedIndex, 10);
+            // Soft transition: fade content, swap, fade back
+            const content = modal.querySelector(".modal_content");
+            content.classList.add("swapping");
+            setTimeout(() => {
+                openProductModal(idx);
+                modal.querySelector(".modal_content")?.classList.remove("swapping");
+            }, 200);
+            return;
+        }
+
         // WHATSAPP ORDER
         // ---- ADD TO BAG ----
         const bagBtn = e.target.closest("#add_to_bag_btn");
@@ -734,17 +966,11 @@ function initModal() {
             }
             const product = products[Number(bagBtn.dataset.index)];
             if (!product || typeof LXBag === "undefined") return;
-            const colorPill  = modal.querySelector(".color_pills .pill.active");
-            const activePill = modal.querySelector(".variant_pills:not(.color_pills) .pill.active");
+            const activePill = modal.querySelector(".variant_pills .pill.active");
             const qtyInput = modal.querySelector(".qty_input");
-            // Colour + size together identify the line, so black 42-46 and
-            // white 42-46 stay separate rows in the bag.
-            const parts = [];
-            if (colorPill) parts.push(colorPill.dataset.color);
-            if (activePill) parts.push(activePill.innerText.trim());
             LXBag.add({
                 name: product.name,
-                option: parts.join(" · "),
+                option: activePill ? activePill.innerText.trim() : "",
                 price: product.priceEUR,
                 qty: qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1,
                 image: product.image
@@ -764,43 +990,21 @@ function initModal() {
                 }
                 return;
             }
-            const colorPill  = modal.querySelector(".color_pills .pill.active");
-            const activePill = modal.querySelector(".variant_pills:not(.color_pills) .pill.active");
+            const activePill = modal.querySelector(".variant_pills .pill.active");
             const qtyInput = modal.querySelector(".qty_input");
-            const product = products[Number(waBtn.dataset.index)];
-
-            // Same composer as the bag, so one product and five products arrive
-            // in the chat looking identical — header, reference, order slip.
-            // Only the choices differ, and they are picked exactly the way the
-            // Add to Bag branch picks them so the two can never disagree.
-            if (product && typeof LXBag !== "undefined" && LXBag.sendOrder) {
-                const parts = [];
-                if (colorPill) parts.push(colorPill.dataset.color);
-                if (activePill) parts.push(activePill.innerText.trim());
-                LXBag.sendOrder([{
-                    name: product.name,
-                    option: parts.join(" · "),
-                    price: product.priceEUR,
-                    qty: qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1
-                }]);
-                return;
-            }
-
-            // Fallback for the one case the composer cannot cover: bag.js
-            // missing. Better a clumsy message than a dead button.
             const selected = activePill ? activePill.innerText : "";
             const qty = qtyInput ? parseInt(qtyInput.value, 10) : null;
             const productName = modal.querySelector(".modal_title").innerText;
             const productPrice = modal.querySelector(".modal_price").innerText;
+            const totalText = modal.querySelector(".cta_total")?.textContent.trim();
             const url = `${window.location.origin}${window.location.pathname}#${slugify(productName)}`;
 
             let extras = "";
-            if (colorPill) extras += ` — Colour: ${colorPill.dataset.color}`;
             if (selected) extras += ` — Size: ${selected}`;
             if (qty && qty > 1) extras += ` — Quantity: ${qty}`;
 
             const phoneNumber = "351911861637";
-            const textMessage = `Hello! I'd like to order ${productName} (${productPrice})${extras}.\n\nProduct: ${url}`;
+            const textMessage = `Hello! I'd like to order ${productName} (${productPrice})${extras}${totalText ? ` — Total: ${totalText.replace(/^—\s*/, "")}` : ""}.\n\nProduct: ${url}`;
             window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(textMessage)}`, "_blank");
             return;
         }
