@@ -73,8 +73,9 @@
                     shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "EUR" },
                     deliveryTime: {
                         "@type": "ShippingDeliveryTime",
-                        handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 2, unitCode: "DAY" },
-                        transitTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 5, unitCode: "DAY" }
+                        /* 12h in Lisbon — same promise the product sheet makes. */
+                        handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
+                        transitTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" }
                     }
                 },
                 hasMerchantReturnPolicy: {

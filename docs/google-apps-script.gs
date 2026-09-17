@@ -6,11 +6,16 @@
  *    Execute as     : Me
  *    Who has access : Anyone
  *
- * Three tabs, created automatically:
+ * Four tabs, created automatically:
  *   Signups  - one row per form submission. THIS is what the website counts.
  *   Roster   - one row per PERSON (player + each named guest), plus anyone
  *              you add by hand. Beyond capacity they go "Off the bench".
  *   Totals   - per-run headcount. Refresh from the "Locked In" menu.
+ *   Orders   - one row per store order, written the moment the buyer sends
+ *              it. THE STATUS COLUMN IS YOURS TO EDIT: type Requested,
+ *              Confirmed, Ready, Delivered or Cancelled and the buyer's
+ *              order link shows it the next time they open it. The Note
+ *              column, if you fill it, shows up under the tracker.
  */
 
 var SHEET_NAME  = 'Signups';
@@ -67,10 +72,71 @@ function addToRoster_(run, when, name, type, role, source) {
                        type, role, '', source, new Date()]);
 }
 
+/* The store's order log. Column D (Status) is the one you edit; everything
+   else is written for you. Anything not recognised in that column is treated
+   as "Requested" by the website rather than shown as a broken status. */
+var ORDERS_NAME = 'Orders';
+
+function orders_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(ORDERS_NAME);
+  if (!sh) {
+    sh = ss.insertSheet(ORDERS_NAME);
+    sh.appendRow(['Timestamp', 'Ref', 'Items', 'Status', 'Note', 'Updated', 'Total', 'Link']);
+    sh.setFrozenRows(1);
+    sh.getRange('A1:H1').setFontWeight('bold');
+    sh.setColumnWidth(3, 320);
+    sh.setColumnWidth(8, 260);
+
+    // A dropdown on Status so the wording stays consistent and the website
+    // never has to guess what a free-typed cell meant.
+    var rule = SpreadsheetApp.newDataValidation()
+      .requireValueInList(['Requested', 'Confirmed', 'Ready', 'Delivered', 'Cancelled'], true)
+      .setAllowInvalid(true)
+      .build();
+    sh.getRange(2, 4, sh.getMaxRows() - 1, 1).setDataValidation(rule);
+  }
+  return sh;
+}
+
+/** Find an order row by its reference. Returns 0 when there is none. */
+function findOrderRow_(ref) {
+  var sh = orders_();
+  var n = sh.getLastRow() - 1;
+  if (n < 1) return 0;
+  var refs = sh.getRange(2, 2, n, 1).getValues();
+  ref = String(ref || '').trim().toUpperCase();
+  for (var i = 0; i < refs.length; i++) {
+    if (String(refs[i][0]).trim().toUpperCase() === ref) return i + 2;
+  }
+  return 0;
+}
+
 /* ------------------------------------------------- write (from the site) */
 function doPost(e) {
   try {
     var d = JSON.parse(e.postData.contents);
+
+    // Store order — logged so you have a row to move along, instead of
+    // copying references out of WhatsApp by hand.
+    if (d.kind === 'order') {
+      var ref = String(d.ref || '').trim();
+      if (!ref) return json_({ ok: false, error: 'no ref' });
+      if (findOrderRow_(ref)) return json_({ ok: true, duplicate: true });
+
+      orders_().appendRow([
+        new Date(),
+        ref,
+        String(d.items || ''),
+        'Requested',
+        '',
+        new Date(),
+        Number(d.total || 0),
+        String(d.link || '')
+      ]);
+      return json_({ ok: true });
+    }
+
     var playing  = [].concat(d.playingNames  || []).filter(String);
     var watching = [].concat(d.watchingNames || []).filter(String);
 
@@ -102,7 +168,12 @@ function doPost(e) {
 }
 
 /* --------------------------------------------- read (the website's count) */
-function doGet() {
+function doGet(e) {
+  // ?order=LX-2BD2 -> that order's status. No parameter -> the signup tally,
+  // exactly as before, so the events page keeps working untouched.
+  var ref = e && e.parameter ? String(e.parameter.order || '').trim() : '';
+  if (ref) return orderStatus_(ref);
+
   try {
     var sh = sheet_();
     var rows = sh.getLastRow() > 1
@@ -115,6 +186,30 @@ function doGet() {
       tally[key] = (tally[key] || 0) + (Number(r[9]) || 1);
     });
     return json_({ ok: true, tally: tally });
+  } catch (err) {
+    return json_({ ok: false, error: String(err) });
+  }
+}
+
+/** One order's status, for the buyer's tracking link. */
+function orderStatus_(ref) {
+  try {
+    var row = findOrderRow_(ref);
+    // An unknown reference is not an error: the order page falls back to
+    // "Order Requested", which is true for anyone holding the link.
+    if (!row) return json_({ ok: true, status: 'Requested', note: '', updated: '' });
+
+    var sh  = orders_();
+    var val = sh.getRange(row, 4, 1, 3).getValues()[0];
+    var upd = val[2];
+    return json_({
+      ok: true,
+      status: String(val[0] || 'Requested'),
+      note: String(val[1] || ''),
+      updated: upd instanceof Date
+        ? Utilities.formatDate(upd, Session.getScriptTimeZone(), 'd MMM, HH:mm')
+        : String(upd || '')
+    });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }

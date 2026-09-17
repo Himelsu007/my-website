@@ -207,3 +207,122 @@
     #lx_bag_drawer { animation: none; }
     #lx_bag_pill, #lx_bag_toast { transition: none; }
 }
+
+/* =====================================================
+   FULFILMENT — pickup or delivery, asked in the bag
+   -----------------------------------------------------
+   Sits above the total, so the last thing before the price is the question
+   that decides what happens after it. Deliberately quiet: this is a step on
+   the way to the order button, not a competing destination.
+   ===================================================== */
+.lx_bag_fulfil {
+    display: flex; flex-direction: column; gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.lx_bag_fulfil_label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .8rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase; color: #a1a1aa;
+}
+
+.lx_bag_methods { display: flex; gap: 8px; }
+.lx_bag_method {
+    flex: 1 1 0; min-width: 0;
+    padding: 11px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: #d4d4d8;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .92rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    cursor: pointer;
+    transition: background .22s ease, border-color .22s ease,
+                color .22s ease, transform .22s ease;
+}
+.lx_bag_method:hover:not(:disabled) { border-color: rgba(255, 215, 0, 0.45); color: #fff; }
+.lx_bag_method:active:not(:disabled) { transform: scale(0.97); }
+.lx_bag_method.is-on {
+    background: #FFD700; border-color: #FFD700; color: #0a0a0a; font-weight: 700;
+}
+/* No runs left in events.js means nothing to pick up at. */
+.lx_bag_method:disabled { opacity: .4; cursor: not-allowed; }
+.lx_bag_method:focus-visible { outline: 2px solid #FFD700; outline-offset: 2px; }
+
+.lx_bag_panel { display: flex; flex-direction: column; gap: 9px; }
+.lx_bag_panel[hidden] { display: none; }
+
+.lx_bag_field { display: flex; flex-direction: column; gap: 5px; }
+.lx_bag_field > span {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: #71717a;
+}
+.lx_bag_input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.045);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;            /* 16px or below zooms iOS Safari on focus; this is the ceiling that does not */
+    outline: none;
+    transition: border-color .22s ease, background .22s ease, box-shadow .22s ease;
+}
+.lx_bag_input::placeholder { color: #5c5c66; }
+.lx_bag_input:focus {
+    border-color: rgba(255, 215, 0, 0.55);
+    background: rgba(255, 215, 0, 0.04);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.10);
+}
+select.lx_bag_input {
+    appearance: none; -webkit-appearance: none;
+    /* Chevron drawn in, so the control matches the inputs instead of taking
+       the operating system's own select styling. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+    background-size: 15px;
+    padding-right: 34px;
+}
+select.lx_bag_input option { background: #141418; color: #fff; }
+
+.lx_bag_hint {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: .74rem; color: #5c5c66; line-height: 1.5;
+}
+
+@media (max-width: 380px) {
+    .lx_bag_methods { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .lx_bag_method { transition: none; }
+    .lx_bag_method:active:not(:disabled) { transform: none; }
+}
+
+/* ---- lines the catalogue can no longer honour ----
+   A bag is a snapshot taken days ago. When it no longer matches the shelf,
+   say so on the line itself rather than letting the order go out and become
+   a conversation at handover. */
+.lx_bag_item.has_issue { opacity: .82; }
+.lx_bag_item.is_gone .lx_bag_item_name,
+.lx_bag_item.is_gone .lx_bag_item_price { text-decoration: line-through; color: #71717a; }
+
+.lx_bag_item_flag {
+    display: block;
+    margin-top: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: .72rem; line-height: 1.4;
+    color: #F0A020;
+}
+.lx_bag_item.is_gone .lx_bag_item_flag { color: #EF6A6A; }
+.lx_bag_item_flag button {
+    background: none; border: none; padding: 0;
+    font: inherit; color: inherit;
+    text-decoration: underline; cursor: pointer;
+}
+.lx_bag_item_flag button:hover { color: #fff; }
