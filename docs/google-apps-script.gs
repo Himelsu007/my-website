@@ -82,11 +82,16 @@ function orders_() {
   var sh = ss.getSheetByName(ORDERS_NAME);
   if (!sh) {
     sh = ss.insertSheet(ORDERS_NAME);
-    sh.appendRow(['Timestamp', 'Ref', 'Items', 'Status', 'Note', 'Updated', 'Total', 'Link']);
+    sh.appendRow(['Timestamp', 'Ref', 'Items', 'Status', 'Note', 'Updated',
+                  'Total', 'Link', 'Fulfilment', 'Customer', 'Lines']);
     sh.setFrozenRows(1);
-    sh.getRange('A1:H1').setFontWeight('bold');
+    sh.getRange('A1:K1').setFontWeight('bold');
     sh.setColumnWidth(3, 320);
-    sh.setColumnWidth(8, 260);
+    sh.setColumnWidth(8, 240);
+    sh.setColumnWidth(9, 220);
+    // Column J is JSON for other apps to read. Narrow on purpose — it is not
+    // meant to be looked at, and a wide column of JSON makes the tab unusable.
+    sh.setColumnWidth(11, 60);
 
     // A dropdown on Status so the wording stays consistent and the website
     // never has to guess what a free-typed cell meant.
@@ -95,6 +100,11 @@ function orders_() {
       .setAllowInvalid(true)
       .build();
     sh.getRange(2, 4, sh.getMaxRows() - 1, 1).setDataValidation(rule);
+  } else if (sh.getLastColumn() < 11) {
+    // An Orders tab made before these columns existed is narrower. Widen it in
+    // place rather than making people start a new tab.
+    sh.insertColumnsAfter(sh.getLastColumn(), 11 - sh.getLastColumn());
+    sh.getRange(1, 9, 1, 3).setValues([['Fulfilment', 'Customer', 'Lines']]).setFontWeight('bold');
   }
   return sh;
 }
@@ -132,7 +142,10 @@ function doPost(e) {
         '',
         new Date(),
         Number(d.total || 0),
-        String(d.link || '')
+        String(d.link || ''),
+        String(d.fulfilment || ''),
+        String(d.customer || ''),
+        JSON.stringify(d.lines || [])
       ]);
       return json_({ ok: true });
     }
@@ -169,10 +182,16 @@ function doPost(e) {
 
 /* --------------------------------------------- read (the website's count) */
 function doGet(e) {
-  // ?order=LX-2BD2 -> that order's status. No parameter -> the signup tally,
-  // exactly as before, so the events page keeps working untouched.
-  var ref = e && e.parameter ? String(e.parameter.order || '').trim() : '';
+  // ?order=LX-2BD2  -> that order's status (the buyer's tracking page)
+  // ?orders=1       -> every order, newest first (another app pulling them in)
+  //                    &since=<ISO>  only those logged after that moment
+  //                    &limit=<n>    cap the reply, default 100
+  // no parameter    -> the signup tally, exactly as before, so the events page
+  //                    keeps working untouched.
+  var p = (e && e.parameter) ? e.parameter : {};
+  var ref = String(p.order || '').trim();
   if (ref) return orderStatus_(ref);
+  if (p.orders) return orderList_(p.since, p.limit);
 
   try {
     var sh = sheet_();
@@ -186,6 +205,56 @@ function doGet(e) {
       tally[key] = (tally[key] || 0) + (Number(r[9]) || 1);
     });
     return json_({ ok: true, tally: tally });
+  } catch (err) {
+    return json_({ ok: false, error: String(err) });
+  }
+}
+
+/**
+ * Every order, newest first, for an app that wants to pull them in rather
+ * than ask about one reference at a time.
+ *
+ * `since` is compared against the logged time, so a caller that remembers the
+ * newest stamp it has seen can ask only for what came after it instead of
+ * re-reading the whole tab every few minutes.
+ */
+function orderList_(since, limit) {
+  try {
+    var sh = orders_();
+    var n = sh.getLastRow() - 1;
+    if (n < 1) return json_({ ok: true, orders: [] });
+
+    var rows = sh.getRange(2, 1, n, 11).getValues();
+    var after = since ? new Date(String(since)).getTime() : 0;
+    if (isNaN(after)) after = 0;
+    var cap = Math.min(Math.max(parseInt(limit, 10) || 100, 1), 500);
+    var tz = Session.getScriptTimeZone();
+
+    var out = [];
+    for (var i = rows.length - 1; i >= 0 && out.length < cap; i--) {
+      var r = rows[i];
+      var at = (r[0] instanceof Date) ? r[0] : new Date(r[0]);
+      if (!r[1] || isNaN(at.getTime()) || at.getTime() <= after) continue;
+
+      var lines = [];
+      try { lines = JSON.parse(r[10] || '[]'); } catch (err) { lines = []; }
+
+      out.push({
+        ref: String(r[1]),
+        at: at.toISOString(),
+        items: String(r[2] || ''),
+        status: String(r[3] || 'Requested'),
+        note: String(r[4] || ''),
+        updated: (r[5] instanceof Date)
+          ? Utilities.formatDate(r[5], tz, 'd MMM, HH:mm') : String(r[5] || ''),
+        total: Number(r[6]) || 0,
+        link: String(r[7] || ''),
+        fulfilment: String(r[8] || ''),
+        customer: String(r[9] || ''),
+        lines: lines
+      });
+    }
+    return json_({ ok: true, orders: out });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }

@@ -540,10 +540,24 @@
                     total: sum,
                     link: link,
                     fulfilment: fulfilLine(readF()),
+                    /* The chat line deliberately leaves the name out to stay
+                       short, so it has to travel separately or the Sheet only
+                       ever sees an address with nobody attached to it. */
+                    customer: (readF().name || "").trim(),
+                    /* Readable, for the Sheet itself. */
                     items: items.map(function (i) {
                         return i.qty + "\u00d7 " + i.name +
                                (i.option ? " (" + i.option + ")" : "");
-                    }).join(", ")
+                    }).join(", "),
+                    /* Structured, for anything reading the Sheet as an API.
+                       The link carries the same thing, but only something that
+                       owns the website's catalogue can decode the product
+                       codes in it — this costs one column and spares every
+                       reader that problem. */
+                    lines: items.map(function (i) {
+                        return { name: i.name, option: i.option || "",
+                                 qty: i.qty, price: i.price };
+                    })
                 })
             }).catch(function () {});
         } catch (e) {}
