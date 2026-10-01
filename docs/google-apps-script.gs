@@ -16,6 +16,9 @@
  *              Confirmed, Ready, Delivered or Cancelled and the buyer's
  *              order link shows it the next time they open it. The Note
  *              column, if you fill it, shows up under the tracker.
+ *              Changing Status also writes a one-tap "Tell them" link in
+ *              the last column that opens WhatsApp with the update already
+ *              written — see onEdit at the bottom.
  */
 
 var SHEET_NAME  = 'Signups';
@@ -83,15 +86,16 @@ function orders_() {
   if (!sh) {
     sh = ss.insertSheet(ORDERS_NAME);
     sh.appendRow(['Timestamp', 'Ref', 'Items', 'Status', 'Note', 'Updated',
-                  'Total', 'Link', 'Fulfilment', 'Customer', 'Lines']);
+                  'Total', 'Link', 'Fulfilment', 'Customer', 'Lines', 'Tell them']);
     sh.setFrozenRows(1);
-    sh.getRange('A1:K1').setFontWeight('bold');
+    sh.getRange('A1:L1').setFontWeight('bold');
     sh.setColumnWidth(3, 320);
     sh.setColumnWidth(8, 240);
     sh.setColumnWidth(9, 220);
     // Column J is JSON for other apps to read. Narrow on purpose — it is not
     // meant to be looked at, and a wide column of JSON makes the tab unusable.
     sh.setColumnWidth(11, 60);
+    sh.setColumnWidth(12, 110);
 
     // A dropdown on Status so the wording stays consistent and the website
     // never has to guess what a free-typed cell meant.
@@ -100,11 +104,13 @@ function orders_() {
       .setAllowInvalid(true)
       .build();
     sh.getRange(2, 4, sh.getMaxRows() - 1, 1).setDataValidation(rule);
-  } else if (sh.getLastColumn() < 11) {
+  } else if (sh.getLastColumn() < 12) {
     // An Orders tab made before these columns existed is narrower. Widen it in
     // place rather than making people start a new tab.
-    sh.insertColumnsAfter(sh.getLastColumn(), 11 - sh.getLastColumn());
-    sh.getRange(1, 9, 1, 3).setValues([['Fulfilment', 'Customer', 'Lines']]).setFontWeight('bold');
+    sh.insertColumnsAfter(sh.getLastColumn(), 12 - sh.getLastColumn());
+    sh.getRange(1, 9, 1, 4)
+      .setValues([['Fulfilment', 'Customer', 'Lines', 'Tell them']])
+      .setFontWeight('bold');
   }
   return sh;
 }
@@ -145,7 +151,8 @@ function doPost(e) {
         String(d.link || ''),
         String(d.fulfilment || ''),
         String(d.customer || ''),
-        JSON.stringify(d.lines || [])
+        JSON.stringify(d.lines || []),
+        ''
       ]);
       return json_({ ok: true });
     }
@@ -224,7 +231,7 @@ function orderList_(since, limit) {
     var n = sh.getLastRow() - 1;
     if (n < 1) return json_({ ok: true, orders: [] });
 
-    var rows = sh.getRange(2, 1, n, 11).getValues();
+    var rows = sh.getRange(2, 1, n, 12).getValues();
     var after = since ? new Date(String(since)).getTime() : 0;
     if (isNaN(after)) after = 0;
     var cap = Math.min(Math.max(parseInt(limit, 10) || 100, 1), 500);
@@ -378,6 +385,101 @@ function backfillRoster() {
   });
 
   refreshTotals();
+}
+
+/* ================================================== telling the buyer */
+/*
+ * Move an order along in column D and this writes the message to send.
+ *
+ * Why a link and not an email: the order arrived over WhatsApp, so that chat
+ * already exists and that is where they will read it. Apps Script cannot send
+ * WhatsApp without the paid Business API, but wa.me with no number opens the
+ * chat picker with the text already written — the order you just updated is
+ * at the top of the list, so it is one tap and send.
+ *
+ * Nothing here needs the buyer's number, which is the point: it is not asked
+ * for, not stored, and not something to look after.
+ */
+
+/** What to say at each stage. Pickup and delivery word three of them differently. */
+function orderMessage_(ref, status, fulfilment, note, link) {
+  var s = String(status || '').toLowerCase().trim();
+  var f = String(fulfilment || '');
+  /* Three cases, not two. An order placed before the bag asked how they
+     wanted it has no method, and guessing "on its way to you" at a customer
+     who is planning to collect it at a run is worse than saying less. */
+  var how = /^pickup/i.test(f) ? 'pickup' : /^delivery/i.test(f) ? 'delivery' : '';
+  // "Pickup — Sat 19 Sep run" -> "Sat 19 Sep run"
+  var where = f.replace(/^[^\u2014]*\u2014\s*/, '').trim();
+
+  var body;
+  if (s === 'confirmed') {
+    body = 'Order ' + ref + ' is confirmed \u2014 everything is in stock.';
+  } else if (s === 'ready') {
+    body = how === 'pickup'
+      ? 'Order ' + ref + ' is packed' + (where ? ' and coming to the ' + where : '') + '.'
+      : how === 'delivery'
+        ? 'Order ' + ref + ' is on its way to you \u2014 within 12h.'
+        : 'Order ' + ref + ' is ready.';
+  } else if (s === 'delivered') {
+    body = how === 'pickup'
+      ? 'Thanks for picking up ' + ref + '! Hope the gear treats you well.'
+      : how === 'delivery'
+        ? 'Order ' + ref + ' delivered. Enjoy the gear!'
+        : 'Order ' + ref + ' is all done. Enjoy the gear!';
+  } else if (s === 'cancelled') {
+    /* The reason is free text in a spreadsheet cell, so it will not reliably
+       end in a full stop — add one rather than running two sentences together. */
+    var why = String(note || '').trim().replace(/[.!?]*$/, '');
+    body = 'Sorry \u2014 we had to cancel order ' + ref +
+           (why ? ': ' + why + '.' : '.') + ' Nothing has been charged.';
+  } else {
+    // Requested is the state it arrives in; they already have the message
+    // they sent us, so there is nothing to tell them yet.
+    return '';
+  }
+  if (note && s !== 'cancelled') body += ' ' + note;
+  return 'LOCKED IN LX\n' + body + (link ? '\n\n' + link : '');
+}
+
+/** The cell itself: a short label hiding a long prefilled URL. */
+function tellFormula_(msg) {
+  if (!msg) return '';
+  var url = 'https://wa.me/?text=' + encodeURIComponent(msg);
+  return '=HYPERLINK("' + url.replace(/"/g, '%22') + '","Tell them \u2192")';
+}
+
+/**
+ * Simple trigger: fires on every edit in the spreadsheet, so it has to decide
+ * fast that an edit is none of its business and get out of the way.
+ */
+function onEdit(e) {
+  try {
+    if (!e || !e.range) return;
+    var sh = e.range.getSheet();
+    if (sh.getName() !== ORDERS_NAME) return;
+
+    var c0 = e.range.getColumn(), c1 = c0 + e.range.getNumColumns() - 1;
+    if (4 < c0 || 4 > c1) return;                 // column D only
+
+    var first = Math.max(2, e.range.getRow());
+    var last = e.range.getRow() + e.range.getNumRows() - 1;
+    if (last < 2) return;                          // header only
+
+    var stamp = new Date();
+    for (var r = first; r <= last; r++) {
+      var row = sh.getRange(r, 1, 1, 12).getValues()[0];
+      if (!row[1]) continue;                       // no reference, not an order
+      sh.getRange(r, 6).setValue(stamp);           // Updated — what the buyer's page shows
+      var msg = orderMessage_(row[1], row[3], row[8], row[4], row[7]);
+      var cell = sh.getRange(r, 12);
+      if (msg) cell.setFormula(tellFormula_(msg)); else cell.clearContent();
+    }
+  } catch (err) {
+    // A simple trigger cannot report anything useful to anyone, and throwing
+    // here would leave the edit looking broken. The status itself is saved
+    // either way; only the convenience link is lost.
+  }
 }
 
 /** Adds a "Locked In" menu so you can refresh without opening the editor. */
