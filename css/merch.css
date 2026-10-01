@@ -2547,3 +2547,89 @@ body.lx-scroll-locked {
         animation: none;
     }
 }
+
+/* ========================================
+   THE NOT-YET STATE
+   ----------------------------------------
+   A product with a colour and a size opens with both buttons off, which is
+   right — we cannot take an order that does not say what to put in the bag.
+   What was wrong was how it looked. "Add to Bag" faded to 45% and WhatsApp
+   Order turned flat grey, so one button went ghostly and the other lost its
+   colour entirely and read as a broken slab. Two buttons, one reason, two
+   unrelated treatments, and nothing on screen saying what was missing.
+
+   Now: one treatment for both, each keeping its own hue at low strength so
+   it reads as "not yet" rather than "broken", and a line above that names
+   the choice still to make. The line is the actual fix — the rest is
+   making the pause look deliberate.
+   ======================================== */
+.modal_pick_hint {
+    margin: 0 0 10px;
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px; font-weight: 500; letter-spacing: -0.005em;
+    color: #8a8a94;
+    animation: lxHintIn 0.3s var(--lx-out) both;
+}
+.modal_pick_hint[hidden] { display: none; }
+.modal_pick_hint::before {
+    content: ''; flex: none;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #FFD700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.14);
+}
+@keyframes lxHintIn { from { opacity: 0; transform: translateY(3px) } to { opacity: 1; transform: none } }
+
+/* Both buttons, one language. Translucent rather than filled: the shape and
+   the hue stay, the invitation does not. */
+.modal_cta_row .whatsapp_btn.disabled,
+.modal_cta_row .bag_btn.disabled {
+    opacity: 1;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+}
+.modal_cta_row .whatsapp_btn.disabled {
+    background: rgba(37, 211, 102, 0.10);
+    border: 1px solid rgba(37, 211, 102, 0.20);
+    color: rgba(126, 231, 168, 0.65);
+}
+.modal_cta_row .bag_btn.disabled {
+    background: rgba(255, 215, 0, 0.05);
+    border-color: rgba(255, 215, 0, 0.18);
+    color: rgba(255, 215, 0, 0.5);
+}
+.modal_cta_row .whatsapp_btn.disabled svg { opacity: 0.55; }
+
+/* Clicking a button that is not ready should point at what is missing, not
+   scold. The old shake read as an error for something the shopper had not
+   done wrong yet. */
+@keyframes lxNudge {
+    0%, 100% { transform: none; }
+    40%      { transform: translateY(-3px); }
+    70%      { transform: translateY(1px); }
+}
+.modal_variant_group.needs-attention {
+    animation: lxNudge 0.44s var(--lx-out);
+}
+.modal_variant_group.needs-attention .pill:not(.active) {
+    border-color: rgba(255, 215, 0, 0.55);
+    transition: border-color 0.2s var(--lx-soft);
+}
+
+/* Selecting should feel like something landing. */
+.pill.active,
+.color_pills .pill.active {
+    animation: lxPillPick 0.32s cubic-bezier(0.34, 1.4, 0.44, 1);
+}
+@keyframes lxPillPick {
+    0%   { transform: scale(0.94); }
+    60%  { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal_pick_hint,
+    .modal_variant_group.needs-attention,
+    .pill.active, .color_pills .pill.active { animation: none; }
+}

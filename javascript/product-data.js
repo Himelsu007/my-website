@@ -384,7 +384,10 @@ function openProductModal(index, opener) {
         const requiresPick = needsSize || needsColor;
         // Two paths on purpose: order this one thing now, or collect several and
         // send them as a single message from the bag.
-        ctaHTML = `<div class="modal_cta_row">
+        ctaHTML = `${requiresPick ? `<p class="modal_pick_hint">Pick ${
+            needsSize && needsColor ? "a colour and size" : needsColor ? "a colour" : "a size"
+        }</p>` : ""}
+        <div class="modal_cta_row">
             <button id="add_to_bag_btn" class="bag_btn ${requiresPick ? "disabled" : ""}" type="button"
                     data-index="${products.indexOf(product)}">Add to Bag</button>
             <button id="whatsapp_order_btn" class="whatsapp_btn ${requiresPick ? "disabled" : ""}" type="button"
@@ -607,15 +610,40 @@ function closeLightbox() {
 }
 
 // Enables the CTAs only once every pill group in the sheet has a selection.
+/*
+ * Both buttons are off until every choice is made — and the sheet says which
+ * choice is still missing.
+ *
+ * It used to just grey them out. Two buttons went dead at once, in two
+ * different ways, with nothing to read: the only way to find out why was to
+ * click one and watch the size row flinch. Naming the missing thing is the
+ * whole fix; the styling below only stops the dead state looking like a
+ * rendering fault.
+ */
 function refreshCtaGate(modal) {
-    let ready = true;
+    const missing = [];
     modal.querySelectorAll(".variant_pills").forEach(g => {
-        if (!g.querySelector(".pill.active")) ready = false;
+        if (g.querySelector(".pill.active")) return;
+        missing.push(g.classList.contains("color_pills") ? "colour" : "size");
     });
+
+    const ready = missing.length === 0;
     ["whatsapp_order_btn", "add_to_bag_btn"].forEach(id => {
         const btn = document.getElementById(id);
-        if (btn) btn.classList.toggle("disabled", !ready);
+        if (!btn) return;
+        btn.classList.toggle("disabled", !ready);
+        btn.setAttribute("aria-disabled", String(!ready));
     });
+
+    const hint = modal.querySelector(".modal_pick_hint");
+    if (hint) {
+        // "a colour" / "a size" / "a colour and size" — read it back and it
+        // sounds like a person, which is the point.
+        hint.textContent = ready ? "" : "Pick " + (missing.length === 2
+            ? "a colour and size"
+            : "a " + missing[0]);
+        hint.hidden = ready;
+    }
 }
 
 // ========================================
