@@ -31,8 +31,12 @@
         return /^https?:/.test(src) ? src : ORIGIN + "/" + String(src).replace(/^\/+/, "");
     }
 
+    /* The catalogue carries a fixed sku now. The derived form stays only as a
+       fallback for a product added without one — it is the reason codes used
+       to change when a product was renamed, so nothing should rely on it. */
     function sku(p) {
-        return "LILX-" + slugify(p.name).toUpperCase().replace(/-/g, "-").slice(0, 40);
+        if (p.sku) return p.sku;
+        return "LILX-" + slugify(p.name).toUpperCase().slice(0, 40);
     }
 
     /* Sizes / quantities the product is offered in. Quantity pickers are not a

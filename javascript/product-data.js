@@ -744,6 +744,7 @@ function initModal() {
             if (activePill) parts.push(activePill.innerText.trim());
             LXBag.add({
                 name: product.name,
+                sku: product.sku || "",
                 option: parts.join(" · "),
                 price: product.priceEUR,
                 qty: qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1,
@@ -779,6 +780,7 @@ function initModal() {
                 if (activePill) parts.push(activePill.innerText.trim());
                 LXBag.sendOrder([{
                     name: product.name,
+                    sku: product.sku || "",
                     option: parts.join(" · "),
                     price: product.priceEUR,
                     qty: qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1

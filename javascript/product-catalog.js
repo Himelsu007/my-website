@@ -2,9 +2,20 @@
 // PRODUCT DATA
 // ========================================
 
+// `sku` is the permanent identifier for a product — it is what the Matrix
+// business app matches an order line against to find the right inventory
+// item, and what the Product schema publishes to Google.
+//
+// It is written out rather than derived from the name on purpose. It used to
+// be computed as "LILX-" + the slugified name, which meant renaming a product
+// silently changed its code and unlinked it from stock that was already
+// counted against it. These are exactly the values that formula produced, so
+// nothing already synced moves — but from here the name is free to change and
+// the code is not. Never edit an existing sku; a new product gets a new one.
 const products = [
     {
         name: "Regular Elite Crew Socks #Black",
+        sku: "LILX-REGULAR-ELITE-CREW-SOCKS-BLACK",
         tile: "light",
         priceEUR: 18,
         status: "available",
@@ -21,6 +32,7 @@ const products = [
     },
     {
         name: "Nba Nike Headband",
+        sku: "LILX-NBA-NIKE-HEADBAND",
         tile: "light",
         priceEUR: 30,
         status: "available",
@@ -38,6 +50,7 @@ const products = [
     },
     {
         name: "Nba Nike Wristbands",
+        sku: "LILX-NBA-NIKE-WRISTBANDS",
         tile: "light",
         priceEUR: 35,
         status: "available",
@@ -53,6 +66,7 @@ const products = [
     },
     {
         name: "Wilson Alliance Series Platinum",
+        sku: "LILX-WILSON-ALLIANCE-SERIES-PLATINUM",
         tile: "light",
         priceEUR: 80,
         status: "available",
@@ -70,6 +84,7 @@ const products = [
     },
     {
         name: "Wilson NBA Authentic Series Indoor",
+        sku: "LILX-WILSON-NBA-AUTHENTIC-SERIES-INDOOR",
         tile: "light",
         priceEUR: 50,
         status: "available",
@@ -86,6 +101,7 @@ const products = [
     },
     {
         name: "Nba Nike Elite Shooting Sleeve (White)",
+        sku: "LILX-NBA-NIKE-ELITE-SHOOTING-SLEEVE-WHITE",
         tile: "dark",
         priceEUR: 35,
         status: "available",
@@ -101,6 +117,7 @@ const products = [
     },
     {
         name: "Nba Elite Crew Socks",
+        sku: "LILX-NBA-ELITE-CREW-SOCKS",
         // Colours: add or remove a string and the pills, the WhatsApp order and
         // the bag all follow. Nothing else to change.
         colors: ["Black", "White"],
@@ -122,6 +139,7 @@ const products = [
     },
     {
         name: "Nba Nike Elite Shooting Sleeve (Black)",
+        sku: "LILX-NBA-NIKE-ELITE-SHOOTING-SLEEVE-BLACK",
         tile: "light",
         priceEUR: 35,
         status: "available",
@@ -137,6 +155,7 @@ const products = [
     },
     {
         name: "Nba Elite Crew Socks #SW",
+        sku: "LILX-NBA-ELITE-CREW-SOCKS-SW",
         tile: "dark",
         priceEUR: null,
         status: "soldout",
@@ -148,6 +167,7 @@ const products = [
     },
     {
         name: "Nike Nba Elite Pro Compression #SW",
+        sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SW",
         tile: "photo",
         priceEUR: null,
         status: "soldout",
@@ -160,6 +180,7 @@ const products = [
     },
     {
         name: "Nike Nba Elite Pro Tank Top #TB",
+        sku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TB",
         tile: "photo",
         priceEUR: null,
         status: "soon",
@@ -171,6 +192,7 @@ const products = [
     },
     {
         name: "Nike NBA Elite Pro Compression #SB",
+        sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SB",
         tile: "photo",
         priceEUR: null,
         status: "soldout",
@@ -182,6 +204,7 @@ const products = [
     },
     {
         name: "Nike Nba Elite Pro Tank Top #TW",
+        sku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TW",
         tile: "photo",
         priceEUR: null,
         status: "soldout",
@@ -193,6 +216,7 @@ const products = [
     },
     {
         name: "Nike Nba Elite Pro Compression #LSW",
+        sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-LSW",
         tile: "photo",
         priceEUR: null,
         status: "soon",
@@ -204,6 +228,7 @@ const products = [
     },
     {
         name: "Nike Nba Elite Pro Compression #SHB",
+        sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SHB",
         tile: "photo",
         priceEUR: null,
         status: "soon",
@@ -215,6 +240,7 @@ const products = [
     },
     {
         name: "Nike Nba Elite Pro Compression #LHB",
+        sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-LHB",
         tile: "photo",
         priceEUR: null,
         status: "soon",
@@ -226,6 +252,7 @@ const products = [
     },
     {
         name: "Nike Nba Elite Pro Compression #SHW",
+        sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SHW",
         tile: "photo",
         priceEUR: null,
         status: "soon",

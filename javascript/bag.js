@@ -525,6 +525,17 @@
        to WhatsApp, no-cors because Apps Script does not answer a preflight,
        and every failure swallowed — nothing here may delay or block an order.
        Set ORDERS_ENDPOINT to "" in order-status.js to turn this off. */
+    /* The sku is what the business app links an order line to stock with.
+       A bag saved before products carried one has none stored, so fall back to
+       the live catalogue — otherwise an order placed from a week-old bag
+       arrives unlinkable for no reason the buyer could have avoided. */
+    function skuFor(item) {
+        if (item.sku) return item.sku;
+        if (typeof products === "undefined") return "";
+        var p = products.filter(function (x) { return x.name === item.name; })[0];
+        return (p && p.sku) || "";
+    }
+
     function logOrder(ref, items, sum, link) {
         if (typeof ORDERS_ENDPOINT !== "string" ||
             !/^https:\/\/script\.google\.com\//.test(ORDERS_ENDPOINT)) return;
@@ -555,7 +566,7 @@
                        codes in it — this costs one column and spares every
                        reader that problem. */
                     lines: items.map(function (i) {
-                        return { name: i.name, option: i.option || "",
+                        return { name: i.name, sku: skuFor(i), option: i.option || "",
                                  qty: i.qty, price: i.price };
                     })
                 })
@@ -571,6 +582,7 @@
             add({
                 id: lineId(p.name, p.option),
                 name: p.name,
+                sku: p.sku || "",
                 option: p.option || "",
                 price: Number(p.price) || 0,
                 qty: Math.max(1, Number(p.qty) || 1),
