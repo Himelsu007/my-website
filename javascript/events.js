@@ -1,13 +1,13 @@
 const events = [  
             {
         type: "PICKUP GAME",
-        title: "FULL COURT 5V5",
+        title: "HALF COURT 4V4",
         date:  "October 3rd",
         time: "7:45PM-9:35PM",
         location: "Técnico Lisboa",
         map: "https://maps.apple/p/LB2DKKvAarAnMM",
         spotsTaken: 0,
-        spotsTotal: 20,
+        spotsTotal: 24,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist:false
