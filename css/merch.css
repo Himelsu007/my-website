@@ -2633,3 +2633,23 @@ body.lx-scroll-locked {
     .modal_variant_group.needs-attention,
     .pill.active, .color_pills .pill.active { animation: none; }
 }
+
+/* ========================================
+   SHELF — price on the floor
+   ----------------------------------------
+   Grid stretches every card in a row to the same height, but the price sat
+   directly under the name, so a two-line name pushed it 18px lower than the
+   one-line name beside it and the row of prices came out ragged. On desktop
+   the names happen to fit on one line and it looked fine; it was only ever
+   hidden, not absent.
+
+   Reserving two lines for every name would fix the drift and leave a hole
+   under every short one. Pushing the price to the bottom of the card fixes it
+   at every width and reserves nothing: the slack goes between the name and
+   the price, where there is nothing to look at.
+   ======================================== */
+.products_box .product_info {
+    flex: 1 1 auto;
+    justify-content: space-between;
+    gap: 8px;
+}
