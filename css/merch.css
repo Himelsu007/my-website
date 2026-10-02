@@ -2653,3 +2653,48 @@ body.lx-scroll-locked {
     justify-content: space-between;
     gap: 8px;
 }
+
+/* ========================================
+   OPTION ROW — one baseline, one label voice
+   ----------------------------------------
+   The two pill rows did not line up. "Size" carries a "View size chart" link
+   beside it and that link has a 44px touch target, so the Size header stood
+   44px tall against Colour's 24 and pushed its pills 16px lower than the
+   colour swatches next to them. The header was also set to align-items:
+   baseline, which lines up the text and lets the boxes end wherever they
+   like — the one thing that had to match was the bottom.
+
+   Both headers now occupy the same 44px, so whatever sits in them, the pills
+   below start on the same line.
+
+   The labels themselves drop to the caption treatment the rest of the site
+   already uses for "ITEMS" and "ORDER TOTAL" — small, tracked, quiet. At 22px
+   white they competed with the product title two lines above and said far
+   less. A label should name the row, not announce it.
+   ======================================== */
+#product_modal .modal_variant_header {
+    min-height: 44px;
+    align-items: center;
+    margin-bottom: 2px;
+}
+#product_modal .modal_variant_group h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #8a8a94;
+    line-height: 1;
+}
+/* optionTitle ships as "<strong>Size</strong>", so the inner tag must not
+   reintroduce a weight the label has just shed. */
+#product_modal .modal_variant_group h4 strong { font-weight: inherit; }
+
+/* The link is a footnote to the row, not a second action competing with it. */
+#product_modal .size_chart_link {
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: rgba(255, 215, 0, 0.75);
+}
+#product_modal .size_chart_link:hover { color: #FFD700; opacity: 1; }
