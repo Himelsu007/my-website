@@ -1458,7 +1458,11 @@ section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
 
 /* Finished run — history, no longer reads the shared Sheet */
 #events_container .s-done{ color:var(--bk-dim); }
-#events_container .f-done{ background:linear-gradient(90deg,#4a4a52,#33333a); }
+/* Red, the same as Sold Out. A finished run is closed for the same reason a
+   full one is — there is no spot to take — and grey read as "nothing
+   happened here" rather than "this one is done". The card's own 0.72 opacity
+   is what separates history from a run that is merely full. */
+#events_container .f-done{ background:linear-gradient(90deg,var(--bk-red),#b91c1c); }
 #events_container .bk-card[data-status="done"]{ opacity:0.72; }
 #events_container .bk-card[data-status="done"]:hover{ opacity:1; }
 #events_container .bk-cta--done{
