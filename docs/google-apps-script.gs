@@ -16,9 +16,12 @@
  *              Confirmed, Ready, Delivered or Cancelled and the buyer's
  *              order link shows it the next time they open it. The Note
  *              column, if you fill it, shows up under the tracker.
- *              Changing Status also writes a one-tap "Tell them" link in
- *              the last column that opens WhatsApp with the update already
- *              written — see onEdit at the bottom.
+ *              Changing Status also writes a one-tap "Tell them" link that
+ *              opens WhatsApp with the update already written — see onEdit
+ *              at the bottom. Type anything into the ETA column ("Sat
+ *              18:00–20:00", "Tomorrow morning") and it replaces the
+ *              estimate on the buyer's page; leave it blank and the page
+ *              works one out itself.
  */
 
 var SHEET_NAME  = 'Signups';
@@ -86,9 +89,9 @@ function orders_() {
   if (!sh) {
     sh = ss.insertSheet(ORDERS_NAME);
     sh.appendRow(['Timestamp', 'Ref', 'Items', 'Status', 'Note', 'Updated',
-                  'Total', 'Link', 'Fulfilment', 'Customer', 'Lines', 'Tell them']);
+                  'Total', 'Link', 'Fulfilment', 'Customer', 'Lines', 'Tell them', 'ETA']);
     sh.setFrozenRows(1);
-    sh.getRange('A1:L1').setFontWeight('bold');
+    sh.getRange('A1:M1').setFontWeight('bold');
     sh.setColumnWidth(3, 320);
     sh.setColumnWidth(8, 240);
     sh.setColumnWidth(9, 220);
@@ -96,6 +99,10 @@ function orders_() {
     // meant to be looked at, and a wide column of JSON makes the tab unusable.
     sh.setColumnWidth(11, 60);
     sh.setColumnWidth(12, 110);
+    sh.setColumnWidth(13, 170);
+    // Plain text, so "18:00" stays "18:00" and is not quietly turned into a
+    // date on 30 December 1899, which is what Sheets does to a bare time.
+    sh.getRange(2, 13, sh.getMaxRows() - 1, 1).setNumberFormat('@');
 
     // A dropdown on Status so the wording stays consistent and the website
     // never has to guess what a free-typed cell meant.
@@ -104,13 +111,15 @@ function orders_() {
       .setAllowInvalid(true)
       .build();
     sh.getRange(2, 4, sh.getMaxRows() - 1, 1).setDataValidation(rule);
-  } else if (sh.getLastColumn() < 12) {
+  } else if (sh.getLastColumn() < 13) {
     // An Orders tab made before these columns existed is narrower. Widen it in
-    // place rather than making people start a new tab.
-    sh.insertColumnsAfter(sh.getLastColumn(), 12 - sh.getLastColumn());
-    sh.getRange(1, 9, 1, 4)
-      .setValues([['Fulfilment', 'Customer', 'Lines', 'Tell them']])
+    // place rather than making people start a new tab — existing rows keep
+    // every value where it was, because new columns only ever go on the end.
+    sh.insertColumnsAfter(sh.getLastColumn(), 13 - sh.getLastColumn());
+    sh.getRange(1, 9, 1, 5)
+      .setValues([['Fulfilment', 'Customer', 'Lines', 'Tell them', 'ETA']])
       .setFontWeight('bold');
+    sh.getRange(2, 13, sh.getMaxRows() - 1, 1).setNumberFormat('@');
   }
   return sh;
 }
@@ -152,6 +161,7 @@ function doPost(e) {
         String(d.fulfilment || ''),
         String(d.customer || ''),
         JSON.stringify(d.lines || []),
+        '',
         ''
       ]);
       return json_({ ok: true });
@@ -231,7 +241,7 @@ function orderList_(since, limit) {
     var n = sh.getLastRow() - 1;
     if (n < 1) return json_({ ok: true, orders: [] });
 
-    var rows = sh.getRange(2, 1, n, 12).getValues();
+    var rows = sh.getRange(2, 1, n, 13).getValues();
     var after = since ? new Date(String(since)).getTime() : 0;
     if (isNaN(after)) after = 0;
     var cap = Math.min(Math.max(parseInt(limit, 10) || 100, 1), 500);
@@ -258,6 +268,7 @@ function orderList_(since, limit) {
         link: String(r[7] || ''),
         fulfilment: String(r[8] || ''),
         customer: String(r[9] || ''),
+        eta: etaText_(r[12]),
         lines: lines
       });
     }
@@ -265,6 +276,23 @@ function orderList_(since, limit) {
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }
+}
+
+/**
+ * The ETA cell as the text the buyer should read.
+ *
+ * The column is formatted as plain text, but a tab widened before that, or a
+ * value pasted in, can still arrive as a Date. A bare time ("18:00") comes
+ * back dated 30 Dec 1899; that one is shown as just the time.
+ */
+function etaText_(v) {
+  if (v instanceof Date) {
+    var tz = Session.getScriptTimeZone();
+    return v.getFullYear() < 1950
+      ? Utilities.formatDate(v, tz, 'HH:mm')
+      : Utilities.formatDate(v, tz, 'EEE d MMM, HH:mm');
+  }
+  return String(v || '').trim();
 }
 
 /** One order's status, for the buyer's tracking link. */
@@ -282,6 +310,7 @@ function orderStatus_(ref) {
       ok: true,
       status: String(val[0] || 'Requested'),
       note: String(val[1] || ''),
+      eta: etaText_(sh.getRange(row, 13).getValue()),
       updated: upd instanceof Date
         ? Utilities.formatDate(upd, Session.getScriptTimeZone(), 'd MMM, HH:mm')
         : String(upd || '')

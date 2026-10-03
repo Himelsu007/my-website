@@ -95,7 +95,7 @@ const ORDERS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxpYeaAJK4zxhbO
         try { sessionStorage.setItem(cacheKey(ref), JSON.stringify(data)); } catch (e) {}
     }
 
-    /** Resolves to { key, note, updated } — never rejects. */
+    /** Resolves to { key, note, updated, eta } — never rejects. */
     function fetchStatus(ref) {
         if (!isConfigured() || !ref) return Promise.resolve(null);
         return fetch(ORDERS_ENDPOINT + "?order=" + encodeURIComponent(ref), { cache: "no-store" })
@@ -104,7 +104,10 @@ const ORDERS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxpYeaAJK4zxhbO
                 if (!d || !d.ok || !d.status) return null;
                 var key = normalise(d.status);
                 if (!key) return null;
-                var out = { key: key, note: d.note || "", updated: d.updated || "" };
+                /* eta: whatever you typed in the Orders tab's ETA column. When it
+                   is there it replaces the page's own estimate outright. */
+                var out = { key: key, note: d.note || "", updated: d.updated || "",
+                            eta: d.eta || "" };
                 writeCache(ref, out);
                 return out;
             })

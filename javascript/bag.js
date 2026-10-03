@@ -122,6 +122,22 @@
         return tc(d.wk) + " " + d.day + " " + tc(d.mon);
     }
 
+    /* "8:15PM-10PM" -> "20:15". The order page shows when to turn up, and in
+       Portugal that is written on a 24-hour clock. The second half of the
+       range often drops its am/pm ("8:15PM-10PM"), so the suffix is borrowed
+       from whichever half has one. */
+    function runStart(run) {
+        var t = String((run && run.time) || "").toLowerCase().replace(/\s+/g, "");
+        var m = t.split(/[-\u2013\u2014]/)[0].match(/^(\d{1,2})(?::(\d{2}))?(am|pm)?/);
+        if (!m) return "";
+        var h = +m[1], min = m[2] ? +m[2] : 0;
+        var ap = m[3] || (t.match(/(am|pm)/) || [])[1];
+        if (ap === "pm" && h < 12) h += 12;
+        if (ap === "am" && h === 12) h = 0;
+        if (h > 23 || min > 59) return "";
+        return (h < 10 ? "0" : "") + h + ":" + (min < 10 ? "0" : "") + min;
+    }
+
     /* Complete enough to send. A postcode is the one field worth checking:
        a wrong door number gets a phone call, a wrong postcode gets a courier
        in the wrong half of the city. */
@@ -143,11 +159,16 @@
         return "";
     }
 
+    function startFor(runDate) {
+        var run = upcomingRuns().filter(function (r) { return r.date === runDate; })[0];
+        return runStart(run);
+    }
+
     /* base64url so the order link carries no reserved characters — the
        fragment is split on "." and "~" and an address contains both. */
     function packF(f) {
         var parts = f.method === "pickup"
-            ? ["p", f.runLabel || f.run || "", f.runWhere || ""]
+            ? ["p", f.runLabel || f.run || "", f.runWhere || "", f.runStart || startFor(f.run)]
             : ["d", f.name || "", f.street || "", f.postcode || ""];
         var bytes = new TextEncoder().encode(parts.join("|"));
         var bin = "";
@@ -381,6 +402,7 @@
                 var run = upcomingRuns().filter(function (r) { return r.date === el.value; })[0];
                 f.runLabel = runLabel(run);
                 f.runWhere = run ? (run.location || "") : "";
+                f.runStart = runStart(run);
             }
             writeF(f);
         });
@@ -391,6 +413,7 @@
                 f.run = e.target.value;
                 f.runLabel = runLabel(run);
                 f.runWhere = run ? (run.location || "") : "";
+                f.runStart = runStart(run);
                 writeF(f);
             }
         });
