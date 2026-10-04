@@ -430,6 +430,9 @@ function openProductModal(index, opener) {
     const catLabel = CATEGORY_LABEL[product.category] || "";
     const availability = isAvailable ? "12h delivery in Lisbon"
                        : isComingSoon ? "Coming soon" : "Sold out";
+    // Basketballs don't carry the 12h line; their row reads "Basketballs |
+    // In stock". A sold-out or coming-soon ball would still say so.
+    const showAvailability = !(isAvailable && product.category === "balls");
 
     modal.innerHTML = `
         <div class="modal_content" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
@@ -468,8 +471,8 @@ function openProductModal(index, opener) {
                     <div class="modal_price">${displayPrice(product)}</div>
                 </div>
                 <div class="modal_meta">
-                    ${catLabel ? `<span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.5" cy="8" r="1.4"/></svg>${catLabel}</span><i aria-hidden="true">|</i>` : ""}
-                    <span class="${isAvailable ? "" : "is-off"}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h11v9H3z"/><path d="M14 9.5h3.6L21 13v2.5h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>${availability}</span>
+                    ${catLabel ? `<span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.5" cy="8" r="1.4"/></svg>${catLabel}</span>${showAvailability ? `<i aria-hidden="true">|</i>` : ""}` : ""}
+                    ${showAvailability ? `<span class="${isAvailable ? "" : "is-off"}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h11v9H3z"/><path d="M14 9.5h3.6L21 13v2.5h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>${availability}</span>` : ""}
                     ${isAvailable ? `<i aria-hidden="true" class="meta_sep_stock">|</i><span class="meta_stock">In stock</span>` : ""}
                 </div>
 
