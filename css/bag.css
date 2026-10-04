@@ -334,3 +334,330 @@ select.lx_bag_input option { background: #141418; color: #fff; }
 .lx_bag_item img.tile-light { background: #FFFFFF; padding: 3px; box-sizing: border-box; }
 .lx_bag_item img.tile-dark  { background: linear-gradient(180deg, #17171C, #0F0F12); }
 .lx_bag_item img.tile-photo { object-fit: cover; }
+
+/* =====================================================
+   BODY — the lines and the delivery questions scroll as one
+   -----------------------------------------------------
+   The fulfilment block used to be pinned in the footer with the list
+   scrolling above it, so opening the delivery form left the lines a
+   sliver. Now both live in one scroller; only the money and the order
+   button stay pinned. When the list is short the questions still settle
+   at the bottom, right above the total, as before.
+   ===================================================== */
+.lx_bag_body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex; flex-direction: column;
+}
+.lx_bag_body .lx_bag_list { flex: 0 0 auto; overflow: visible; padding-bottom: 14px; }
+.lx_bag_body .lx_bag_fulfil {
+    margin-top: auto;
+    padding: 16px 22px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 0;
+}
+
+.lx_bag_title { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.lx_bag_head_count {
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    color: #71717a; font-variant-numeric: tabular-nums;
+}
+.lx_bag_close { display: grid; place-items: center; }
+
+/* The breakdown is a desktop detail; the phone keeps its short footer. */
+.lx_bag_summary { display: none; }
+
+/* An empty bag says so properly, and stops asking delivery questions. */
+.lx_bag_empty {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 64px 28px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    color: #71717a;
+}
+.lx_bag_empty svg { color: #3f3f46; margin-bottom: 6px; }
+.lx_bag_empty b { color: #fff; font-size: 15px; font-weight: 600; }
+.lx_bag_empty span { font-size: 13px; line-height: 1.5; max-width: 26ch; }
+#lx_bag_drawer.is-empty .lx_bag_fulfil,
+#lx_bag_drawer.is-empty .lx_bag_foot { display: none; }
+
+/* =====================================================
+   DESKTOP BAG — light, after the product sheet
+   -----------------------------------------------------
+   On a computer the bag is the product sheet's sibling: the same light
+   ground and white cards, the same ink, gold only as a fill with dark
+   text on it. It floats inset from the edges with the sheet's rounding
+   rather than running the full height of the window.
+
+   Each line is a card: a larger thumbnail on its own ground, the name and
+   choice, the price, and a pill stepper. The delivery question is a
+   segmented switch. The footer breaks the money down — subtotal, how it
+   gets to you (free either way), total — above one gold button.
+   ===================================================== */
+@media (min-width: 900px) {
+    #lx_bag_backdrop {
+        background: rgba(0, 0, 0, 0.45);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+    }
+
+    #lx_bag_drawer {
+        --bag-ground:  #F4F4F6;
+        --bag-surface: #FFFFFF;
+        --bag-line:    #E3E3E8;
+        --bag-line-hi: #C9C9D0;
+        --bag-ink:     #0B0B0D;
+        --bag-ink-2:   #54545E;
+        --bag-ink-3:   #8B8B95;
+        --bag-soft:    #ECECEF;
+        --bag-gold:    #FFD700;
+
+        top: 14px; right: 14px; bottom: 14px;
+        width: 448px;
+        border-radius: 26px;
+        border: 0;
+        overflow: hidden;
+        background: var(--bag-ground);
+        color: var(--bag-ink);
+        box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.6);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        animation: lxBagFloatIn .42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ---- head ---- */
+    #lx_bag_drawer .lx_bag_head { padding: 24px 22px 16px 28px; border-bottom: 0; }
+    #lx_bag_drawer .lx_bag_head h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 22px; font-weight: 600; letter-spacing: -0.02em;
+        text-transform: none;
+        color: var(--bag-ink);
+    }
+    #lx_bag_drawer .lx_bag_head_count { font-size: 13px; color: var(--bag-ink-3); }
+    #lx_bag_drawer .lx_bag_close {
+        width: 40px; height: 40px; padding: 0;
+        border-radius: 50%;
+        border: 1px solid var(--bag-line);
+        background: var(--bag-surface);
+        color: var(--bag-ink);
+        transition: border-color .2s ease, transform .2s ease;
+    }
+    #lx_bag_drawer .lx_bag_close:hover { border-color: var(--bag-line-hi); }
+    #lx_bag_drawer .lx_bag_close:active { transform: scale(0.94); }
+
+    /* ---- lines ---- */
+    #lx_bag_drawer .lx_bag_body { padding: 0 20px; scrollbar-width: none; }
+    #lx_bag_drawer .lx_bag_body::-webkit-scrollbar { display: none; }
+    #lx_bag_drawer .lx_bag_list {
+        padding: 4px 0 18px;
+        display: flex; flex-direction: column; gap: 10px;
+    }
+    #lx_bag_drawer .lx_bag_item {
+        grid-template-columns: 76px minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        column-gap: 14px; row-gap: 10px;
+        align-items: start;
+        padding: 12px;
+        background: var(--bag-surface);
+        border: 1px solid var(--bag-line);
+        border-bottom: 1px solid var(--bag-line);
+        border-radius: 18px;
+    }
+    #lx_bag_drawer .lx_bag_item img {
+        grid-column: 1; grid-row: 1 / 3;
+        width: 76px; height: 76px;
+        border-radius: 12px;
+        border: 1px solid var(--bag-line);
+    }
+    #lx_bag_drawer .lx_bag_item img.tile-light { padding: 5px; }
+    #lx_bag_drawer .lx_bag_item_id { grid-column: 2; grid-row: 1 / 3; align-self: center; gap: 3px; }
+    #lx_bag_drawer .lx_bag_item_name {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em;
+        color: var(--bag-ink);
+    }
+    #lx_bag_drawer .lx_bag_item_opt { font-size: 12.5px; color: var(--bag-ink-3); }
+    #lx_bag_drawer .lx_bag_item_price {
+        margin-top: 4px;
+        font-family: 'Inter', sans-serif;
+        font-size: 15px; font-weight: 700; letter-spacing: -0.02em;
+        color: var(--bag-ink);
+    }
+
+    #lx_bag_drawer .lx_bag_remove {
+        grid-column: 3; grid-row: 1;
+        justify-self: end;
+        width: 28px; height: 28px; padding: 0;
+        display: grid; place-items: center;
+        border-radius: 50%;
+        color: var(--bag-ink-3);
+        font-size: 18px; line-height: 1;
+        transition: background .2s ease, color .2s ease;
+    }
+    #lx_bag_drawer .lx_bag_remove:hover { background: #FEF2F2; color: #DC2626; }
+
+    #lx_bag_drawer .lx_bag_qty {
+        grid-column: 3; grid-row: 2;
+        align-self: end;
+        gap: 0;
+        padding: 2px;
+        border: 1px solid var(--bag-line);
+        border-radius: 99px;
+        background: var(--bag-surface);
+    }
+    #lx_bag_drawer .lx_bag_qty button {
+        width: 28px; height: 28px;
+        border: 0; border-radius: 50%;
+        background: transparent;
+        color: var(--bag-ink);
+        font-size: 15px;
+        transition: background .2s ease;
+    }
+    #lx_bag_drawer .lx_bag_qty button:hover { background: var(--bag-soft); border-color: transparent; }
+    #lx_bag_drawer .lx_bag_qty span {
+        min-width: 22px;
+        font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+        color: var(--bag-ink);
+    }
+
+    #lx_bag_drawer .lx_bag_item.has_issue { opacity: 1; }
+    #lx_bag_drawer .lx_bag_item.is_gone .lx_bag_item_name,
+    #lx_bag_drawer .lx_bag_item.is_gone .lx_bag_item_price { color: var(--bag-ink-3); }
+    #lx_bag_drawer .lx_bag_item_flag { grid-column: 2 / 4; color: #B45309; }
+    #lx_bag_drawer .lx_bag_item.is_gone .lx_bag_item_flag { color: #DC2626; }
+    #lx_bag_drawer .lx_bag_item_flag button:hover { color: var(--bag-ink); }
+
+    /* ---- how it gets to you ---- */
+    #lx_bag_drawer .lx_bag_body .lx_bag_fulfil {
+        margin: auto 0 18px;
+        padding: 18px;
+        gap: 14px;
+        background: var(--bag-surface);
+        border: 1px solid var(--bag-line);
+        border-radius: 18px;
+    }
+    #lx_bag_drawer .lx_bag_fulfil_label {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px; font-weight: 600; letter-spacing: -0.005em;
+        text-transform: none;
+        color: var(--bag-ink);
+    }
+    #lx_bag_drawer .lx_bag_methods {
+        gap: 4px; padding: 4px;
+        border-radius: 13px;
+        background: var(--bag-soft);
+    }
+    #lx_bag_drawer .lx_bag_method {
+        padding: 10px 8px;
+        border: 0; border-radius: 10px;
+        background: transparent;
+        color: var(--bag-ink-2);
+        font-family: 'Inter', sans-serif;
+        font-size: 13.5px; font-weight: 600; letter-spacing: 0;
+        text-transform: none;
+    }
+    #lx_bag_drawer .lx_bag_method:hover:not(:disabled) { color: var(--bag-ink); border-color: transparent; }
+    #lx_bag_drawer .lx_bag_method.is-on {
+        background: var(--bag-gold);
+        color: #0B0B0D;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px -6px rgba(180, 140, 0, 0.45);
+    }
+
+    #lx_bag_drawer .lx_bag_panel { gap: 12px; }
+    #lx_bag_drawer .lx_bag_field { gap: 6px; }
+    #lx_bag_drawer .lx_bag_field > span {
+        font-size: 12px; font-weight: 500; letter-spacing: 0;
+        text-transform: none;
+        color: var(--bag-ink-2);
+    }
+    #lx_bag_drawer .lx_bag_input {
+        padding: 12px 13px;
+        border-radius: 11px;
+        border: 1px solid var(--bag-line);
+        background: #FAFAFB;
+        color: var(--bag-ink);
+        font-size: 14.5px;
+    }
+    #lx_bag_drawer .lx_bag_input::placeholder { color: var(--bag-ink-3); }
+    #lx_bag_drawer .lx_bag_input:focus {
+        border-color: var(--bag-ink);
+        background: var(--bag-surface);
+        box-shadow: 0 0 0 3px rgba(11, 11, 13, 0.07);
+    }
+    #lx_bag_drawer select.lx_bag_input option { background: #FFFFFF; color: #0B0B0D; }
+    #lx_bag_drawer .lx_bag_hint { font-size: 12px; color: var(--bag-ink-3); }
+
+    /* ---- the money, and the button ---- */
+    #lx_bag_drawer .lx_bag_foot {
+        padding: 18px 28px 22px;
+        gap: 12px;
+        border-top: 1px solid var(--bag-line);
+        background: var(--bag-ground);
+    }
+    #lx_bag_drawer .lx_bag_summary { display: flex; flex-direction: column; gap: 7px; }
+    #lx_bag_drawer .lx_bag_row {
+        display: flex; justify-content: space-between; align-items: baseline;
+        font-size: 13px; color: var(--bag-ink-2);
+    }
+    #lx_bag_drawer .lx_bag_row span:last-child {
+        color: var(--bag-ink); font-weight: 500;
+        font-variant-numeric: tabular-nums;
+    }
+    #lx_bag_drawer .lx_bag_total {
+        padding-top: 12px;
+        border-top: 1px solid var(--bag-line);
+        font-family: 'Inter', sans-serif;
+        font-size: 15px; font-weight: 600; letter-spacing: -0.005em;
+        text-transform: none;
+        color: var(--bag-ink);
+    }
+    #lx_bag_drawer .lx_bag_total strong {
+        font-size: 28px; font-weight: 700; letter-spacing: -0.035em;
+        color: var(--bag-ink);
+    }
+
+    #lx_bag_drawer .lx_bag_order {
+        height: 56px; padding: 0 22px;
+        border: 0; border-radius: 99px;
+        background: var(--bag-gold);
+        color: #0B0B0D;
+        font-family: 'Inter', sans-serif;
+        font-size: 15.5px; font-weight: 600; letter-spacing: -0.005em;
+        text-transform: none;
+        box-shadow: none;
+        transition: transform .2s ease, box-shadow .25s ease, background-color .2s ease;
+    }
+    /* .whatsapp_btn:hover would turn it WhatsApp green — it stays gold. */
+    #lx_bag_drawer .lx_bag_order:hover:not([disabled]) {
+        background: var(--bag-gold);
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px -10px rgba(200, 160, 0, 0.6);
+    }
+    #lx_bag_drawer .lx_bag_order:active:not([disabled]) { transform: scale(0.985); }
+    #lx_bag_drawer .lx_bag_order[disabled] {
+        opacity: 1;
+        background: var(--bag-soft);
+        color: var(--bag-ink-3);
+        transform: none;
+        box-shadow: none;
+    }
+
+    #lx_bag_drawer .lx_bag_clear { color: var(--bag-ink-3); font-size: 12.5px; text-underline-offset: 3px; }
+    #lx_bag_drawer .lx_bag_clear:hover { color: var(--bag-ink-2); }
+    #lx_bag_drawer .lx_bag_note { color: var(--bag-ink-3); font-size: 12px; }
+
+    /* ---- empty ---- */
+    #lx_bag_drawer .lx_bag_empty svg { color: var(--bag-line-hi); }
+    #lx_bag_drawer .lx_bag_empty b { color: var(--bag-ink); }
+    #lx_bag_drawer .lx_bag_empty span { color: var(--bag-ink-3); }
+}
+
+/* Floats in from just past its resting place, not from the window edge. */
+@keyframes lxBagFloatIn {
+    from { transform: translateX(calc(100% + 28px)); }
+    to   { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #lx_bag_drawer { animation: none !important; }
+}

@@ -3429,10 +3429,10 @@ body:has(#product_modal.active) #lx_bag_pill {
    MOBILE — a dark sheet over the blurred store
    ---------------------------------------------------------------------
    Desktop keeps the light two-column sheet. Phones and tablets get the
-   same layout on the store's own dark ground, and on a phone it is a
-   bottom sheet again rather than a full-screen page: 85% of the screen,
-   with the store left visible and blurred above it — which says "you are
-   still in the store" and gives a strip to tap to close.
+   same layout on the store's own dark ground, and on a phone it is a card
+   centred on the screen rather than a full-screen page: 85% of the height,
+   with the store left visible and blurred around it — which says "you are
+   still in the store" and leaves room to tap to close.
 
    85% of the overlay, not 85vh: the overlay is position:fixed with
    inset:0, which on iOS is exactly the visible area, so the sheet can
@@ -3471,13 +3471,16 @@ body:has(#product_modal.active) #lx_bag_pill {
 }
 
 @media (max-width: 640px) {
-    #product_modal { align-items: flex-end; }
+    /* A card floating in the middle of the screen, not a sheet pinned to the
+       bottom edge: 85% tall, a 12px margin each side, rounded all round. */
+    #product_modal { align-items: center; justify-content: center; }
     #product_modal .modal_content {
         height: 85%;
+        width: calc(100% - 24px);
         max-height: none;
-        border-radius: 24px 24px 0 0;
-        /* rises from the bottom edge, like any sheet */
-        transform: translateY(100%);
+        border-radius: 24px;
+        /* rises into place from below the screen */
+        transform: translateY(110%);
     }
     #product_modal.active .modal_content { transform: none; }
 

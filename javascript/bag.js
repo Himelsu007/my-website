@@ -197,7 +197,7 @@
     }
 
     /* ---------------- DOM ---------------- */
-    var pill, drawer, backdrop, listEl, totalEl, toastEl;
+    var pill, drawer, backdrop, listEl, totalEl, subtotalEl, toastEl;
     var stale = 0;              // lines the catalogue can no longer honour
 
     function build() {
@@ -229,11 +229,19 @@
         // its plus/minus clicks.
         drawer.innerHTML =
             '<div class="lx_bag_head">' +
-              '<h2 class="barlow-condensed-black">Your Bag</h2>' +
-              '<button class="lx_bag_close" type="button" aria-label="Close bag">&times;</button>' +
+              '<div class="lx_bag_title">' +
+                '<h2 class="barlow-condensed-black">Your bag</h2>' +
+                '<span class="lx_bag_head_count"></span>' +
+              '</div>' +
+              '<button class="lx_bag_close" type="button" aria-label="Close bag">' +
+                '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
+              '</button>' +
             '</div>' +
-            '<div class="lx_bag_list"></div>' +
-            '<div class="lx_bag_foot">' +
+            /* The lines and the delivery questions scroll as one, so an open
+               delivery form never squeezes the lines into a sliver; only the
+               money and the button are pinned. */
+            '<div class="lx_bag_body">' +
+              '<div class="lx_bag_list"></div>' +
               /* Asked here rather than over WhatsApp afterwards: this is the
                  last moment we have their attention, and every order that
                  leaves without it costs a round of messages. */
@@ -259,6 +267,12 @@
                   '<p class="lx_bag_hint">Lisbon only, within 12h. No delivery fee.</p>' +
                 '</div>' +
               '</div>' +
+            '</div>' +
+            '<div class="lx_bag_foot">' +
+              '<div class="lx_bag_summary">' +
+                '<div class="lx_bag_row"><span>Subtotal</span><span class="lx_bag_subtotal">0€</span></div>' +
+                '<div class="lx_bag_row"><span class="lx_bag_ship">Delivery or pickup</span><span>Free</span></div>' +
+              '</div>' +
               '<div class="lx_bag_total"><span>Total</span><strong>0€</strong></div>' +
               '<button class="lx_bag_order whatsapp_btn" type="button">Order all on WhatsApp</button>' +
               '<button class="lx_bag_clear" type="button">Empty bag</button>' +
@@ -276,6 +290,7 @@
 
         listEl  = drawer.querySelector(".lx_bag_list");
         totalEl = drawer.querySelector(".lx_bag_total strong");
+        subtotalEl = drawer.querySelector(".lx_bag_subtotal");
 
         pill.addEventListener("click", open);
         backdrop.addEventListener("click", close);
@@ -350,9 +365,17 @@
                     '<button class="lx_bag_remove" type="button" data-bag-act="remove" aria-label="Remove ' + esc(i.name) + '">&times;</button>' +
                 '</div>';
             }).join("")
-            : '<p class="lx_bag_empty">Your bag is empty.</p>';
+            : '<div class="lx_bag_empty">' +
+                  '<svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>' +
+                  '<b>Your bag is empty</b>' +
+                  '<span>Add something from the shelf — it waits here until you order.</span>' +
+              '</div>';
 
+        drawer.classList.toggle("is-empty", items.length === 0);
+        drawer.querySelector(".lx_bag_head_count").textContent =
+            n ? n + (n === 1 ? " item" : " items") : "";
         totalEl.textContent = money(total());
+        if (subtotalEl) subtotalEl.textContent = money(total());
         stale = blocked;
         refreshGate();
     }
@@ -371,6 +394,10 @@
         drawer.querySelectorAll(".lx_bag_panel").forEach(function (panel) {
             panel.hidden = panel.dataset.panel !== f.method;
         });
+        var ship = drawer.querySelector(".lx_bag_ship");
+        if (ship) ship.textContent = f.method === "pickup" ? "Pickup at the run"
+                                   : f.method === "delivery" ? "Delivery in Lisbon"
+                                   : "Delivery or pickup";
 
         var sel = drawer.querySelector('[data-fld="run"]');
         if (sel && sel.options.length !== runs.length + 1) {
