@@ -621,30 +621,34 @@ function updateQuantityTotal(modal) {
  */
 function initSwipe(modal) {
     const wrapper = modal.querySelector(".modal_image_wrapper");
+    const topbar = modal.querySelector(".modal_topbar");
     const sheet = modal.querySelector(".modal_content");
     const scroller = modal.querySelector(".modal_scroll");
     if (!wrapper || !sheet) return;
     const isSheet = () => window.matchMedia("(max-width: 640px)").matches;
 
-    let startX = 0, startY = 0, startT = 0, dx = 0, dy = 0, axis = null, live = false;
+    // Two places take a drag: the photo (sideways = next photo, down = close,
+    // but only from the top of the scroll) and the bar with the handle, which
+    // never scrolls — so pulling it down always closes the sheet.
+    let startX = 0, startY = 0, startT = 0, dx = 0, dy = 0, axis = null, live = false, fromPhoto = false;
 
-    wrapper.addEventListener("touchstart", (e) => {
+    const start = (e, photo) => {
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         startT = Date.now();
-        dx = dy = 0; axis = null; live = true;
-    }, { passive: true });
+        dx = dy = 0; axis = null; live = true; fromPhoto = photo;
+    };
 
     // Not passive: once a drag is a dismiss, the page's own pull-to-bounce has
     // to be cancelled or iOS fights the sheet for the same finger.
-    wrapper.addEventListener("touchmove", (e) => {
+    const move = (e) => {
         if (!live) return;
         dx = e.touches[0].clientX - startX;
         dy = e.touches[0].clientY - startY;
         if (!axis) {
             if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
             if (Math.abs(dx) > Math.abs(dy)) axis = "x";
-            else if (dy > 0 && isSheet() && (!scroller || scroller.scrollTop <= 0)) axis = "dismiss";
+            else if (dy > 0 && isSheet() && (!fromPhoto || !scroller || scroller.scrollTop <= 0)) axis = "dismiss";
             else axis = "scroll";
         }
         if (axis === "dismiss") {
@@ -655,12 +659,12 @@ function initSwipe(modal) {
             // The backdrop lifts as the sheet goes, so it reads as leaving.
             modal.style.setProperty("--lx-drag", Math.min(1, pull / 320).toFixed(3));
         }
-    }, { passive: false });
+    };
 
     const finish = () => {
         if (!live) return;
         live = false;
-        if (axis === "x" && Math.abs(dx) > 50) {
+        if (axis === "x" && fromPhoto && Math.abs(dx) > 50) {
             stopAutoSlideshow();
             gotoSlide(modal, slideshowState.currentIndex + (dx < 0 ? 1 : -1));
         } else if (axis === "dismiss") {
@@ -679,8 +683,14 @@ function initSwipe(modal) {
         }
         axis = null; dx = dy = 0;
     };
-    wrapper.addEventListener("touchend", finish);
-    wrapper.addEventListener("touchcancel", finish);
+
+    [[wrapper, true], [topbar, false]].forEach(([el, photo]) => {
+        if (!el) return;
+        el.addEventListener("touchstart", (e) => start(e, photo), { passive: true });
+        el.addEventListener("touchmove", move, { passive: false });
+        el.addEventListener("touchend", finish);
+        el.addEventListener("touchcancel", finish);
+    });
 }
 
 // ========================================

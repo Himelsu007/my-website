@@ -3461,3 +3461,76 @@ body:has(#product_modal.active) #lx_bag_pill {
 @media (hover: hover) {
     .products_box.edge-light:hover .product_image_wrapper::after { opacity: 0; }
 }
+
+/* =====================================================================
+   MOBILE — a dark sheet over the blurred store
+   ---------------------------------------------------------------------
+   Desktop keeps the light two-column sheet. Phones and tablets get the
+   same layout on the store's own dark ground, and on a phone it is a
+   bottom sheet again rather than a full-screen page: 85% of the screen,
+   with the store left visible and blurred above it — which says "you are
+   still in the store" and gives a strip to tap to close.
+
+   85% of the overlay, not 85vh: the overlay is position:fixed with
+   inset:0, which on iOS is exactly the visible area, so the sheet can
+   never run up behind Safari's toolbars (what hid the × before).
+   ===================================================================== */
+@media (max-width: 899px) {
+    #product_modal {
+        --pd-ground:  #101013;
+        --pd-surface: #18181C;
+        --pd-line:    #26262C;
+        --pd-line-hi: #3B3B44;
+        --pd-ink:     #F4F4F6;
+        --pd-ink-2:   #A9A9B4;
+        --pd-ink-3:   #74747F;
+        --pd-soft:    #222228;
+        --pd-ok:      #4ADE80;
+        --pd-swatch-edge: rgba(255, 255, 255, 0.24);
+    }
+    /* A dark sheet over a dark page needs an edge to read as a surface; an
+       outline so it costs no layout. */
+    #product_modal .modal_content {
+        outline: 1px solid rgba(255, 255, 255, 0.07);
+        outline-offset: -1px;
+    }
+    /* White cut-outs sit on a card one step lighter than the sheet, so the
+       photo still reads as a card instead of dissolving into the ground. */
+    #product_modal .modal_image_wrapper.tile-dark { background: var(--pd-surface); }
+
+    /* Lighter dim, real blur: the store stays recognisable, just out of focus.
+       The dim still fades as the sheet is dragged down. */
+    #product_modal.active {
+        background: rgba(0, 0, 0, calc(0.42 * (1 - var(--lx-drag, 0))));
+        -webkit-backdrop-filter: blur(18px) saturate(1.15);
+        backdrop-filter: blur(18px) saturate(1.15);
+    }
+}
+
+@media (max-width: 640px) {
+    #product_modal { align-items: flex-end; }
+    #product_modal .modal_content {
+        height: 85%;
+        max-height: none;
+        border-radius: 24px 24px 0 0;
+        /* rises from the bottom edge, like any sheet */
+        transform: translateY(100%);
+    }
+    #product_modal.active .modal_content { transform: none; }
+
+    /* The handle is back — drag-to-dismiss already works from the top. */
+    #product_modal .modal_content::before { display: block; }
+    #product_modal .modal_topbar { padding: 20px 16px 10px; }
+
+    /* A sheet closes with a ×, kept on the right where the desktop one is;
+       the back chevron belonged to the full-screen page. */
+    #product_modal .close_modal .ic-back  { display: none; }
+    #product_modal .close_modal .ic-close { display: block; }
+    #product_modal .modal_topbar_spacer   { grid-column: 1; grid-row: 1; }
+    #product_modal .modal_topbar_title    { grid-column: 2; grid-row: 1; }
+    #product_modal .modal_topbar .close_modal {
+        grid-column: 3; grid-row: 1;
+        justify-self: end;
+        width: 40px; height: 40px;
+    }
+}
