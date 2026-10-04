@@ -3426,16 +3426,17 @@ body:has(#product_modal.active) #lx_bag_pill {
 }
 
 /* =====================================================================
-   SHELF — white name panel under a dark photo
+   SHELF — white edge around a dark photo
    ---------------------------------------------------------------------
-   A pack shot on white already makes a two-tone card: white photo, dark
-   panel. A photo on a dark ground made one dark block, name and all. Those
-   cards now get the mirror image — dark photo, white panel — so every card
-   on the shelf reads as photo + label. Gold is unreadable on white, so the
-   price on these cards is ink.
+   A pack shot on white stands out from the dark page by itself. A photo on
+   a dark ground, with the dark name panel under it, made one dark block
+   whose #27272A edge disappeared against the page. Those cards keep their
+   panel as it is and get a white edge instead. Hover still turns gold like
+   every other card; the focus reset must not put the dark edge back.
    ===================================================================== */
-.products_box.info-light .product_info { background: #FFFFFF; }
-.products_box.info-light .product_info .product_name { color: #0B0B0D; }
-.products_box.info-light .product_info .product_price { color: #0B0B0D; text-shadow: none; }
-.products_box.info-light.is_sold_out .product_info .product_price,
-.products_box.info-light.is_coming_soon .product_info .product_price { color: #6B6B75; }
+.products_box.edge-light,
+.products_box.edge-light:focus,
+.products_box.edge-light:focus-visible { border-color: #FFFFFF; }
+@media (hover: hover) {
+    .products_box.edge-light:hover { border-color: rgba(255, 215, 0, 0.6); }
+}

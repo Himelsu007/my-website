@@ -14,10 +14,10 @@ function buildProductCard(product) {
     const absoluteIndex = products.indexOf(product);
     const card = document.createElement("button");
     card.type = "button";
-    // A photo on a dark ground gets a white name panel under it, so the card
-    // reads as two clear halves instead of one dark block.
+    // A photo on a dark ground gets a white edge, so the card still reads as
+    // a card against the dark page instead of melting into it.
     const ground = product.tile === "photo" ? product.ground : product.tile;
-    card.className = `products_box ${ground === "dark" ? "info-light" : ""} ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
+    card.className = `products_box ${ground === "dark" ? "edge-light" : ""} ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
     card.setAttribute("data-product-index", absoluteIndex);
     card.setAttribute("aria-label", `View details for ${product.name}, ${displayPrice(product)}`);
     card.innerHTML = `

@@ -16,7 +16,7 @@
 // `tile` is the ground the photo sits on: "light" for a pack shot on white
 // (or a dark cut-out placed on white), "dark" for a white cut-out placed on
 // black, "photo" for a full photograph — which then says its own ground in
-// `ground`. On the shelf, a card on a dark ground gets a white name panel.
+// `ground`. On the shelf, a card on a dark ground gets a white edge.
 //
 // `lead` is the one-line headline over the description in the sheet.
 const products = [
