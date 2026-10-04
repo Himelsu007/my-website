@@ -21,7 +21,7 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
         <image:caption>Lockdown performance from the ground up.</image:caption>
     </image:image>
     <image:image>
-        <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white.png</image:loc>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp</image:loc>
         <image:title>NBA Elite Crew Socks – White</image:title>
         <image:caption>Lockdown performance from the ground up.</image:caption>
     </image:image>
@@ -54,14 +54,6 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/wilson-silver/wilson-official-ball-silver.png</image:loc>
         <image:title>Wilson NBA Authentic Series Indoor Basketball – Silver</image:title>
-    </image:image>
-    <image:image>
-        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-elite-tank-top-black.png</image:loc>
-        <image:title>Nike Elite Tank Top – Black</image:title>
-    </image:image>
-    <image:image>
-        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-elite-tank-top-white.jpeg</image:loc>
-        <image:title>Nike Elite Tank Top – White</image:title>
     </image:image>
     <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp</image:loc>

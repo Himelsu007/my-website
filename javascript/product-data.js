@@ -116,6 +116,10 @@ function initPreloadOnIntent() {
 function initFilterBar() {
     const bar = document.getElementById("product_filter_bar");
     if (!bar) return;
+    // With nothing marked "soon" the chip would only open an empty shelf, so
+    // it stays out of the row until a product is announced again.
+    const soonChip = bar.querySelector('[data-filter="coming-soon"]');
+    if (soonChip) soonChip.hidden = !products.some(isSoon);
     bar.addEventListener("click", (e) => {
         const chip = e.target.closest(".filter_chip");
         if (!chip) return;
