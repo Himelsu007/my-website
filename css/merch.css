@@ -3510,16 +3510,21 @@ body:has(#product_modal.active) #lx_bag_pill {
    white tile. Those cards keep the zoom and their true colour. */
 .products_box:hover .tile-light .product_image { filter: none; }
 
-/* The catalogue's tag (Best Seller, Exclusive) on the shelf card too — the
-   same gold pill the product sheet uses, so the two read as one label. */
+/* The catalogue's tag (Best Seller, Exclusive) on the shelf card too. One
+   type rule for the card and the product sheet, so the label reads the same
+   in both — the sheet's copy had been picking up the old Barlow Condensed
+   800 from an earlier badge style. */
 .products_box .product_badge {
     top: 10px; left: 10px;
     z-index: 3;
+    pointer-events: none;
+}
+.products_box .product_badge,
+#product_modal .product_badge {
     font-family: 'Inter', sans-serif;
     font-size: 10px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase;
+    line-height: 1.2;
     padding: 5px 9px;
     border-radius: 99px;
-    line-height: 1.2;
-    pointer-events: none;
 }
