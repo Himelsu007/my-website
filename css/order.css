@@ -34,7 +34,10 @@
     --or-sunk:   rgba(255,255,255,0.07);
     --or-hover:  rgba(255,255,255,0.028);
     --or-tile:   #17171c;        /* thumbnail ground, cropped photos */
-    --or-tile-lt:#EFEFF2;        /* thumbnail ground, cut-outs shot on white */
+    /* Cut-outs shot on pure white. Has to BE pure white: at #EFEFF2 the 4px of
+       padding showed as a grey frame with the white photo sitting inside it,
+       two boxes where there should be one product. */
+    --or-tile-lt:#FFFFFF;
     --or-green:  #3FE07B;
     --or-red:    #EF4444;
     --or-ease:   cubic-bezier(0.19,1,0.22,1);

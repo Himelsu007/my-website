@@ -2698,3 +2698,53 @@ body.lx-scroll-locked {
     color: rgba(255, 215, 0, 0.75);
 }
 #product_modal .size_chart_link:hover { color: #FFD700; opacity: 1; }
+
+/* ========================================
+   PHONE SHEET — always closable
+   ----------------------------------------
+   On a real iPhone the close button was not there. The sheet is anchored to
+   the bottom of the screen and capped at 92vh — and in iOS Safari `vh` is the
+   height with the toolbars HIDDEN. With the address bar and tab bar showing,
+   92vh is taller than what is actually visible, so the sheet ran up behind
+   the URL bar and took the × and the grab handle with it. With the sheet
+   covering the screen there was no backdrop to tap either, and Back left the
+   store. Desktop browsers' phone emulation treats vh as the visible height,
+   which is why it never showed up there.
+
+   svh is the height with the toolbars SHOWN — the smallest the screen ever
+   gets — so the sheet can never be taller than what you can see. The 44px
+   taken off the top leaves a strip of backdrop that closes the sheet when
+   tapped, and keeps the × clear of the browser's own chrome.
+   ======================================== */
+@media (max-width: 640px) {
+    .modal_content {
+        max-height: 92vh;                    /* browsers without svh */
+        max-height: calc(100svh - 44px);
+    }
+
+    /* The backdrop fades as the sheet is dragged down, so the gesture reads as
+       the sheet leaving rather than the sheet sliding over a fixed layer. */
+    #product_modal.active {
+        background: rgba(0, 0, 0, calc(0.72 * (1 - var(--lx-drag, 0))));
+    }
+
+
+    /* The close button sits over a photo, which can be any colour. A solid
+       surface keeps it findable on a white product shot and a dark arena
+       photo alike. */
+    .modal_content > .close_modal {
+        background-color: rgba(12, 12, 14, 0.78);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    /* A real handle now, so it should look grabbable. */
+    .modal_content::before {
+        width: 44px;
+        height: 5px;
+        top: 7px;
+        background: rgba(255, 255, 255, 0.55);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    }
+}

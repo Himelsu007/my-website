@@ -465,6 +465,14 @@ function openProductModal(index, opener) {
         </div>
     `;
 
+    /* Opening a product is a step the Back button should undo. Without this
+       entry, Back on a phone — or the iOS edge swipe, which is how most people
+       leave anything — skipped straight past the sheet and out of the store.
+       Pushed before the scroll lock, so the entry remembers the real scroll
+       position rather than the locked one. */
+    if (!modalHistoryPushed) {
+        try { history.pushState({ lxModal: true }, ""); modalHistoryPushed = true; } catch (e) {}
+    }
     modal.classList.add("active");
     if (window.LXScrollLock) LXScrollLock.lock("productModal");
 
@@ -491,10 +499,25 @@ function openProductModal(index, opener) {
     if (firstFocusable) firstFocusable.focus({ preventScroll: true });
 }
 
-function closeProductModal() {
+let modalHistoryPushed = false;
+
+/* fromHistory: true when Back closed it, so the entry is already gone. Any
+   other way out (×, backdrop, Esc, swipe) has to consume that entry itself,
+   or the next Back press would appear to do nothing. */
+function closeProductModal(fromHistory) {
     const modal = document.getElementById("product_modal");
     if (!modal || !modal.classList.contains("active")) return;
     modal.classList.remove("active");
+    if (modalHistoryPushed) {
+        modalHistoryPushed = false;
+        if (fromHistory !== true) { try { history.back(); } catch (e) {} }
+    }
+    // A drag-to-dismiss leaves inline transforms behind; clear them so the
+    // next open slides up from the stylesheet's position, not from wherever
+    // the finger let go.
+    const sheet = modal.querySelector(".modal_content");
+    if (sheet) { sheet.style.transform = ""; sheet.style.transition = ""; }
+    modal.style.removeProperty("--lx-drag");
     if (window.LXScrollLock) LXScrollLock.release("productModal");
     clearSlideshow();
     if (slideshowState._releaseFocusTrap) {
@@ -531,32 +554,78 @@ function updateQuantityTotal(modal) {
 // ========================================
 // SWIPE GESTURES (mobile slideshow + dismiss)
 // ========================================
+/*
+ * One gesture surface, two jobs. Sideways changes the photo; downwards, on a
+ * phone, when the sheet is scrolled to the top, pulls the whole sheet down to
+ * close it — which is what the grab handle has always promised and never did.
+ *
+ * The axis is decided once, after the finger has moved 8px, and then held, so
+ * a slightly diagonal swipe through the photos cannot turn into a dismiss
+ * halfway through. A downward drag on a sheet that is scrolled into its
+ * details is left to scroll; it only becomes a dismiss from the top.
+ */
 function initSwipe(modal) {
     const wrapper = modal.querySelector(".modal_image_wrapper");
-    if (!wrapper) return;
-    let startX = 0, startY = 0, deltaX = 0, deltaY = 0, swiping = false;
+    const sheet = modal.querySelector(".modal_content");
+    const scroller = modal.querySelector(".modal_scroll");
+    if (!wrapper || !sheet) return;
+    const isSheet = () => window.matchMedia("(max-width: 640px)").matches;
+
+    let startX = 0, startY = 0, startT = 0, dx = 0, dy = 0, axis = null, live = false;
 
     wrapper.addEventListener("touchstart", (e) => {
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
-        swiping = true;
+        startT = Date.now();
+        dx = dy = 0; axis = null; live = true;
     }, { passive: true });
 
+    // Not passive: once a drag is a dismiss, the page's own pull-to-bounce has
+    // to be cancelled or iOS fights the sheet for the same finger.
     wrapper.addEventListener("touchmove", (e) => {
-        if (!swiping) return;
-        deltaX = e.touches[0].clientX - startX;
-        deltaY = e.touches[0].clientY - startY;
-    }, { passive: true });
-
-    wrapper.addEventListener("touchend", () => {
-        if (!swiping) return;
-        swiping = false;
-        if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
-            stopAutoSlideshow();
-            gotoSlide(modal, slideshowState.currentIndex + (deltaX < 0 ? 1 : -1));
+        if (!live) return;
+        dx = e.touches[0].clientX - startX;
+        dy = e.touches[0].clientY - startY;
+        if (!axis) {
+            if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+            if (Math.abs(dx) > Math.abs(dy)) axis = "x";
+            else if (dy > 0 && isSheet() && (!scroller || scroller.scrollTop <= 0)) axis = "dismiss";
+            else axis = "scroll";
         }
-        deltaX = 0; deltaY = 0;
-    });
+        if (axis === "dismiss") {
+            e.preventDefault();
+            const pull = Math.max(0, dy);
+            sheet.style.transition = "none";
+            sheet.style.transform = `translateY(${pull}px)`;
+            // The backdrop lifts as the sheet goes, so it reads as leaving.
+            modal.style.setProperty("--lx-drag", Math.min(1, pull / 320).toFixed(3));
+        }
+    }, { passive: false });
+
+    const finish = () => {
+        if (!live) return;
+        live = false;
+        if (axis === "x" && Math.abs(dx) > 50) {
+            stopAutoSlideshow();
+            gotoSlide(modal, slideshowState.currentIndex + (dx < 0 ? 1 : -1));
+        } else if (axis === "dismiss") {
+            const speed = dy / Math.max(1, Date.now() - startT);   // px per ms
+            // Far enough, or a quick flick: either reads as "go away".
+            if (dy > 110 || (dy > 36 && speed > 0.55)) {
+                sheet.style.transition = "transform 0.24s cubic-bezier(0.33, 1, 0.68, 1)";
+                sheet.style.transform = "translateY(105%)";
+                setTimeout(() => closeProductModal(), 200);
+            } else {
+                sheet.style.transition = "transform 0.42s cubic-bezier(0.34, 1.3, 0.44, 1)";
+                sheet.style.transform = "";
+                modal.style.removeProperty("--lx-drag");
+                setTimeout(() => { sheet.style.transition = ""; }, 440);
+            }
+        }
+        axis = null; dx = dy = 0;
+    };
+    wrapper.addEventListener("touchend", finish);
+    wrapper.addEventListener("touchcancel", finish);
 }
 
 // ========================================
@@ -863,6 +932,11 @@ function initModal() {
             const bagBtn = document.getElementById("add_to_bag_btn");
             if (bagBtn) bagBtn.classList.remove("disabled");
         }
+    });
+
+    window.addEventListener("popstate", () => {
+        if (modal.classList.contains("active")) closeProductModal(true);
+        else modalHistoryPushed = false;
     });
 
     // Global keys

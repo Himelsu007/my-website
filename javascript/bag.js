@@ -59,6 +59,16 @@
         return (Number.isInteger(v) ? v : v.toFixed(2)) + "€";
     }
 
+    /* The shelf already knows whether a photo is a cut-out on white, a cut-out
+       for a dark ground, or a full photograph. The bag drew all three on the
+       same near-black square, so a white pack shot showed as a white box inside
+       a dark one — and a non-square one letterboxed on top of that. */
+    function tileFor(item) {
+        if (typeof products === "undefined") return "photo";
+        var p = products.filter(function (x) { return x.name === item.name; })[0];
+        return (p && p.tile) || "photo";
+    }
+
     /* ---------------- stock re-check ----------------
        A bag is a snapshot: it stores the name and the price from the moment
        something was added, and then sits in localStorage for days. Mark a
@@ -136,6 +146,16 @@
         if (ap === "am" && h === 12) h = 0;
         if (h > 23 || min > 59) return "";
         return (h < 10 ? "0" : "") + h + ":" + (min < 10 ? "0" : "") + min;
+    }
+
+    /* Portuguese postcodes are NNNN-NNN. Digits only, hyphen after the fourth,
+       seven digits at most — so "1100052", "1100 052" and a pasted
+       "1100-052" all land as 1100-052. The hyphen only appears once there is
+       a fifth digit to follow it; adding it at four would leave a hyphen that
+       backspace removes and the formatter immediately puts back. */
+    function fmtPostcode(raw) {
+        var d = String(raw || "").replace(/\D/g, "").slice(0, 7);
+        return d.length > 4 ? d.slice(0, 4) + "-" + d.slice(4) : d;
     }
 
     /* Complete enough to send. A postcode is the one field worth checking:
@@ -235,7 +255,7 @@
                   '<label class="lx_bag_field"><span>Street &amp; door</span>' +
                     '<input class="lx_bag_input" data-fld="street" type="text" autocomplete="street-address" placeholder="Rua da Prata 12, 3ºD"></label>' +
                   '<label class="lx_bag_field"><span>Postcode</span>' +
-                    '<input class="lx_bag_input" data-fld="postcode" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="1100-052"></label>' +
+                    '<input class="lx_bag_input" data-fld="postcode" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="8" placeholder="1100-052"></label>' +
                   '<p class="lx_bag_hint">Lisbon only, within 12h. No delivery fee.</p>' +
                 '</div>' +
               '</div>' +
@@ -311,7 +331,7 @@
                 return '<div class="lx_bag_item' +
                         (issue ? " has_issue is_" + issue.kind : "") +
                         '" data-bag-id="' + esc(i.id) + '">' +
-                    '<img src="' + esc(i.image) + '" alt="" loading="lazy" decoding="async">' +
+                    '<img class="tile-' + tileFor(i) + '" src="' + esc(i.image) + '" alt="" loading="lazy" decoding="async">' +
                     '<div class="lx_bag_item_id">' +
                         '<span class="lx_bag_item_name">' + esc(i.name) + '</span>' +
                         (i.option ? '<span class="lx_bag_item_opt">' + esc(i.option) + '</span>' : "") +
@@ -362,6 +382,12 @@
         }
         if (sel) sel.value = f.run || "";
 
+        // A postcode saved unformatted ("1100052") would otherwise sit there
+        // failing validation with nothing on screen saying why.
+        if (f.postcode && f.postcode !== fmtPostcode(f.postcode)) {
+            f.postcode = fmtPostcode(f.postcode);
+            try { localStorage.setItem(FKEY, JSON.stringify(f)); } catch (e) {}
+        }
         ["name", "street", "postcode"].forEach(function (k) {
             var el = drawer.querySelector('[data-fld="' + k + '"]');
             if (el && el.value !== (f[k] || "") && document.activeElement !== el) {
@@ -397,6 +423,19 @@
             if (!el) return;
             var f = readF();
             var k = el.dataset.fld;
+            if (k === "postcode") {
+                // Reformat in place, then put the caret back after the same
+                // number of digits — otherwise every keystroke mid-field would
+                // throw it to the end.
+                var caret = el.selectionStart == null ? el.value.length : el.selectionStart;
+                var digitsBefore = el.value.slice(0, caret).replace(/\D/g, "").length;
+                var next = fmtPostcode(el.value);
+                if (next !== el.value) {
+                    el.value = next;
+                    var pos = digitsBefore + (digitsBefore > 4 ? 1 : 0);
+                    try { el.setSelectionRange(pos, pos); } catch (err) {}
+                }
+            }
             f[k] = el.value;
             if (k === "run") {
                 var run = upcomingRuns().filter(function (r) { return r.date === el.value; })[0];

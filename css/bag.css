@@ -326,3 +326,11 @@ select.lx_bag_input option { background: #141418; color: #fff; }
     text-decoration: underline; cursor: pointer;
 }
 .lx_bag_item_flag button:hover { color: #fff; }
+
+/* ---- thumbnails that match the photo they hold ----
+   Same three grounds as the shelf. Pack shots on white get white, so the
+   photo's own background and any letterboxing vanish into the tile instead
+   of drawing a second box inside the first. */
+.lx_bag_item img.tile-light { background: #FFFFFF; padding: 3px; box-sizing: border-box; }
+.lx_bag_item img.tile-dark  { background: linear-gradient(180deg, #17171C, #0F0F12); }
+.lx_bag_item img.tile-photo { object-fit: cover; }
