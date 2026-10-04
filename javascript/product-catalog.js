@@ -23,6 +23,70 @@
 // show, dimmed and unclickable, so a shopper sees the range and what is left.
 // When one option remains it is picked for them.
 const products = [
+    // Newest first: the shelf shows products in this order.
+    {
+        // Named and coded as in Matrix: its two "Nba Nike-Pro Combat
+        // Compression Tank" records are told apart by colour tag, and these
+        // SKUs are theirs, so an order lands on the right stock.
+        name: "Nba Nike-Pro Combat Compression Tank (Black)",
+        sku: "SLA",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "apparel",
+        tag: "Best Seller",
+        image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp",
+        lead: "Our best seller. Sleeveless, second skin.",
+        description: "The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["S", "M", "L"],
+        unavailable: ["S", "L"]
+    },
+    {
+        name: "Nba Nike-Pro Combat Compression Tank (White)",
+        sku: "AU09282",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp",
+        lead: "The tank, in white.",
+        description: "The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["S", "M", "L"],
+        unavailable: ["S", "L"]
+    },
+    {
+        // Named as in Matrix ("Nike Nba Compression Short Sleeves"). The white
+        // one carries Matrix's own SKU, so its orders land on that stock; the
+        // black one follows Matrix's LILX-{category}-{item}-{colour} pattern.
+        name: "Nike Nba Compression Short Sleeves (Black)",
+        sku: "LILX-TOP-CMP-SS-BLK",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp",
+        lead: "The base layer, in black.",
+        description: "The Nike Pro NBA compression tee: Dri-FIT, light and tight to the body, made to be worn alone or under your jersey.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["S", "M", "L"],
+        unavailable: ["S", "L"]
+    },
+    {
+        name: "Nike Nba Compression Short Sleeves (White)",
+        sku: "LILX-TOP-CMP-SS",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-white.webp",
+        lead: "The base layer, in white.",
+        description: "The Nike Pro NBA compression tee in white: Dri-FIT, light and tight to the body, so it stays out of your way from warm-up to the last run.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["S", "M", "L"],
+        unavailable: ["S", "L"]
+    },
     {
         name: "Regular Elite Crew Socks #Black",
         sku: "LILX-REGULAR-ELITE-CREW-SOCKS-BLACK",
@@ -137,19 +201,26 @@ const products = [
         // Colours: add or remove a string and the pills, the WhatsApp order and
         // the bag all follow. Nothing else to change.
         colors: ["Black", "White"],
+        // A colour with its own photo: picking it brings that photo to the
+        // front of the gallery, and the bag and order slip show it. The photo
+        // must also be in `images`.
+        colorImages: {
+            Black: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
+            White: "assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp"
+        },
         tile: "light",
         priceEUR: 25,
         status: "available",
         category: "socks",
-        tag: "Best Seller",
         image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
         images: [
             "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
+            "assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp",
             "assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.webp",
             "assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp",
             "assets/images/ben-simons-bg.avif"
         ],
-        lead: "Our best seller. Black or white.",
+        lead: "Black or white, locked in.",
         description: "The NBA Elite crew locks in from the first step and stays put until the final bucket — no slipping, no distractions. Sizes 38 to 49.",
         optionTitle: "<strong>Size</strong>",
         options: ["38 - 41", "42 - 45", "46 - 49"]
@@ -170,68 +241,6 @@ const products = [
         description: "Compression that keeps your arm warm and supported from the first shot of the night to the last. In black.",
         optionTitle: "<strong>Quantity</strong>",
         options: ["1", "2", "3", "4"]
-    },
-    {
-        // Named as in Matrix ("Nike Nba Compression Short Sleeves"). The white
-        // one carries Matrix's own SKU, so its orders land on that stock; the
-        // black one follows Matrix's LILX-{category}-{item}-{colour} pattern.
-        name: "Nike Nba Compression Short Sleeves (Black)",
-        sku: "LILX-TOP-CMP-SS-BLK",
-        tile: "light",
-        priceEUR: 50,
-        status: "available",
-        category: "apparel",
-        image: "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp",
-        lead: "The base layer, in black.",
-        description: "The Nike Pro NBA compression tee: Dri-FIT, light and tight to the body, made to be worn alone or under your jersey.",
-        optionTitle: "<strong>Size</strong>",
-        options: ["S", "M", "L"],
-        unavailable: ["S", "L"]
-    },
-    {
-        name: "Nike Nba Compression Short Sleeves (White)",
-        sku: "LILX-TOP-CMP-SS",
-        tile: "light",
-        priceEUR: 50,
-        status: "available",
-        category: "apparel",
-        image: "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-white.webp",
-        lead: "The base layer, in white.",
-        description: "The Nike Pro NBA compression tee in white: Dri-FIT, light and tight to the body, so it stays out of your way from warm-up to the last run.",
-        optionTitle: "<strong>Size</strong>",
-        options: ["S", "M", "L"],
-        unavailable: ["S", "L"]
-    },
-    {
-        // Named and coded as in Matrix: its two "Nba Nike-Pro Combat
-        // Compression Tank" records are told apart by colour tag, and these
-        // SKUs are theirs, so an order lands on the right stock.
-        name: "Nba Nike-Pro Combat Compression Tank (Black)",
-        sku: "SLA",
-        tile: "light",
-        priceEUR: 50,
-        status: "available",
-        category: "apparel",
-        image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp",
-        lead: "Sleeveless, second skin.",
-        description: "The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.",
-        optionTitle: "<strong>Size</strong>",
-        options: ["S", "M", "L"],
-        unavailable: ["S", "L"]
-    },
-    {
-        name: "Nba Nike-Pro Combat Compression Tank (White)",
-        sku: "AU09282",
-        tile: "light",
-        priceEUR: 50,
-        status: "available",
-        category: "apparel",
-        image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp",
-        lead: "The tank, in white.",
-        description: "The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.",
-        optionTitle: "<strong>Size</strong>",
-        options: ["S", "M", "L"],
-        unavailable: ["S", "L"]
     },
     {
         name: "Nba Elite Crew Socks #SW",

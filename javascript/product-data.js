@@ -20,6 +20,7 @@ function buildProductCard(product) {
     card.innerHTML = `
         <div class="product_image_wrapper tile-${product.tile || "photo"}">
             <img src="${product.image}" alt="${product.name}" class="product_image" loading="lazy" decoding="async">
+            ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ""}
         </div>
         <div class="product_info">
             <span class="product_name barlow-condensed-regular">${product.name}</span>
@@ -530,6 +531,7 @@ function openProductModal(index, opener) {
         }
     }
 
+    modal.dataset.productIndex = String(index);
     modal.classList.add("active");
     if (window.LXScrollLock) LXScrollLock.lock("productModal");
 
@@ -781,6 +783,11 @@ function refreshCtaGate(modal) {
     }
 }
 
+/* The photo for the colour that was picked, if that colour has its own. */
+function imageFor(product, color) {
+    return (color && product.colorImages && product.colorImages[color]) || product.image;
+}
+
 /* The button answers the click itself: "Add to bag" rises out, "+1 Added"
    rises in, then the label comes back. Clicking again mid-way restarts it
    with the new count rather than queueing a second run. */
@@ -875,11 +882,21 @@ function initModal() {
             return;
         }
 
-        // SIZE PILL select
-        if (e.target.classList.contains("pill")) {
-            const pillContainer = e.target.closest(".variant_pills");
+        // SIZE / COLOUR PILL select — closest(), because a tap on a colour
+        // swatch lands on the dot inside the pill, not on the pill itself.
+        const pill = e.target.closest(".variant_pills .pill");
+        if (pill) {
+            if (pill.disabled) return;
+            const pillContainer = pill.closest(".variant_pills");
             pillContainer.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
-            e.target.classList.add("active");
+            pill.classList.add("active");
+            // A colour with its own photo brings that photo to the front.
+            const shown = products[Number(modal.dataset.productIndex)];
+            const colorSrc = pill.dataset.color && shown && shown.colorImages && shown.colorImages[pill.dataset.color];
+            if (colorSrc) {
+                const slide = [...modal.querySelectorAll(".modal_image_wrapper img")].findIndex(img => img.getAttribute("src") === colorSrc);
+                if (slide >= 0) { stopAutoSlideshow(); gotoSlide(modal, slide); }
+            }
             // Two dimensions now: picking a colour must not unlock the CTAs
             // while the size is still unchosen, and vice versa.
             refreshCtaGate(modal);
@@ -935,7 +952,7 @@ function initModal() {
                 option: parts.join(" · "),
                 price: product.priceEUR,
                 qty,
-                image: product.image
+                image: imageFor(product, colorPill && colorPill.dataset.color)
             });
             celebrateAdd(bagBtn, qty);
             return;
