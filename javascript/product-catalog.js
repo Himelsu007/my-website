@@ -15,10 +15,13 @@
 //
 // `tile` is the ground the photo sits on: "light" for a pack shot on white
 // (or a dark cut-out placed on white), "dark" for a white cut-out placed on
-// black, "photo" for a full photograph — which then says its own ground in
-// `ground`. On the shelf, a card on a dark ground gets a white edge.
+// black, "photo" for a full photograph.
 //
 // `lead` is the one-line headline over the description in the sheet.
+//
+// `unavailable` lists options that exist but are out right now: they still
+// show, dimmed and unclickable, so a shopper sees the range and what is left.
+// When one option remains it is picked for them.
 const products = [
     {
         name: "Regular Elite Crew Socks #Black",
@@ -169,6 +172,37 @@ const products = [
         options: ["1", "2", "3", "4"]
     },
     {
+        // Named as in Matrix ("Nike Nba Compression Short Sleeves"). The white
+        // one carries Matrix's own SKU, so its orders land on that stock; the
+        // black one follows Matrix's LILX-{category}-{item}-{colour} pattern.
+        name: "Nike Nba Compression Short Sleeves (Black)",
+        sku: "LILX-TOP-CMP-SS-BLK",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp",
+        lead: "The base layer, in black.",
+        description: "The Nike Pro NBA compression tee: Dri-FIT, light and tight to the body, made to be worn alone or under your jersey.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["S", "M", "L"],
+        unavailable: ["S", "L"]
+    },
+    {
+        name: "Nike Nba Compression Short Sleeves (White)",
+        sku: "LILX-TOP-CMP-SS",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-white.webp",
+        lead: "The base layer, in white.",
+        description: "The Nike Pro NBA compression tee in white: Dri-FIT, light and tight to the body, so it stays out of your way from warm-up to the last run.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["S", "M", "L"],
+        unavailable: ["S", "L"]
+    },
+    {
         name: "Nba Elite Crew Socks #SW",
         sku: "LILX-NBA-ELITE-CREW-SOCKS-SW",
         tile: "dark",
@@ -185,7 +219,6 @@ const products = [
         name: "Nike Nba Elite Pro Compression #SW",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SW",
         tile: "photo",
-        ground: "dark",
         priceEUR: null,
         status: "soldout",
         category: "apparel",
@@ -200,7 +233,6 @@ const products = [
         name: "Nike Nba Elite Pro Tank Top #TB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TB",
         tile: "photo",
-        ground: "light",
         priceEUR: null,
         status: "soon",
         category: "apparel",
@@ -214,7 +246,6 @@ const products = [
         name: "Nike NBA Elite Pro Compression #SB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SB",
         tile: "photo",
-        ground: "light",
         priceEUR: null,
         status: "soldout",
         category: "apparel",
@@ -228,7 +259,6 @@ const products = [
         name: "Nike Nba Elite Pro Tank Top #TW",
         sku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TW",
         tile: "photo",
-        ground: "dark",
         priceEUR: null,
         status: "soldout",
         category: "apparel",
@@ -242,13 +272,12 @@ const products = [
         name: "Nike Nba Elite Pro Compression #LSW",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-LSW",
         tile: "photo",
-        ground: "dark",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-long-sleeve-white.webp",
-        lead: "Covered, not slowed down.",
-        description: "Long-sleeve Nike NBA Elite Pro compression in white — full-arm coverage that stays light and tight, for colder nights and longer runs.",
+        lead: "Legs locked in.",
+        description: "Long Nike NBA Elite Pro compression tights in white — light and tight under your shorts, for colder nights and longer runs.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -256,13 +285,12 @@ const products = [
         name: "Nike Nba Elite Pro Compression #SHB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SHB",
         tile: "photo",
-        ground: "light",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-short-sleeve-black.webp",
-        lead: "Second skin, in black.",
-        description: "Short-sleeve Nike NBA Elite Pro compression in black: light, tight to the body, made for players who don't take days off.",
+        lead: "Locked in under your shorts.",
+        description: "Nike NBA Elite Pro compression shorts in black: light, tight to the body and made to be worn under your game shorts, run after run.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -270,13 +298,12 @@ const products = [
         name: "Nike Nba Elite Pro Compression #LHB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-LHB",
         tile: "photo",
-        ground: "light",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-long-sleeve-black.webp",
-        lead: "Full arm, full game.",
-        description: "Long-sleeve Nike NBA Elite Pro compression in black — light and tight, warm enough for cold nights without slowing your shot.",
+        lead: "Full leg, full game.",
+        description: "Long Nike NBA Elite Pro compression tights in black — light and tight under your shorts, warm enough for cold nights without slowing you down.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -284,13 +311,12 @@ const products = [
         name: "Nike Nba Elite Pro Compression #SHW",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SHW",
         tile: "photo",
-        ground: "dark",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-short-sleeve-white.webp",
         lead: "Light, tight, ready.",
-        description: "Short-sleeve Nike NBA Elite Pro compression in white. Made for players who don't take days off, just like the pros in the NBA.",
+        description: "Nike NBA Elite Pro compression shorts in white. Made for players who don't take days off, just like the pros in the NBA.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     }

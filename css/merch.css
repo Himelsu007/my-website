@@ -3426,43 +3426,6 @@ body:has(#product_modal.active) #lx_bag_pill {
 }
 
 /* =====================================================================
-   SHELF — white ring around a dark photo
-   ---------------------------------------------------------------------
-   A pack shot on white stands out from the dark page by itself; a photo on
-   a dark ground melted into it. Those cards get a white ring around the
-   photo only — the name panel under it is left exactly as it was.
-
-   The ring is drawn on the photo, not as the card's border. The card's 1px
-   border is shrunk by the 0.9 desktop zoom to 0.9px, which the browser
-   rounds down to a single device pixel (0.56px on a Retina screen); on a
-   card at a fractional position that rendered crisp on one side, faint on
-   the next, and broken round the corner. Here the ring is its own element,
-   concentric with the card's 14px corner, and at desktop zoom it is set so
-   that it lands on two whole device pixels instead of one.
-
-   On hover the ring fades and the card's gold border takes over, as on
-   every other card — white and gold together read as a double line.
-   ===================================================================== */
-.products_box.edge-light .product_image_wrapper::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    border: 1px solid #FFFFFF;
-    border-radius: 13px 13px 0 0;   /* the card's 14px corner, inside its border */
-    pointer-events: none;
-    transition: opacity .3s var(--lx-soft);
-}
-@media (min-width: 1024px) {
-    /* 1.2px × 0.9 zoom × 2 = 2.16 → two device pixels on Retina, one on a
-       standard screen. Plain 1px came out as one Retina pixel. */
-    .products_box.edge-light .product_image_wrapper::after { border-width: 1.2px; }
-}
-@media (hover: hover) {
-    .products_box.edge-light:hover .product_image_wrapper::after { opacity: 0; }
-}
-
-/* =====================================================================
    MOBILE — a dark sheet over the blurred store
    ---------------------------------------------------------------------
    Desktop keeps the light two-column sheet. Phones and tablets get the
@@ -3533,4 +3496,11 @@ body:has(#product_modal.active) #lx_bag_pill {
         justify-self: end;
         width: 40px; height: 40px;
     }
+}
+
+/* A size that exists but is out: still shown so the range reads, dimmed so
+   it is plainly not on offer, and disabled so it cannot be picked. */
+#product_modal .pill.is-out {
+    opacity: 0.32;
+    cursor: not-allowed;
 }

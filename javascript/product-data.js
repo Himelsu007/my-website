@@ -14,10 +14,7 @@ function buildProductCard(product) {
     const absoluteIndex = products.indexOf(product);
     const card = document.createElement("button");
     card.type = "button";
-    // A photo on a dark ground gets a white edge, so the card still reads as
-    // a card against the dark page instead of melting into it.
-    const ground = product.tile === "photo" ? product.ground : product.tile;
-    card.className = `products_box ${ground === "dark" ? "edge-light" : ""} ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
+    card.className = `products_box ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
     card.setAttribute("data-product-index", absoluteIndex);
     card.setAttribute("aria-label", `View details for ${product.name}, ${displayPrice(product)}`);
     card.innerHTML = `
@@ -339,6 +336,8 @@ function openProductModal(index, opener) {
     }
 
     // ---- VARIANT UI (pills OR quantity stepper) ----
+    const outOptions = new Set(product.unavailable || []);
+    const sizeChoices = (product.options || []).filter(o => !outOptions.has(o));
     let variantsHTML = "";
     if (product.options && product.options.length > 0) {
         if (isQuantity) {
@@ -356,10 +355,13 @@ function openProductModal(index, opener) {
                 </div>
             `;
         } else {
-            const onlyOne = product.options.length === 1;
-            const pillsHTML = product.options.map(opt =>
-                `<button class="pill${onlyOne ? " active" : ""}" type="button" ${!isAvailable ? "disabled" : ""}>${opt}</button>`
-            ).join("");
+            // Sizes that are out stay on show, dimmed and disabled, so the range
+            // is visible; if only one is left it comes pre-picked.
+            const onlyOne = sizeChoices.length === 1;
+            const pillsHTML = product.options.map(opt => {
+                const out = outOptions.has(opt);
+                return `<button class="pill${onlyOne && !out ? " active" : ""}${out ? " is-out" : ""}" type="button"${!isAvailable || out ? " disabled" : ""}${out ? ` aria-label="${opt}, not available"` : ""}>${opt}</button>`;
+            }).join("");
             variantsHTML = `
                 <div class="modal_variant_group">
                     <div class="modal_variant_header">
@@ -384,7 +386,7 @@ function openProductModal(index, opener) {
         // offered in exactly one size (both Wilson balls, size 7) has nothing
         // to choose — gating the CTAs on either left the buy buttons dead at
         // 45% opacity with no obvious way to wake them.
-        const needsSize  = !!product.options && !isQuantity && product.options.length > 1;
+        const needsSize  = !!product.options && !isQuantity && sizeChoices.length > 1;
         const needsColor = !!product.colors && product.colors.length > 1;
         const requiresPick = needsSize || needsColor;
         // Two paths on purpose: order this one thing now, or collect several and
