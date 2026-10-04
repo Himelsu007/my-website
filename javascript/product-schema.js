@@ -58,7 +58,7 @@
             "@type": "Product",
             "@id": id,
             name: p.name,
-            description: p.description || undefined,
+            description: [p.lead, p.description].filter(Boolean).join(" ") || undefined,
             sku: sku(p),
             image: images.length ? images : undefined,
             brand: { "@type": "Brand", name: "NBA Elite" },

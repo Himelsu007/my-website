@@ -14,7 +14,10 @@ function buildProductCard(product) {
     const absoluteIndex = products.indexOf(product);
     const card = document.createElement("button");
     card.type = "button";
-    card.className = `products_box ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
+    // A photo on a dark ground gets a white name panel under it, so the card
+    // reads as two clear halves instead of one dark block.
+    const ground = product.tile === "photo" ? product.ground : product.tile;
+    card.className = `products_box ${ground === "dark" ? "info-light" : ""} ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
     card.setAttribute("data-product-index", absoluteIndex);
     card.setAttribute("aria-label", `View details for ${product.name}, ${displayPrice(product)}`);
     card.innerHTML = `
@@ -243,6 +246,8 @@ function gotoSlide(modal, index, { resumeAuto = false } = {}) {
     slideshowState.currentIndex = (index + imgs.length) % imgs.length;
     imgs.forEach((im, i) => im.classList.toggle("active", i === slideshowState.currentIndex));
     dots.forEach((d, i) => d.classList.toggle("active", i === slideshowState.currentIndex));
+    modal.querySelectorAll(".modal_thumb").forEach((t, i) =>
+        t.classList.toggle("active", i === slideshowState.currentIndex));
 
     if (slideshowState.auto && imgs.length > 1) {
         resetSlideProgress(modal, true);
@@ -384,15 +389,27 @@ function openProductModal(index, opener) {
         const requiresPick = needsSize || needsColor;
         // Two paths on purpose: order this one thing now, or collect several and
         // send them as a single message from the bag.
-        ctaHTML = `${requiresPick ? `<p class="modal_pick_hint">Pick ${
-            needsSize && needsColor ? "a colour and size" : needsColor ? "a colour" : "a size"
-        }</p>` : ""}
-        <div class="modal_cta_row">
+        /* The reference's bar: a round bag button and one wide pill. Until every
+           choice is made, the pill itself says what is missing — the job the
+           separate hint line used to do, without adding a line above the bar. */
+        const pickLabel = needsSize && needsColor ? "Pick a colour and size"
+                        : needsColor ? "Pick a colour" : "Pick a size";
+        ctaHTML = `<div class="modal_cta_row">
             <button id="add_to_bag_btn" class="bag_btn ${requiresPick ? "disabled" : ""}" type="button"
-                    data-index="${products.indexOf(product)}">Add to Bag</button>
+                    data-index="${products.indexOf(product)}" aria-label="Add to bag">
+                <!-- The same bag the floating bag button uses, so it reads as
+                     "the bag" on sight; the + says this puts something in it. -->
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span class="bag_plus" aria-hidden="true">+</span>
+                <span class="bag_label">Add to bag</span>
+                <!-- Swapped in for a moment after each add (desktop): the
+                     label rises out and this rises in. The toast still
+                     announces it to screen readers. -->
+                <span class="bag_added" aria-hidden="true"><b class="bag_added_n">+1</b>Added</span>
+            </button>
             <button id="whatsapp_order_btn" class="whatsapp_btn ${requiresPick ? "disabled" : ""}" type="button"
-                    data-index="${products.indexOf(product)}">
-                <span class="cta_label">WhatsApp Order</span>
+                    data-index="${products.indexOf(product)}" data-pick="${requiresPick ? pickLabel : ""}">
+                <span class="cta_label">${requiresPick ? pickLabel : "Order on WhatsApp"}</span>
                 <span class="cta_total" data-unit-price="${unitPrice ?? ""}"></span>
             </button>
         </div>`;
@@ -400,14 +417,26 @@ function openProductModal(index, opener) {
 
 
     // ---- BUILD ----
+    // What sits where the reference has its rating. A true fact the buyer
+    // wants, not a number nobody has given.
+    const CATEGORY_LABEL = { socks: "Socks", balls: "Basketballs", apparel: "Apparel", accessories: "Accessories" };
+    const catLabel = CATEGORY_LABEL[product.category] || "";
+    const availability = isAvailable ? "12h delivery in Lisbon"
+                       : isComingSoon ? "Coming soon" : "Sold out";
+
     modal.innerHTML = `
         <div class="modal_content" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
-            <button class="close_modal" type="button" aria-label="Close">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
+            <!-- Pinned above the scroll, so the way out is always where the
+                 thumb expects it. A back chevron on a phone, a cross on desktop. -->
+            <div class="modal_topbar">
+                <button class="close_modal" type="button" aria-label="Close">
+                    <svg class="ic-back" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+                    <svg class="ic-close" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+                <span class="modal_topbar_title">Product Details</span>
+                <span class="modal_topbar_crumb">Store <i>/</i> ${catLabel || "Gear"} <i>/</i> <b>${product.name}</b></span>
+                <span class="modal_topbar_spacer" aria-hidden="true"></span>
+            </div>
 
             <div class="modal_scroll">
             <div class="modal_image_wrapper tile-${product.tile || "photo"} ${isSoldOut ? "sold_out_img" : ""}" data-zoomable="true">
@@ -416,37 +445,48 @@ function openProductModal(index, opener) {
                 ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ""}
                 ${arrowsHTML}
                 ${dotsHTML}
-                ${hasMultiple ? `<div class="modal_slide_progress"><span class="modal_slide_progress_bar"></span></div>` : ""}
                 <button class="lightbox_trigger" type="button" aria-label="Open fullscreen view">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
                 </button>
             </div>
 
-            <div class="modal_details">
-                <h2 id="${titleId}" class="modal_title barlow-condensed-black">${product.name.toUpperCase()}</h2>
-                <div class="modal_price">${displayPrice(product)}</div>
+            ${hasMultiple ? `<div class="modal_thumbs" role="tablist" aria-label="Product images">${
+                imagesToLoad.map((src, i) =>
+                    `<button class="modal_thumb${i === 0 ? " active" : ""}" type="button" data-slide="${i}" aria-label="Show image ${i + 1}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`
+                ).join("")}</div>` : ""}
 
-                <p class="modal_description inter-regular">
-                    ${product.description || "Premium gear for elite performance."}
-                </p>
+            <div class="modal_details">
+                <div class="modal_headrow">
+                    <h2 id="${titleId}" class="modal_title">${product.name}</h2>
+                    <div class="modal_price">${displayPrice(product)}</div>
+                </div>
+                <div class="modal_meta">
+                    ${catLabel ? `<span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.5" cy="8" r="1.4"/></svg>${catLabel}</span><i aria-hidden="true">|</i>` : ""}
+                    <span class="${isAvailable ? "" : "is-off"}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h11v9H3z"/><path d="M14 9.5h3.6L21 13v2.5h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>${availability}</span>
+                    ${isAvailable ? `<i aria-hidden="true" class="meta_sep_stock">|</i><span class="meta_stock">In stock</span>` : ""}
+                </div>
+
+                <div class="modal_section">
+                    <h3 class="modal_section_title">Details</h3>
+                    ${product.lead ? `<p class="modal_lead">${product.lead}</p>` : ""}
+                    <p class="modal_description">${product.description || "Premium gear for elite performance."}</p>
+                </div>
 
                 <div class="modal_options">
                     ${colorHTML}
                     ${variantsHTML}
                 </div>
 
-                <div class="modal_trust_row">
-                    <div class="trust_item">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                        <span>12h delivery in Lisbon</span>
-                    </div>
-                    <div class="trust_item">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-                        <span>30-day returns</span>
-                    </div>
-                </div>
-
-                <p class="modal_backdrop_hint inter-regular">Press <kbd>Esc</kbd> or click outside to close</p>
+                <!-- Desktop only: the facts a phone screen has no room for. All
+                     of them already stated elsewhere on the site — nothing new
+                     is promised here. -->
+                <ul class="modal_facts">
+                    <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h11v9H3z"/><path d="M14 9.5h3.6L21 13v2.5h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg><span><b>12h delivery</b>Free anywhere in Lisbon</span></li>
+                    <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 0 0 18M12 3a15 15 0 0 1 0 18M3.5 9h17M3.5 15h17"/></svg><span><b>Pick up at a run</b>Free, at your next game</span></li>
+                    <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/></svg><span><b>30-day returns</b>Just message us</span></li>
+                    <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12.5a8.3 8.3 0 0 1-12.2 7.3L3 21l1.3-4.6A8.3 8.3 0 1 1 20 12.5z"/></svg><span><b>No online payment</b>Confirm on WhatsApp</span></li>
+                </ul>
+                ${product.sku ? `<p class="modal_sku">SKU <span>${esc(product.sku)}</span></p>` : ""}
             </div>
             </div><!-- /.modal_scroll -->
 
@@ -473,6 +513,21 @@ function openProductModal(index, opener) {
     if (!modalHistoryPushed) {
         try { history.pushState({ lxModal: true }, ""); modalHistoryPushed = true; } catch (e) {}
     }
+    /* The skeleton is a loading placeholder, not a backdrop. It was never
+       taken away, so it sat behind every photo running its shimmer forever,
+       and a transparent cut-out showed it through — the black socks, tagged
+       for a white card like their shelf tile, opened on near-black. */
+    const skeleton = modal.querySelector(".modal_image_skeleton");
+    const firstImg = modal.querySelector(".modal_image_wrapper img");
+    if (skeleton) {
+        if (!firstImg || (firstImg.complete && firstImg.naturalWidth)) skeleton.remove();
+        else {
+            const drop = () => skeleton.remove();
+            firstImg.addEventListener("load", drop, { once: true });
+            firstImg.addEventListener("error", drop, { once: true });
+        }
+    }
+
     modal.classList.add("active");
     if (window.LXScrollLock) LXScrollLock.lock("productModal");
 
@@ -704,15 +759,30 @@ function refreshCtaGate(modal) {
         btn.setAttribute("aria-disabled", String(!ready));
     });
 
-    const hint = modal.querySelector(".modal_pick_hint");
-    if (hint) {
-        // "a colour" / "a size" / "a colour and size" — read it back and it
-        // sounds like a person, which is the point.
-        hint.textContent = ready ? "" : "Pick " + (missing.length === 2
+    // The pill says what is missing until nothing is: "Pick a colour and
+    // size", then "Pick a size", then the action itself.
+    const label = modal.querySelector("#whatsapp_order_btn .cta_label");
+    if (label) {
+        label.textContent = ready ? "Order on WhatsApp" : "Pick " + (missing.length === 2
             ? "a colour and size"
             : "a " + missing[0]);
-        hint.hidden = ready;
     }
+}
+
+/* The button answers the click itself: "Add to bag" rises out, "+1 Added"
+   rises in, then the label comes back. Clicking again mid-way restarts it
+   with the new count rather than queueing a second run. */
+function celebrateAdd(btn, qty) {
+    const n = btn.querySelector(".bag_added_n");
+    if (n) n.textContent = "+" + qty;
+    clearTimeout(btn._addedTimer);
+    btn.classList.remove("is-added", "is-leaving");
+    void btn.offsetWidth;
+    btn.classList.add("is-added");
+    btn._addedTimer = setTimeout(() => {
+        btn.classList.replace("is-added", "is-leaving");
+        btn._addedTimer = setTimeout(() => btn.classList.remove("is-leaving"), 650);
+    }, 1600);
 }
 
 // ========================================
@@ -759,6 +829,13 @@ function initModal() {
         }
 
         // SLIDESHOW: arrow nav
+        const thumb = e.target.closest(".modal_thumb");
+        if (thumb) {
+            stopAutoSlideshow();
+            gotoSlide(modal, Number(thumb.dataset.slide));
+            return;
+        }
+
         const arrow = e.target.closest(".slide_arrow");
         if (arrow) {
             stopAutoSlideshow();
@@ -839,14 +916,16 @@ function initModal() {
             const parts = [];
             if (colorPill) parts.push(colorPill.dataset.color);
             if (activePill) parts.push(activePill.innerText.trim());
+            const qty = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
             LXBag.add({
                 name: product.name,
                 sku: product.sku || "",
                 option: parts.join(" · "),
                 price: product.priceEUR,
-                qty: qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1,
+                qty,
                 image: product.image
             });
+            celebrateAdd(bagBtn, qty);
             return;
         }
 

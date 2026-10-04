@@ -62,14 +62,14 @@
         } catch (e) {}
     </script>
     <link rel="preload" as="image" href="assets/images/locked-in-crest.webp" type="image/webp">
-    <link rel="stylesheet" href="css/splash.css?v=20261004105241">
-    <link rel="stylesheet" href="css/merch.css?v=20261004105241">
-    <link rel="stylesheet" href="css/bag.css?v=20261004105241">
-    <link rel="stylesheet" href="css/fonts.css?v=20261004105241">
-    <link rel="stylesheet" href="css/footer.css?v=20261004105241">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261004105241">
-    <link rel="stylesheet" href="css/responsive.css?v=20261004105241">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261004105241">
+    <link rel="stylesheet" href="css/splash.css?v=20261004113634">
+    <link rel="stylesheet" href="css/merch.css?v=20261004113634">
+    <link rel="stylesheet" href="css/bag.css?v=20261004113634">
+    <link rel="stylesheet" href="css/fonts.css?v=20261004113634">
+    <link rel="stylesheet" href="css/footer.css?v=20261004113634">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261004113634">
+    <link rel="stylesheet" href="css/responsive.css?v=20261004113634">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261004113634">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script type="application/ld+json">
@@ -214,35 +214,6 @@
 </nav>
 
 
-<section id="merch_hero_container">
-    <!-- Featured Product Showcase -->
-    <div id="products_show_case_main_child_container">
-        <div class="showcase-slide active" style="background-image: url('assets/images/IMG_0475.webp');"></div>
-        <div class="showcase-slide" style="background-image: url('assets/images/IMG_0919.avif');"></div>
-        <div class="showcase-slide" style="background-image: url('assets/images/IMG_0465.avif');"></div>
-        <div class="showcase-slide" style="background-image: url('assets/images/IMG_0913.avif');"></div>
-
-        <div class="showcase-hud">
-            <div class="glass-tag barlow-condensed-black">
-                <span class="pulse-dot"></span> NEW ARRIVAL
-            </div>
-
-            <div class="hud-text-track">
-                <h2 class="hud-title barlow-condensed-black active">PRO TANK SERIES</h2>
-                <h2 class="hud-title barlow-condensed-black">ELITE CREW SOCKS</h2>
-                <h2 class="hud-title barlow-condensed-black">PRO SHIRTS SERIES</h2>
-                <h2 class="hud-title barlow-condensed-black">BASKETBALLS</h2>
-            </div>
-        </div>
-
-        <div class="slide-progress-container">
-            <div class="slide-progress-bar"></div>
-        </div>
-
-        <div class="cinematic-overlay"></div>
-    </div>
-</section>
-
 <!-- ===== FILTER CHIPS ===== -->
 <nav id="product_filter_bar" aria-label="Product categories">
     <button class="filter_chip active" data-filter="all" type="button">All</button>
@@ -327,43 +298,15 @@
 
 
 <!-- Accordition JS  -->
-<script src="javascript/merch-hero.js?v=20261004105241" defer></script>
-<script src="javascript/scroll-lock.js?v=20261004105241" defer></script>
-<script src="javascript/product-catalog.js?v=20261004105241" defer></script>
-<script src="javascript/product-data.js?v=20261004105241" defer></script>
-<script src="javascript/product-schema.js?v=20261004105241" defer></script>
-<script src="javascript/order-status.js?v=20261004105241" defer></script>
-<script src="javascript/events.js?v=20261004105241" defer></script>
-<script src="javascript/bag.js?v=20261004105241" defer></script>
-<script src="javascript/scroll_detection_menu.js?v=20261004105241" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const slides = document.querySelectorAll("#products_show_case_main_child_container .showcase-slide");
-        const titles = document.querySelectorAll("#products_show_case_main_child_container .hud-title");
-        const progressBar = document.querySelector("#products_show_case_main_child_container .slide-progress-bar");
-        if (!slides.length) return;
-
-        let currentIndex = 0;
-        const duration = 3000;
-
-        function updateSlide() {
-            if (progressBar) {
-                progressBar.style.transition = 'none';
-                progressBar.style.width = '0%';
-                setTimeout(() => {
-                    progressBar.style.transition = `width ${duration}ms linear`;
-                    progressBar.style.width = '100%';
-                }, 50);
-            }
-            slides.forEach((s, i) => s.classList.toggle("active", i === currentIndex));
-            titles.forEach((t, i) => t.classList.toggle("active", i === currentIndex));
-            currentIndex = (currentIndex + 1) % slides.length;
-        }
-        updateSlide();
-        setInterval(updateSlide, duration);
-    });
-</script>
-<script src="javascript/cookie-consent.js?v=20261004105241" defer></script>
-<script src="javascript/splash.js?v=20261004105241" defer></script>
+<script src="javascript/scroll-lock.js?v=20261004113634" defer></script>
+<script src="javascript/product-catalog.js?v=20261004113634" defer></script>
+<script src="javascript/product-data.js?v=20261004113634" defer></script>
+<script src="javascript/product-schema.js?v=20261004113634" defer></script>
+<script src="javascript/order-status.js?v=20261004113634" defer></script>
+<script src="javascript/events.js?v=20261004113634" defer></script>
+<script src="javascript/bag.js?v=20261004113634" defer></script>
+<script src="javascript/scroll_detection_menu.js?v=20261004113634" defer></script>
+<script src="javascript/cookie-consent.js?v=20261004113634" defer></script>
+<script src="javascript/splash.js?v=20261004113634" defer></script>
 </body> 
 </html>

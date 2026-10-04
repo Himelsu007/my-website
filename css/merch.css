@@ -2748,3 +2748,694 @@ body.lx-scroll-locked {
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     }
 }
+
+/* ========================================
+   NO HERO
+   ----------------------------------------
+   The carousel at the top of the store has gone — it was a full-width photo
+   reel sitting between the visitor and the products, and two of its four
+   slides advertised apparel that is not currently buyable. The products are
+   the page now.
+
+   The hero was what carried the clearance under the fixed header (70px on
+   phones, 100–120px on desktop), so the filter row takes that over. The
+   hero's styles are left in place, inert; the markup and its slide script
+   are in git history before this change if it ever comes back.
+   ======================================== */
+#product_filter_bar { margin-top: 92px; }
+@media (min-width: 768px)  { #product_filter_bar { margin-top: 118px; } }
+@media (min-width: 1440px) { #product_filter_bar { margin-top: 132px; } }
+
+/* =====================================================================
+   PRODUCT DETAILS — light, after the reference
+   ---------------------------------------------------------------------
+   Phones get the reference almost exactly: a full-screen page with a back
+   button and a title, the photo as an inset rounded card, name and price on
+   one line, one line of facts, sentence-case section labels, small rounded
+   option pills, and a bar with a round bag button beside one wide pill.
+
+   Desktop is the same language with more in it, because a monitor has room
+   a phone does not: two columns, the photo large on the left with a strip of
+   thumbnails under it, and on the right a breadcrumb, the details, the
+   options, the order bar, a grid of the facts that matter before buying, and
+   the SKU.
+
+   Light ground, with the store's gold as the one accent — used only as a
+   FILL with dark text on it (the selected option, the order button, the
+   active photo), never as text: gold lettering on white is barely visible.
+   That is also why the price is ink here rather than gold.
+
+   Left out of the reference on purpose: the ★ rating (there are no reviews,
+   so any number would be invented), the heart (nothing for it to save to),
+   and "Read more" (no description is long enough to need it).
+   ===================================================================== */
+#product_modal {
+    --pd-ground:  #F4F4F6;
+    --pd-surface: #FFFFFF;
+    --pd-line:    #E3E3E8;
+    --pd-ink:     #0B0B0D;
+    --pd-ink-2:   #54545E;
+    --pd-ink-3:   #8B8B95;
+    --pd-gold:    #FFD700;
+    --pd-soft:    #ECECEF;
+    --pd-line-hi: #C9C9D0;
+    --pd-on-gold: #0B0B0D;
+    --pd-ok:      #15803D;
+    --pd-swatch-edge: rgba(0, 0, 0, 0.18);
+}
+
+#product_modal .modal_content {
+    background: var(--pd-ground);
+    color: var(--pd-ink);
+    border: 0;
+    box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.6);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ---------------- top bar ---------------- */
+#product_modal .modal_topbar {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) 46px;
+    align-items: center;
+    padding: 14px 20px 12px;
+}
+#product_modal .modal_topbar_title {
+    text-align: center;
+    font-size: 16px; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--pd-ink);
+}
+#product_modal .modal_topbar_crumb { display: none; }
+#product_modal .modal_topbar .close_modal {
+    position: static;
+    width: 46px; height: 46px;
+    padding: 0; margin: 0;
+    border-radius: 50%;
+    border: 1px solid var(--pd-line);
+    background: var(--pd-surface);
+    box-shadow: none;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+    color: var(--pd-ink);
+    display: grid; place-items: center;
+    font-size: 0;
+    transition: border-color .2s var(--lx-soft), transform .2s var(--lx-out), background-color .2s var(--lx-soft);
+}
+#product_modal .modal_topbar .close_modal:hover { border-color: var(--pd-line-hi); transform: none; }
+#product_modal .modal_topbar .close_modal:active { transform: scale(0.94); }
+#product_modal .modal_topbar .close_modal svg { transform: none !important; }
+#product_modal .close_modal .ic-back  { display: none; }
+#product_modal .close_modal .ic-close { display: block; }
+
+/* ---------------- the photo ---------------- */
+#product_modal .modal_scroll { padding: 0 20px; }
+#product_modal .modal_image_wrapper {
+    border-radius: 18px;
+    overflow: hidden;
+    margin: 0;
+    background: var(--pd-soft);
+}
+#product_modal .modal_image_wrapper img { border-radius: 0; }
+#product_modal .modal_image_wrapper.tile-light { background: #FFFFFF; }
+
+#product_modal .slide_dots {
+    bottom: 12px;
+    padding: 5px 8px; gap: 5px;
+    background: rgba(0, 0, 0, 0.26);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border-radius: 99px;
+}
+#product_modal .slide_dot { width: 6px; height: 6px; background: rgba(255,255,255,0.6); }
+#product_modal .slide_dot.active { width: 20px; border-radius: 99px; background: var(--pd-gold); }
+
+#product_modal .lightbox_trigger {
+    top: 12px; right: 12px; bottom: auto;
+    width: 36px; height: 36px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #0B0B0D;
+    border: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+#product_modal .product_badge {
+    top: 12px; left: 12px;
+    font-size: 10px; padding: 5px 9px; border-radius: 99px;
+}
+#product_modal .slide_arrow {
+    opacity: 0;
+    width: 36px; height: 36px; font-size: 18px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #0B0B0D;
+    border: 0;
+}
+@media (hover: hover) {
+    #product_modal .modal_image_wrapper:hover .slide_arrow { opacity: 1; }
+}
+#product_modal .modal_thumbs { display: none; }
+
+/* ---------------- name, price, facts ---------------- */
+#product_modal .modal_details { padding: 18px 0 8px; gap: 0; }
+#product_modal .modal_headrow {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+}
+#product_modal .modal_title {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px; font-weight: 600; line-height: 1.25; letter-spacing: -0.015em;
+    text-transform: none;
+    color: var(--pd-ink);
+    margin: 0;
+}
+#product_modal .modal_price {
+    flex: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px; font-weight: 700; line-height: 1; letter-spacing: -0.025em;
+    color: var(--pd-ink);
+    text-shadow: none;
+    margin: 0;
+    font-variant-numeric: tabular-nums lining-nums;
+}
+#product_modal .modal_meta {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    margin-top: 7px;
+    font-size: 12.5px; font-weight: 500; color: var(--pd-ink-2);
+}
+#product_modal .modal_meta span { display: inline-flex; align-items: center; gap: 5px; }
+#product_modal .modal_meta svg  { color: var(--pd-ink-3); flex: none; }
+#product_modal .modal_meta i    { font-style: normal; color: var(--pd-line); }
+#product_modal .modal_meta .is-off { color: var(--pd-ink-3); }
+
+/* ---------------- sections ---------------- */
+#product_modal .modal_section { margin-top: 20px; }
+#product_modal .modal_section_title,
+#product_modal .modal_variant_group h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 600; letter-spacing: -0.005em;
+    text-transform: none;
+    color: var(--pd-ink);
+    line-height: 1.2;
+    margin: 0;
+}
+#product_modal .modal_description {
+    margin: 7px 0 0;
+    font-size: 13.5px; line-height: 1.6; font-weight: 400;
+    color: var(--pd-ink-2);
+}
+#product_modal .modal_options { margin-top: 20px; gap: 22px; }
+#product_modal .modal_variant_header { min-height: 0; margin-bottom: 10px; }
+#product_modal .size_chart_link {
+    min-height: 0; font-size: 12px; font-weight: 500;
+    color: var(--pd-ink-2); text-decoration: underline; text-underline-offset: 3px;
+}
+#product_modal .size_chart_link:hover { color: var(--pd-ink); }
+#product_modal .size_chart_inline {
+    background: var(--pd-surface); border: 1px solid var(--pd-line); color: var(--pd-ink-2);
+}
+#product_modal .modal_facts, #product_modal .modal_sku { display: none; }
+
+/* ---------------- option pills ---------------- */
+#product_modal .variant_pills { gap: 8px; }
+#product_modal .pill {
+    height: 40px; min-width: 52px;
+    padding: 0 15px;
+    border-radius: 10px;
+    border: 1px solid var(--pd-line);
+    background: var(--pd-surface);
+    color: var(--pd-ink-2);
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px; font-weight: 500; letter-spacing: 0;
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    box-shadow: none;
+}
+#product_modal .pill:hover:not(:disabled) { color: var(--pd-ink); border-color: var(--pd-line-hi); }
+#product_modal .pill.active {
+    background: var(--pd-gold);
+    border-color: var(--pd-gold);
+    color: var(--pd-on-gold);
+    font-weight: 600;
+}
+/* The white swatch disappears into a white pill without an edge. */
+#product_modal .color_dot { box-shadow: inset 0 0 0 1px var(--pd-swatch-edge); }
+#product_modal .qty_stepper {
+    height: 44px; border-radius: 10px;
+    background: var(--pd-surface); border: 1px solid var(--pd-line);
+}
+#product_modal .qty_btn { border-radius: 8px; color: var(--pd-ink); background: transparent; }
+#product_modal .qty_btn:hover:not(:disabled) { background: var(--pd-soft); }
+#product_modal .qty_input { color: var(--pd-ink); background: transparent; }
+
+/* ---------------- the order bar ---------------- */
+#product_modal .modal_footer {
+    background: var(--pd-ground);
+    border-top: 1px solid var(--pd-line);
+    box-shadow: none;
+    padding: 14px 20px 18px;
+}
+#product_modal .modal_cta_row { flex-direction: row; gap: 12px; align-items: center; }
+
+/* Round on a phone, like the reference. The bag is the same glyph as the
+   floating bag button; the + is what makes it "add to", not "open". */
+#product_modal .bag_btn {
+    position: relative;
+    flex: none;
+    width: 50px; height: 50px; padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--pd-line-hi);
+    background: var(--pd-surface);
+    color: var(--pd-ink);
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: -0.005em; text-transform: none;
+}
+#product_modal .bag_btn:hover { border-color: var(--pd-ink); background: var(--pd-surface); }
+#product_modal .bag_plus {
+    position: absolute; top: 7px; right: 7px;
+    width: 15px; height: 15px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--pd-gold); color: var(--pd-on-gold);
+    font-size: 12px; font-weight: 700; line-height: 1;
+    box-shadow: 0 0 0 2px var(--pd-surface);
+}
+#product_modal .bag_label { display: none; }
+
+#product_modal .whatsapp_btn {
+    flex: 1 1 auto;
+    height: 50px; padding: 0 20px;
+    border-radius: 99px;
+    border: 0;
+    background: var(--pd-gold);
+    color: var(--pd-on-gold);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px; font-weight: 600; letter-spacing: -0.005em;
+    text-transform: none;
+    box-shadow: none;
+}
+#product_modal .whatsapp_btn .cta_total { font-weight: 500; opacity: 0.65; }
+
+/* Not ready: neutral, and the pill names what is missing. */
+#product_modal .modal_cta_row .whatsapp_btn.disabled {
+    background: var(--pd-soft);
+    border: 0;
+    color: var(--pd-ink-3);
+}
+#product_modal .modal_cta_row .bag_btn.disabled {
+    border-color: var(--pd-line);
+    color: var(--pd-ink-3);
+    background: var(--pd-surface);
+}
+#product_modal .modal_cta_row .bag_btn.disabled .bag_plus { background: var(--pd-soft); color: var(--pd-ink-3); }
+
+@keyframes lxOrderBreathGold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 196, 0, 0.0); }
+    50%      { box-shadow: 0 6px 22px -4px rgba(230, 180, 0, 0.55); }
+}
+#product_modal .modal_footer .whatsapp_btn:not(.disabled) {
+    animation: lxOrderBreathGold 3.4s ease-in-out 1.2s infinite;
+}
+#product_modal .modal_footer .whatsapp_btn:hover,
+#product_modal .modal_footer .whatsapp_btn:focus-visible { animation: none; }
+
+/* ---------------- phone: full screen, as in the reference ---------------- */
+@media (max-width: 640px) {
+    /* The overlay is position:fixed with inset:0, which on iOS is exactly the
+       visible area — so the sheet fills it with height:100% and needs no
+       viewport unit, which is what hid the close button before. */
+    #product_modal { align-items: stretch; }
+    #product_modal .modal_content {
+        height: 100%; max-height: none;
+        width: 100%; border-radius: 0;
+    }
+    #product_modal .modal_content::before { display: none; }
+    #product_modal .close_modal .ic-back  { display: block; }
+    #product_modal .close_modal .ic-close { display: none; }
+    #product_modal .modal_topbar { padding: 10px 16px 12px; }
+    #product_modal .modal_scroll { padding: 0 16px; }
+    #product_modal .modal_footer { padding: 12px 16px 16px; }
+    #product_modal .modal_image_wrapper { height: auto; aspect-ratio: 1.1 / 1; }
+    #product_modal .slide_arrow { display: none; }
+    #product_modal .modal_options { gap: 20px; }
+}
+
+/* ---------------- tablet: the phone layout, as a card ---------------- */
+@media (min-width: 641px) and (max-width: 899px) {
+    #product_modal .modal_content { max-width: 560px; border-radius: 22px; }
+    #product_modal .modal_image_wrapper { height: auto; aspect-ratio: 1.3 / 1; }
+}
+
+/* ---------------- desktop: two columns, more detail ---------------- */
+@media (min-width: 900px) {
+    #product_modal .modal_content {
+        width: min(1060px, 94vw);
+        max-width: none;
+        height: min(700px, 88vh);
+        max-height: none;
+        border-radius: 26px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        grid-template-areas:
+            "img    top"
+            "img    details"
+            "thumbs footer";
+    }
+    /* The scroller dissolves so the photo, thumbnails and details can each
+       take their own grid cell; the details column scrolls on its own. */
+    #product_modal .modal_scroll { display: contents; }
+
+    #product_modal .modal_image_wrapper {
+        grid-area: img;
+        height: auto; min-height: 0;
+        aspect-ratio: auto;
+        margin: 24px 0 0 24px;
+        border-radius: 20px;
+    }
+    #product_modal .modal_thumbs {
+        grid-area: thumbs;
+        display: flex; gap: 10px;
+        padding: 14px 0 24px 24px;
+        align-self: end;
+    }
+    #product_modal .modal_thumb {
+        width: 64px; height: 64px; padding: 0;
+        border-radius: 12px; overflow: hidden;
+        border: 1px solid var(--pd-line);
+        background: var(--pd-surface);
+        cursor: pointer;
+        opacity: 0.62;
+        transition: opacity .2s var(--lx-soft), box-shadow .2s var(--lx-soft);
+    }
+    #product_modal .modal_thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    #product_modal .modal_thumb:hover { opacity: 0.9; }
+    #product_modal .modal_thumb.active { opacity: 1; box-shadow: 0 0 0 2px var(--pd-ink); }
+
+    #product_modal .modal_topbar {
+        grid-area: top;
+        grid-template-columns: minmax(0, 1fr) 40px;
+        padding: 24px 28px 4px 32px;
+    }
+    #product_modal .modal_topbar_title,
+    #product_modal .modal_topbar_spacer { display: none; }
+    #product_modal .modal_topbar_crumb {
+        display: block;
+        grid-column: 1; grid-row: 1;
+        font-size: 12.5px; color: var(--pd-ink-3);
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #product_modal .modal_topbar_crumb i { font-style: normal; margin: 0 6px; color: var(--pd-line-hi); }
+    #product_modal .modal_topbar_crumb b { font-weight: 500; color: var(--pd-ink-2); }
+    #product_modal .modal_topbar .close_modal {
+        grid-column: 2; grid-row: 1;
+        width: 40px; height: 40px;
+    }
+
+    #product_modal .modal_details {
+        grid-area: details;
+        overflow-y: auto;
+        padding: 14px 32px 12px;
+        scrollbar-width: none;
+    }
+    #product_modal .modal_details::-webkit-scrollbar { display: none; }
+    #product_modal .modal_title { font-size: 26px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
+    #product_modal .modal_price { font-size: 26px; }
+    #product_modal .modal_meta { margin-top: 10px; }
+    #product_modal .modal_section { margin-top: 18px; }
+
+    #product_modal .modal_facts {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        list-style: none; padding: 0; margin: 22px 0 0;
+    }
+    #product_modal .modal_facts li {
+        display: flex; align-items: center; gap: 10px;
+        padding: 11px 12px;
+        background: var(--pd-surface);
+        border: 1px solid var(--pd-line);
+        border-radius: 12px;
+    }
+    #product_modal .modal_facts svg {
+        flex: none; width: 32px; height: 32px; padding: 7px;
+        border-radius: 9px; background: var(--pd-soft); color: var(--pd-ink);
+    }
+    #product_modal .modal_facts span { display: flex; flex-direction: column; gap: 1px; min-width: 0; font-size: 11.5px; color: var(--pd-ink-3); line-height: 1.35; }
+    #product_modal .modal_facts b { font-size: 12.5px; font-weight: 600; color: var(--pd-ink); }
+    #product_modal .modal_sku {
+        display: block; margin: 16px 0 0;
+        font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pd-ink-3);
+    }
+    #product_modal .modal_sku span { margin-left: 6px; color: var(--pd-ink-2); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+
+    #product_modal .modal_footer {
+        grid-area: footer;
+        background: transparent;
+        border-top: 1px solid var(--pd-line);
+        margin: 0 32px;
+        padding: 16px 0 24px;
+    }
+    /* On desktop the bag button can say what it does. */
+    #product_modal .bag_btn {
+        width: auto; height: 52px;
+        padding: 0 20px 0 16px;
+        border-radius: 99px;
+    }
+    #product_modal .bag_plus { position: static; box-shadow: none; margin-left: -4px; }
+    #product_modal .bag_label { display: inline; }
+    #product_modal .whatsapp_btn { height: 52px; }
+    /* Colour and size share a row here. At 15px of side padding three sizes
+       needed 226px of a 214px column and wrapped onto a second line, pushing
+       the details column past the bottom of the sheet on a 720px laptop. */
+    #product_modal .pill { padding: 0 11px; min-width: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #product_modal .modal_footer .whatsapp_btn:not(.disabled) { animation: none; }
+}
+
+/* The ≤520px rule in bag.css stacks the two actions for the old text
+   buttons. The reference keeps the round bag button beside the pill at every
+   width, and with an icon instead of a label it always fits. */
+#product_modal .modal_cta_row { flex-direction: row; }
+
+/* The floating bag pill is the store's, not the product page's. Over the
+   sheet it sat on top of the order button. Adding to the bag still confirms
+   with the toast, which has its own "View bag". */
+body:has(#product_modal.active) #lx_bag_pill {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+}
+
+/* =====================================================================
+   DESKTOP DETAILS — room to breathe
+   ---------------------------------------------------------------------
+   The page is zoomed to 90% on desktop, and vh is measured before that zoom
+   is applied — so a sheet of "88vh" was really only about 79% of the screen.
+   Dividing the zoom back out (the same correction desktop-scale.css makes for
+   the hero) hands the sheet roughly 90px it was always entitled to, and that
+   height is what the spacing below is spent on: wider gutters, a real gap
+   between each section, larger buttons, and the photo growing with it.
+
+   The details column is also laid out top and bottom rather than top-down:
+   who it is, what it costs and which option at the top; the facts settle at
+   the foot of the column. A product with no options no longer leaves a hole
+   under its description — the space goes between the two groups instead.
+   ===================================================================== */
+#product_modal .meta_stock,
+#product_modal .meta_sep_stock { display: none; }
+
+@media (min-width: 900px) {
+    #product_modal .modal_content {
+        width: min(1120px, 94vw);
+        height: min(760px, 90vh);
+        border-radius: 28px;
+        grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);
+    }
+
+    /* ---- gallery ---- */
+    #product_modal .modal_image_wrapper { margin: 28px 0 0 28px; border-radius: 22px; }
+    #product_modal .modal_thumbs { gap: 12px; padding: 16px 0 28px 28px; }
+    #product_modal .modal_thumb {
+        width: 68px; height: 68px; border-radius: 14px;
+        transition: opacity .2s var(--lx-soft), box-shadow .2s var(--lx-soft), transform .25s var(--lx-out);
+    }
+    #product_modal .modal_thumb:hover { transform: translateY(-2px); }
+    #product_modal .modal_thumb.active { box-shadow: 0 0 0 2px var(--pd-ground), 0 0 0 4px var(--pd-ink); }
+
+    /* ---- right column ---- */
+    #product_modal .modal_topbar { padding: 28px 30px 0 44px; }
+    #product_modal .modal_topbar .close_modal { width: 42px; height: 42px; }
+
+    #product_modal .modal_details {
+        display: flex; flex-direction: column;
+        padding: 22px 44px 18px;
+    }
+    #product_modal .modal_title { font-size: 30px; letter-spacing: -0.03em; line-height: 1.12; }
+    #product_modal .modal_price { font-size: 28px; letter-spacing: -0.03em; }
+    #product_modal .modal_meta { margin-top: 12px; gap: 10px; font-size: 13px; }
+    #product_modal .meta_stock { display: inline-flex; align-items: center; gap: 7px; color: var(--pd-ok); font-weight: 600; }
+    #product_modal .meta_stock::before {
+        content: ''; width: 7px; height: 7px; border-radius: 50%;
+        background: #22C55E; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+    }
+    #product_modal .meta_sep_stock { display: inline; }
+
+    /* A hairline between who-and-what and everything else gives the column
+       a rhythm instead of one continuous run of text. */
+    #product_modal .modal_section {
+        margin-top: 22px; padding-top: 22px;
+        border-top: 1px solid var(--pd-line);
+    }
+    /* The column is already a comfortable measure (~60 characters); a narrower
+       cap only cost the longer descriptions an extra line. */
+    #product_modal .modal_description { font-size: 14px; line-height: 1.65; margin-top: 8px; max-width: none; }
+    #product_modal .modal_options { margin-top: 24px; gap: 28px; }
+    #product_modal .modal_variant_header { margin-bottom: 12px; }
+    #product_modal .pill { height: 42px; border-radius: 11px; }
+
+    #product_modal .modal_facts { margin-top: auto; padding-top: 26px; gap: 12px; }
+    #product_modal .modal_facts li { padding: 13px 14px; border-radius: 14px; gap: 12px; }
+    #product_modal .modal_facts svg { width: 36px; height: 36px; padding: 8px; border-radius: 10px; }
+    #product_modal .modal_facts b { font-size: 13px; }
+    #product_modal .modal_facts span { font-size: 12px; }
+    #product_modal .modal_sku { margin-top: 18px; }
+
+    #product_modal .modal_footer { margin: 0 44px; padding: 20px 0 30px; }
+    #product_modal .modal_cta_row { gap: 14px; }
+    #product_modal .bag_btn { height: 56px; padding: 0 22px 0 18px; }
+    #product_modal .whatsapp_btn { height: 56px; font-size: 15.5px; }
+}
+
+/* The 0.9 desktop zoom, divided back out so the sheet gets the height the
+   screen really has. */
+@media (min-width: 1024px) {
+    /* vw has the same problem as vh under the zoom: 94vw was only ~85% of the
+       window, which squeezed the details column and made its text wrap. */
+    #product_modal .modal_content {
+        width: min(1120px, calc(94vw / 0.9));
+        /* 840 rather than 800: two-line names plus a lead and description
+           ran 16px past an 800px sheet. On a 900px screen this still leaves
+           ~70px above and below. */
+        height: min(840px, calc(90vh / 0.9));
+    }
+}
+
+/* Short laptop screens: keep the breathing room, give up a little size. */
+@media (min-width: 900px) and (max-height: 800px) {
+    #product_modal .modal_title { font-size: 26px; }
+    #product_modal .modal_price { font-size: 25px; }
+    #product_modal .modal_section { margin-top: 18px; padding-top: 18px; }
+    #product_modal .modal_options { margin-top: 20px; }
+    #product_modal .modal_facts { padding-top: 20px; gap: 10px; }
+    #product_modal .modal_facts li { padding: 11px 12px; }
+    #product_modal .modal_facts svg { width: 32px; height: 32px; padding: 7px; }
+    #product_modal .modal_sku { display: none; }
+    #product_modal .modal_footer { padding: 16px 0 24px; }
+    #product_modal .bag_btn, #product_modal .whatsapp_btn { height: 52px; }
+}
+
+/* =====================================================================
+   DETAILS COPY — a headline, then the paragraph
+   ---------------------------------------------------------------------
+   Each product now has a one-line lead in the catalogue. It reads first and
+   in ink; the description under it carries the specifics in the quieter
+   colour, so the eye gets the point before the detail.
+   ===================================================================== */
+#product_modal .modal_lead {
+    margin: 8px 0 0;
+    font-size: 15px; font-weight: 600; line-height: 1.35; letter-spacing: -0.012em;
+    color: var(--pd-ink);
+    text-wrap: balance;
+}
+#product_modal .modal_lead + .modal_description { margin-top: 4px; }
+
+@media (min-width: 900px) {
+    #product_modal .modal_lead { margin-top: 10px; font-size: 17px; letter-spacing: -0.018em; }
+    #product_modal .modal_lead + .modal_description { margin-top: 6px; }
+}
+@media (min-width: 900px) and (max-height: 800px) {
+    #product_modal .modal_lead { font-size: 16px; }
+}
+
+/* =====================================================================
+   ADD TO BAG — the button answers the click
+   ---------------------------------------------------------------------
+   Desktop: words only. On add, the label rises out of the button and a
+   gold "+1" with "Added" rises in after it, then the label returns. The
+   swap happens inside a fixed-width button, so nothing beside it moves.
+   Phones keep the round bag; its gold + pops instead.
+   ===================================================================== */
+#product_modal .bag_added { display: none; }
+
+@keyframes lxBagPop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.55); }
+    100% { transform: scale(1); }
+}
+#product_modal .bag_btn.is-added .bag_plus { animation: lxBagPop .5s var(--lx-out); }
+
+@media (min-width: 900px) {
+    #product_modal .bag_btn {
+        overflow: hidden;
+        padding: 0 28px;
+        gap: 0;
+    }
+    #product_modal .bag_btn > svg,
+    #product_modal .bag_btn .bag_plus { display: none; }
+
+    /* Three states. Rest: label in place, confirmation waiting below.
+       is-added: the label leaves upward and the confirmation springs up
+       into its place a beat later. is-leaving: the confirmation carries on
+       upward and the label returns from below — a loop, never a rewind.
+       Transitions only run while is-added; the return is keyframed so the
+       parts can reset off-stage without being seen moving back. */
+    #product_modal .bag_label { display: inline-block; transition: none; }
+    #product_modal .bag_added {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        transform: translateY(105%);
+        opacity: 0;
+        transition: none;
+        pointer-events: none;
+    }
+    #product_modal .bag_added_n {
+        display: inline-grid; place-items: center;
+        min-width: 30px; height: 24px; padding: 0 8px;
+        border-radius: 99px;
+        background: var(--pd-gold); color: var(--pd-on-gold);
+        font-size: 13px; font-weight: 700; letter-spacing: -0.01em;
+        font-variant-numeric: tabular-nums;
+    }
+
+    #product_modal .bag_btn.is-added { border-color: var(--pd-gold); }
+    #product_modal .bag_btn.is-added .bag_label {
+        transform: translateY(-120%); opacity: 0;
+        transition: transform .34s cubic-bezier(.5, 0, .75, 0), opacity .22s ease;
+    }
+    #product_modal .bag_btn.is-added .bag_added {
+        transform: none; opacity: 1;
+        transition: transform .5s cubic-bezier(.2, 1.35, .4, 1) .12s, opacity .25s ease .12s;
+    }
+    #product_modal .bag_btn.is-added .bag_added_n { animation: lxBagPop .55s var(--lx-out) .22s; }
+
+    @keyframes lxBagRiseOut { from { transform: none; opacity: 1; } to { transform: translateY(-120%); opacity: 0; } }
+    @keyframes lxBagRiseIn  { from { transform: translateY(120%); opacity: 0; } to { transform: none; opacity: 1; } }
+    #product_modal .bag_btn.is-leaving .bag_added { animation: lxBagRiseOut .32s cubic-bezier(.5, 0, .75, 0) forwards; }
+    #product_modal .bag_btn.is-leaving .bag_label { animation: lxBagRiseIn .5s cubic-bezier(.2, 1.2, .4, 1) .1s both; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #product_modal .bag_label,
+    #product_modal .bag_added { transform: none !important; transition: opacity .2s ease !important; animation: none !important; }
+    #product_modal .bag_btn.is-added .bag_plus,
+    #product_modal .bag_btn.is-added .bag_added_n { animation: none; }
+}
+
+/* =====================================================================
+   SHELF — white name panel under a dark photo
+   ---------------------------------------------------------------------
+   A pack shot on white already makes a two-tone card: white photo, dark
+   panel. A photo on a dark ground made one dark block, name and all. Those
+   cards now get the mirror image — dark photo, white panel — so every card
+   on the shelf reads as photo + label. Gold is unreadable on white, so the
+   price on these cards is ink.
+   ===================================================================== */
+.products_box.info-light .product_info { background: #FFFFFF; }
+.products_box.info-light .product_info .product_name { color: #0B0B0D; }
+.products_box.info-light .product_info .product_price { color: #0B0B0D; text-shadow: none; }
+.products_box.info-light.is_sold_out .product_info .product_price,
+.products_box.info-light.is_coming_soon .product_info .product_price { color: #6B6B75; }

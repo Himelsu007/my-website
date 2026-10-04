@@ -12,6 +12,13 @@
 // counted against it. These are exactly the values that formula produced, so
 // nothing already synced moves — but from here the name is free to change and
 // the code is not. Never edit an existing sku; a new product gets a new one.
+//
+// `tile` is the ground the photo sits on: "light" for a pack shot on white
+// (or a dark cut-out placed on white), "dark" for a white cut-out placed on
+// black, "photo" for a full photograph — which then says its own ground in
+// `ground`. On the shelf, a card on a dark ground gets a white name panel.
+//
+// `lead` is the one-line headline over the description in the sheet.
 const products = [
     {
         name: "Regular Elite Crew Socks #Black",
@@ -26,7 +33,8 @@ const products = [
             "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks03.webp",
             "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks-04.webp"
         ],
-        description: "No slipping nor distractions, just lockdown performance from the ground up.",
+        lead: "Locked in from the ground up.",
+        description: "A snug black crew that stays put through every cut, closeout and sprint back on defence. No slipping, no stopping to pull them up — just your game. Sizes 34 to 46.",
         optionTitle: "<strong>Size</strong>",
         options: ["34 - 38", "38 - 42", "42 - 46"]
     },
@@ -44,7 +52,8 @@ const products = [
             "assets/images/products/nba-nike-headband-bg-03.webp",
             "assets/images/products/nba-nike-headband-bg-04.webp"
         ],
-        description: "Compression support for a consistent shot and full control.",
+        lead: "Eyes on the rim, not the sweat.",
+        description: "Nike's NBA headband catches sweat before it reaches your eyes, so nothing breaks your focus from warm-up to the last game of the night.",
         optionTitle: "<strong>Quantity</strong>",
         options: ["1", "2", "3", "4"]
     },
@@ -60,7 +69,8 @@ const products = [
             "assets/images/products/nba-wristband/nba-wristband.webp",
             "assets/images/products/nba-wristband/nba-wristband-worn.webp"
         ],
-        description: "Double-wide terry cloth that keeps sweat off your hands. Sold as a pair.",
+        lead: "Dry hands on every catch.",
+        description: "Double-wide terry soaks up sweat before it runs into your hands, so the ball feels the same on your last shot as on your first. Sold as a pair.",
         optionTitle: "<strong>Quantity</strong>",
         options: ["1", "2", "3", "4"]
     },
@@ -78,7 +88,8 @@ const products = [
             "assets/images/products/wilson-silver/wilson-silver0001.webp",
             "assets/images/products/wilson-silver/wilson-silver0003.webp"
         ],
-        description: "Let professional autographs shine with the Wilson Alliance Series.",
+        lead: "Made to be signed.",
+        description: "The platinum edition of Wilson's Alliance Series, built to let autographs shine. Get it signed, give it a spot on the shelf, keep the moment. Official size 7.",
         optionTitle: "<strong>Size</strong>",
         options: ["7"]
     },
@@ -95,7 +106,8 @@ const products = [
             "assets/images/products/wilson-orange/wilson-orange0001.webp",
             "assets/images/products/wilson-orange/wilson-orange0003.webp"
         ],
-        description: "NBA experiences can happen anytime, anyplace.",
+        lead: "Built for the hardwood.",
+        description: "Wilson's NBA Authentic Series, made for indoor courts. Official size 7 — the ball to bring when the run is inside.",
         optionTitle: "<strong>Size</strong>",
         options: ["7"]
     },
@@ -111,7 +123,8 @@ const products = [
             "assets/images/white-shooting-sleeve-bg.avif",
             "assets/images/products/nba-shooting-sleeve.webp"
         ],
-        description: "Compression support for a consistent shot and full control.",
+        lead: "Same release, every quarter.",
+        description: "Compression that keeps your shooting arm warm and supported, so your release feels in the fourth quarter the way it did in warm-ups. In clean white.",
         optionTitle: "<strong>Quantity</strong>",
         options: ["1", "2", "3", "4"]
     },
@@ -133,7 +146,8 @@ const products = [
             "assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp",
             "assets/images/ben-simons-bg.avif"
         ],
-        description: "No slipping nor distractions, just lockdown performance from the ground up.",
+        lead: "Our best seller. Black or white.",
+        description: "The NBA Elite crew locks in from the first step and stays put until the final bucket — no slipping, no distractions. Sizes 38 to 49.",
         optionTitle: "<strong>Size</strong>",
         options: ["38 - 41", "42 - 45", "46 - 49"]
     },
@@ -149,7 +163,8 @@ const products = [
             "assets/images/black-shooting-sleeve-bg.avif",
             "assets/images/products/shooting-sleeve-black.webp"
         ],
-        description: "Compression support for a consistent shot and full control.",
+        lead: "Your shooting arm, locked in.",
+        description: "Compression that keeps your arm warm and supported from the first shot of the night to the last. In black.",
         optionTitle: "<strong>Quantity</strong>",
         options: ["1", "2", "3", "4"]
     },
@@ -161,7 +176,8 @@ const products = [
         status: "soldout",
         category: "socks",
         image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white.webp",
-        description: "Maximum comfort on the court.",
+        lead: "The Elite crew, all white.",
+        description: "Comfort that lasts the whole run, in clean white. This one is sold out — the NBA Elite Crew Socks still come in white, and they're on the shelf now.",
         optionTitle: "<strong>Size</strong>",
         options: ["38 - 41", "42 - 45", "46 - 49"]
     },
@@ -169,11 +185,13 @@ const products = [
         name: "Nike Nba Elite Pro Compression #SW",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SW",
         tile: "photo",
+        ground: "dark",
         priceEUR: null,
         status: "soldout",
         category: "apparel",
         image: "assets/images/products/nike-elite-tee-white.webp",
-        description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA.",
+        lead: "Limited run. No days off.",
+        description: "A limited edition of the Nike NBA Elite Pro compression tee in white: light, tight to the body and made for players who don't take days off.",
         tag: "Limited Edition",
         optionTitle: "Size",
         options: ["S", "M", "L"]
@@ -182,11 +200,13 @@ const products = [
         name: "Nike Nba Elite Pro Tank Top #TB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TB",
         tile: "photo",
+        ground: "light",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-tank-top-black.webp",
-        description: "Designed for high-tempo runs where every possession matters.",
+        lead: "Nothing in the way of your shot.",
+        description: "The Nike NBA Elite Pro tank in black. Sleeveless and light, made for high-tempo runs where every possession matters.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -194,11 +214,13 @@ const products = [
         name: "Nike NBA Elite Pro Compression #SB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SB",
         tile: "photo",
+        ground: "light",
         priceEUR: null,
         status: "soldout",
         category: "apparel",
         image: "assets/images/products/nike-elite-tee-black.webp",
-        description: "Lightweight, tight fit, and made for those who don't take days off, just like the pros in the NBA.",
+        lead: "Second skin, no days off.",
+        description: "The Nike NBA Elite Pro compression tee in black: light, tight to the body, and made to be worn alone or under your jersey.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -206,11 +228,13 @@ const products = [
         name: "Nike Nba Elite Pro Tank Top #TW",
         sku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TW",
         tile: "photo",
+        ground: "dark",
         priceEUR: null,
         status: "soldout",
         category: "apparel",
         image: "assets/images/products/nike-elite-tank-top-white.webp",
-        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        lead: "Built for high-tempo runs.",
+        description: "The Nike NBA Elite Pro tank in white. Sleeveless and light, so nothing gets between you and the next possession.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -218,11 +242,13 @@ const products = [
         name: "Nike Nba Elite Pro Compression #LSW",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-LSW",
         tile: "photo",
+        ground: "dark",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-long-sleeve-white.webp",
-        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        lead: "Covered, not slowed down.",
+        description: "Long-sleeve Nike NBA Elite Pro compression in white — full-arm coverage that stays light and tight, for colder nights and longer runs.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -230,11 +256,13 @@ const products = [
         name: "Nike Nba Elite Pro Compression #SHB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SHB",
         tile: "photo",
+        ground: "light",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-short-sleeve-black.webp",
-        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        lead: "Second skin, in black.",
+        description: "Short-sleeve Nike NBA Elite Pro compression in black: light, tight to the body, made for players who don't take days off.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -242,11 +270,13 @@ const products = [
         name: "Nike Nba Elite Pro Compression #LHB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-LHB",
         tile: "photo",
+        ground: "light",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-long-sleeve-black.webp",
-        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        lead: "Full arm, full game.",
+        description: "Long-sleeve Nike NBA Elite Pro compression in black — light and tight, warm enough for cold nights without slowing your shot.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },
@@ -254,11 +284,13 @@ const products = [
         name: "Nike Nba Elite Pro Compression #SHW",
         sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SHW",
         tile: "photo",
+        ground: "dark",
         priceEUR: null,
         status: "soon",
         category: "apparel",
         image: "assets/images/products/nike-elite-short-sleeve-white.webp",
-        description: "Extra cushioning in high-impact areas for maximum comfort on the court.",
+        lead: "Light, tight, ready.",
+        description: "Short-sleeve Nike NBA Elite Pro compression in white. Made for players who don't take days off, just like the pros in the NBA.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     }
