@@ -203,6 +203,37 @@ const products = [
         unavailable: ["S", "L"]
     },
     {
+        // Named and coded as in Matrix: its two "Nba Nike-Pro Combat
+        // Compression Tank" records are told apart by colour tag, and these
+        // SKUs are theirs, so an order lands on the right stock.
+        name: "Nba Nike-Pro Combat Compression Tank (Black)",
+        sku: "SLA",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp",
+        lead: "Sleeveless, second skin.",
+        description: "The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["S", "M", "L"],
+        unavailable: ["S", "L"]
+    },
+    {
+        name: "Nba Nike-Pro Combat Compression Tank (White)",
+        sku: "AU09282",
+        tile: "light",
+        priceEUR: 50,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp",
+        lead: "The tank, in white.",
+        description: "The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["S", "M", "L"],
+        unavailable: ["S", "L"]
+    },
+    {
         name: "Nba Elite Crew Socks #SW",
         sku: "LILX-NBA-ELITE-CREW-SOCKS-SW",
         tile: "dark",
@@ -216,20 +247,6 @@ const products = [
         options: ["38 - 41", "42 - 45", "46 - 49"]
     },
     {
-        name: "Nike Nba Elite Pro Compression #SW",
-        sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SW",
-        tile: "photo",
-        priceEUR: null,
-        status: "soldout",
-        category: "apparel",
-        image: "assets/images/products/nike-elite-tee-white.webp",
-        lead: "Limited run. No days off.",
-        description: "A limited edition of the Nike NBA Elite Pro compression tee in white: light, tight to the body and made for players who don't take days off.",
-        tag: "Limited Edition",
-        optionTitle: "Size",
-        options: ["S", "M", "L"]
-    },
-    {
         name: "Nike Nba Elite Pro Tank Top #TB",
         sku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TB",
         tile: "photo",
@@ -239,19 +256,6 @@ const products = [
         image: "assets/images/products/nike-elite-tank-top-black.webp",
         lead: "Nothing in the way of your shot.",
         description: "The Nike NBA Elite Pro tank in black. Sleeveless and light, made for high-tempo runs where every possession matters.",
-        optionTitle: "Size",
-        options: ["S", "M", "L"]
-    },
-    {
-        name: "Nike NBA Elite Pro Compression #SB",
-        sku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SB",
-        tile: "photo",
-        priceEUR: null,
-        status: "soldout",
-        category: "apparel",
-        image: "assets/images/products/nike-elite-tee-black.webp",
-        lead: "Second skin, no days off.",
-        description: "The Nike NBA Elite Pro compression tee in black: light, tight to the body, and made to be worn alone or under your jersey.",
         optionTitle: "Size",
         options: ["S", "M", "L"]
     },

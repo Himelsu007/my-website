@@ -64,12 +64,20 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
         <image:title>Nike Elite Tank Top – White</image:title>
     </image:image>
     <image:image>
-        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-elite-tee-black.png.webp</image:loc>
-        <image:title>Nike Elite NBA T-Shirt – Black</image:title>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp</image:loc>
+        <image:title>Nike NBA Compression Short Sleeves – Black</image:title>
     </image:image>
     <image:image>
-        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-elite-tee-white.png</image:loc>
-        <image:title>Nike Elite NBA T-Shirt – White</image:title>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-white.webp</image:loc>
+        <image:title>Nike NBA Compression Short Sleeves – White</image:title>
+    </image:image>
+    <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp</image:loc>
+        <image:title>NBA Nike Pro Combat Compression Tank – Black</image:title>
+    </image:image>
+    <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp</image:loc>
+        <image:title>NBA Nike Pro Combat Compression Tank – White</image:title>
     </image:image>
     <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/molten/molten_asia.png</image:loc>
