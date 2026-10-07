@@ -1681,7 +1681,6 @@ PRODUCT CARD (button-based for a11y)
 }
 
 .products_box:hover {
-    border-color: rgba(255, 215, 0, 0.6);
     transform: translateY(-3px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
 }
@@ -2425,13 +2424,11 @@ body.lx-scroll-locked {
                 box-shadow 0.45s var(--lx-out);
 }
 @media (hover: hover) {
+    /* Lift and zoom only: no gold on the edge or in the shadow, so the
+       card keeps its own neutral border while it rises. */
     .products_box:hover{
         transform: translateY(-5px);
-        /* Warm shadow rather than neutral black — the card looks lit by the
-           gold border instead of just floating. */
-        box-shadow: 0 18px 34px -12px rgba(0, 0, 0, 0.75),
-                    0 0 0 1px rgba(255, 215, 0, 0.08),
-                    0 10px 30px -18px rgba(255, 215, 0, 0.35);
+        box-shadow: 0 18px 34px -12px rgba(0, 0, 0, 0.75);
     }
     .products_box:hover .product_image{ transform: scale(1.055); }
 }
