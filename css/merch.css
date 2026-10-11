@@ -3499,10 +3499,67 @@ body:has(#product_modal.active) #lx_bag_pill {
 }
 
 /* A size that exists but is out: still shown so the range reads, dimmed so
-   it is plainly not on offer, and disabled so it cannot be picked. */
-#product_modal .pill.is-out {
-    opacity: 0.32;
+   it is plainly not on offer, and on hover (or a tap, on a phone) it says
+   "Out of stock". Dimmed through its colours rather than opacity, which
+   would have faded the label along with it. */
+#product_modal .pill.is-out,
+#product_modal .pill.is-out:hover {
+    position: relative;
     cursor: not-allowed;
+    background: transparent;
+    color: color-mix(in srgb, var(--pd-ink-3) 55%, transparent);
+    border-color: color-mix(in srgb, var(--pd-line) 80%, transparent);
+}
+#product_modal .pill.is-out::after,
+#product_modal .pill.is-out::before {
+    position: absolute;
+    left: 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
+    z-index: 5;
+}
+#product_modal .pill.is-out::after {
+    content: attr(data-tip);
+    bottom: calc(100% + 9px);
+    transform: translate(-50%, 4px);
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: var(--pd-ink);
+    color: var(--pd-ground);
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.45);
+}
+#product_modal .pill.is-out::before {
+    content: "";
+    bottom: calc(100% + 5px);
+    width: 8px; height: 8px;
+    background: var(--pd-ink);
+    transform: translate(-50%, 4px) rotate(45deg);
+}
+/* The first size sits at the column's edge; its label opens to the right
+   instead of being clipped. */
+#product_modal .pill.is-out:first-child::after { left: 0; transform: translate(0, 4px); }
+@media (hover: hover) {
+    #product_modal .pill.is-out:hover::after,
+    #product_modal .pill.is-out:hover::before { opacity: 1; }
+    #product_modal .pill.is-out:hover::after { transform: translate(-50%, 0); }
+    #product_modal .pill.is-out:first-child:hover::after { transform: none; }
+    #product_modal .pill.is-out:hover::before { transform: translate(-50%, 0) rotate(45deg); }
+}
+#product_modal .pill.is-out:is(.tip-on, :focus-visible)::after,
+#product_modal .pill.is-out:is(.tip-on, :focus-visible)::before { opacity: 1; }
+#product_modal .pill.is-out:is(.tip-on, :focus-visible)::after { transform: translate(-50%, 0); }
+#product_modal .pill.is-out:first-child:is(.tip-on, :focus-visible)::after { transform: none; }
+#product_modal .pill.is-out:is(.tip-on, :focus-visible)::before { transform: translate(-50%, 0) rotate(45deg); }
+
+/* Basketballs fill their photos edge to edge, so cropped to the card they
+   read as a close-up of leather. Shown whole, with room around them. */
+#product_modal .modal_image_wrapper[data-cat="balls"] img {
+    object-fit: contain;
+    padding: 9%;
+    box-sizing: border-box;
 }
 
 /* A pack shot on white has nowhere brighter to go: the hover's brightness

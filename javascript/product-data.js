@@ -365,7 +365,9 @@ function openProductModal(index, opener) {
             const onlyOne = sizeChoices.length === 1;
             const pillsHTML = product.options.map(opt => {
                 const out = outOptions.has(opt);
-                return `<button class="pill${onlyOne && !out ? " active" : ""}${out ? " is-out" : ""}" type="button"${!isAvailable || out ? " disabled" : ""}${out ? ` aria-label="${opt}, not available"` : ""}>${opt}</button>`;
+                // Out-of-stock sizes are aria-disabled rather than disabled: a
+                // disabled button gets no hover or tap, and these have to say why.
+                return `<button class="pill${onlyOne && !out ? " active" : ""}${out ? " is-out" : ""}" type="button"${!isAvailable ? " disabled" : ""}${out ? ` aria-disabled="true" aria-label="${opt}, out of stock" data-tip="Out of stock"` : ""}>${opt}</button>`;
             }).join("");
             variantsHTML = `
                 <div class="modal_variant_group">
@@ -428,9 +430,9 @@ function openProductModal(index, opener) {
     // wants, not a number nobody has given.
     const CATEGORY_LABEL = { socks: "Socks", balls: "Basketballs", apparel: "Apparel", accessories: "Accessories" };
     const catLabel = CATEGORY_LABEL[product.category] || "";
-    const availability = isAvailable ? "12h delivery in Lisbon"
+    const availability = isAvailable ? "Express Delivery in Lisbon"
                        : isComingSoon ? "Coming soon" : "Sold out";
-    // Basketballs don't carry the 12h line; their row reads "Basketballs |
+    // Basketballs don't carry the delivery line; their row reads "Basketballs |
     // In stock". A sold-out or coming-soon ball would still say so.
     const showAvailability = !(isAvailable && product.category === "balls");
 
@@ -449,7 +451,7 @@ function openProductModal(index, opener) {
             </div>
 
             <div class="modal_scroll">
-            <div class="modal_image_wrapper tile-${product.tile || "photo"} ${isSoldOut ? "sold_out_img" : ""}" data-zoomable="true">
+            <div class="modal_image_wrapper tile-${product.tile || "photo"} ${isSoldOut ? "sold_out_img" : ""}" data-zoomable="true" data-cat="${product.category}">
                 <div class="modal_image_skeleton"></div>
                 ${imagesHTML}
                 ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ""}
@@ -491,7 +493,7 @@ function openProductModal(index, opener) {
                      of them already stated elsewhere on the site — nothing new
                      is promised here. -->
                 <ul class="modal_facts">
-                    <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h11v9H3z"/><path d="M14 9.5h3.6L21 13v2.5h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg><span><b>12h delivery</b>Free anywhere in Lisbon</span></li>
+                    <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h11v9H3z"/><path d="M14 9.5h3.6L21 13v2.5h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg><span><b>Express delivery</b>Free anywhere in Lisbon</span></li>
                     <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 0 0 18M12 3a15 15 0 0 1 0 18M3.5 9h17M3.5 15h17"/></svg><span><b>Pick up at a run</b>Free, at your next game</span></li>
                     <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/></svg><span><b>30-day returns</b>Just message us</span></li>
                     <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12.5a8.3 8.3 0 0 1-12.2 7.3L3 21l1.3-4.6A8.3 8.3 0 1 1 20 12.5z"/></svg><span><b>No online payment</b>Confirm on WhatsApp</span></li>
@@ -894,6 +896,13 @@ function initModal() {
         const pill = e.target.closest(".variant_pills .pill");
         if (pill) {
             if (pill.disabled) return;
+            if (pill.classList.contains("is-out")) {
+                // A phone has no hover, so a tap shows the label for a moment.
+                pill.classList.add("tip-on");
+                clearTimeout(pill._tipTimer);
+                pill._tipTimer = setTimeout(() => pill.classList.remove("tip-on"), 1600);
+                return;
+            }
             const pillContainer = pill.closest(".variant_pills");
             pillContainer.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
             pill.classList.add("active");

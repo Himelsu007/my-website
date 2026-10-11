@@ -40,7 +40,7 @@ const products = [
         description: "The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.",
         optionTitle: "<strong>Size</strong>",
         options: ["S", "M", "L"],
-        unavailable: ["S", "L"]
+        unavailable: ["S", "XL"]
     },
     {
         name: "Nba Nike-Pro Combat Compression Tank (White)",
@@ -54,7 +54,7 @@ const products = [
         description: "The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.",
         optionTitle: "<strong>Size</strong>",
         options: ["S", "M", "L"],
-        unavailable: ["S", "L"]
+        unavailable: ["S", "XL"]
     },
     {
         // Named as in Matrix ("Nike Nba Compression Short Sleeves"). The white

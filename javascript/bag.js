@@ -264,7 +264,7 @@
                     '<input class="lx_bag_input" data-fld="street" type="text" autocomplete="street-address" placeholder="Rua da Prata 12, 3ºD"></label>' +
                   '<label class="lx_bag_field"><span>Postcode</span>' +
                     '<input class="lx_bag_input" data-fld="postcode" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="8" placeholder="1100-052"></label>' +
-                  '<p class="lx_bag_hint">Lisbon only, within 12h. No delivery fee.</p>' +
+                  '<p class="lx_bag_hint">Express delivery, Lisbon only. No delivery fee.</p>' +
                 '</div>' +
               '</div>' +
             '</div>' +
