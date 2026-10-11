@@ -5,9 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const sideMenu = document.getElementById('side-menu');
 
     // 1. Smooth Scroll Header Logic
-    window.addEventListener('scroll', () => {
-        header.classList.toggle('scrolled', window.scrollY > 20);
-    });
+    // Passive, and touches the header only when it crosses the line, so
+    // scrolling never waits on it.
+    let headerScrolled = null;
+    const syncHeader = () => {
+        const now = window.scrollY > 20;
+        if (now !== headerScrolled) {
+            headerScrolled = now;
+            header.classList.toggle('scrolled', now);
+        }
+    };
+    window.addEventListener('scroll', syncHeader, { passive: true });
+    syncHeader();
 
     // 2. Elite Menu Toggle Logic (With Scroll Lock)
     const toggleMenu = () => {

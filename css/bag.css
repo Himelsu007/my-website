@@ -268,7 +268,7 @@
     background: rgba(255, 255, 255, 0.045);
     color: #fff;
     font-family: 'Inter', sans-serif;
-    font-size: 15px;            /* 16px or below zooms iOS Safari on focus; this is the ceiling that does not */
+    font-size: 16px;            /* under 16px, iOS Safari zooms the page in on focus */
     outline: none;
     transition: border-color .22s ease, background .22s ease, box-shadow .22s ease;
 }

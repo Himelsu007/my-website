@@ -46,14 +46,25 @@ function rotateImages() {
 }
 
 // Optimized Scroll: Only scales the currently active slide
+/* The photo drifts closer as the page scrolls. Where the browser supports
+   scroll-driven CSS animations (hero.css) it does this itself, off the main
+   thread, and this handler stays out of the way. Elsewhere it runs at most
+   once per frame, and stops once the hero is out of sight — it used to look
+   up the slide and rewrite its transform on every scroll event. */
+const HERO_SCROLL_CSS = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+let heroTicking = false;
 function handleScroll() {
-    const scrollY = window.scrollY;
-    const activeSlide = document.querySelector('.hero-image-slide.active');
-    
-    if (activeSlide) {
+    if (HERO_SCROLL_CSS || heroTicking) return;
+    heroTicking = true;
+    requestAnimationFrame(() => {
+        heroTicking = false;
+        const scrollY = window.scrollY;
+        if (scrollY > window.innerHeight * 1.2) return;
         const scale = 1 + (scrollY * 0.0001); // Slightly gentler zoom
-        activeSlide.style.transform = `scale(${scale})`;
-    }
+        document.querySelectorAll('.hero-image-slide').forEach(slide => {
+            slide.style.transform = `scale(${scale})`;
+        });
+    });
 }
 
 // ============================================

@@ -846,7 +846,6 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
     justify-content: center;
     align-items: center;
     gap: 12px;
-    animation: elitePulse 3s ease-in-out infinite;
     transition: transform 0.3s ease, border-color 0.3s ease;
     background: linear-gradient(145deg, #1a1a1d, #111113);
     border-radius: 14px;
@@ -1096,8 +1095,13 @@ box-shadow: 0 0 0px rgba(255, 255, 255, 0);
 }
 #events_container .bk-card.in:hover::after{ opacity:1; }
 
-/* ── Comet: a light that loops around the card's outer edge ── */
-@property --bk-a{ syntax:"<angle>"; inherits:false; initial-value:0deg; }
+/* ── Comet: a light that loops around the card's outer edge ──
+   The ring is a fixed mask on .bk-beam; the light is a square conic
+   gradient under it that ROTATES. It used to repaint an animated gradient
+   angle (plus a drop-shadow filter) every frame on every card, which the
+   browser has to redraw on the main thread — the stutter in the comet, and
+   work that competed with scrolling. A rotation is handed to the GPU and
+   runs at the display's own rate, whatever the page is doing. */
 #events_container .bk-card > .bk-beam{
     position:absolute;
     inset:0;
@@ -1105,32 +1109,41 @@ box-shadow: 0 0 0px rgba(255, 255, 255, 0);
     padding:1.5px;            /* beam thickness — sits on the border */
     z-index:1;
     pointer-events:none;
-    background:conic-gradient(from var(--bk-a),
-        transparent 0 76%,
-        rgba(255,215,0,0.16) 84%,
-        rgba(255,215,0,0.85) 92%,
-        #ffffff 97%,
-        transparent 100%);
+    overflow:hidden;
     -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
             mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite:xor;
             mask-composite:exclude;
-    filter:drop-shadow(0 0 4px rgba(255,215,0,0.55));
-    animation:bk-comet 5s linear infinite;
 }
-@keyframes bk-comet{ to{ --bk-a:360deg; } }
+#events_container .bk-card > .bk-beam::before{
+    content:"";
+    position:absolute;
+    /* a square twice the card's width, centred, so it covers the card at
+       every angle (cards are never taller than ~1.7x their width) */
+    top:50%; left:50%;
+    width:200%; aspect-ratio:1 / 1;
+    margin:-100% 0 0 -100%;
+    background:conic-gradient(from 0deg,
+        transparent 0 74%,
+        rgba(255,215,0,0.18) 83%,
+        rgba(255,215,0,0.9) 92%,
+        #ffffff 97%,
+        transparent 100%);
+    animation:bk-comet 5s linear infinite;
+    will-change:transform;
+}
+@keyframes bk-comet{ to{ transform:rotate(360deg); } }
 
 /* Sold out or played: the comet runs red, the same red as the full bar and
    the Sold Out state, so the edge of the card says "closed" before the
    numbers do. Head goes pale red rather than white, so it still glints. */
-#events_container .bk-card:is([data-status="full"], [data-status="done"]) > .bk-beam{
-    background:conic-gradient(from var(--bk-a),
-        transparent 0 76%,
-        rgba(239,68,68,0.16) 84%,
-        rgba(239,68,68,0.9) 92%,
+#events_container .bk-card:is([data-status="full"], [data-status="done"]) > .bk-beam::before{
+    background:conic-gradient(from 0deg,
+        transparent 0 74%,
+        rgba(239,68,68,0.18) 83%,
+        rgba(239,68,68,0.92) 92%,
         #fecaca 97%,
         transparent 100%);
-    filter:drop-shadow(0 0 4px rgba(239,68,68,0.6));
 }
 
 #events_container .bk-body{ display:flex; flex-direction:column; gap:22px; }
@@ -1481,4 +1494,24 @@ section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
 #events_container .bk-cta--done{
     background:transparent; color:#8a8a92;
     border:1px solid rgba(255,255,255,0.12); cursor:default;
+}
+
+/* The merch button's breathing glow. It used to animate box-shadow and
+   border-colour, which repaints the button on every frame forever; now the
+   glow is a layer of its own that only fades, which the GPU does for free. */
+#home_page_merch_button { border-color: rgba(125, 125, 125, 0.5); }
+#home_page_merch_button::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    animation: eliteGlow 3s ease-in-out infinite;
+}
+@keyframes eliteGlow { 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+    #home_page_merch_button::after { animation: none; }
 }
