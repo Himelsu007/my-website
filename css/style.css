@@ -1120,6 +1120,19 @@ box-shadow: 0 0 0px rgba(255, 255, 255, 0);
 }
 @keyframes bk-comet{ to{ --bk-a:360deg; } }
 
+/* Sold out or played: the comet runs red, the same red as the full bar and
+   the Sold Out state, so the edge of the card says "closed" before the
+   numbers do. Head goes pale red rather than white, so it still glints. */
+#events_container .bk-card:is([data-status="full"], [data-status="done"]) > .bk-beam{
+    background:conic-gradient(from var(--bk-a),
+        transparent 0 76%,
+        rgba(239,68,68,0.16) 84%,
+        rgba(239,68,68,0.9) 92%,
+        #fecaca 97%,
+        transparent 100%);
+    filter:drop-shadow(0 0 4px rgba(239,68,68,0.6));
+}
+
 #events_container .bk-body{ display:flex; flex-direction:column; gap:22px; }
 
 #events_container .bk-top{ display:flex; gap:18px; align-items:center; }

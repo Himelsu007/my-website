@@ -1,9 +1,9 @@
 const events = [  
-    
-    {
+        {
+                                    
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date:  "October 10th",
+        date:  "October 17th",
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
@@ -12,13 +12,11 @@ const events = [
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist:false
-    }, 
-
+    },  
     {
-                                    
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date:  "September 26th",
+        date:  "October 10th",
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
@@ -27,7 +25,8 @@ const events = [
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist:false
-    },      
+    }, 
+    
         {
                                     
         type: "PICKUP GAME",
