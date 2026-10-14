@@ -208,7 +208,10 @@ function doGet(e) {
   var p = (e && e.parameter) ? e.parameter : {};
   var ref = String(p.order || '').trim();
   if (ref) return orderStatus_(ref);
-  if (p.orders) return orderList_(p.since, p.limit);
+  // Names live behind Matrix's key (Script property MATRIX_KEY): the order
+  // list carries customer names, the roster carries players' names.
+  if (p.orders) return matrixOk_(p) ? orderList_(p.since, p.limit) : json_({ ok: false, error: 'locked' });
+  if (p.roster) return matrixOk_(p) ? rosterFor_(String(p.roster)) : json_({ ok: false, error: 'locked' });
 
   try {
     var sh = sheet_();
@@ -524,4 +527,38 @@ function json_(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/* ===== Matrix: sign-up list + locked order list ===========================
+   Matrix sends ?key=… with both. Set the same value once under
+   Project Settings > Script properties > MATRIX_KEY (Matrix shows it). */
+function matrixOk_(p) {
+  var want = PropertiesService.getScriptProperties().getProperty('MATRIX_KEY');
+  return !!want && String(p.key || '') === want;
+}
+
+/** Everyone on the Roster tab for one run, matched on the website's run key. */
+function rosterFor_(key) {
+  try {
+    var sh = roster_();
+    var n = sh.getLastRow() - 1;
+    if (n < 1) return json_({ ok: true, people: [] });
+    var rows = sh.getRange(2, 1, n, 8).getValues();
+    var want = String(key).trim().toLowerCase();
+    var people = [];
+    rows.forEach(function (r) {
+      var when = String(r[1] || '').split('\u00B7');
+      var k = [r[0], when[0], when.slice(1).join('\u00B7')]
+        .map(function (v) { return String(v || '').trim().toLowerCase(); })
+        .join('|').replace(/\s+/g, ' ');
+      if (k !== want) return;
+      var name = String(r[2] || '').trim();
+      if (!name) return;
+      people.push({ name: name, type: String(r[3] || ''), role: String(r[4] || ''),
+                    status: String(r[5] || ''), source: String(r[6] || '') });
+    });
+    return json_({ ok: true, people: people });
+  } catch (err) {
+    return json_({ ok: false, error: String(err) });
+  }
 }

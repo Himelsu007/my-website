@@ -25,6 +25,80 @@
 const products = [
     // Newest first: the shelf shows products in this order.
     {
+        // Named and coded as in Matrix, so orders land on that stock.
+        name: "Nike Brooklyn Nets City Edition",
+        sku: "LILX-SOC-CREW-FADE",
+        tile: "light",
+        priceEUR: 20,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-side.webp",
+        images: [
+            "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-side.webp",
+            "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-front.webp",
+            "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-back.webp"
+        ],
+        lead: "Brooklyn, on your feet.",
+        description: "Nike's Brooklyn Nets City Edition Elite crew: black, with the City Edition art down the side and BROOKLYN inside the cuff.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["34 - 38", "38 - 42", "42 - 46"],
+        unavailable: ["34 - 38", "38 - 42"]
+    },
+    {
+        name: "Miami Heat Nike Black-Pink 2020 City Edition",
+        sku: "LILX-SOC-CREW-BLU",
+        tile: "light",
+        priceEUR: 18,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/city-edition-socks/miami-heat-city-edition-side.webp",
+        images: [
+            "assets/images/products/city-edition-socks/miami-heat-city-edition-side.webp",
+            "assets/images/products/city-edition-socks/miami-heat-city-edition-front.webp",
+            "assets/images/products/city-edition-socks/miami-heat-city-edition-back.webp"
+        ],
+        lead: "Black, pink and blue.",
+        description: "The Miami Heat 2020 City Edition Elite crew: black, with a pink-to-blue fade down the side and MIAMI at the cuff.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["34 - 38", "38 - 42", "42 - 46"],
+        unavailable: ["34 - 38", "38 - 42"]
+    },
+    {
+        // Not in Matrix yet; the SKU follows its LILX-{category}-{item}-{colour}
+        // pattern, so a matching record there links up.
+        name: "Nike Elite Crew Socks University Red",
+        sku: "LILX-SOC-CREW-RED",
+        tile: "light",
+        priceEUR: 18,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-university-red.webp",
+        lead: "Black with a red edge.",
+        description: "The Nike Elite crew in black and University Red: red stripes down the back and a red heel.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["34 - 38", "38 - 42", "42 - 46"],
+        unavailable: ["34 - 38", "38 - 42"]
+    },
+    {
+        name: "Wilson EVO NXT BAL Official Game Ball",
+        sku: "LILX-BAL-EVO-NXT",
+        tile: "light",
+        priceEUR: 80,
+        status: "available",
+        category: "balls",
+        image: "assets/images/products/wilson-evo-nxt/wilson-evo-nxt-01.webp",
+        images: [
+            "assets/images/products/wilson-evo-nxt/wilson-evo-nxt-01.webp",
+            "assets/images/products/wilson-evo-nxt/wilson-evo-nxt-02.webp",
+            "assets/images/products/wilson-evo-nxt/wilson-evo-nxt-03.webp",
+            "assets/images/products/wilson-evo-nxt/wilson-evo-nxt-04.webp"
+        ],
+        lead: "Africa's game ball.",
+        description: "Wilson's EVO NXT, the official game ball of the Basketball Africa League. Official size 7.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["7"]
+    },
+    {
         // Named and coded as in Matrix: its two "Nba Nike-Pro Combat
         // Compression Tank" records are told apart by colour tag, and these
         // SKUs are theirs, so an order lands on the right stock.
