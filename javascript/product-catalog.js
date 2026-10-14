@@ -32,11 +32,11 @@ const products = [
         priceEUR: 20,
         status: "available",
         category: "socks",
-        image: "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-side.webp",
+        image: "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-back.webp",
         images: [
+            "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-back.webp",
             "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-side.webp",
-            "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-front.webp",
-            "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-back.webp"
+            "assets/images/products/city-edition-socks/brooklyn-nets-city-edition-front.webp"
         ],
         lead: "Brooklyn, on your feet.",
         description: "Nike's Brooklyn Nets City Edition Elite crew: black, with the City Edition art down the side and BROOKLYN inside the cuff.",
@@ -51,11 +51,11 @@ const products = [
         priceEUR: 18,
         status: "available",
         category: "socks",
-        image: "assets/images/products/city-edition-socks/miami-heat-city-edition-side.webp",
+        image: "assets/images/products/city-edition-socks/miami-heat-city-edition-back.webp",
         images: [
+            "assets/images/products/city-edition-socks/miami-heat-city-edition-back.webp",
             "assets/images/products/city-edition-socks/miami-heat-city-edition-side.webp",
-            "assets/images/products/city-edition-socks/miami-heat-city-edition-front.webp",
-            "assets/images/products/city-edition-socks/miami-heat-city-edition-back.webp"
+            "assets/images/products/city-edition-socks/miami-heat-city-edition-front.webp"
         ],
         lead: "Black, pink and blue.",
         description: "The Miami Heat 2020 City Edition Elite crew: black, with a pink-to-blue fade down the side and MIAMI at the cuff.",
@@ -69,7 +69,7 @@ const products = [
         name: "Nike Elite Crew Socks University Red",
         sku: "LILX-SOC-CREW-RED",
         tile: "light",
-        priceEUR: 18,
+        priceEUR: 22,
         status: "available",
         category: "socks",
         image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-university-red.webp",
