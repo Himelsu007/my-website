@@ -4,7 +4,7 @@ const events = [
                                     
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date:  "September 24th",
+        date:  "October 24th",
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",    
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
