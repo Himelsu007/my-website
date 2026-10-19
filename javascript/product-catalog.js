@@ -89,6 +89,37 @@ const products = [
         unavailable: ["S", "L"]
     },
     {
+        // Named as in Matrix's inventory, so orders link to that stock.
+        name: "Nike Nba Elite Crew Socks Pink",
+        sku: "LILX-GEN-CREW-PNK",
+        tile: "light",
+        priceEUR: 20,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink.webp",
+        lead: "Pink, locked in.",
+        description: "The Nike NBA Elite crew in pink, with white stripes down the back and a white heel.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["34 - 38", "38 - 42", "42 - 46"],
+        unavailable: ["34 - 38", "38 - 42"]
+    },
+    {
+        // Matrix has no SKU on this one yet; this follows its pattern, and the
+        // name matches Matrix exactly so orders still link to the stock.
+        name: "Nike Nba Elite Crew Socks - Light Blue",
+        sku: "LILX-GEN-CREW-LBL",
+        tile: "light",
+        priceEUR: 20,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue.webp",
+        lead: "Light blue, same lockdown.",
+        description: "The Nike NBA Elite crew in light blue, with white stripes down the back and a white heel.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["34 - 38", "38 - 42", "42 - 46"],
+        unavailable: ["34 - 38", "38 - 42"]
+    },
+    {
         // Named and coded as in Matrix, so orders land on that stock.
         name: "Nike Brooklyn Nets City Edition",
         sku: "LILX-SOC-CREW-FADE",
