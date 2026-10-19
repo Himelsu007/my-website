@@ -97,6 +97,10 @@ const products = [
         status: "available",
         category: "socks",
         image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink.webp",
+        images: [
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink.webp",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink-side.webp"
+        ],
         lead: "Pink, locked in.",
         description: "The Nike NBA Elite crew in pink, with white stripes down the back and a white heel.",
         optionTitle: "<strong>Size</strong>",
@@ -113,6 +117,10 @@ const products = [
         status: "available",
         category: "socks",
         image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue.webp",
+        images: [
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue.webp",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue-side.webp"
+        ],
         lead: "Light blue, same lockdown.",
         description: "The Nike NBA Elite crew in light blue, with white stripes down the back and a white heel.",
         optionTitle: "<strong>Size</strong>",
