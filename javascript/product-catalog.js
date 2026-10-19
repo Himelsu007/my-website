@@ -245,24 +245,6 @@ const products = [
         options: ["7"]
     },
     {
-        name: "Regular Elite Crew Socks #Black",
-        sku: "LILX-REGULAR-ELITE-CREW-SOCKS-BLACK",
-        tile: "light",
-        priceEUR: 18,
-        status: "available",
-        category: "socks",
-        image: "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks.webp",
-        images: [
-            "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks02.webp",
-            "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks03.webp",
-            "assets/images/products/nba-elite-crew-socks/regular-nike-elite-socks-04.webp"
-        ],
-        lead: "Locked in from the ground up.",
-        description: "A snug black crew that stays put through every cut, closeout and sprint back on defence. No slipping, no stopping to pull them up — just your game. Sizes 34 to 46.",
-        optionTitle: "<strong>Size</strong>",
-        options: ["34 - 38", "38 - 42", "42 - 46"]
-    },
-    {
         name: "Nba Nike Headband",
         sku: "LILX-NBA-NIKE-HEADBAND",
         tile: "light",
