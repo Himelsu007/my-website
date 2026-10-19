@@ -120,6 +120,49 @@ const products = [
         unavailable: ["34 - 38", "38 - 42"]
     },
     {
+        // Named and coded as in Matrix's inventory. This and the white pair
+        // used to be one listing, "Nba Elite Crew Socks", with a colour
+        // choice; `replaces` lets order links sent before the split still
+        // find the right pair by the colour that was ordered.
+        name: "Nike NBA Elite Crew Socks",
+        sku: "LILX-NBA-ELITE-CREW-SOCKS",
+        replaces: { name: "Nba Elite Crew Socks", colorIndex: 0 },
+        tile: "light",
+        priceEUR: 19,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black-heel.webp",
+        images: [
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black-heel.webp",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
+            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.webp",
+            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp"
+        ],
+        lead: "The classic, in black.",
+        description: "The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. Black, with white stripes down the back.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["38 - 41", "42 - 45", "46 - 49"]
+    },
+    {
+        name: "Nike NBA Elite Crew Socks White",
+        sku: "LILX-NBA-ELITE-CREW-SOCKS-SW",
+        replaces: { name: "Nba Elite Crew Socks", colorIndex: 1 },
+        tile: "light",
+        priceEUR: 19,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp",
+        images: [
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp",
+            "assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp"
+        ],
+        lead: "The classic, in white.",
+        description: "The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with black stripes down the back.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["38 - 41", "42 - 45", "46 - 49"],
+        unavailable: ["38 - 41", "46 - 49"]
+    },
+    {
         // Named and coded as in Matrix, so orders land on that stock.
         name: "Nike Brooklyn Nets City Edition",
         sku: "LILX-SOC-CREW-FADE",
@@ -302,36 +345,6 @@ const products = [
         options: ["1", "2", "3", "4"]
     },
     {
-        name: "Nba Elite Crew Socks",
-        sku: "LILX-NBA-ELITE-CREW-SOCKS",
-        // Colours: add or remove a string and the pills, the WhatsApp order and
-        // the bag all follow. Nothing else to change.
-        colors: ["Black", "White"],
-        // A colour with its own photo: picking it brings that photo to the
-        // front of the gallery, and the bag and order slip show it. The photo
-        // must also be in `images`.
-        colorImages: {
-            Black: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
-            White: "assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp"
-        },
-        tile: "light",
-        priceEUR: 19,
-        status: "available",
-        category: "socks",
-        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
-        images: [
-            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp",
-            "assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp",
-            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.webp",
-            "assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp",
-            "assets/images/ben-simons-bg.avif"
-        ],
-        lead: "Black or white, locked in.",
-        description: "The NBA Elite crew locks in from the first step and stays put until the final bucket — no slipping, no distractions. Sizes 38 to 49.",
-        optionTitle: "<strong>Size</strong>",
-        options: ["38 - 41", "42 - 45", "46 - 49"]
-    },
-    {
         name: "Nba Nike Elite Shooting Sleeve (Black)",
         sku: "LILX-NBA-NIKE-ELITE-SHOOTING-SLEEVE-BLACK",
         tile: "light",
@@ -373,9 +386,17 @@ function lxProductCode(name) {
     return ("000" + (h % 1679616).toString(36)).slice(-4);   // 36^4
 }
 
-function lxFindProductByCode(code) {
+function lxFindProductByCode(code, colorIndex) {
     for (var i = 0; i < products.length; i++) {
         if (lxProductCode(products[i].name) === code) return products[i];
+    }
+    // A product that took over from an older listing (one colour of a former
+    // two-colour product) still answers to the old code, so order links sent
+    // before the change keep resolving to the pair that was ordered.
+    for (var j = 0; j < products.length; j++) {
+        var r = products[j].replaces;
+        if (r && lxProductCode(r.name) === code &&
+            (r.colorIndex == null || colorIndex == null || r.colorIndex === colorIndex)) return products[j];
     }
     return null;
 }
