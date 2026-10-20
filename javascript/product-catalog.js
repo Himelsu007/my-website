@@ -168,7 +168,7 @@ const products = [
         image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp",
         images: [
             "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp",
-            "assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp"
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pack.webp"
         ],
         lead: "The classic, in white.",
         description: "The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with black stripes down the back.",
