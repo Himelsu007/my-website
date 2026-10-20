@@ -39,7 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 4. Highlight the current page in the menu
-    const path = window.location.pathname.split('/').pop() || 'index.html';
+    // A product's page (/store/<slug>/) belongs to the shop.
+    const path = window.location.pathname.startsWith('/store/') ? 'merch.html'
+        : window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('#side-menu .nav-link[data-page]').forEach(link => {
         if (link.getAttribute('data-page') === path) {
             link.classList.add('active');

@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Written by tools/build-store.mjs from javascript/product-catalog.js. Edit the catalogue, not this file. -->
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+    <title>Locked In Lx Store</title>
+    <link>https://www.lockedinlx.com/merch.html</link>
+    <description>Basketball socks, balls and gear from Locked In Lx, Lisbon.</description>
+    <item>
+        <g:id>SLA-S</g:id>
+        <g:item_group_id>SLA</g:item_group_id>
+        <g:title>Nba Nike-Pro Combat Compression Tank (Black) – Size S</g:title>
+        <g:description>Our best seller. Sleeveless, second skin. The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-black/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp</g:image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>S</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>SLA-M</g:id>
+        <g:item_group_id>SLA</g:item_group_id>
+        <g:title>Nba Nike-Pro Combat Compression Tank (Black) – Size M</g:title>
+        <g:description>Our best seller. Sleeveless, second skin. The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-black/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp</g:image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>M</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>SLA-L</g:id>
+        <g:item_group_id>SLA</g:item_group_id>
+        <g:title>Nba Nike-Pro Combat Compression Tank (Black) – Size L</g:title>
+        <g:description>Our best seller. Sleeveless, second skin. The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-black/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp</g:image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>L</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>AU09282-S</g:id>
+        <g:item_group_id>AU09282</g:item_group_id>
+        <g:title>Nba Nike-Pro Combat Compression Tank (White) – Size S</g:title>
+        <g:description>The tank, in white. The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp</g:image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>S</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>AU09282-M</g:id>
+        <g:item_group_id>AU09282</g:item_group_id>
+        <g:title>Nba Nike-Pro Combat Compression Tank (White) – Size M</g:title>
+        <g:description>The tank, in white. The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp</g:image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>M</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>AU09282-L</g:id>
+        <g:item_group_id>AU09282</g:item_group_id>
+        <g:title>Nba Nike-Pro Combat Compression Tank (White) – Size L</g:title>
+        <g:description>The tank, in white. The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp</g:image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>L</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-TOP-CMP-SS-BLK-S</g:id>
+        <g:item_group_id>LILX-TOP-CMP-SS-BLK</g:item_group_id>
+        <g:title>Nike Nba Compression Short Sleeves (Black) – Size S</g:title>
+        <g:description>The base layer, in black. The Nike Pro NBA compression tee: Dri-FIT, light and tight to the body, made to be worn alone or under your jersey.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-black/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp</g:image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>S</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-TOP-CMP-SS-BLK-M</g:id>
+        <g:item_group_id>LILX-TOP-CMP-SS-BLK</g:item_group_id>
+        <g:title>Nike Nba Compression Short Sleeves (Black) – Size M</g:title>
+        <g:description>The base layer, in black. The Nike Pro NBA compression tee: Dri-FIT, light and tight to the body, made to be worn alone or under your jersey.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-black/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp</g:image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>M</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-TOP-CMP-SS-BLK-L</g:id>
+        <g:item_group_id>LILX-TOP-CMP-SS-BLK</g:item_group_id>
+        <g:title>Nike Nba Compression Short Sleeves (Black) – Size L</g:title>
+        <g:description>The base layer, in black. The Nike Pro NBA compression tee: Dri-FIT, light and tight to the body, made to be worn alone or under your jersey.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-black/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp</g:image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>L</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-TOP-CMP-SS-S</g:id>
+        <g:item_group_id>LILX-TOP-CMP-SS</g:item_group_id>
+        <g:title>Nike Nba Compression Short Sleeves (White) – Size S</g:title>
+        <g:description>The base layer, in white. The Nike Pro NBA compression tee in white: Dri-FIT, light and tight to the body, so it stays out of your way from warm-up to the last run.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-white.webp</g:image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>S</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-TOP-CMP-SS-M</g:id>
+        <g:item_group_id>LILX-TOP-CMP-SS</g:item_group_id>
+        <g:title>Nike Nba Compression Short Sleeves (White) – Size M</g:title>
+        <g:description>The base layer, in white. The Nike Pro NBA compression tee in white: Dri-FIT, light and tight to the body, so it stays out of your way from warm-up to the last run.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-white.webp</g:image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>M</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-TOP-CMP-SS-L</g:id>
+        <g:item_group_id>LILX-TOP-CMP-SS</g:item_group_id>
+        <g:title>Nike Nba Compression Short Sleeves (White) – Size L</g:title>
+        <g:description>The base layer, in white. The Nike Pro NBA compression tee in white: Dri-FIT, light and tight to the body, so it stays out of your way from warm-up to the last run.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-white.webp</g:image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>L</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-GEN-CREW-PNK-34-38</g:id>
+        <g:item_group_id>LILX-GEN-CREW-PNK</g:item_group_id>
+        <g:title>Nike Nba Elite Crew Socks Pink – Size 34 - 38</g:title>
+        <g:description>Pink, locked in. The Nike NBA Elite crew in pink, with white stripes down the back and a white heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-pink/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink-side.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>34 - 38</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-GEN-CREW-PNK-38-42</g:id>
+        <g:item_group_id>LILX-GEN-CREW-PNK</g:item_group_id>
+        <g:title>Nike Nba Elite Crew Socks Pink – Size 38 - 42</g:title>
+        <g:description>Pink, locked in. The Nike NBA Elite crew in pink, with white stripes down the back and a white heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-pink/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink-side.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>38 - 42</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-GEN-CREW-PNK-42-46</g:id>
+        <g:item_group_id>LILX-GEN-CREW-PNK</g:item_group_id>
+        <g:title>Nike Nba Elite Crew Socks Pink – Size 42 - 46</g:title>
+        <g:description>Pink, locked in. The Nike NBA Elite crew in pink, with white stripes down the back and a white heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-pink/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink-side.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>42 - 46</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-GEN-CREW-LBL-34-38</g:id>
+        <g:item_group_id>LILX-GEN-CREW-LBL</g:item_group_id>
+        <g:title>Nike Nba Elite Crew Socks - Light Blue – Size 34 - 38</g:title>
+        <g:description>Light blue, same lockdown. The Nike NBA Elite crew in light blue, with white stripes down the back and a white heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-light-blue/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue-side.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>34 - 38</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-GEN-CREW-LBL-38-42</g:id>
+        <g:item_group_id>LILX-GEN-CREW-LBL</g:item_group_id>
+        <g:title>Nike Nba Elite Crew Socks - Light Blue – Size 38 - 42</g:title>
+        <g:description>Light blue, same lockdown. The Nike NBA Elite crew in light blue, with white stripes down the back and a white heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-light-blue/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue-side.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>38 - 42</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-GEN-CREW-LBL-42-46</g:id>
+        <g:item_group_id>LILX-GEN-CREW-LBL</g:item_group_id>
+        <g:title>Nike Nba Elite Crew Socks - Light Blue – Size 42 - 46</g:title>
+        <g:description>Light blue, same lockdown. The Nike NBA Elite crew in light blue, with white stripes down the back and a white heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-light-blue/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-light-blue-side.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>42 - 46</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-NBA-ELITE-CREW-SOCKS-38-41</g:id>
+        <g:item_group_id>LILX-NBA-ELITE-CREW-SOCKS</g:item_group_id>
+        <g:title>Nike NBA Elite Crew Socks – Size 38 - 41</g:title>
+        <g:description>The classic, in black. The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. Black, with white stripes down the back.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-black-heel.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>19.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>38 - 41</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-NBA-ELITE-CREW-SOCKS-42-45</g:id>
+        <g:item_group_id>LILX-NBA-ELITE-CREW-SOCKS</g:item_group_id>
+        <g:title>Nike NBA Elite Crew Socks – Size 42 - 45</g:title>
+        <g:description>The classic, in black. The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. Black, with white stripes down the back.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-black-heel.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>19.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>42 - 45</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-NBA-ELITE-CREW-SOCKS-46-49</g:id>
+        <g:item_group_id>LILX-NBA-ELITE-CREW-SOCKS</g:item_group_id>
+        <g:title>Nike NBA Elite Crew Socks – Size 46 - 49</g:title>
+        <g:description>The classic, in black. The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. Black, with white stripes down the back.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-black-heel.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-black.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew0001.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew0003.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>19.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>46 - 49</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-NBA-ELITE-CREW-SOCKS-SW-38-41</g:id>
+        <g:item_group_id>LILX-NBA-ELITE-CREW-SOCKS-SW</g:item_group_id>
+        <g:title>Nike NBA Elite Crew Socks White – Size 38 - 41</g:title>
+        <g:description>The classic, in white. The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with black stripes down the back.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>19.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>38 - 41</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-NBA-ELITE-CREW-SOCKS-SW-42-45</g:id>
+        <g:item_group_id>LILX-NBA-ELITE-CREW-SOCKS-SW</g:item_group_id>
+        <g:title>Nike NBA Elite Crew Socks White – Size 42 - 45</g:title>
+        <g:description>The classic, in white. The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with black stripes down the back.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>19.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>42 - 45</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-NBA-ELITE-CREW-SOCKS-SW-46-49</g:id>
+        <g:item_group_id>LILX-NBA-ELITE-CREW-SOCKS-SW</g:item_group_id>
+        <g:title>Nike NBA Elite Crew Socks White – Size 46 - 49</g:title>
+        <g:description>The classic, in white. The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with black stripes down the back.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-nba-elite-crew-socks-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>19.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>46 - 49</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-FADE-34-38</g:id>
+        <g:item_group_id>LILX-SOC-CREW-FADE</g:item_group_id>
+        <g:title>Nike Brooklyn Nets City Edition – Size 34 - 38</g:title>
+        <g:description>Brooklyn, on your feet. Nike&apos;s Brooklyn Nets City Edition Elite crew: black, with the City Edition art down the side and BROOKLYN inside the cuff.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-brooklyn-nets-city-edition/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-back.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-side.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-front.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>34 - 38</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-FADE-38-42</g:id>
+        <g:item_group_id>LILX-SOC-CREW-FADE</g:item_group_id>
+        <g:title>Nike Brooklyn Nets City Edition – Size 38 - 42</g:title>
+        <g:description>Brooklyn, on your feet. Nike&apos;s Brooklyn Nets City Edition Elite crew: black, with the City Edition art down the side and BROOKLYN inside the cuff.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-brooklyn-nets-city-edition/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-back.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-side.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-front.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>38 - 42</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-FADE-42-46</g:id>
+        <g:item_group_id>LILX-SOC-CREW-FADE</g:item_group_id>
+        <g:title>Nike Brooklyn Nets City Edition – Size 42 - 46</g:title>
+        <g:description>Brooklyn, on your feet. Nike&apos;s Brooklyn Nets City Edition Elite crew: black, with the City Edition art down the side and BROOKLYN inside the cuff.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-brooklyn-nets-city-edition/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-back.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-side.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-front.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>20.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>42 - 46</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-BLU-34-38</g:id>
+        <g:item_group_id>LILX-SOC-CREW-BLU</g:item_group_id>
+        <g:title>Miami Heat Nike Black-Pink 2020 City Edition – Size 34 - 38</g:title>
+        <g:description>Black, pink and blue. The Miami Heat 2020 City Edition Elite crew: black, with a pink-to-blue fade down the side and MIAMI at the cuff.</g:description>
+        <g:link>https://www.lockedinlx.com/store/miami-heat-nike-black-pink-2020-city-edition/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-back.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-side.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-front.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>18.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>34 - 38</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-BLU-38-42</g:id>
+        <g:item_group_id>LILX-SOC-CREW-BLU</g:item_group_id>
+        <g:title>Miami Heat Nike Black-Pink 2020 City Edition – Size 38 - 42</g:title>
+        <g:description>Black, pink and blue. The Miami Heat 2020 City Edition Elite crew: black, with a pink-to-blue fade down the side and MIAMI at the cuff.</g:description>
+        <g:link>https://www.lockedinlx.com/store/miami-heat-nike-black-pink-2020-city-edition/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-back.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-side.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-front.webp</g:additional_image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>18.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>38 - 42</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-BLU-42-46</g:id>
+        <g:item_group_id>LILX-SOC-CREW-BLU</g:item_group_id>
+        <g:title>Miami Heat Nike Black-Pink 2020 City Edition – Size 42 - 46</g:title>
+        <g:description>Black, pink and blue. The Miami Heat 2020 City Edition Elite crew: black, with a pink-to-blue fade down the side and MIAMI at the cuff.</g:description>
+        <g:link>https://www.lockedinlx.com/store/miami-heat-nike-black-pink-2020-city-edition/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-back.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-side.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/city-edition-socks/miami-heat-city-edition-front.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>18.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>42 - 46</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-RED-34-38</g:id>
+        <g:item_group_id>LILX-SOC-CREW-RED</g:item_group_id>
+        <g:title>Nike Elite Crew Socks University Red – Size 34 - 38</g:title>
+        <g:description>Black with a red edge. The Nike Elite crew in black and University Red: red stripes down the back and a red heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-elite-crew-socks-university-red/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-university-red.webp</g:image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>22.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>34 - 38</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-RED-38-42</g:id>
+        <g:item_group_id>LILX-SOC-CREW-RED</g:item_group_id>
+        <g:title>Nike Elite Crew Socks University Red – Size 38 - 42</g:title>
+        <g:description>Black with a red edge. The Nike Elite crew in black and University Red: red stripes down the back and a red heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-elite-crew-socks-university-red/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-university-red.webp</g:image_link>
+        <g:availability>out_of_stock</g:availability>
+        <g:price>22.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>38 - 42</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-SOC-CREW-RED-42-46</g:id>
+        <g:item_group_id>LILX-SOC-CREW-RED</g:item_group_id>
+        <g:title>Nike Elite Crew Socks University Red – Size 42 - 46</g:title>
+        <g:description>Black with a red edge. The Nike Elite crew in black and University Red: red stripes down the back and a red heel.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nike-elite-crew-socks-university-red/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-university-red.webp</g:image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>22.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Socks</g:product_type>
+        <g:size>42 - 46</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-BAL-EVO-NXT-7</g:id>
+        <g:item_group_id>LILX-BAL-EVO-NXT</g:item_group_id>
+        <g:title>Wilson EVO NXT BAL Official Game Ball – Size 7</g:title>
+        <g:description>Africa&apos;s game ball. Wilson&apos;s EVO NXT, the official game ball of the Basketball Africa League. Official size 7.</g:description>
+        <g:link>https://www.lockedinlx.com/store/wilson-evo-nxt-bal-official-game-ball/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/wilson-evo-nxt/wilson-evo-nxt-01.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-evo-nxt/wilson-evo-nxt-02.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-evo-nxt/wilson-evo-nxt-03.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-evo-nxt/wilson-evo-nxt-04.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>120.00 EUR</g:price>
+        <g:brand>Wilson</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Basketballs</g:product_type>
+        <g:size>7</g:size>
+    </item>
+    <item>
+        <g:id>LILX-NBA-NIKE-HEADBAND</g:id>
+        <g:title>Nba Nike Headband</g:title>
+        <g:description>Eyes on the rim, not the sweat. Nike&apos;s NBA headband catches sweat before it reaches your eyes, so nothing breaks your focus from warm-up to the last game of the night.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-headband/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-nba-dri-fit-fury-classic-headband-black.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-nike-headband-bg-02.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-nike-headband-bg.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-nike-headband-bg-03.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-nike-headband-bg-04.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>30.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Accessories</g:product_type>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-NBA-NIKE-WRISTBANDS</g:id>
+        <g:title>Nba Nike Wristbands</g:title>
+        <g:description>Dry hands on every catch. Double-wide terry soaks up sweat before it runs into your hands, so the ball feels the same on your last shot as on your first. Sold as a pair.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-wristbands/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-wristband/nba-wristband.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nba-wristband/nba-wristband-worn.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>35.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Accessories</g:product_type>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-WILSON-ALLIANCE-SERIES-PLATINUM-7</g:id>
+        <g:item_group_id>LILX-WILSON-ALLIANCE-SERIES-PLATINUM</g:item_group_id>
+        <g:title>Wilson Alliance Series Platinum – Size 7</g:title>
+        <g:description>Made to be signed. The platinum edition of Wilson&apos;s Alliance Series, built to let autographs shine. Get it signed, give it a spot on the shelf, keep the moment. Official size 7.</g:description>
+        <g:link>https://www.lockedinlx.com/store/wilson-alliance-series-platinum/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/wilson-silver/wilson-official-ball-silver.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-silver/wilson-silver0002.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-silver/wilson-silver0001.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-silver/wilson-silver0003.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>80.00 EUR</g:price>
+        <g:brand>Wilson</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Basketballs</g:product_type>
+        <g:size>7</g:size>
+    </item>
+    <item>
+        <g:id>LILX-WILSON-NBA-AUTHENTIC-SERIES-INDOOR-7</g:id>
+        <g:item_group_id>LILX-WILSON-NBA-AUTHENTIC-SERIES-INDOOR</g:item_group_id>
+        <g:title>Wilson NBA Authentic Series Indoor – Size 7</g:title>
+        <g:description>Built for the hardwood. Wilson&apos;s NBA Authentic Series, made for indoor courts. Official size 7 — the ball to bring when the run is inside.</g:description>
+        <g:link>https://www.lockedinlx.com/store/wilson-nba-authentic-series-indoor/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/wilson-orange/wilson-official-ball.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-orange/wilson-orange0002.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-orange/wilson-orange0001.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/wilson-orange/wilson-orange0003.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Wilson</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Basketballs</g:product_type>
+        <g:size>7</g:size>
+    </item>
+    <item>
+        <g:id>LILX-NBA-NIKE-ELITE-SHOOTING-SLEEVE-WHITE</g:id>
+        <g:title>Nba Nike Elite Shooting Sleeve (White)</g:title>
+        <g:description>Same release, every quarter. Compression that keeps your shooting arm warm and supported, so your release feels in the fourth quarter the way it did in warm-ups. In clean white.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-elite-shooting-sleeve-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nba-shooting-sleeve.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/white-shooting-sleeve-bg.avif</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>35.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Accessories</g:product_type>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>LILX-NBA-NIKE-ELITE-SHOOTING-SLEEVE-BLACK</g:id>
+        <g:title>Nba Nike Elite Shooting Sleeve (Black)</g:title>
+        <g:description>Your shooting arm, locked in. Compression that keeps your arm warm and supported from the first shot of the night to the last. In black.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-elite-shooting-sleeve-black/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/shooting-sleeve-black.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/black-shooting-sleeve-bg.avif</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>35.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Accessories</g:product_type>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+</channel>
+</rss>

@@ -9,11 +9,13 @@
 // PRODUCT LOADER
 // ========================================
 // Builds one card. Shared by the main shelf and the "Back Soon" rail so the
-// two can never drift apart.
+// two can never drift apart. It is a link to the product's own page
+// (store/<slug>/, written by tools/build-store.mjs) so Google can follow it;
+// a plain click opens the sheet here instead.
 function buildProductCard(product) {
     const absoluteIndex = products.indexOf(product);
-    const card = document.createElement("button");
-    card.type = "button";
+    const card = document.createElement("a");
+    card.href = productPath(product);
     card.className = `products_box ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
     card.setAttribute("data-product-index", absoluteIndex);
     card.setAttribute("aria-label", `View details for ${product.name}, ${displayPrice(product)}`);
@@ -143,6 +145,15 @@ function esc(s) {
 function slugify(s) {
     return (s || "").toLowerCase().replace(/[^\w]+/g, "-").replace(/^-|-$/g, "");
 }
+
+// Each product has a page at /store/<slug>/. tools/build-store.mjs uses the
+// same rule, so keep the two in step; a product can pin its own `slug` in the
+// catalogue to keep its address through a rename.
+const productSlug = p => p.slug || slugify(p.name);
+const productPath = p => `/store/${productSlug(p)}/`;
+const productUrl  = p => `${window.location.origin}${productPath(p)}`;
+const productTitle = p => `${p.name} | Locked In Lx Store, Lisbon`;
+let storeTitle = "";
 
 // Parses a price string like "€18" → 18. Returns null for COMING SOON / SOLD OUT.
 function parsePrice(priceStr) {
@@ -281,7 +292,10 @@ function stopAutoSlideshow() {
 // ========================================
 // OPEN / CLOSE MODAL
 // ========================================
-function openProductModal(index, opener) {
+/* opts.initial: the visitor landed on this product's own page — nothing to
+   push, and the name is the page's main heading.
+   opts.fromHistory: Forward brought them back onto the product's entry. */
+function openProductModal(index, opener, opts = {}) {
     const modal = document.getElementById("product_modal");
     const product = products[index];
     if (!modal || !product) return;
@@ -469,7 +483,7 @@ function openProductModal(index, opener) {
 
             <div class="modal_details">
                 <div class="modal_headrow">
-                    <h2 id="${titleId}" class="modal_title">${product.name}</h2>
+                    <${opts.initial ? "h1" : "h2"} id="${titleId}" class="modal_title">${product.name}</${opts.initial ? "h1" : "h2"}>
                     <div class="modal_price">${displayPrice(product)}</div>
                 </div>
                 <div class="modal_meta">
@@ -522,9 +536,19 @@ function openProductModal(index, opener) {
        leave anything — skipped straight past the sheet and out of the store.
        Pushed before the scroll lock, so the entry remembers the real scroll
        position rather than the locked one. */
-    if (!modalHistoryPushed) {
-        try { history.pushState({ lxModal: true }, ""); modalHistoryPushed = true; } catch (e) {}
+    /* The entry carries the product's own address, so the bar shows a link
+       that can be shared or reloaded straight back onto this product. */
+    if (opts.initial) {
+        pageProductOpen = true;
+    } else if (opts.fromHistory) {
+        modalHistoryPushed = true;
+    } else if (!modalHistoryPushed) {
+        try {
+            history.pushState({ lxModal: true, lxSlug: productSlug(product) }, "", productPath(product));
+            modalHistoryPushed = true;
+        } catch (e) {}
     }
+    document.title = productTitle(product);
     /* The skeleton is a loading placeholder, not a backdrop. It was never
        taken away, so it sat behind every photo running its shimmer forever,
        and a transparent cut-out showed it through — the black socks, tagged
@@ -568,6 +592,7 @@ function openProductModal(index, opener) {
 }
 
 let modalHistoryPushed = false;
+let pageProductOpen = false;
 
 /* fromHistory: true when Back closed it, so the entry is already gone. Any
    other way out (×, backdrop, Esc, swipe) has to consume that entry itself,
@@ -579,7 +604,12 @@ function closeProductModal(fromHistory) {
     if (modalHistoryPushed) {
         modalHistoryPushed = false;
         if (fromHistory !== true) { try { history.back(); } catch (e) {} }
+    } else if (pageProductOpen) {
+        // Arrived on the product's page: closing it leaves them in the store.
+        try { history.replaceState(null, "", "/merch.html"); } catch (e) {}
     }
+    pageProductOpen = false;
+    if (storeTitle) document.title = storeTitle;
     // A drag-to-dismiss leaves inline transforms behind; clear them so the
     // next open slides up from the stylesheet's position, not from wherever
     // the finger let go.
@@ -825,6 +855,9 @@ function initModal() {
     const openFromCard = (e) => {
         const card = e.target.closest(".products_box");
         if (!card) return;
+        // Cmd/Ctrl/Shift-click opens the product's page in a new tab or window.
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
         const index = parseInt(card.getAttribute("data-product-index"), 10);
         openProductModal(index, card);
     };
@@ -1015,7 +1048,7 @@ function initModal() {
             const qty = qtyInput ? parseInt(qtyInput.value, 10) : null;
             const productName = modal.querySelector(".modal_title").innerText;
             const productPrice = modal.querySelector(".modal_price").innerText;
-            const url = `${window.location.origin}${window.location.pathname}#${slugify(productName)}`;
+            const url = productUrl(products[Number(modal.dataset.productIndex)]);
 
             let extras = "";
             if (colorPill) extras += ` — Colour: ${colorPill.dataset.color}`;
@@ -1032,7 +1065,7 @@ function initModal() {
         const notifyBtn = e.target.closest("#whatsapp_notify_btn");
         if (notifyBtn) {
             const productName = modal.querySelector(".modal_title").innerText;
-            const url = `${window.location.origin}${window.location.pathname}#${slugify(productName)}`;
+            const url = productUrl(products[Number(modal.dataset.productIndex)]);
             const phoneNumber = "351911861637";
             const textMessage = `Hi! Please notify me when "${productName}" is back in stock.\n\nProduct: ${url}`;
             window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(textMessage)}`, "_blank");
@@ -1058,9 +1091,12 @@ function initModal() {
         }
     });
 
-    window.addEventListener("popstate", () => {
-        if (modal.classList.contains("active")) closeProductModal(true);
-        else modalHistoryPushed = false;
+    window.addEventListener("popstate", (e) => {
+        if (modal.classList.contains("active")) { closeProductModal(true); return; }
+        modalHistoryPushed = false;
+        const slug = e.state && e.state.lxSlug;
+        const index = slug ? products.findIndex(p => productSlug(p) === slug) : -1;
+        if (index >= 0) openProductModal(index, null, { fromHistory: true });
     });
 
     // Global keys
@@ -1090,9 +1126,17 @@ function initModal() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    storeTitle = document.body.dataset.storeTitle || document.title;
     loadProducts("all");
     initFilterBar();
     initModal();
+    // On a product's own page (store/<slug>/) its sheet is open from the start.
+    const pageSlug = document.body.dataset.productSlug;
+    if (pageSlug) {
+        const index = products.findIndex(p => productSlug(p) === pageSlug);
+        if (index >= 0) openProductModal(index, null, { initial: true });
+        else try { history.replaceState(null, "", "/merch.html"); } catch (e) {}
+    }
     // Preload secondary images after a short delay so it doesn't compete with the LCP
     initPreloadOnIntent();
 });

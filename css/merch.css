@@ -1674,6 +1674,8 @@ PRODUCT CARD (button-based for a11y)
     cursor: pointer;
     font-family: inherit;
     color: inherit;
+    text-decoration: none;  /* a link to the product's page since the SEO build */
+    -webkit-tap-highlight-color: transparent;
     transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1),
                 border-color 0.3s ease,
                 box-shadow 0.3s ease;
@@ -3589,3 +3591,42 @@ body:has(#product_modal.active) #lx_bag_pill {
     border-radius: 5px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), inset 0 -1px 0 rgba(0, 0, 0, 0.08);
 }
+
+/* ===============================
+   SEARCH-ENGINE SIDE (tools/build-store.mjs)
+   The store's heading is for screen readers and crawlers; the page already
+   says "store" without it. A product page (store/<slug>/) carries its
+   product as plain HTML for Google and for anyone without JavaScript; with
+   JavaScript the sheet opens over the shelf instead and this stays hidden.
+=============================== */
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.lx-js .pp-static { display: none; }
+
+.pp-static {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 104px 16px 48px;
+    color: #E4E4E7;
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.55;
+}
+.pp-static a { color: #FFD700; }
+.pp-crumbs { font-size: 13px; color: #A1A1AA; }
+.pp-static h1 { font-size: 2rem; line-height: 1.15; margin: 12px 0 6px; color: #fff; }
+.pp-price { font-size: 1.4rem; color: #FFD700; margin: 0 0 20px; }
+.pp-price span { font-size: 0.9rem; color: #A1A1AA; margin-left: 8px; }
+.pp-photos { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 20px; }
+.pp-photos img { width: 280px; max-width: 80vw; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 14px; flex: none; }
+.pp-lead { font-weight: 600; color: #fff; }
+.pp-facts { padding-left: 18px; color: #A1A1AA; }
+.pp-actions { display: flex; gap: 20px; align-items: center; margin-top: 24px; }
+.pp-order { background: #FFD700; color: #000 !important; padding: 12px 20px; border-radius: 12px; font-weight: 600; text-decoration: none; }

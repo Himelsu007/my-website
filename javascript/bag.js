@@ -579,8 +579,9 @@
         var sum   = items.reduce(function (s, i) { return s + (i.price || 0) * i.qty; }, 0);
         var codes = items.map(encodeItem);
 
-        var base = window.location.origin +
-                   window.location.pathname.replace(/[^/]*$/, "") + "order.html";
+        // Resolved against the page's base, so it is /order.html from the
+        // store and from a product's page under /store/ alike.
+        var base = new URL("order.html", document.baseURI).href;
 
         var f = readF();
 

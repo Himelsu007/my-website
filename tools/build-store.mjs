@@ -48,6 +48,8 @@ const abs = src => (/^https?:/.test(src) ? src : `${ORIGIN}/${String(src).replac
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const text = s => String(s || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+// For values read back out of merch.html's own markup.
+const unescape = s => String(s).replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
 const euros = v => `${Number.isInteger(v) ? v : v.toFixed(2)}€`;
 const skuOf = p => p.sku || `LILX-${slugify(p.name).toUpperCase().slice(0, 40)}`;
 const hasPrice = p => p.priceEUR != null;
@@ -173,7 +175,7 @@ merch = swap(merch, /<!-- lx:store-ld -->[\s\S]*?<!-- \/lx:store-ld -->/, ldScri
         "@id": `${STORE_URL}#webpage`,
         name: "Locked In Lx Store",
         url: STORE_URL,
-        description: text(merch.match(/<meta name="description" content="([^"]*)">/)[1]),
+        description: unescape(merch.match(/<meta name="description" content="([^"]*)">/)[1]),
         breadcrumb: crumbs(["Home", `${ORIGIN}/`], ["Store", STORE_URL]),
         mainEntity: {
             "@type": "ItemList",
@@ -187,7 +189,7 @@ const merchChanged = merch.replace(/\?v=\d+/g, "") !== read("merch.html").replac
 write("merch.html", merch);
 
 // ---- store/<slug>/index.html ----
-const storeTitle = merch.match(/<title>([^<]*)<\/title>/)[1].trim();
+const storeTitle = unescape(merch.match(/<title>([^<]*)<\/title>/)[1].trim());
 
 function staticProduct(p) {
     const url = pageUrl(p);

@@ -18,3 +18,11 @@ for p in glob.glob('*.html'):
         open(p, 'w', encoding='utf-8').write(s)
 print('assets version ->', ver)
 PY
+
+# Product pages, sitemap and Merchant feed are built from the catalogue (and
+# copy merch.html's fresh stamps), so they follow every bump.
+if command -v node >/dev/null 2>&1; then
+    node tools/build-store.mjs || exit 1
+else
+    echo "node not found: store pages, sitemap and feed NOT rebuilt" >&2
+fi
