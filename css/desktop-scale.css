@@ -15,6 +15,12 @@
    under store/) runs one Cmd+plus step larger, at 100%: its
    cards, prices and product sheet read better full size. Its
    header stays at 90%, like the rest of the site.
+
+   Laptops get one more Cmd+minus step: 80% for the site, 90%
+   for the store. "Laptop" = up to 1799px wide (every MacBook
+   at its default scaling) with a mouse or trackpad, so big
+   monitors and iPads keep the sizes above.
+
    Every vh/vw correction divides by --lx-zoom, so it follows
    whichever scale the page has.
 
@@ -39,6 +45,22 @@
     html.lx-store #main-header{
         zoom:0.9;
     }
+}
+
+@media (min-width: 1024px) and (max-width: 1799px) and (hover: hover) and (pointer: fine){
+    html{
+        --lx-zoom:0.8;
+    }
+    html.lx-store{
+        --lx-zoom:0.9;
+    }
+    /* 0.9 x 0.8889 = 0.8: the same header as the rest of the site. */
+    html.lx-store #main-header{
+        zoom:0.8889;
+    }
+}
+
+@media (min-width: 1024px){
 
     /* ---- vh correction ----
        Viewport units are resolved against the real viewport and only then
