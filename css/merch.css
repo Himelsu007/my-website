@@ -483,13 +483,21 @@ FEATURED PRODUCT
     opacity: 0;
     pointer-events: none;
     cursor: pointer;
-    transition: opacity 0.3s ease;
+    /* Closed, it is hidden outright, not just transparent: iOS Safari reads
+       the colour of full-screen fixed layers and paints it behind its
+       address bar and status bar, so an invisible black overlay showed up
+       as black bands at the top and bottom of the store. Hidden only once
+       the sheet has finished sliding out (0.52s). */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.55s;
     z-index: 9999;
 }
 
 #product_modal.active {
     opacity: 1;
     pointer-events: auto;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s;
 }
 
 /* ========================================
@@ -1135,13 +1143,17 @@ FEATURED PRODUCT
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    /* Hidden outright when closed, like the product sheet above. */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
     z-index: 10001;
     cursor: zoom-out;
 }
 .lightbox.visible {
     opacity: 1;
     pointer-events: auto;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s;
 }
 .lightbox_img {
     max-width: 92vw;
