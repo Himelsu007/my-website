@@ -165,9 +165,9 @@ const products = [
         priceEUR: 19,
         status: "available",
         category: "socks",
-        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp",
         images: [
-            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp",
             "assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp"
         ],
         lead: "The classic, in white.",

@@ -13,7 +13,8 @@
 
    The store (html.lx-store: merch.html and the product pages
    under store/) runs one Cmd+plus step larger, at 100%: its
-   cards, prices and product sheet read better full size.
+   cards, prices and product sheet read better full size. Its
+   header stays at 90%, like the rest of the site.
    Every vh/vw correction divides by --lx-zoom, so it follows
    whichever scale the page has.
 
@@ -32,6 +33,11 @@
     }
     html.lx-store{
         --lx-zoom:1;
+    }
+    /* ...but its header stays at the site's 90%, the same bar as on every
+       other page. Percent widths aren't scaled, so it still spans the window. */
+    html.lx-store #main-header{
+        zoom:0.9;
     }
 
     /* ---- vh correction ----

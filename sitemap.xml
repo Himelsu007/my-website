@@ -38,7 +38,7 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
         <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-black-heel.webp</image:loc>
     </image:image>
     <image:image>
-        <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp</image:loc>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp</image:loc>
     </image:image>
     <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/city-edition-socks/brooklyn-nets-city-edition-back.webp</image:loc>
@@ -163,7 +163,7 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-        <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-heel.webp</image:loc>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp</image:loc>
     </image:image>
     <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/nba-elite-crew-socks/nba-elite-crew-socks-white.webp</image:loc>

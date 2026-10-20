@@ -5,7 +5,7 @@ lxApplyStock({
     "SLA": {"M": 1},
     "AU09282": {"S": 0, "M": 1},
     "LILX-TOP-CMP-SS-BLK": {"S": 0, "M": 1, "L": 0},
-    "LILX-TOP-CMP-SS": {"S": 0, "M": 0, "L": 0},
+    "LILX-TOP-CMP-SS": {"S": 0, "M": 1, "L": 0},
     "LILX-GEN-CREW-PNK": {"42 - 46": 1},
     "LILX-GEN-CREW-LBL": {"42 - 46": 1},
     "LILX-NBA-ELITE-CREW-SOCKS": 4,
