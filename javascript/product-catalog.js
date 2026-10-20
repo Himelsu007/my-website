@@ -19,9 +19,16 @@
 //
 // `lead` is the one-line headline over the description in the sheet.
 //
-// `unavailable` lists options that exist but are out right now: they still
-// show, dimmed and unclickable, so a shopper sees the range and what is left.
-// When one option remains it is picked for them.
+// Stock comes from Matrix: product-stock.js (written by tools/sync-stock.mjs)
+// holds what is left of every product, and lxApplyStock below turns it into
+// what can be bought. A size at 0 shows dimmed as "Out of stock", a product
+// at 0 drops to Back Soon until Matrix has it again, and no one can order
+// more than is left. `matrixSku` is the record's SKU in Matrix where it
+// differs from ours; a product Matrix does not have yet can carry its own
+// `stock` here — a number, or { size: count }.
+//
+// `unavailable` (options that exist but are out) is filled in from stock. It
+// is only worth setting by hand on a product with no stock count at all.
 const products = [
     // The shelf shows products in this order: the best-seller row (tanks and
     // tees) first, then the newest arrivals, then the rest.
@@ -31,6 +38,7 @@ const products = [
         // SKUs are theirs, so an order lands on the right stock.
         name: "Nba Nike-Pro Combat Compression Tank (Black)",
         sku: "SLA",
+        matrixSku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TB",
         tile: "light",
         priceEUR: 50,
         status: "available",
@@ -40,12 +48,12 @@ const products = [
         lead: "Our best seller. Sleeveless, second skin.",
         description: "The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.",
         optionTitle: "<strong>Size</strong>",
-        options: ["S", "M", "L"],
-        unavailable: ["S", "XL"]
+        options: ["S", "M", "L"]
     },
     {
         name: "Nba Nike-Pro Combat Compression Tank (White)",
         sku: "AU09282",
+        matrixSku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TW",
         tile: "light",
         priceEUR: 50,
         status: "available",
@@ -54,8 +62,7 @@ const products = [
         lead: "The tank, in white.",
         description: "The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.",
         optionTitle: "<strong>Size</strong>",
-        options: ["S", "M", "L"],
-        unavailable: ["S", "XL"]
+        options: ["S", "M", "L"]
     },
     {
         // Named as in Matrix ("Nike Nba Compression Short Sleeves"). The white
@@ -63,6 +70,7 @@ const products = [
         // black one follows Matrix's LILX-{category}-{item}-{colour} pattern.
         name: "Nike Nba Compression Short Sleeves (Black)",
         sku: "LILX-TOP-CMP-SS-BLK",
+        matrixSku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SB",
         tile: "light",
         priceEUR: 50,
         status: "available",
@@ -71,12 +79,12 @@ const products = [
         lead: "The base layer, in black.",
         description: "The Nike Pro NBA compression tee: Dri-FIT, light and tight to the body, made to be worn alone or under your jersey.",
         optionTitle: "<strong>Size</strong>",
-        options: ["S", "M", "L"],
-        unavailable: ["S", "L"]
+        options: ["S", "M", "L"]
     },
     {
         name: "Nike Nba Compression Short Sleeves (White)",
         sku: "LILX-TOP-CMP-SS",
+        matrixSku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SW",
         tile: "light",
         priceEUR: 50,
         status: "available",
@@ -85,8 +93,7 @@ const products = [
         lead: "The base layer, in white.",
         description: "The Nike Pro NBA compression tee in white: Dri-FIT, light and tight to the body, so it stays out of your way from warm-up to the last run.",
         optionTitle: "<strong>Size</strong>",
-        options: ["S", "M", "L"],
-        unavailable: ["S", "L"]
+        options: ["S", "M", "L"]
     },
     {
         // Named as in Matrix's inventory, so orders link to that stock.
@@ -104,14 +111,14 @@ const products = [
         lead: "Pink, locked in.",
         description: "The Nike NBA Elite crew in pink, with white stripes down the back and a white heel.",
         optionTitle: "<strong>Size</strong>",
-        options: ["34 - 38", "38 - 42", "42 - 46"],
-        unavailable: ["34 - 38", "38 - 42"]
+        options: ["34 - 38", "38 - 42", "42 - 46"]
     },
     {
         // Matrix has no SKU on this one yet; this follows its pattern, and the
         // name matches Matrix exactly so orders still link to the stock.
         name: "Nike Nba Elite Crew Socks - Light Blue",
         sku: "LILX-GEN-CREW-LBL",
+        matrixSku: "LILX-SOC-CREW-BLU-2",
         tile: "light",
         priceEUR: 20,
         status: "available",
@@ -124,8 +131,7 @@ const products = [
         lead: "Light blue, same lockdown.",
         description: "The Nike NBA Elite crew in light blue, with white stripes down the back and a white heel.",
         optionTitle: "<strong>Size</strong>",
-        options: ["34 - 38", "38 - 42", "42 - 46"],
-        unavailable: ["34 - 38", "38 - 42"]
+        options: ["34 - 38", "38 - 42", "42 - 46"]
     },
     {
         // Named and coded as in Matrix's inventory. This and the white pair
@@ -167,8 +173,7 @@ const products = [
         lead: "The classic, in white.",
         description: "The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with black stripes down the back.",
         optionTitle: "<strong>Size</strong>",
-        options: ["38 - 41", "42 - 45", "46 - 49"],
-        unavailable: ["38 - 41", "46 - 49"]
+        options: ["38 - 41", "42 - 45", "46 - 49"]
     },
     {
         // Named and coded as in Matrix, so orders land on that stock.
@@ -187,8 +192,7 @@ const products = [
         lead: "Brooklyn, on your feet.",
         description: "Nike's Brooklyn Nets City Edition Elite crew: black, with the City Edition art down the side and BROOKLYN inside the cuff.",
         optionTitle: "<strong>Size</strong>",
-        options: ["34 - 38", "38 - 42", "42 - 46"],
-        unavailable: ["34 - 38", "38 - 42"]
+        options: ["34 - 38", "38 - 42", "42 - 46"]
     },
     {
         name: "Miami Heat Nike Black-Pink 2020 City Edition",
@@ -206,12 +210,12 @@ const products = [
         lead: "Black, pink and blue.",
         description: "The Miami Heat 2020 City Edition Elite crew: black, with a pink-to-blue fade down the side and MIAMI at the cuff.",
         optionTitle: "<strong>Size</strong>",
-        options: ["34 - 38", "38 - 42", "42 - 46"],
-        unavailable: ["34 - 38", "38 - 42"]
+        options: ["34 - 38", "38 - 42", "42 - 46"]
     },
     {
         // Not in Matrix yet; the SKU follows its LILX-{category}-{item}-{colour}
-        // pattern, so a matching record there links up.
+        // pattern, so a matching record there links up (and its stock then
+        // replaces the count below).
         name: "Nike Elite Crew Socks University Red",
         sku: "LILX-SOC-CREW-RED",
         tile: "light",
@@ -223,7 +227,7 @@ const products = [
         description: "The Nike Elite crew in black and University Red: red stripes down the back and a red heel.",
         optionTitle: "<strong>Size</strong>",
         options: ["34 - 38", "38 - 42", "42 - 46"],
-        unavailable: ["34 - 38", "38 - 42"]
+        stock: { "42 - 46": 1 }    // not in Matrix yet
     },
     {
         name: "Wilson EVO NXT BAL Official Game Ball",
@@ -242,7 +246,8 @@ const products = [
         lead: "Africa's game ball.",
         description: "Wilson's EVO NXT, the official game ball of the Basketball Africa League. Official size 7.",
         optionTitle: "<strong>Size</strong>",
-        options: ["7"]
+        options: ["7"],
+        stock: { "7": 1 }          // not in Matrix yet
     },
     {
         name: "Nba Nike Headband",
@@ -389,4 +394,37 @@ function lxFindProductByCode(code, colorIndex) {
             (r.colorIndex == null || colorIndex == null || r.colorIndex === colorIndex)) return products[j];
     }
     return null;
+}
+
+
+// ========================================
+// STOCK
+// ========================================
+// How many of a product are left, for one size or (no size given) in all.
+// null when the product has no count at all, which means no limit.
+function lxStockNorm(s) { return String(s).replace(/\s+/g, "").toLowerCase(); }
+
+function lxStockFor(p, option) {
+    var s = p && p.stock;
+    if (s == null) return null;
+    if (typeof s === "number") return s;           // not split by size
+    if (option == null || option === "") {
+        return Object.keys(s).reduce(function (n, k) { return n + s[k]; }, 0);
+    }
+    var want = lxStockNorm(option);
+    for (var k in s) if (lxStockNorm(k) === want) return s[k];
+    return 0;                                      // a size Matrix doesn't have
+}
+
+// Called by product-stock.js with Matrix's counts, keyed by our sku. Matrix
+// wins over a count set here by hand; a product neither of them counts keeps
+// its status and `unavailable` as written.
+function lxApplyStock(counts) {
+    products.forEach(function (p) {
+        if (counts && Object.prototype.hasOwnProperty.call(counts, p.sku)) p.stock = counts[p.sku];
+        if (p.stock == null || p.status === "soon") return;
+        var sized = p.options && p.options.length && !/quantity/i.test(p.optionTitle || "");
+        if (sized) p.unavailable = p.options.filter(function (o) { return lxStockFor(p, o) <= 0; });
+        p.status = lxStockFor(p) > 0 ? "available" : "soldout";
+    });
 }

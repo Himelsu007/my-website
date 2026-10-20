@@ -136,6 +136,8 @@
     background: #17171c; color: #fff; cursor: pointer; line-height: 1;
 }
 .lx_bag_qty button:hover { border-color: rgba(255,215,0,0.5); }
+/* + goes quiet once the line holds everything that is left. */
+.lx_bag_qty button:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
 .lx_bag_qty span {
     min-width: 16px; text-align: center; color: #fff;
     font-family: 'Barlow Condensed', sans-serif; font-weight: 700;

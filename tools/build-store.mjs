@@ -31,6 +31,9 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const catalogPath = path.resolve(process.argv[2] || path.join(ROOT, "javascript/product-catalog.js"));
 const ctx = vm.createContext({});
 vm.runInContext(fs.readFileSync(catalogPath, "utf8"), ctx, { filename: catalogPath });
+// Matrix's stock decides what is in stock, here as on the shelf.
+const stockPath = path.join(ROOT, "javascript/product-stock.js");
+if (fs.existsSync(stockPath)) vm.runInContext(fs.readFileSync(stockPath, "utf8"), ctx, { filename: stockPath });
 const products = vm.runInContext("products", ctx);
 
 const read = f => fs.readFileSync(path.join(ROOT, f), "utf8");
@@ -229,9 +232,8 @@ function productPage(p) {
     const image = abs(imagesOf(p)[0]);
     let h = merch;
     // Everything on the page is written relative to the site root.
-    h = swap(h, /<meta charset="UTF-8">/, `<meta charset="UTF-8">
-    <base href="/">
-    <script>document.documentElement.className += " lx-js";</script>`, "charset meta");
+    h = swap(h, /<base href="\/">/, `<base href="/">
+    <script>document.documentElement.className += " lx-js";</script>`, "base href");
     h = swap(h, /<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`, "title");
     h = swap(h, metaTag("name", "description"), `<meta name="description" content="${esc(desc)}">`, "description");
     h = swap(h, metaTag("property", "og:type"), `<meta property="og:type" content="product">`, "og:type");

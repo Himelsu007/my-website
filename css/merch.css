@@ -2388,6 +2388,8 @@ body.lx-scroll-locked {
     .modal_options > .modal_color_group { flex: 0 0 auto; }
     /* A lone group still spans the row rather than hugging the left. */
     .modal_options > .modal_variant_group:only-child { flex: 1 1 100%; }
+    /* Quantity beside the sizes takes only the stepper's width. */
+    .modal_options > .modal_qty_group:not(:only-child) { flex: 0 0 auto; }
 }
 
 /* ========================================
@@ -2978,6 +2980,9 @@ body.lx-scroll-locked {
 }
 #product_modal .qty_btn { border-radius: 8px; color: var(--pd-ink); background: transparent; }
 #product_modal .qty_btn:hover:not(:disabled) { background: var(--pd-soft); }
+/* "Only 2 left", under the stepper. */
+#product_modal .qty_left { margin: 8px 0 0; font-size: 12.5px; font-weight: 500; color: var(--pd-ink-3); white-space: nowrap; }
+#product_modal .qty_left:empty { display: none; }
 #product_modal .qty_input { color: var(--pd-ink); background: transparent; }
 
 /* ---------------- the order bar ---------------- */
@@ -3299,17 +3304,17 @@ body:has(#product_modal.active) #lx_bag_pill {
     #product_modal .whatsapp_btn { height: 56px; font-size: 15.5px; }
 }
 
-/* The 0.9 desktop zoom, divided back out so the sheet gets the height the
-   screen really has. */
+/* The desktop zoom (--lx-zoom, desktop-scale.css), divided back out so the
+   sheet gets the height the screen really has. */
 @media (min-width: 1024px) {
     /* vw has the same problem as vh under the zoom: 94vw was only ~85% of the
        window, which squeezed the details column and made its text wrap. */
     #product_modal .modal_content {
-        width: min(1120px, calc(94vw / 0.9));
+        width: min(1120px, calc(94vw / var(--lx-zoom, 1)));
         /* 840 rather than 800: two-line names plus a lead and description
            ran 16px past an 800px sheet. On a 900px screen this still leaves
            ~70px above and below. */
-        height: min(840px, calc(90vh / 0.9));
+        height: min(840px, calc(90vh / var(--lx-zoom, 1)));
     }
 }
 

@@ -185,6 +185,49 @@ function displayPrice(p) {
     return STATUS_LABEL[p.status] || "";
 }
 
+// ---- quantity ----
+// How many of a product (in one size) a single order can take: what Matrix
+// says is left (product-stock.js), and never more than 10 at once.
+const MAX_PER_ORDER = 10;
+function stockLeft(p, option) {
+    return typeof lxStockFor === "function" ? lxStockFor(p, option) : null;
+}
+function maxQty(p, option) {
+    const left = stockLeft(p, option);
+    return left == null ? MAX_PER_ORDER : Math.max(0, Math.min(MAX_PER_ORDER, left));
+}
+// "Only 2 left" once it is worth saying.
+function leftLabel(left) {
+    return left != null && left > 0 && left <= 5 ? `Only ${left} left` : "";
+}
+
+function qtyStepperHTML(title, max, left, unitPrice, enabled) {
+    return `
+        <div class="modal_variant_group modal_qty_group">
+            <div class="modal_variant_header">
+                <h4 class="inter-medium">${title}</h4>
+            </div>
+            <div class="qty_stepper" data-min="1" data-max="${max}" data-unit-price="${unitPrice ?? ""}">
+                <button class="qty_btn minus" type="button" aria-label="Decrease quantity" disabled>−</button>
+                <input class="qty_input" type="number" min="1" max="${max}" value="1" inputmode="numeric" aria-label="Quantity">
+                <button class="qty_btn plus" type="button" aria-label="Increase quantity" ${enabled && max > 1 ? "" : "disabled"}>+</button>
+            </div>
+            <p class="qty_left" aria-live="polite">${leftLabel(left)}</p>
+        </div>`;
+}
+
+// Keeps the stepper inside 1..max and the buttons honest about it.
+function syncStepper(stepper, max) {
+    if (!stepper) return;
+    const input = stepper.querySelector(".qty_input");
+    if (max != null) { stepper.dataset.max = String(max); input.max = String(max); }
+    const hi = Math.max(1, parseInt(stepper.dataset.max, 10) || 1);
+    const val = Math.max(1, Math.min(hi, parseInt(input.value, 10) || 1));
+    input.value = val;
+    stepper.querySelector(".qty_btn.minus").disabled = val <= 1;
+    stepper.querySelector(".qty_btn.plus").disabled = val >= hi;
+}
+
 // ========================================
 // MODAL STATE
 // ========================================
@@ -360,19 +403,9 @@ function openProductModal(index, opener, opts = {}) {
     let variantsHTML = "";
     if (product.options && product.options.length > 0) {
         if (isQuantity) {
-            const max = parseInt(product.options[product.options.length - 1], 10) || 4;
-            variantsHTML = `
-                <div class="modal_variant_group">
-                    <div class="modal_variant_header">
-                        <h4 class="inter-medium">${product.optionTitle || "Quantity"}</h4>
-                    </div>
-                    <div class="qty_stepper" data-min="1" data-max="${max}" data-unit-price="${unitPrice ?? ""}">
-                        <button class="qty_btn minus" type="button" aria-label="Decrease quantity" ${isAvailable ? "" : "disabled"}>−</button>
-                        <input class="qty_input" type="number" min="1" max="${max}" value="1" inputmode="numeric" aria-label="Quantity">
-                        <button class="qty_btn plus" type="button" aria-label="Increase quantity" ${isAvailable ? "" : "disabled"}>+</button>
-                    </div>
-                </div>
-            `;
+            variantsHTML = isAvailable
+                ? qtyStepperHTML(product.optionTitle || "Quantity", maxQty(product), stockLeft(product), unitPrice, true)
+                : "";
         } else {
             // Sizes that are out stay on show, dimmed and disabled, so the range
             // is visible; if only one is left it comes pre-picked.
@@ -393,6 +426,14 @@ function openProductModal(index, opener, opts = {}) {
                     <div class="size_chart_inline" hidden>${getSizeChartHTML(product)}</div>
                 </div>
             `;
+            // How many, up to what is left of the size picked (or, before a
+            // pick, of the best-stocked size).
+            if (isAvailable) {
+                const picked = onlyOne ? sizeChoices[0] : null;
+                const max = picked ? maxQty(product, picked) : Math.max(1, ...sizeChoices.map(o => maxQty(product, o)));
+                variantsHTML += qtyStepperHTML("<strong>Quantity</strong>", max,
+                    picked ? stockLeft(product, picked) : null, unitPrice, true);
+            }
         }
     }
 
@@ -401,13 +442,15 @@ function openProductModal(index, opener, opts = {}) {
     if (isComingSoon) {
         ctaHTML = `<button id="whatsapp_notify_btn" class="whatsapp_btn" type="button">Notify Me on WhatsApp</button>`;
     } else if (isSoldOut) {
-        ctaHTML = `<button class="sold_out_btn" type="button" disabled>OUT OF STOCK</button>`;
+        // Back Soon promises a nudge when it lands, so the sheet offers one.
+        ctaHTML = `<button id="whatsapp_notify_btn" class="whatsapp_btn" type="button">Out of stock · Notify me</button>`;
     } else {
         // A quantity stepper already has a valid default of 1, and a product
         // offered in exactly one size (both Wilson balls, size 7) has nothing
         // to choose — gating the CTAs on either left the buy buttons dead at
         // 45% opacity with no obvious way to wake them.
         const needsSize  = !!product.options && !isQuantity && sizeChoices.length > 1;
+        // (The quantity stepper always holds a valid number, so it never gates.)
         const needsColor = !!product.colors && product.colors.length > 1;
         const requiresPick = needsSize || needsColor;
         // Two paths on purpose: order this one thing now, or collect several and
@@ -946,6 +989,14 @@ function initModal() {
                 const slide = [...modal.querySelectorAll(".modal_image_wrapper img")].findIndex(img => img.getAttribute("src") === colorSrc);
                 if (slide >= 0) { stopAutoSlideshow(); gotoSlide(modal, slide); }
             }
+            // A size has its own stock, so the stepper follows it.
+            if (shown && !pill.dataset.color) {
+                const size = pill.innerText.trim();
+                syncStepper(modal.querySelector(".qty_stepper"), maxQty(shown, size));
+                const hint = modal.querySelector(".qty_left");
+                if (hint) hint.textContent = leftLabel(stockLeft(shown, size));
+                updateQuantityTotal(modal);
+            }
             // Two dimensions now: picking a colour must not unlock the CTAs
             // while the size is still unchosen, and vice versa.
             refreshCtaGate(modal);
@@ -963,11 +1014,8 @@ function initModal() {
             val += qtyBtn.classList.contains("plus") ? 1 : -1;
             val = Math.max(min, Math.min(max, val));
             input.value = val;
+            syncStepper(stepper);
             updateQuantityTotal(modal);
-            const orderBtn = document.getElementById("whatsapp_order_btn");
-            if (orderBtn) orderBtn.classList.remove("disabled");
-            const bagBtn = document.getElementById("add_to_bag_btn");
-            if (bagBtn) bagBtn.classList.remove("disabled");
             return;
         }
 
@@ -995,7 +1043,8 @@ function initModal() {
             if (colorPill) parts.push(colorPill.dataset.color);
             if (activePill) parts.push(activePill.innerText.trim());
             const qty = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
-            LXBag.add({
+            // The bag holds no more than is left, so it may take fewer.
+            const added = LXBag.add({
                 name: product.name,
                 sku: product.sku || "",
                 option: parts.join(" · "),
@@ -1003,7 +1052,7 @@ function initModal() {
                 qty,
                 image: imageFor(product, colorPill && colorPill.dataset.color)
             });
-            celebrateAdd(bagBtn, qty);
+            if (added > 0) celebrateAdd(bagBtn, added);
             return;
         }
 
@@ -1083,11 +1132,8 @@ function initModal() {
             if (isNaN(val)) val = min;
             val = Math.max(min, Math.min(max, val));
             e.target.value = val;
+            syncStepper(stepper);
             updateQuantityTotal(modal);
-            const orderBtn = document.getElementById("whatsapp_order_btn");
-            if (orderBtn) orderBtn.classList.remove("disabled");
-            const bagBtn = document.getElementById("add_to_bag_btn");
-            if (bagBtn) bagBtn.classList.remove("disabled");
         }
     });
 

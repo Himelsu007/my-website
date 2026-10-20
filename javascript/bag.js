@@ -34,16 +34,49 @@
     /* Same product in a different size is a different line. */
     function lineId(name, option) { return name + "||" + (option || ""); }
 
+    /* ---------------- stock ----------------
+       The bag never holds more than Matrix says is left (product-stock.js).
+       A product counted by size shares its count with other lines in that
+       size only; one counted as a whole (unsized) shares it with every line
+       of the product. null means no count, so no limit. */
+    function sizeOf(option) {
+        var parts = String(option || "").split(" \u00b7 ");
+        return parts[parts.length - 1];
+    }
+    function stockRoom(item, items) {
+        if (typeof products === "undefined" || typeof lxStockFor !== "function") return null;
+        var p = products.filter(function (x) { return x.name === item.name; })[0];
+        if (!p || p.stock == null) return null;
+        var whole = typeof p.stock === "number";
+        var size = sizeOf(item.option);
+        var left = lxStockFor(p, whole ? null : size);
+        var others = items.reduce(function (n, i) {
+            if (i.id === item.id || i.name !== item.name) return n;
+            return whole || sizeOf(i.option) === size ? n + i.qty : n;
+        }, 0);
+        return Math.max(0, left - others);
+    }
+
+    /* Returns how many actually went in: fewer than asked when stock runs out. */
     function add(item) {
         var items = read();
         var existing = items.filter(function (i) { return i.id === item.id; })[0];
-        if (existing) existing.qty += item.qty;
-        else items.push(item);
+        var room = stockRoom(item, items);
+        var have = existing ? existing.qty : 0;
+        var take = room == null ? item.qty : Math.max(0, Math.min(item.qty, room - have));
+        if (!take) return 0;
+        if (existing) existing.qty += take;
+        else { item.qty = take; items.push(item); }
         write(items);
+        return take;
     }
     function setQty(id, qty) {
-        var items = read().map(function (i) {
-            if (i.id === id) i.qty = Math.max(0, qty);
+        var items = read();
+        items = items.map(function (i) {
+            if (i.id === id) {
+                var room = stockRoom(i, items);
+                i.qty = Math.max(0, room == null ? qty : Math.min(qty, room));
+            }
             return i;
         }).filter(function (i) { return i.qty > 0; });
         write(items);
@@ -79,7 +112,7 @@
        So every time the drawer is painted, each line is checked back against
        the live catalogue. Nothing is silently corrected: a price that moved is
        the buyer's to accept, not ours to change behind them. */
-    function auditLine(item) {
+    function auditLine(item, items) {
         if (typeof products === "undefined" || !Array.isArray(products)) return null;
         var p = products.filter(function (x) { return x.name === item.name; })[0];
 
@@ -88,6 +121,11 @@
             return { kind: "gone", note: (typeof isSoon === "function" && isSoon(p))
                 ? "Not out yet" : "Sold out" };
         }
+        var room = stockRoom(item, items || []);
+        if (room === 0) return { kind: "gone", note: "Sold out" };
+        if (room != null && item.qty > room) {
+            return { kind: "stock", note: "Only " + room + " left", room: room };
+        }
         if (p.priceEUR != null && Number(p.priceEUR) !== Number(item.price)) {
             return { kind: "price", note: "Now " + money(p.priceEUR), now: Number(p.priceEUR) };
         }
@@ -95,7 +133,8 @@
     }
 
     function audit() {
-        return read().map(function (i) { return { item: i, issue: auditLine(i) }; });
+        var items = read();
+        return items.map(function (i) { return { item: i, issue: auditLine(i, items) }; });
     }
 
     /* ---------------- fulfilment ----------------
@@ -319,6 +358,11 @@
                 }
                 return;
             }
+            if (act === "fit") {
+                var fit = stockRoom(cur, read());
+                if (fit != null) setQty(id, fit);
+                return;
+            }
             if (act === "plus")   setQty(id, cur.qty + 1);
             if (act === "minus")  setQty(id, cur.qty - 1);
             if (act === "remove") setQty(id, 0);
@@ -338,11 +382,15 @@
         pill.querySelector(".lx_bag_count").textContent = n;
 
         var checked = audit();
-        var blocked = checked.filter(function (c) { return c.issue && c.issue.kind === "gone"; }).length;
+        // A line that can't be filled as it stands holds the order back.
+        var blocked = checked.filter(function (c) {
+            return c.issue && (c.issue.kind === "gone" || c.issue.kind === "stock");
+        }).length;
 
         listEl.innerHTML = items.length
             ? checked.map(function (c) {
                 var i = c.item, issue = c.issue;
+                c.room = stockRoom(i, items);
                 return '<div class="lx_bag_item' +
                         (issue ? " has_issue is_" + issue.kind : "") +
                         '" data-bag-id="' + esc(i.id) + '">' +
@@ -354,13 +402,16 @@
                         (issue ? '<span class="lx_bag_item_flag">' + esc(issue.note) +
                             (issue.kind === "price"
                                 ? ' \u00b7 <button type="button" data-bag-act="reprice">Update</button>'
+                                : issue.kind === "stock"
+                                ? ' \u00b7 <button type="button" data-bag-act="fit">Change to ' + issue.room + '</button>'
                                 : ' \u00b7 <button type="button" data-bag-act="remove">Remove</button>') +
                           '</span>' : "") +
                     '</div>' +
                     '<div class="lx_bag_qty">' +
                         '<button type="button" data-bag-act="minus" aria-label="Decrease quantity">−</button>' +
                         '<span>' + i.qty + '</span>' +
-                        '<button type="button" data-bag-act="plus" aria-label="Increase quantity">+</button>' +
+                        '<button type="button" data-bag-act="plus" aria-label="Increase quantity"' +
+                            (c.room != null && i.qty >= c.room ? " disabled" : "") + '>+</button>' +
                     '</div>' +
                     '<button class="lx_bag_remove" type="button" data-bag-act="remove" aria-label="Remove ' + esc(i.name) + '">&times;</button>' +
                 '</div>';
@@ -669,16 +720,20 @@
     /* ---------------- public hook used by the modal ---------------- */
     window.LXBag = {
         add: function (p) {
-            add({
+            var want = Math.max(1, Number(p.qty) || 1);
+            var took = add({
                 id: lineId(p.name, p.option),
                 name: p.name,
                 sku: p.sku || "",
                 option: p.option || "",
                 price: Number(p.price) || 0,
-                qty: Math.max(1, Number(p.qty) || 1),
+                qty: want,
                 image: p.image || ""
             });
-            toast("Added to bag.");
+            toast(took === want ? "Added to bag."
+                : took ? "Added " + took + ", that's all we have."
+                : "All we have is already in your bag.");
+            return took;
         },
         open: open,
         count: count,
