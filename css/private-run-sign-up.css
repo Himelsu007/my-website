@@ -61,10 +61,6 @@ html,body {
     margin: 0 0 10px;
 }
 .auth-title span{ color:var(--su-gold); -webkit-text-stroke:1px var(--su-gold); }
-.auth-sub{
-    font-family:'Inter',sans-serif; color:var(--su-dim);
-    font-size:14px; line-height:1.6; margin:0 0 32px; max-width:440px;
-}
 
 /* ===== FIELDS ===== */
 .input-group { margin-bottom: 22px; }
@@ -153,14 +149,6 @@ html,body {
     border-color: var(--su-gold);
     color: #0a0a0a;
 }
-#guest-count {
-    color: #fff;
-    min-width: 28px;
-    text-align: center;
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:800;
-    font-size:1.4rem;
-}
 
 /* ===== PAYMENT BLOCK ===== */
 .payment-block {
@@ -180,38 +168,7 @@ html,body {
     text-transform:uppercase;
 }
 
-.revolut-link {
-    color: var(--su-gold);
-    text-decoration: none;
-    border:1px solid rgba(255,215,0,0.35);
-    padding:6px 14px;
-    border-radius:99px;
-    transition:all .25s ease;
-}
-.revolut-link:hover{ background:var(--su-gold); color:#0a0a0a; }
-
 /* ===== FILE UPLOAD (if used) ===== */
-.custom-file-upload {
-    display: flex; align-items: center; justify-content: center;
-    border: 2px dashed var(--su-line);
-    border-radius: 12px;
-    padding: 22px;
-    cursor: pointer;
-    color: var(--su-dim);
-    transition: border 0.3s ease, background 0.3s ease;
-    background: rgba(0,0,0,0.3);
-}
-.custom-file-upload:hover {
-    border-color: var(--su-gold);
-    background: rgba(255, 215, 0, 0.05);
-}
-#receipt-preview {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: 10px;
-    border: 1px solid var(--su-line);
-    object-fit: contain;
-}
 
 /* ===== FINALIZE BUTTON ===== */
 #generate-pdf,

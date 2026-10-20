@@ -2,7 +2,6 @@
    Your existing code is already here.
 */
 
-
 /* ==========================================================================
    1. TABLETS (Portrait) & LARGE PHONES
    Breakpoint: 768px
@@ -23,57 +22,8 @@
 }
 
 /* each card */
-.schedule_component_father{
-    flex: 0 0 400px;
-    scroll-snap-align: start;
-    height: auto;
-}
-
 
     /* Event type badge */
-.event_type_indicator > :nth-child(1) {
-    padding: 10px 20px;
-}
-
-.event_type_title h2 {
-    font-size: 1.70rem;
-    color: #ffffff;
-    line-height: 1.2;
-}
-
-.event_details_small_container > :nth-child(1) {
-    height: 50px; width: 50px;
-}
-
-.event_details_small_container > :nth-child(2) > p {
-    font-size: 14px;
-}
-
-.event_details_small_container > :nth-child(2) > a {
-    font-size: 14px;
-}
-
-.event_details_small_container > div > img {
-    height: 22px; width: 22px;
-}
-
-.event_type_indicator > :nth-child(1) p {
-    letter-spacing: 0.6px;
-    font-size: 13px;
-}
-
-.event_details_small_container > :nth-child(2) h4 {
-    letter-spacing: 0.6px;
-    font-size: 15px;
-}
-
-.join_now_like_button {
-    height: 56px;
-}
-
-.sold_out_like_button {
-    height: 56px;
-}
 
 /* hide scrollbar */
 .schedule_cards_container::-webkit-scrollbar{
@@ -84,7 +34,6 @@ display:none;
 -ms-overflow-style:none;
 scrollbar-width:none;
 }
-
 
 .faq {
     max-width:1100px;
@@ -161,7 +110,6 @@ scrollbar-width:none;
 #legal_container_child p { font-size:25px;}
 #legal_container_child h3 { font-size:28px;}
 
-
 #nike_elite_gear_heading_container_child { 
     text-align:center; display:flex; align-items:center; justify-content:space-between; 
     flex-direction:column; height:200px;  width:417px;  width:500px;  
@@ -178,22 +126,10 @@ section#upcoming_runs_container {
     margin:auto;margin-bottom:30px; margin-top:30px;
 }
 
-article#upcoming_runs_container_child  { 
-    min-height:180px; 
-    min-width:500px; display:flex;  
-    align-items:center; justify-content:center;  
-    flex-direction:column; gap:15px;
-}
-
-article#upcoming_runs_container_child > h2 { color:#FFD700; letter-spacing:3.2px; font-size:22px;}
-article#upcoming_runs_container_child > h3 { color:#FFFFFF; letter-spacing:1.8px; font-size:60px; }
-article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:24px; line-height:30px; text-align:center; width:290px; }
-
 .got_questions_container {
     height:150px; width:500px; }
 .got_questions_container > h2 { color:#FFD700; letter-spacing:4.2px; font-size:24px;}
 .got_questions_container > h3 { color:#FFFFFF;  font-size:60px; }
-
 
 header {
     display: flex;
@@ -229,7 +165,6 @@ header.scrolled {
     transition: height 0.3s ease;
 }
 
-
 #main-header > #menu-open > img {
     height: 25px; /* Slightly larger logo */
     transition: height 0.3s ease;
@@ -259,8 +194,6 @@ header.scrolled {
         box-shadow 0.25s ease,
         background 0.3s ease;
 }
-.event_details_small_container :nth-child(1)> i { font-size:20px; color: #FFD700; width:auto;}
-
 
 /* ============================= */
 /* PREMIUM CLICK SPRING          */
@@ -276,7 +209,6 @@ header.scrolled {
     65%  { transform: scale(1.04); }                 /* overshoot */
     100% { transform: scale(1); }                    /* settle */
 }
-
 
 /* ============================= */
 /* TEXT                          */
@@ -315,7 +247,6 @@ header.scrolled {
     color:#FFD400;
     font-weight:700;
 }
-
 
 .modal_content {
     max-width:700px;
@@ -373,8 +304,6 @@ header.scrolled {
 
 }
 
-#merch_hero_container { margin-top:100px;}
-
 .auth-container {
         margin-top:200px;
     }
@@ -406,8 +335,6 @@ header.scrolled {
 
 }
 
-
-
 /* ============================= */
 /* PREMIUM LIGHT SWEEP           */
 /* ============================= */
@@ -434,8 +361,6 @@ header.scrolled {
 
 }
 
-
-
 @media screen and (min-width: 1440px) {
 
 .schedule_cards_container{
@@ -449,15 +374,8 @@ header.scrolled {
     scroll-behavior:smooth;
     padding:10px 20px; margin:auto; 
 }
-.event_details_small_container :nth-child(1)> i { font-size:21px; color: #FFD700; width:auto;}
 
 /* each card */
-.schedule_component_father{
-
-flex:0 0 523px; 
-scroll-snap-align:start; 
-height: 440px;
-    }
 
     #products_show_case_main_child_container {
     height: 1080px; 
@@ -465,59 +383,6 @@ height: 440px;
 }
 
     /* King of the Court Badge */
-.event_type_indicator > :nth-child(1) {
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-    padding: 13px 40px;
-    background-color: rgba(239, 68, 68, 0.15);
-    border-radius: 99px;
-}
-
-.event_type_title h3 {
-    font-size: 1.70rem;
-    color: #ffffff;
-    line-height: 1.2;
-}
-
-.event_details_small_container > :nth-child(1) {
-    height: 55px; width:55px; 
-}
-
-
-.event_details_small_container > :nth-child(2) > p {
-font-size:15px;
-}
-
-.event_details_small_container > :nth-child(2) > a {
-font-size:15px;
-}
-
-.event_details_small_container > div > img {
-    height: 24px; width:24px;
-}
-
-.event_type_indicator > :nth-child(1) p {
-    color: #F87171;
-    letter-spacing: 0.6px;
-    font-size:14px;
-}
-
-.event_details_small_container > :nth-child(2) h4 {
-    letter-spacing: 0.6px;
-    font-size:16px;
-}
-
-.join_now_like_button {
-    height: 62px;
-    width: 172px;
-}
-
-.sold_out_like_button {
-    height: 64px;
-    width: 174px;
-
-}
 
 .auth-title { font-size:28px;}
 
@@ -530,7 +395,6 @@ display:none;
 -ms-overflow-style:none;
 scrollbar-width:none;
 }
-
 
 .faq {
     max-width:1100px; 
@@ -607,7 +471,6 @@ scrollbar-width:none;
 #legal_container_child p { font-size:25px;}
 #legal_container_child h3 { font-size:28px;}
 
-
 #nike_elite_gear_heading_container_child { text-align:center; display:flex; align-items:center; justify-content:space-between; 
     flex-direction:column; height:200px;  width:417px; margin-bottom:30px; width:500px;
 }
@@ -623,22 +486,10 @@ section#upcoming_runs_container {
     margin:auto;margin-bottom:30px; margin-top:30px;
 }
 
-article#upcoming_runs_container_child  { 
-    min-height:180px; 
-    min-width:500px; display:flex;  
-    align-items:center; justify-content:center;  
-    flex-direction:column; gap:15px;
-}
-
-article#upcoming_runs_container_child > h2 { color:#FFD700; letter-spacing:3.2px; font-size:22px;}
-article#upcoming_runs_container_child > h3 { color:#FFFFFF; letter-spacing:1.8px; font-size:60px; }
-article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:24px; line-height:30px; text-align:center; width:290px; }
-
 .got_questions_container {
     height:150px; width:500px; }
 .got_questions_container > h2 { color:#FFD700; letter-spacing:4.2px; font-size:24px;}
 .got_questions_container > h3 { color:#FFFFFF;  font-size:60px; }
-
 
 header {
     display: flex;
@@ -653,9 +504,6 @@ header {
     box-sizing: border-box;
     background-color: transparent;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother curve */
-}
-
-#merch_hero_container { margin-top:120px;
 }
 
 /* The Glass Effect on Scroll */
@@ -677,12 +525,10 @@ header.scrolled {
     transition: height 0.3s ease;
 }
 
-
 #main-header > #menu-open > img {
     height: 25px; /* Slightly larger logo */
     transition: height 0.3s ease;
 }
-
 
 #home_page_merch_button {
     position: relative;
@@ -707,7 +553,6 @@ header.scrolled {
         background 0.3s ease;
 }
 
-
 /* ============================= */
 /* PREMIUM CLICK SPRING          */
 /* ============================= */
@@ -722,7 +567,6 @@ header.scrolled {
     65%  { transform: scale(1.04); }                 /* overshoot */
     100% { transform: scale(1); }                    /* settle */
 }
-
 
 /* ============================= */
 /* TEXT                          */
@@ -812,14 +656,6 @@ header.scrolled {
 
 }
 
-
-
-#drop_down_menu_container 
-    {
-display:none;
-}
-
-
 /* ============================= */
 /* ICON MOTION                   */
 /* ============================= */
@@ -844,7 +680,6 @@ display:none;
     gap: 30px;
 
 }
-
 
 /* ============================= */
 /* PREMIUM LIGHT SWEEP           */
@@ -892,12 +727,8 @@ display:none;
 
 }
 
-
 /* ==========================================================================
    4. 4K & ULTRA-WIDE (Optional)
    Breakpoint: 2560px
    Usage: Only use if you want the cards to remain massive on 4K TVs.
    ========================================================================== */
-@media screen and (min-width: 2560px) {
-
-}

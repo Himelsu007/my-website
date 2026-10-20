@@ -155,12 +155,6 @@ const productUrl  = p => `${window.location.origin}${productPath(p)}`;
 const productTitle = p => `${p.name} | Locked In Lx Store, Lisbon`;
 let storeTitle = "";
 
-// Parses a price string like "€18" → 18. Returns null for COMING SOON / SOLD OUT.
-function parsePrice(priceStr) {
-    const match = /([\d.]+)/.exec(priceStr || "");
-    return match ? parseFloat(match[1]) : null;
-}
-
 // Euro after the figure, the way it is written in Portugal.
 function formatPrice(value) {
     return `${Number.isInteger(value) ? value : value.toFixed(2)}€`;
@@ -277,23 +271,6 @@ function trapFocus(container) {
 // ========================================
 const SLIDE_DURATION = 2400;
 
-function resetSlideProgress(modal, running) {
-    const bar = modal.querySelector(".modal_slide_progress_bar");
-    if (!bar) return;
-    // Reset
-    bar.style.transition = "none";
-    bar.style.width = "0%";
-    // Force reflow then animate
-    void bar.offsetWidth;
-    if (running) {
-        bar.style.transition = `width ${SLIDE_DURATION}ms linear`;
-        bar.style.width = "100%";
-    } else {
-        bar.style.transition = "width 0.25s ease";
-        bar.style.width = "0%";
-    }
-}
-
 function gotoSlide(modal, index, { resumeAuto = false } = {}) {
     const imgs = modal.querySelectorAll(".modal_image_wrapper > img");
     const dots = modal.querySelectorAll(".slide_dot");
@@ -305,10 +282,6 @@ function gotoSlide(modal, index, { resumeAuto = false } = {}) {
     modal.querySelectorAll(".modal_thumb").forEach((t, i) =>
         t.classList.toggle("active", i === slideshowState.currentIndex));
 
-    if (slideshowState.auto && imgs.length > 1) {
-        resetSlideProgress(modal, true);
-    }
-
     if (resumeAuto && slideshowState.auto && imgs.length > 1) {
         startAutoSlideshow(modal);
     }
@@ -319,7 +292,6 @@ function startAutoSlideshow(modal) {
     const imgs = modal.querySelectorAll(".modal_image_wrapper > img");
     if (imgs.length <= 1) return;
     slideshowState.auto = true;
-    resetSlideProgress(modal, true);
     slideshowState.interval = setInterval(() => {
         gotoSlide(modal, slideshowState.currentIndex + 1);
     }, SLIDE_DURATION);
@@ -328,8 +300,6 @@ function startAutoSlideshow(modal) {
 function stopAutoSlideshow() {
     slideshowState.auto = false;
     clearSlideshow();
-    const modal = document.getElementById("product_modal");
-    if (modal) resetSlideProgress(modal, false);
 }
 
 // ========================================
@@ -619,8 +589,6 @@ function openProductModal(index, opener, opts = {}) {
 
     // ---- INIT QUANTITY STEPPER TOTAL ----
     updateQuantityTotal(modal);
-
-    // ---- IMAGE HOVER ZOOM (desktop only) ----
 
     // ---- SWIPE GESTURES (mobile) ----
     initSwipe(modal);

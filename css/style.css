@@ -4,7 +4,6 @@
 /* .fbc-center-column stands for flexbox center column, it is a utility class that can be used to center content both horizontally and vertically in a column layout. */
 /* .fbc-center-row stands for flexbox center row, it is a utility class that can be used to center content both horizontally and vertically in a row layout. */
 
-
 :root  {  
         --white:#FFFFFF;
         --bright-yellow:#F5EDEA;
@@ -41,9 +40,6 @@ scrollbar-width: none;
 }
     
 p,h1,h3,h4, h2 { text-decoration:none; color:var(--white-color);  }
-
-
-
 
 header {
     display: flex;
@@ -376,30 +372,10 @@ button {
     .nav-footer { margin-top: 32px; }
 }
 
-
 section#upcoming_runs_container {
     height:auto; width:343px;
     display:flex; align-items:center; justify-content:center;
     margin:auto;margin-bottom:30px; margin-top:30px;
-}
-
-article#upcoming_runs_container_child  {
-    height:auto;
-    width:343px; display:flex;
-    align-items:center; justify-content:center;
-    flex-direction:column; gap:12px;
-}
-
-article#upcoming_runs_container_child > h2 { color:#FFD700; letter-spacing:3.2px; font-size:1.17em; }
-article#upcoming_runs_container_child > h3 { color:#FFFFFF; letter-spacing:1.8px; font-size:44px; }
-article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-height:24px; text-align:center; width:290px; }
-
-.upcoming_runs_accent {
-    width: 48px;
-    height: 3px;
-    background: linear-gradient(90deg, #3FFF6F, #00c44f);
-    border-radius: 99px;
-    margin-top: 4px;
 }
 #nike_elite_gear_heading_container { 
     height:170px; 
@@ -439,109 +415,22 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 /* SCHEDULE CARD COMPONENT       */
 /* ============================= */
 
-
 /* ============================= */
 
-.schedule_component_father {
-    position: relative;
-    height: auto;
-    width: 343px;
-    border: 1px solid #27272A;
-    border-radius: 16px;
-    margin: auto;
-    margin-bottom: 30px;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: linear-gradient(160deg, #141418 0%, #0f0f12 60%);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.schedule_component_father:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-.card_inner {
-    padding: 20px 24px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    flex: 1;
-}
-
 /* Glow Effect */
-.schedule_component_father::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: radial-gradient(
-        ellipse at 50% 0%,
-        rgba(63, 255, 111, 0.05) 0%,
-        transparent 65%
-    );
-    z-index: 0;
-}
-
-.card_inner > * { position: relative; z-index: 1; }
 
 @keyframes pulseGlow {
     0%, 100% { opacity: 0.4; transform: scale(1); }
     50% { opacity: 0.8; transform: scale(1.05); }
 }
 
-
 /* ============================= */
 /* TOP SECTION                   */
 /* ============================= */
 
-.event_type_container {
-    display: flex;
-    flex-direction: column;
-    gap: 14px; 
-}
-
-.event_type_indicator {
-    display: flex; 
-    align-items: center;
-    justify-content: space-between;
-}
-
 /* Event type badge — color set inline via JS */
-.event_type_indicator > :nth-child(1) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 7px 14px;
-    border-radius: 99px;
-    border: 1px solid transparent;
-}
-
-.event_type_indicator > :nth-child(1) p {
-    letter-spacing: 0.8px;
-    font-size: 8.1px;
-}
 
 /* Live Indicator */
-.event_type_indicator > :nth-child(2) {
-    display: flex;
-    align-items: center; 
-    gap: 6px;
-    font-size: 0.75rem;
-    color: #9CA3AF;
-}
-
-.red_dot {
-    height: 8px;
-    width: 8px;
-    border-radius: 50%;
-    background-color: #EF4444;
-    animation: blink 1.5s infinite ease-in-out;
-}
 
 @keyframes blink {
     0%, 100% { opacity: 1; }
@@ -549,70 +438,16 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 }
 
 /* Title */
-.event_type_title h3 {
-    font-size: 1.35rem;
-    color: #ffffff;
-    line-height: 1.2;
-    letter-spacing: 0.5px;
-}
-
 
 /* ============================= */
 /* DETAILS GRID                  */
 /* ============================= */
 
-.event_details_container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-}
-
-.event_details_small_container :nth-child(1)> i { font-size:16px; color: #FFD700; width:auto;}
-
-.event_details_small_container {
-    width: calc(50% - 7px);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
 /* Icon container */
-.event_details_small_container > :nth-child(1)  {
-    height: 36px;
-    width: 36px;
-    background-color: #27272A;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 /* Text container */
-.event_details_small_container > :nth-child(2) {
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-}
-
-.event_details_small_container h4 {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #E4E4E7;
-}
-
-.event_details_small_container a {
-    font-size: 0.65rem;
-    color: #FFD700;
-
-}.event_details_small_container p {
-    font-size: 0.65rem; 
-    color: #9CA3AF;
-}
 
 /* Green spots indicator */
-.event_details_small_container span {
-    font-weight: 700;
-}
 
 /* Spots progress bar */
 .spots_progress_wrapper {
@@ -654,52 +489,11 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
     transition: width 0.6s ease;
 }
 
-
 /* ============================= */
 /* BUTTON STATES                 */
 /* ============================= */
 
-.sold_out_like_button {
-    height: 50px;
-    width: 100%;
-    background-color: #18181B;
-    border-radius: 12px;
-    border: 1px solid #3f3f46;
-    color: #EF4444;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    cursor: not-allowed;
-    font-size: 0.75rem;
-    transition: background 0.3s ease;
-}
-
-.sold_out_like_button:hover {
-    background-color: #1f1f23;
-}
-
-.join_now_like_button {
-    height: 50px;
-    width: 100%;
-    background-color: #3FFF6F;
-    border-radius: 12px;
-    border: none;
-    color: #0a0a0a;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-    box-shadow: 0 0 16px rgba(63, 255, 111, 0.25);
-}
-
-.join_now_like_button:hover {
-    background-color: #5dffab;
-    transform: translateY(-2px);
-    box-shadow: 0 0 24px rgba(63, 255, 111, 0.4);
-}
-
 /* ------------------------------------------------- ( Carousel ) --------------------------------------------------------- */
-
 
 .carousel_master_wrapper {
     width: 100%;
@@ -786,7 +580,6 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
     transform: scale(1.08);
 }
 
-
 /* ========================================
    THE "GLASS" TEXT LABEL
    ======================================== */
@@ -833,7 +626,6 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
 .item-molten::before { background-image: url('../assets/images/wilson-ball-bg-02.avif'); }
 .item-tshirt::before { background-image: url('../assets/images/IMG_0465.avif'); }
 
-
 /* HOME PAGE MERCH BUTTON        */
 /* ============================= */
 
@@ -860,36 +652,6 @@ article#upcoming_runs_container_child > p { color:#A1A1AA; font-size:14px; line-
         box-shadow 0.25s ease,
         background 0.3s ease;
 }
-
-@keyframes elitePulse {
-
-0% {
-
-border-color: rgba(125, 125, 125, 0.5);
-
-box-shadow: 0 0 0px rgba(255, 255, 255, 0);
-
-}
-
-50% {
-
-/* Glows brighter in the middle of the cycle */
-
-border-color: rgba(255, 255, 255, 0.8);
-
-box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
-
-}
-
-100% {
-
-border-color: rgba(125, 125, 125, 0.5);
-
-box-shadow: 0 0 0px rgba(255, 255, 255, 0);
-
-}
-
-}
 /* ============================= */
 /* PREMIUM CLICK SPRING          */
 /* ============================= */
@@ -905,11 +667,9 @@ box-shadow: 0 0 0px rgba(255, 255, 255, 0);
     100% { transform: scale(1); }                    /* settle */
 }
 
-
 /* ============================= */
 /* TEXT                          */
 /* ============================= */
-
 
 /* ============================= */
 /* ICON MOTION                   */
@@ -1171,24 +931,7 @@ box-shadow: 0 0 0px rgba(255, 255, 255, 0);
 }
 #events_container .bk-time{ display:flex; align-items:center; gap:7px; font-family:'Inter',sans-serif; font-size:13px; color:var(--bk-dim); }
 #events_container .bk-time svg{ color:var(--bk-gold); flex-shrink:0; }
-
-#events_container .bk-status{
-    flex-shrink:0; display:inline-flex; align-items:center; gap:7px;
-    font-family:'Inter',sans-serif; font-size:11px; font-weight:700;
-    letter-spacing:0.08em; text-transform:uppercase;
-    padding:7px 13px; border-radius:99px;
-    background:rgba(255,255,255,0.04); border:1px solid var(--bk-line);
-}
-#events_container .bk-status .d{ width:7px;height:7px;border-radius:50%; animation:bk-pulse 2s ease-in-out infinite; }
 @keyframes bk-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.25)}}
-#events_container .bk-status--open{ color:var(--bk-green); border-color:rgba(63,255,111,.3); }
-#events_container .bk-status--open .d{ background:var(--bk-green); box-shadow:0 0 8px var(--bk-green); }
-#events_container .bk-status--filling{ color:var(--bk-amber); border-color:rgba(255,176,32,.35); }
-#events_container .bk-status--filling .d{ background:var(--bk-amber); box-shadow:0 0 8px var(--bk-amber); }
-#events_container .bk-status--full{ color:var(--bk-red); border-color:rgba(239,68,68,.35); }
-#events_container .bk-status--full .d{ background:var(--bk-red); box-shadow:0 0 8px var(--bk-red); animation:none; }
-#events_container .bk-status--soon{ color:var(--bk-dim); }
-#events_container .bk-status--soon .d{ background:var(--bk-dim); animation:none; }
 
 #events_container .bk-location{
     display:flex; gap:14px; align-items:center;
@@ -1429,7 +1172,6 @@ section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
     #events_container .bk-day{ font-size:2.7rem; }
     #events_container .bk-title{ font-size:2.05rem; }
     #events_container .bk-time{ font-size:14px; }
-    #events_container .bk-status{ font-size:12px; padding:8px 15px; }
     #events_container .bk-map{ width:92px; height:74px; }
     #events_container .bk-loc-name{ font-size:1.2rem; }
     #events_container .bk-spots strong{ font-size:16px; }

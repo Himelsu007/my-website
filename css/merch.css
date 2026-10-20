@@ -4,7 +4,6 @@
 /* .fbc-center-column stands for flexbox center column, it is a utility class that can be used to center content both horizontally and vertically in a column layout. */
 /* .fbc-center-row stands for flexbox center row, it is a utility class that can be used to center content both horizontally and vertically in a row layout. */
 
-
 :root  {  
         --white:#FFFFFF;
         --bright-yellow:#F5EDEA;
@@ -41,7 +40,6 @@ scrollbar-width: none;
 }
     
 p,h1,h3,h4, h2 { text-decoration:none; color:var(--white-color);  }
-
 
 header {
     display: flex;
@@ -366,22 +364,9 @@ button {
     .nav-footer { margin-top: 32px; }
 }
 
-
-#drop_down_menu_container 
-    {
-    height:68px; width:100%; margin:auto; display:flex; 
-    align-items:center; gap:13px; margin-top:60px;
-    justify-content:flex-end; 
-}
-
 /* =========================================
 MERCH HERO WRAPPER (marquee + slideshow only)
 ========================================= */
-#merch_hero_container {
-    max-width: 1500px;
-    margin: 70px auto 0;
-    padding: 0 22px;
-}
 
 /* =========================================
 FILTER CHIPS
@@ -483,8 +468,6 @@ PRODUCT GRID (modern CSS Grid — auto-responsive)
     font-family: 'Inter', sans-serif;
 }
 
-
-
 /* ===============================
 FEATURED PRODUCT
 =============================== */
@@ -537,10 +520,6 @@ FEATURED PRODUCT
 }
 
 /* Soft transition when swapping to related product */
-.modal_content.swapping {
-    opacity: 0;
-    transform: translateY(8px) scale(0.99);
-}
 
 /* ===== Staggered entrance ===== */
 @keyframes modal-fade-up {
@@ -567,9 +546,6 @@ FEATURED PRODUCT
 #product_modal.active .modal_footer       { animation: modal-fade-up 0.42s 0.16s both cubic-bezier(0.19, 1, 0.22, 1); }
 #product_modal.active .modal_description  { animation: modal-fade-up 0.42s 0.18s both cubic-bezier(0.19, 1, 0.22, 1); }
 #product_modal.active .modal_options      { animation: modal-fade-up 0.42s 0.23s both cubic-bezier(0.19, 1, 0.22, 1); }
-#product_modal.active .modal_trust_row    { animation: modal-fade-up 0.42s 0.28s both cubic-bezier(0.19, 1, 0.22, 1); }
-#product_modal.active .modal_backdrop_hint{ animation: modal-fade 0.5s 0.42s both ease-out; }
-
 
 /* Hide scrollbar for a cleaner look */
 .modal_content::-webkit-scrollbar { display: none; }
@@ -658,25 +634,6 @@ FEATURED PRODUCT
 }
 @media (hover: none) {
     .slide_arrow { opacity: 0.85; } /* always visible on touch */
-}
-
-/* Slideshow auto-progress bar (thin line at the bottom of the image) */
-.modal_slide_progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.08);
-    z-index: 14;
-    overflow: hidden;
-}
-.modal_slide_progress_bar {
-    display: block;
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #FFD700, #FFC107);
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
 }
 
 /* Slideshow DOTS */
@@ -817,20 +774,7 @@ FEATURED PRODUCT
     outline-offset: 3px;
 }
 
-
 /* The little grey tag from the screenshot */
-.cdn_preview_badge {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.8);
-    color: black;
-    font-size: 0.7rem;
-    font-family: sans-serif;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-}
 
 /* ========================================
    DETAILS SECTION (Typography & Spacing)
@@ -941,40 +885,6 @@ FEATURED PRODUCT
 /* ========================================
    THE HUD (TEXT & LABELS)
    ======================================== */
-.showcase-hud {
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.glass-tag {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 6px 12px;
-    border-radius: 6px;
-    color: white;
-    font-size: 0.7rem;
-    letter-spacing: 2px;
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.pulse-dot {
-    width: 6px;
-    height: 6px;
-    background: #FFD700;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #FFD700;
-    animation: blink 1.5s infinite;
-}
 
 .hud-title {
     color: white;
@@ -994,15 +904,6 @@ FEATURED PRODUCT
 /* ========================================
    PROGRESS & OVERLAYS
    ======================================== */
-.slide-progress-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 20;
-}
 
 .slide-progress-bar {
     height: 100%;
@@ -1011,18 +912,9 @@ FEATURED PRODUCT
     transition: width 3s linear; /* Syncs with your 3s swap */
 }
 
-.cinematic-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8));
-    z-index: 5;
-    pointer-events: none;
-}
-
 @keyframes blink { 
     50% { opacity: 0.3; } 
 }
-
 
 .whatsapp_container {
     margin-top: 24px;
@@ -1079,34 +971,11 @@ FEATURED PRODUCT
     75% { transform: translateX(-5px); }
 }
 
-.shake {
-    animation: shake 0.4s ease-in-out;
-}
-
 /* ============================================
    NEW MODAL COMPONENTS
    ============================================ */
 
 /* Urgency line */
-.modal_urgency {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #FFD700;
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    margin-top: -4px;
-}
-.urgency_dot {
-    width: 7px;
-    height: 7px;
-    background: #FFD700;
-    border-radius: 50%;
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
-    animation: urgency-pulse 1.6s ease-in-out infinite;
-}
 @keyframes urgency-pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.85); }
@@ -1247,113 +1116,10 @@ FEATURED PRODUCT
 }
 
 /* Trust badges row */
-.modal_trust_row {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
-    padding: 14px 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-.trust_item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    text-align: center;
-    color: #a1a1aa;
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    line-height: 1.3;
-}
-.trust_item svg {
-    color: #FFD700;
-    flex-shrink: 0;
-}
 
 /* Related products */
-.modal_related {
-    margin-top: 24px;
-}
-.modal_related h4 {
-    color: #fff;
-    font-size: 14px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin: 0 0 12px 0;
-}
-.modal_related_track {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
-.modal_related_card {
-    background: #0F0F12;
-    border: 1px solid #27272A;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    padding: 0;
-    text-align: left;
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-}
-.modal_related_card:hover {
-    border-color: rgba(255, 215, 0, 0.5);
-    transform: translateY(-2px);
-}
-.modal_related_card:focus-visible {
-    outline: 2px solid #FFD700;
-    outline-offset: 2px;
-}
-.modal_related_card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    display: block;
-}
-.modal_related_meta {
-    padding: 10px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-.modal_related_meta > span:first-child {
-    color: #e4e4e7;
-    font-size: 12px;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-.modal_related_meta > span:last-child {
-    color: #FFD700;
-    font-size: 13px;
-}
 
 /* Backdrop hint */
-.modal_backdrop_hint {
-    margin-top: 20px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.3);
-    font-size: 10px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-.modal_backdrop_hint kbd {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 4px;
-    padding: 1px 5px;
-    font-family: inherit;
-    font-size: 10px;
-}
 
 /* ============================================
    LIGHTBOX (fullscreen image)
@@ -1452,12 +1218,6 @@ FEATURED PRODUCT
         z-index: 40;
         pointer-events: none;
     }
-    .modal_related_track {
-        grid-template-columns: 1fr 1fr;
-    }
-    .trust_item {
-        font-size: 9px;
-    }
 }
 
 /* LIGHT SWEEP */
@@ -1489,8 +1249,6 @@ FEATURED PRODUCT
     left:130%;
 }
 
-
-
 /* The "Limited Edition" Badge */
 .product_badge {
     position: absolute;
@@ -1506,42 +1264,6 @@ FEATURED PRODUCT
     font-family: 'Barlow Condensed', sans-serif;
     z-index: 10;
 }
-.marquee-container {
-  width: 100%;
-  overflow: hidden;
-  /* Transparent Black with a "Glass" blur effect */
-  background: rgba(0, 0, 0, 0.7); 
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  
-  padding: 12px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-  z-index: 10;
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content; /* Vital for the seamless loop */
-  animation: scroll-seamless 20s linear infinite;
-}
-
-.marquee-track span {
-    color: #ffffff;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding-right: 28px; /* Space between adjacent items */
-    white-space: nowrap;
-}
-
-.marquee-track .marquee-dot {
-    color: #FFD700;
-    font-size: 0.7rem;
-    padding-right: 28px;
-    letter-spacing: 0;
-}
 
 /* THE SEAMLESS LOOP LOGIC */
 @keyframes scroll-seamless {
@@ -1555,28 +1277,12 @@ FEATURED PRODUCT
 }
 
 /* Smooth Pause on Hover */
-.marquee-container:hover .marquee-track {
-  animation-play-state: paused;
-  cursor: pointer;
-}
 /* Grayscale effect for sold out items */
 .sold_out_img img {
     filter: grayscale(100%) brightness(0.6);
 }
 
 /* The Sold Out Button inside the Modal */
-.sold_out_btn {
-    width: 100%;
-    padding: 18px;
-    background: transparent;
-    border: 2px solid #3f3f46;
-    color: #ef4444; /* Red text */
-    border-radius: 99px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: not-allowed;
-    text-transform: uppercase;
-}
 
 /* Optional: Make the card in the main grid look sold out too */
 .products_box.is_sold_out {
@@ -1588,76 +1294,11 @@ FEATURED PRODUCT
 FEATURED CONTENT
 ====================== */
 
-.featured_content{
-
-    position:absolute;
-    bottom:22px;
-    left:22px;
-
-    z-index:3;
-
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-}
-
 /* label */
-
-.featured_label{
-
-    font-size:11px;
-    letter-spacing:1px;
-
-    background:#FFD400;
-    color:black;
-
-    padding:4px 10px;
-
-    border-radius:20px;
-
-    width:max-content;
-}
 
 /* title */
 
-.featured_title{
-
-    font-size:22px;
-    font-weight:700;
-
-    color:white;
-
-    line-height:1.2;
-}
-
 /* button */
-
-.featured_cta{
-
-    margin-top:6px;
-    width:220px;
-    height:36px;
-    border-radius:20px;
-    border:1px solid #FFD400;
-    background:transparent;
-    color:#FFD400;
-    font-size:13px;
-    cursor:pointer;
-    transition:.25s;
-}
-
-.featured_cta:hover{
-
-    background:#FFD400;
-    color:black;
-}
-
-
-.featured_cta:active{
-
-    background:#FFD400;
-    color:black;
-}
 /* ===============================
 PRODUCT CARD (button-based for a11y)
 =============================== */
@@ -1769,88 +1410,15 @@ PRODUCT INFO
     letter-spacing: 0.02em;
 }
 
-
-
-
-.sort-dropdown{
-    position:relative;
-    width:200px;
-    font-family:Inter, sans-serif;
-}
-
 /* Trigger button */
-
-.sort-trigger{
-    width:100%;
-    height:40px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 16px;
-    background:#111;
-    color:#fff;
-    border:1px solid #2a2a2a;
-    border-radius:10px;
-    cursor:pointer;
-    transition:all .25s ease;
-}
-
-.sort-trigger:hover{
-    border-color:#FFD400;
-}
 
 /* arrow */
 
-.sort-arrow{
-    transition:transform .25s ease;
-}
-
-.sort-dropdown.active .sort-arrow{
-    transform:rotate(180deg);
-}
-
 /* menu */
-
-.sort-menu{
-    position:absolute;
-    top:55px;
-    left:0;
-    width:100%;
-    background:#111;
-    border:1px solid #2a2a2a;
-    border-radius:10px;
-    overflow:hidden;
-    opacity:0;
-    transform:translateY(-10px);
-    pointer-events:none;
-    transition:all .25s ease;
-    z-index:20;
-}
 
 /* open state */
 
-.sort-dropdown.active .sort-menu{
-    opacity:1;
-    transform:translateY(0);
-    pointer-events:auto;
-}
-
 /* options */
-
-.sort-option{
-    padding:14px 16px;
-    color:#bbb;
-    cursor:pointer;
-    transition:all .2s ease;
-}
-
-.sort-option:hover{
-    background:#1a1a1a;
-    color:#fff;
-}
-
-
-
 
 /* ========================================
    BACK SOON — sold out + coming soon
@@ -2107,10 +1675,6 @@ PRODUCT INFO
     .modal_title { font-size: 1.5rem; }
     .modal_description { font-size: 0.9rem; line-height: 1.45; }
     /* Same single-line trust row as the laptop breakpoint. */
-    .modal_trust_row { padding: 10px 12px; gap: 8px; }
-    .modal_trust_row .trust_item { flex-direction: row; align-items: center; gap: 6px; font-size: 0.72rem; }
-    .modal_trust_row .trust_item svg { width: 14px; height: 14px; flex: none; }
-    .modal_backdrop_hint { display: none; }
     /* Side by side rather than stacked — there is width for it here. */
     .modal_cta_row { flex-direction: row; }
     .modal_cta_row .whatsapp_btn { flex: 1 1 auto; }
@@ -2249,17 +1813,8 @@ PRODUCT INFO
 
     /* The trust row was 59px of stacked icon-over-label. One line does the same
        job in half the height. */
-    .modal_trust_row { padding: 10px 12px; gap: 8px; }
-    .modal_trust_row .trust_item {
-        flex-direction: row;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.72rem;
-    }
-    .modal_trust_row .trust_item svg { width: 14px; height: 14px; flex: none; }
 
     /* Redundant now that a persistent close button sits in the corner. */
-    .modal_backdrop_hint { display: none; }
 }
 
 /* Short laptops (13" at 1280x720 and the like) give up a little, but keep the
@@ -2542,9 +2097,7 @@ body.lx-scroll-locked {
     #product_modal.active .modal_price,
     #product_modal.active .modal_footer,
     #product_modal.active .modal_description,
-    #product_modal.active .modal_options,
-    #product_modal.active .modal_trust_row,
-    #product_modal.active .modal_backdrop_hint{
+    #product_modal.active .modal_options{
         animation: none;
     }
 }
@@ -2564,21 +2117,6 @@ body.lx-scroll-locked {
    the choice still to make. The line is the actual fix — the rest is
    making the pause look deliberate.
    ======================================== */
-.modal_pick_hint {
-    margin: 0 0 10px;
-    display: flex; align-items: center; gap: 7px;
-    font-family: 'Inter', sans-serif;
-    font-size: 12.5px; font-weight: 500; letter-spacing: -0.005em;
-    color: #8a8a94;
-    animation: lxHintIn 0.3s var(--lx-out) both;
-}
-.modal_pick_hint[hidden] { display: none; }
-.modal_pick_hint::before {
-    content: ''; flex: none;
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #FFD700;
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.14);
-}
 @keyframes lxHintIn { from { opacity: 0; transform: translateY(3px) } to { opacity: 1; transform: none } }
 
 /* Both buttons, one language. Translucent rather than filled: the shape and
@@ -2630,9 +2168,9 @@ body.lx-scroll-locked {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .modal_pick_hint,
     .modal_variant_group.needs-attention,
-    .pill.active, .color_pills .pill.active { animation: none; }
+    .pill.active,
+    .color_pills .pill.active { animation: none; }
 }
 
 /* ========================================
@@ -2728,7 +2266,6 @@ body.lx-scroll-locked {
     #product_modal.active {
         background: rgba(0, 0, 0, calc(0.72 * (1 - var(--lx-drag, 0))));
     }
-
 
     /* The close button sits over a photo, which can be any colour. A solid
        surface keeps it findable on a white product shot and a dark arena
