@@ -3184,3 +3184,24 @@ body:has(#product_modal.active) #lx_bag_pill {
 .pp-facts { padding-left: 18px; color: #A1A1AA; }
 .pp-actions { display: flex; gap: 20px; align-items: center; margin-top: 24px; }
 .pp-order { background: #FFD700; color: #000 !important; padding: 12px 20px; border-radius: 12px; font-weight: 600; text-decoration: none; }
+
+/* ===============================
+   STATUS BAR (phones)
+   The strip where the phone shows time, signal and battery is white on the
+   store. iOS 26 Safari ignores theme-color: it paints that strip with the
+   colour of a fixed element touching the top edge, else the body's (black
+   here). So a white fixed line sits on the very top edge, above the header,
+   and Safari carries its white up into the status bar. theme-color is white
+   too, for older iPhones and Android Chrome.
+=============================== */
+.lx-statusbar { display: none; }
+@media (hover: none) and (pointer: coarse) {
+    .lx-statusbar {
+        display: block;
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: #fff;
+        z-index: 1001;     /* over the header (1000), under sheets and the bag */
+    }
+}
