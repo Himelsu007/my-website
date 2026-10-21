@@ -144,6 +144,67 @@ function startLocationSwapper() {
 }
 
 // ============================================
+// THE STORE CARD, THE LABEL, THE SCROLL CUE
+// ============================================
+const heroReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// The store card shows one thing the store has at a time: its photo and its
+// line turn together, the line rising out as the next rises in.
+function startStoreCard() {
+    const card = document.querySelector('.ios-shop');
+    if (!card || heroReduced) return;
+    const thumbs = card.querySelectorAll('.ios-thumbs img');
+    const lines = card.querySelectorAll('.ios-lines > span');
+    if (lines.length < 2) return;
+    let i = 0;
+    setInterval(() => {
+        if (document.hidden) return;
+        const next = (i + 1) % lines.length;
+        lines[i].classList.remove('is-on');
+        lines[i].classList.add('is-out');
+        const out = lines[i];
+        setTimeout(() => out.classList.remove('is-out'), 600);
+        lines[next].classList.add('is-on');
+        if (thumbs[i]) thumbs[i].classList.remove('is-on');
+        if (thumbs[next]) thumbs[next].classList.add('is-on');
+        i = next;
+    }, 2800);
+}
+
+// The small label above the headline decodes from one line to the next.
+function startPhaseDecode() {
+    const label = document.querySelector('.phase-text[data-phrases]');
+    if (!label || heroReduced) return;
+    const lines = label.dataset.phrases.split('|');
+    const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/';
+    let line = 0;
+    setInterval(() => {
+        if (document.hidden || window.scrollY > window.innerHeight) return;
+        line = (line + 1) % lines.length;
+        const to = lines[line].toUpperCase();
+        let t0 = 0;
+        requestAnimationFrame(function step(t) {
+            if (!t0) t0 = t;
+            const shown = Math.floor((t - t0) / 700 * to.length);   // letters settled so far
+            label.textContent = to.split('').map((ch, k) =>
+                k < shown || ch === ' ' || ch === '-' ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0]).join('');
+            if (shown < to.length) requestAnimationFrame(step);
+        });
+    }, 4200);
+}
+
+// The scroll cue glides down to the next section.
+function startScrollCue() {
+    const cue = document.querySelector('.hero-scroll');
+    const next = document.getElementById('upcoming_runs_container');
+    if (!cue || !next) return;
+    cue.addEventListener('click', (e) => {
+        e.preventDefault();
+        next.scrollIntoView({ behavior: heroReduced ? 'auto' : 'smooth', block: 'start' });
+    });
+}
+
+// ============================================
 // ENTRANCE & INITIALIZATION
 // ============================================
 function triggerEntrance() {
@@ -166,6 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
     else window.addEventListener('load', loadRemainingSlides, { once: true });
     triggerEntrance();
     startLocationSwapper();
+    startStoreCard();
+    startPhaseDecode();
+    startScrollCue();
     
     // Performance fix: Use passive listener for scrolling
     window.addEventListener('scroll', handleScroll, { passive: true });

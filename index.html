@@ -198,17 +198,17 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     
-    <link rel="stylesheet" href="css/style.css?v=20261021231035">
-    <link rel="stylesheet" href="css/fonts.css?v=20261021231035">
-    <link rel="stylesheet" href="css/hero.css?v=20261021231035">
-    <link rel="stylesheet" href="css/footer.css?v=20261021231035">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261021231035">
-    <link rel="stylesheet" href="css/leaderboard.css?v=20261021231035">
-    <link rel="stylesheet" href="css/splash.css?v=20261021231035">
-    <link rel="stylesheet" href="css/tap-feedback.css?v=20261021231035">
-    <link rel="stylesheet" href="css/responsive.css?v=20261021231035">
-    <link rel="stylesheet" href="css/statusbar.css?v=20261021231035">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261021231035">
+    <link rel="stylesheet" href="css/style.css?v=20261021232104">
+    <link rel="stylesheet" href="css/fonts.css?v=20261021232104">
+    <link rel="stylesheet" href="css/hero.css?v=20261021232104">
+    <link rel="stylesheet" href="css/footer.css?v=20261021232104">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261021232104">
+    <link rel="stylesheet" href="css/leaderboard.css?v=20261021232104">
+    <link rel="stylesheet" href="css/splash.css?v=20261021232104">
+    <link rel="stylesheet" href="css/tap-feedback.css?v=20261021232104">
+    <link rel="stylesheet" href="css/responsive.css?v=20261021232104">
+    <link rel="stylesheet" href="css/statusbar.css?v=20261021232104">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261021232104">
 </head>
 
 <body>
@@ -230,8 +230,9 @@
         <img src="assets/icons/locked_in_small.svg" alt="Locked In Logo">
     </a>
 
-    <a href="merch.html" class="store-link">
-        <img src="assets/icons/store.svg" alt="store icon">
+    <a href="merch.html" class="store-link" aria-label="Store">
+        <img src="assets/icons/store.svg" alt="">
+        <span class="store-link-label" aria-hidden="true">Store</span>
     </a>
 </header>
 
@@ -318,12 +319,12 @@
                 <!-- Phase Indicator -->
                 <div class="phase-indicator">
                     <div class="phase-dot"></div>
-                    <span class="phase-text"> LISBON - PT   </span>
+                    <span class="phase-text" data-phrases="Lisbon - PT|Pick up games|Pro gear store">LISBON - PT</span>
                 </div>
 
                 <!-- Main Headline -->
                 <h1 class="hero-title">
-                    <span style="color:white;"> Are you  </span><br> locked in? 
+                    <span style="color:white;"> Are you  </span><br> <span class="hero-title-glint">locked in?</span> 
                 </h1>
                 <h2 class="hero-subheadline">
                     Join Pick Up Games & Tournaments. 
@@ -350,6 +351,31 @@
         </span>
     </a>
     <span class="ios-cap">Tap to join group chat</span>
+    <!-- lx:home-store — written by tools/build-store.mjs from the catalogue -->
+    <a class="ios-wa ios-shop" href="merch.html" aria-label="Shop the Locked In store">
+        <span class="ios-thumbs" aria-hidden="true">
+            <img class="is-on" src="assets/images/home-store/tank-black-120.webp" alt="" width="120" height="120" decoding="async">
+            <img src="assets/images/home-store/socks-pink-120.webp" alt="" width="120" height="120" decoding="async" fetchpriority="low">
+            <img src="assets/images/home-store/tee-black-120.webp" alt="" width="120" height="120" decoding="async" fetchpriority="low">
+            <img src="assets/images/home-store/ball-evo-nxt-120.webp" alt="" width="120" height="120" decoding="async" fetchpriority="low">
+        </span>
+        <span class="ios-body" aria-hidden="true">
+            <span class="ios-top">
+                <span class="ios-name">LOCKED IN STORE</span>
+                <span class="ios-time">new in</span>
+            </span>
+            <span class="ios-msg ios-lines">
+                <span class="is-on">Nike Pro Combat tank · 50€</span>
+                <span>Nike Elite crew socks · 20€</span>
+                <span>Nike compression tee · 50€</span>
+                <span>Wilson EVO NXT ball · 120€</span>
+            </span>
+        </span>
+        <span class="ios-go" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1 13H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        </span>
+    </a>
+    <!-- /lx:home-store -->
 </div>
 
                 <!-- Stats -->
@@ -371,6 +397,7 @@
                 <br></div>
             </div>
         </div> 
+        <a class="hero-scroll" href="#upcoming_runs_container"><span class="hero-scroll-label">Scroll</span><span class="hero-scroll-track" aria-hidden="true"><i></i></span></a>
     </div>
 
 <section id="upcoming_runs_container" class="lx-section-head">
@@ -644,19 +671,19 @@
 })();
 </script>
 <!-- Accordition JS  -->
-<script src="javascript/hero_section.js?v=20261021231035" defer></script>
-<script src="javascript/signups-api.js?v=20261021231035" defer></script>
-<script src="javascript/local-signups.js?v=20261021231035" defer></script>
-<script src="javascript/events.js?v=20261021231035" defer></script>
-<script src="javascript/leaderboard-data.js?v=20261021231035" defer></script>
-<script src="javascript/leaderboard.js?v=20261021231035" defer></script>
-<script src="javascript/splash.js?v=20261021231035" defer></script>
-<script src="javascript/tap-feedback.js?v=20261021231035" defer></script>
-<script src="javascript/carousel.js?v=20261021231035" defer></script>
-<script src="javascript/accordition.js?v=20261021231035" defer></script>
-<script src="javascript/scroll_detection_menu.js?v=20261021231035" defer></script>
-<script src="javascript/reveaal-animation.js?v=20261021231035" defer> </script>
+<script src="javascript/hero_section.js?v=20261021232104" defer></script>
+<script src="javascript/signups-api.js?v=20261021232104" defer></script>
+<script src="javascript/local-signups.js?v=20261021232104" defer></script>
+<script src="javascript/events.js?v=20261021232104" defer></script>
+<script src="javascript/leaderboard-data.js?v=20261021232104" defer></script>
+<script src="javascript/leaderboard.js?v=20261021232104" defer></script>
+<script src="javascript/splash.js?v=20261021232104" defer></script>
+<script src="javascript/tap-feedback.js?v=20261021232104" defer></script>
+<script src="javascript/carousel.js?v=20261021232104" defer></script>
+<script src="javascript/accordition.js?v=20261021232104" defer></script>
+<script src="javascript/scroll_detection_menu.js?v=20261021232104" defer></script>
+<script src="javascript/reveaal-animation.js?v=20261021232104" defer> </script>
 <!-- The VIEW MERCH button is routed by javascript/splash.js -->
-<script src="javascript/cookie-consent.js?v=20261021231035" defer></script>
+<script src="javascript/cookie-consent.js?v=20261021232104" defer></script>
 </body> 
 </html>

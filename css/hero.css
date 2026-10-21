@@ -616,3 +616,236 @@
 @media (prefers-reduced-motion: reduce) {
     .hero-image-slide { animation: none !important; transform: none !important; }
 }
+
+/* ============================================
+   THE STORE, FROM THE FIRST SECOND
+   --------------------------------------------
+   First-time visitors didn't know there was a store: the header kept its
+   icon hidden until a scroll, and the hero never said it. Now:
+   - the header's Store link shows from the start, with its name;
+   - a second card under the WhatsApp one, in the same glass, shows what
+     the store has, one thing at a time (photo and line turn together,
+     hero_section.js), with the store's gold on the button. Its contents
+   are written by tools/build-store.mjs from the catalogue (lx:home-store
+   in index.html), so prices and stock stay true.
+   With it, the hero has the store hero's motion: a light through
+   "LOCKED IN?", the label above it decoding, and a scroll cue.
+   ============================================ */
+
+/* ---- header: "Store", visible and named ---- */
+#main-header > .logo-link {
+    /* centred on its own, so the wider Store link doesn't push it aside */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+#main-header > a.store-link {
+    opacity: 1;
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 32px;
+    padding: 0 13px 0 11px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 99px;
+    background: rgba(0, 0, 0, 0.28);
+    color: #fff;
+    text-decoration: none;
+    font: 700 13px/1 'Barlow Condensed', Arial, sans-serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+#main-header > a.store-link:hover {
+    border-color: rgba(255, 215, 0, 0.6);
+    background: rgba(0, 0, 0, 0.45);
+}
+#main-header > a.store-link > img { height: 14px; }
+
+/* ---- the store card ---- */
+.ios-shop { margin-top: 6px; }
+.hero-content.visible .ios-shop {
+    /* arrives after the WhatsApp card, like a second notification; it holds
+       its start only until then, so hovering still lifts it after */
+    animation: ios-arrive 0.9s cubic-bezier(0.19, 1, 0.22, 1) 1.7s backwards;
+}
+@keyframes ios-arrive {
+    from { opacity: 0; transform: translateY(-12px) scale(0.96); }
+    to { opacity: 1; transform: none; }
+}
+.ios-thumbs {
+    position: relative;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 11px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+.ios-thumbs img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transform: scale(1.14);
+    transition: opacity 0.5s ease, transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.ios-thumbs img.is-on { opacity: 1; transform: none; }
+/* one line at a time: the next rises in as the last rises out */
+.ios-lines {
+    position: relative;
+    display: block;
+    height: 1.4em;
+    line-height: 1.4;
+    overflow: hidden;
+}
+.ios-lines > span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: transform 0.55s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.4s ease;
+}
+.ios-lines > span.is-on { opacity: 1; transform: none; }
+.ios-lines > span.is-out { opacity: 0; transform: translateY(-100%); }
+.ios-shop .ios-time { color: #FFD700; }
+.ios-shop .ios-go {
+    color: #0B0B0C;
+    background: radial-gradient(circle at 34% 28%, #FFEC8A 0%, #FFD700 46%, #E3A600 100%);
+    box-shadow: 0 8px 20px -6px rgba(255, 215, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.ios-shop .ios-go::after {
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.6);
+    animation-delay: 1.3s;
+}
+.ios-shop:focus-visible { outline-color: #FFD700; }
+@media (max-width: 520px) {
+    .ios-thumbs { width: 36px; height: 36px; border-radius: 10px; }
+}
+
+/* ---- a light through "LOCKED IN?" every few seconds ---- */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .hero-title-glint {
+        background: linear-gradient(100deg, #85144B 0 42%, #E05A9A 50%, #85144B 58% 100%);
+        background-size: 300% 100%;
+        background-position: 100% 0;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: hero-glint 7s ease-in-out 2.4s infinite;
+    }
+}
+@keyframes hero-glint {
+    0% { background-position: 100% 0; }
+    24%, 100% { background-position: 0 0; }
+}
+
+/* ---- the scroll cue: a light running down a line ---- */
+.hero-scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    z-index: 4;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    translate: -50% 0;
+    padding: 4px 8px;
+    color: rgba(255, 255, 255, 0.55);
+    font: 600 10px/1 'Inter', 'Inter Fallback', sans-serif;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.3s ease;
+    animation: hero-cue-in 1s ease 2s backwards;
+}
+.hero-scroll:hover { color: #fff; }
+/* letter-spacing trails the last letter; this keeps the word centred */
+.hero-scroll-label { padding-left: 0.3em; }
+.hero-scroll-track {
+    position: relative;
+    width: 1px;
+    height: 48px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.18);
+}
+.hero-scroll-track i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 16px;
+    background: #fff;
+    transform: translateY(-16px);
+    animation: hero-drop 2.2s cubic-bezier(0.65, 0, 0.35, 1) 2.6s infinite;
+}
+/* and lands on the plum of "LOCKED IN?" */
+.hero-scroll::after {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #85144B;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+    animation: hero-land 2.2s cubic-bezier(0.65, 0, 0.35, 1) 2.6s infinite;
+}
+@keyframes hero-cue-in { from { opacity: 0; } }
+@keyframes hero-drop {
+    0% { transform: translateY(-16px); }
+    62%, 100% { transform: translateY(48px); }
+}
+@keyframes hero-land {
+    0%, 55% { transform: scale(1); }
+    66% { transform: scale(1.9); }
+    84%, 100% { transform: scale(1); }
+}
+/* Shown where it has room below the stats: computers and tall phones */
+@media (min-width: 769px), (min-height: 760px) {
+    .hero-scroll { display: flex; }
+}
+@supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+        /* bows out as soon as they scroll */
+        .hero-scroll {
+            animation: hero-cue-in 1s ease 2s backwards, hero-cue-out linear both;
+            animation-timeline: auto, scroll(root);
+            animation-range: normal, 0 160px;
+        }
+    }
+}
+@keyframes hero-cue-out { to { opacity: 0; } }
+
+/* ---- phones: the stats in one row, to make room for the store card ---- */
+@media (max-width: 768px) {
+    .hero-container { padding-top: 16vh; }
+    .stats {
+        grid-template-columns: auto 1px auto 1px minmax(0, 1fr);
+        gap: 14px;
+        margin-top: 4px;
+    }
+    .stat { min-width: 0; gap: 5px; }
+    .stat-divider { display: block; height: 34px; }
+    .stat-value { font-size: 1.6rem; }
+    .stat-label { font-size: 9px; letter-spacing: 0.12em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-content.visible .ios-shop,
+    .hero-title-glint,
+    .hero-scroll,
+    .hero-scroll-track i,
+    .hero-scroll::after { animation: none; }
+    .ios-thumbs img, .ios-lines > span { transition: none; }
+}
