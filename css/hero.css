@@ -415,7 +415,7 @@
    One clean pill: three faces from the group, what it is in two short
    lines, and WhatsApp's green button. No fake chat, typing dots or caption
    under it: the card says it all. Under it, its twin for the store: three
-   things it sells, "Shop the store", and the store's gold. The two are as
+   things it sells, "Shop the store", and the store's bag on white. The two are as
    wide as each other and rise in with the rest of the hero.
    ============================================ */
 .ios-wa-wrap{
@@ -495,11 +495,12 @@
 .ios-go svg{ width:20px; height:20px; }
 .ios-wa:hover .ios-go{ transform:scale(1.06); }
 
-/* the store's twin: product shots for faces, gold for green */
+/* the store's twin: product shots for faces, and the store's own bag icon
+   (the one on its bag button) in black on white for WhatsApp's green */
 .ios-wa--store .ios-avatars i{ background-color:#fff; background-size:86%; background-repeat:no-repeat; }
-.ios-wa--store .ios-go{ margin-left:auto; color:#0B0B0C; background:#FFD700; }
-.ios-wa--store:hover{ border-color:rgba(255,215,0,0.5); }
-.ios-wa--store:focus-visible{ outline-color:#FFD700; }
+.ios-wa--store .ios-go{ margin-left:auto; color:#0B0B0C; background:#fff; }
+.ios-wa--store:hover{ border-color:rgba(255,255,255,0.4); }
+.ios-wa--store:focus-visible{ outline-color:#fff; }
 .ios-wa .ios-go{ margin-left:auto; }
 
 @media (max-width:520px){
@@ -679,8 +680,8 @@
     .hero-container {
         height: auto;
         min-height: 0;
-        padding-top: clamp(112px, 17vh, 150px);
-        padding-bottom: 44px;
+        padding-top: clamp(124px, 19vh, 166px);
+        padding-bottom: 88px;
     }
     .stats {
         grid-template-columns: auto 1px auto 1px minmax(0, 1fr);
