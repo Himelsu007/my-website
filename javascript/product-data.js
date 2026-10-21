@@ -15,13 +15,12 @@
 // A product's own page (store/<slug>/) opens on that product's sheet.
 const onProductPage = !!document.body.dataset.productSlug;
 
-// `position` is the card's place on the shelf. The first row is on screen
-// straight away, so those photos are fetched at once rather than when the lazy
-// loader gets to them, and the first two (the likely largest paint) go first.
+// `position` is the card's place on the shelf. The first row peeks under the
+// store hero, so those photos are fetched at once rather than when the lazy
+// loader gets to them, but after the hero's own photo.
 function buildProductCard(product, position = Infinity) {
     const absoluteIndex = products.indexOf(product);
     const loading = position < 4 ? "eager" : "lazy";
-    const priority = position < 2 ? ' fetchpriority="high"' : "";
     const card = document.createElement("a");
     card.href = productPath(product);
     card.className = `products_box ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
@@ -29,7 +28,7 @@ function buildProductCard(product, position = Infinity) {
     card.setAttribute("aria-label", `View details for ${product.name}, ${displayPrice(product)}`);
     card.innerHTML = `
         <div class="product_image_wrapper tile-${product.tile || "photo"}">
-            <img src="${product.image}" alt="${product.name}" class="product_image" loading="${loading}"${priority} decoding="async">
+            <img src="${product.image}" alt="${product.name}" class="product_image" loading="${loading}" decoding="async">
             ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ""}
         </div>
         <div class="product_info">

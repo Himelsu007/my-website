@@ -257,6 +257,8 @@ function productPage(p) {
     h = swap(h, /<body>/, `<body data-product-slug="${esc(slugOf(p))}" data-store-title="${esc(storeTitle)}">`, "body tag");
     // The product's own heading replaces the store's.
     h = swap(h, /<h1 class="sr-only"[^>]*>[\s\S]*?<\/h1>/, staticProduct(p), "store h1");
+    // The sheet opens over the store hero here, so its photo goes first.
+    h = swap(h, /(<img class="sh-shot is-on"[^>]*?) fetchpriority="high"/, "$1", "store hero priority");
     return h;
 }
 

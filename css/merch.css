@@ -2311,17 +2311,13 @@ body.lx-scroll-locked {
 }
 
 /* ========================================
-   NO HERO
+   CLEARANCE UNDER THE HEADER
    ----------------------------------------
-   The carousel at the top of the store has gone — it was a full-width photo
-   reel sitting between the visitor and the products, and two of its four
-   slides advertised apparel that is not currently buyable. The products are
-   the page now.
-
-   The hero was what carried the clearance under the fixed header (70px on
-   phones, 100–120px on desktop), so the filter row takes that over. The
-   hero's styles are left in place, inert; the markup and its slide script
-   are in git history before this change if it ever comes back.
+   The old photo carousel at the top of the store has gone; its styles above
+   are left in place, inert. The store hero that replaced it is in
+   css/store-hero.css and carries its own clearance, which sets a smaller gap
+   above the filter row while it is there. Without the hero, the filter row
+   clears the fixed header itself (70px on phones, 100–120px on desktop).
    ======================================== */
 #product_filter_bar { margin-top: 92px; }
 @media (min-width: 768px)  { #product_filter_bar { margin-top: 118px; } }

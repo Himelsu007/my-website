@@ -56,6 +56,10 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
 ## Design decisions the owner has made
 
 - **Product sheet:** light on desktop (900 px and wider), dark on phones. On phones it's a centred card at 95% of the screen height over a blurred store. One theme for every product, not per product.
+- **Store hero** (top of `merch.html`, `css/store-hero.css`, `javascript/store-hero.js`):
+  - Light editorial look after the Kinfield reference the owner chose: the black headline "Wear what the pros wear.", small mono labels, a tracking ring with a gold dot on the player, numbered colour tabs, a gold "Shop the tank" button. The owner rejected a framed box behind the players and a dark version.
+  - The two tank photos in `assets/images/store-hero/` swap every 3 seconds and fade into the page with no frame. The ring's position on each player is set by `--ax`/`--ay` in the CSS.
+  - Colours follow the catalogue: a colour that can't be bought leaves the hero, and the price and link come from the product. `build-store.mjs` drops the photo's `fetchpriority` on product pages, so the sheet's photo loads first.
 - **Bag:** a light floating panel on desktop, dark on phones.
 - **Order slip:** `order.html` stays dark.
 - **Shelf cards:**
