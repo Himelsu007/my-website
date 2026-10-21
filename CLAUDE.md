@@ -1,0 +1,74 @@
+# Locked In Lx website
+
+Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, training, and a store that sells through WhatsApp. GitHub Pages deploys from `main`. The bare domain redirects to `www`.
+
+## Workflow
+
+- Commit straight to `main` and push. Don't open a pull request unless the owner asks for one. The site goes live about 30–60 seconds after a push.
+- After any change to CSS, JS or the product catalogue, run `./bump-assets.sh` before committing. It:
+  - updates the `?v=` stamps
+  - syncs stock from Matrix (this only works on the owner's Mac)
+  - rebuilds the generated store files listed below
+- Check it's live with `curl -sL "https://www.lockedinlx.com/<page>?nc=$RANDOM"` and wait until the `?v=` stamp matches the commit. Use `www` and `-L`, because the bare domain redirects. Pages are cached for 10 minutes.
+- When replacing an image, give it a new filename so browsers don't keep showing the old one.
+
+## Generated files: never edit by hand
+
+- `store/*/index.html`: one page per product, built from `merch.html`
+- `feeds/google-merchant.xml`
+- the `lx:store` block in `sitemap.xml`
+- the `lx:store-ld` block in `merch.html`
+- `javascript/product-stock.js`
+
+`tools/build-store.mjs` writes the first four from the catalogue. `tools/sync-stock.mjs` writes the stock file from Matrix, the owner's inventory app.
+
+## Product catalogue: `javascript/product-catalog.js`
+
+- Names and SKUs come from Matrix's inventory. Matrix is the source of truth for naming.
+- Never change an existing `sku`. Renaming a product changes three things:
+  - its page address (pin the old one with `slug`)
+  - its order-link code (use `replaces`)
+  - bag matching
+- So, to show a shorter name on the shelf, set `shelfName` and keep the full `name`, colour included, for the product sheet, orders and Google.
+- The shelf order is the catalogue order: the best-seller row (tanks and tees) first, then the newest arrivals, then the rest.
+- Stock comes from Matrix:
+  - A size at 0 shows dimmed with an "Out of stock" tooltip.
+  - A product at 0 moves to "Back Soon" (with a WhatsApp "Notify me"), and goes back onto the shelf when Matrix has stock again.
+  - Quantity in the sheet and in the bag is capped by stock.
+  - `matrixSku` is set where Matrix's SKU differs from ours.
+  - Only products Matrix doesn't have carry a hand-set `stock`.
+- Don't change prices without asking. Some Matrix prices differ from the store on purpose.
+
+## Images
+
+- Use WebP, made with `cwebp -q 84–88`, about 1200 px for product shots.
+- Product shots sit on pure white. Lift a light-grey studio background to white with ffmpeg `curves`.
+- The product sheet's gallery crops photos to fill its frame. The frame is tall on desktop (about 0.82 wide-to-tall) and wide on phones (about 1.1). Crop lifestyle photos to about 0.95 so heads and the product stay in frame on both.
+- Basketballs are shown whole (`contain`), with no delivery line.
+
+## Design decisions the owner has made
+
+- **Product sheet:** light on desktop (900 px and wider), dark on phones. On phones it's a centred card at 85% of the screen height over a blurred store. One theme for every product, not per product.
+- **Bag:** a light floating panel on desktop, dark on phones.
+- **Order slip:** `order.html` stays dark.
+- **Shelf cards:**
+  - no borders, rings or panels around them
+  - hovering only lifts the card and zooms the photo, with no gold
+  - tags have square-ish corners (5 px radius)
+- **Desktop scale (`css/desktop-scale.css`):**
+  - laptops (up to 1799 px wide, with a mouse or trackpad): 80% for the site, 90% for the store
+  - large monitors: 90% for the site, 100% for the store
+  - the store's header always matches the other pages' header
+- **Phones:**
+  - The store's status bar area is white (`.lx-statusbar`).
+  - Full-screen overlays must be `visibility: hidden` when closed. iOS Safari paints the colour of fixed layers behind its bars, which showed up as black bands.
+- **Home page:** don't redesign it without asking first. A type-led "sentence as layout" redesign was rejected. Keep the current brand look: the plum "LOCKED IN?", the section labels, and the event cards with the moving border.
+
+## Things that need the owner's Mac
+
+- The Matrix stock sync. In the cloud, `sync-stock.mjs` finds no Matrix, keeps the last stock, and the rest of the build still runs.
+- Photos in `~/Downloads` and in Matrix's media folder. Images for the site need to be committed to the repo first.
+
+## Google
+
+The product pages, sitemap and Merchant Center feed are already built. Search Console and Merchant Center are the owner's own steps. Don't suggest a Google Business Profile: the owner can't have one.
