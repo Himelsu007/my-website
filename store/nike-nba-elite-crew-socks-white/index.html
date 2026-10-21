@@ -7,7 +7,7 @@
     <base href="/">
     <script>document.documentElement.className += " lx-js";</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="javascript/ios-no-zoom.js?v=20261021225843"></script>
+    <script src="javascript/ios-no-zoom.js?v=20261021231035"></script>
     
     <title>Nike NBA Elite Crew Socks White | Locked In Lx Store, Lisbon</title>
     <meta name="description" content="The classic, in white. The NBA Elite crew locks in from the first step and stays put until the final bucket:… 19€ at Locked In Lx, Lisbon. Order on WhatsApp.">
@@ -67,16 +67,16 @@
          after it, so text is not drawn in a stand-in font and then reflowed. -->
     <link rel="preload" href="assets/fonts/barlow-condensed-400-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/barlow-condensed-900-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/splash.css?v=20261021225843">
-    <link rel="stylesheet" href="css/merch.css?v=20261021225843">
-    <link rel="stylesheet" href="css/bag.css?v=20261021225843">
-    <link rel="stylesheet" href="css/store-hero.css?v=20261021225843">
-    <link rel="stylesheet" href="css/fonts.css?v=20261021225843">
-    <link rel="stylesheet" href="css/footer.css?v=20261021225843">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261021225843">
-    <link rel="stylesheet" href="css/responsive.css?v=20261021225843">
-    <link rel="stylesheet" href="css/statusbar.css?v=20261021225843">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261021225843">
+    <link rel="stylesheet" href="css/splash.css?v=20261021231035">
+    <link rel="stylesheet" href="css/merch.css?v=20261021231035">
+    <link rel="stylesheet" href="css/bag.css?v=20261021231035">
+    <link rel="stylesheet" href="css/store-hero.css?v=20261021231035">
+    <link rel="stylesheet" href="css/fonts.css?v=20261021231035">
+    <link rel="stylesheet" href="css/footer.css?v=20261021231035">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261021231035">
+    <link rel="stylesheet" href="css/responsive.css?v=20261021231035">
+    <link rel="stylesheet" href="css/statusbar.css?v=20261021231035">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261021231035">
 <!-- lx:store-ld -->
 <script type="application/ld+json">
 {
@@ -297,10 +297,10 @@
 </article>
 
 <!-- ===== HERO: the tank, worn by the pros =====
-     Layers, back to front: the frame (each photo with its player removed and
-     blurred), the headline, the players cut out of those photos (their heads
-     rise out of the frame, in front of the headline), then the buy bar. See
-     css/store-hero.css and javascript/store-hero.js. -->
+     On a light page: the headline and buttons on the left, the players'
+     photos on the right taking turns, a tracking ring on the tank, the colour
+     tabs and a scroll cue at the foot. See css/store-hero.css and
+     javascript/store-hero.js. -->
 <section class="sh" id="store_hero" aria-labelledby="sh_title" data-c="black">
     <div class="sh-head">
         <p class="sh-eyebrow" aria-hidden="true"><span class="sh-eyebrow-text" data-phrases="Nike Pro Combat · NBA|Dri-FIT · second-skin fit|Free delivery in Lisbon">Nike Pro Combat · NBA</span><i class="sh-rule"></i></p>
@@ -312,14 +312,20 @@
         <p class="sh-sub">The Nike Pro Combat NBA compression tank, in black or white. Dri-FIT, second-skin fit, delivered free anywhere in Lisbon.</p>
         <div class="sh-actions">
             <a class="sh-cta" href="/store/nba-nike-pro-combat-compression-tank-black/"><span class="sh-cta-label">Shop the tank</span><span class="sh-cta-price">50€</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a class="sh-more" href="merch.html#product_filter_bar">Browse the store<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
     </div>
 
+    <!-- The players, one after another. Per photo: the tank's colour, where
+         the ring and the chip sit on him (% of the photo), and how far right
+         to move him so his head lands clear of the headline (% of the photo). -->
     <div class="sh-stage" aria-hidden="true">
         <div class="sh-fig">
-            <img class="sh-shot is-on" data-c="black" src="assets/images/store-hero/tank-black-photo-760.webp" srcset="assets/images/store-hero/tank-black-photo-760.webp 760w, assets/images/store-hero/tank-black-photo-960.webp 960w" sizes="(max-width: 999px) 80vw, 44vw" alt="" width="960" height="1200" decoding="async">
-            <img class="sh-shot" data-c="white" data-src="assets/images/store-hero/tank-white-photo-760.webp" data-srcset="assets/images/store-hero/tank-white-photo-760.webp 760w, assets/images/store-hero/tank-white-photo-910.webp 910w" sizes="(max-width: 999px) 80vw, 44vw" alt="" width="910" height="1137" decoding="async">
+            <img class="sh-shot is-on" data-c="black" data-ring="36,51" data-chip="16,36" data-x="0" src="assets/images/store-hero/shot-1-760.webp" srcset="assets/images/store-hero/shot-1-760.webp 760w, assets/images/store-hero/shot-1-960.webp 960w" sizes="(max-width: 999px) 80vw, 44vw" alt="" width="960" height="1200" decoding="async">
+            <img class="sh-shot" data-c="white" data-ring="19,50" data-chip="58,34" data-x="18" data-src="assets/images/store-hero/shot-2-760.webp" data-srcset="assets/images/store-hero/shot-2-760.webp 760w, assets/images/store-hero/shot-2-960.webp 960w" sizes="(max-width: 999px) 80vw, 44vw" alt="" width="960" height="1200" decoding="async">
+            <img class="sh-shot" data-c="black" data-ring="42,56" data-chip="19,40" data-x="0" data-src="assets/images/store-hero/shot-3-760.webp" data-srcset="assets/images/store-hero/shot-3-760.webp 760w, assets/images/store-hero/shot-3-960.webp 960w" sizes="(max-width: 999px) 80vw, 44vw" alt="" width="960" height="1200" decoding="async">
+            <img class="sh-shot" data-c="white" data-ring="42,58" data-chip="70,64" data-x="2" data-src="assets/images/store-hero/shot-4-760.webp" data-srcset="assets/images/store-hero/shot-4-760.webp 760w, assets/images/store-hero/shot-4-960.webp 960w" sizes="(max-width: 999px) 80vw, 44vw" alt="" width="960" height="1200" decoding="async">
+            <img class="sh-shot" data-c="black" data-ring="29,48" data-chip="64,34" data-x="13" data-src="assets/images/store-hero/shot-5-760.webp" data-srcset="assets/images/store-hero/shot-5-760.webp 760w, assets/images/store-hero/shot-5-960.webp 960w" sizes="(max-width: 999px) 80vw, 44vw" alt="" width="960" height="1200" decoding="async">
+            <img class="sh-shot" data-c="white" data-ring="41,41" data-chip="28,54" data-x="2" data-src="assets/images/store-hero/shot-6-760.webp" data-srcset="assets/images/store-hero/shot-6-760.webp 760w, assets/images/store-hero/shot-6-960.webp 960w" sizes="(max-width: 999px) 80vw, 44vw" alt="" width="960" height="1200" decoding="async">
             <span class="sh-hud sh-hud--a"><span class="sh-ring"><i></i></span><span class="sh-hud-line"></span><span class="sh-hud-label"><small><span class="sh-long">Dri-FIT / sweat-wicking</span><span class="sh-short">Dri-FIT</span></small><b>Pro Combat</b><small class="sh-ticks">/ / /</small></span></span>
             <span class="sh-hud sh-hud--b"><i></i>Second-skin fit</span>
         </div>
@@ -336,6 +342,8 @@
             <button type="button" class="sh-swatch" data-c="white" data-sku="AU09282" aria-pressed="false"><span>02</span>White</button>
         </div>
     </div>
+
+    <a class="sh-scroll" href="merch.html#product_filter_bar"><span class="sh-scroll-label"><span class="sh-long">Scroll to shop</span><span class="sh-short">Scroll</span></span><span class="sh-scroll-track" aria-hidden="true"><i></i></span></a>
 </section>
 
 <!-- ===== FILTER CHIPS ===== -->
@@ -422,16 +430,16 @@
 
 
 <!-- Accordition JS  -->
-<script src="javascript/scroll-lock.js?v=20261021225843" defer></script>
-<script src="javascript/product-catalog.js?v=20261021225843" defer></script>
-<script src="javascript/product-stock.js?v=20261021225843" defer></script>
-<script src="javascript/product-data.js?v=20261021225843" defer></script>
-<script src="javascript/store-hero.js?v=20261021225843" defer></script>
-<script src="javascript/order-status.js?v=20261021225843" defer></script>
-<script src="javascript/events.js?v=20261021225843" defer></script>
-<script src="javascript/bag.js?v=20261021225843" defer></script>
-<script src="javascript/scroll_detection_menu.js?v=20261021225843" defer></script>
-<script src="javascript/cookie-consent.js?v=20261021225843" defer></script>
-<script src="javascript/splash.js?v=20261021225843" defer></script>
+<script src="javascript/scroll-lock.js?v=20261021231035" defer></script>
+<script src="javascript/product-catalog.js?v=20261021231035" defer></script>
+<script src="javascript/product-stock.js?v=20261021231035" defer></script>
+<script src="javascript/product-data.js?v=20261021231035" defer></script>
+<script src="javascript/store-hero.js?v=20261021231035" defer></script>
+<script src="javascript/order-status.js?v=20261021231035" defer></script>
+<script src="javascript/events.js?v=20261021231035" defer></script>
+<script src="javascript/bag.js?v=20261021231035" defer></script>
+<script src="javascript/scroll_detection_menu.js?v=20261021231035" defer></script>
+<script src="javascript/cookie-consent.js?v=20261021231035" defer></script>
+<script src="javascript/splash.js?v=20261021231035" defer></script>
 </body> 
 </html>

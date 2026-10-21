@@ -1,16 +1,21 @@
 /* =====================================================
-   STORE HERO — colour, stock, tilt
+   STORE HERO — players, colour, stock, tilt
    -----------------------------------------------------
    The markup is in merch.html, the look in css/store-hero.css. This:
-   - keeps each colour in step with the catalogue: its price on the button,
-     and a colour that cannot be bought leaves the hero. With both out, the
-     button says so and still opens the sheet, where "Notify me" lives;
-   - changes colour from the tabs, and every few seconds on its own
-     until someone picks one; the white player loads after the page;
+   - shows the players one after another, every few seconds, while the hero
+     is on screen and no product sheet is open over it. Each photo carries
+     the tank's colour, where the ring and chip sit on him, and how far right
+     he moves (data-c, data-ring, data-chip, data-x on the <img>);
+   - keeps the tabs, the price and the button in step with the tank in the
+     photo on show. A colour that cannot be bought leaves the hero, players
+     and all; with both out, the button says so and still opens the sheet,
+     where "Notify me" lives;
+   - picking a colour keeps to that colour's players;
+   - fetches each photo just before its turn, once the page has loaded;
    - decodes the small label above the headline from one line to the next;
    - opens the product sheet from "Shop the tank", as a shelf card does;
-   - scrolls to the shelf from "Browse the store";
-   - on a computer, turns the figure toward the mouse.
+   - glides down to the shelf from the scroll cue;
+   - on a computer, turns the player toward the mouse.
    Needs product-catalog.js and product-data.js, loaded before it.
    ===================================================== */
 (function () {
@@ -19,51 +24,70 @@
     var hero = document.getElementById("store_hero");
     if (!hero || typeof products === "undefined") return;
 
-    var HOLD = 3000;   // how long each colour stays before the next, in ms
+    var HOLD = 3000;   // how long each player stays, in ms
     var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    var swatches = [].slice.call(hero.querySelectorAll(".sh-swatch"));
+    var tabs = [].slice.call(hero.querySelectorAll(".sh-swatch"));
     var cta = hero.querySelector(".sh-cta");
     var ctaLabel = hero.querySelector(".sh-cta-label");
     var ctaPrice = hero.querySelector(".sh-cta-price");
+    var sheet = document.getElementById("product_modal");
 
     function productFor(c) {
-        var sw = hero.querySelector('.sh-swatch[data-c="' + c + '"]');
-        var sku = sw && sw.getAttribute("data-sku");
+        var tab = hero.querySelector('.sh-swatch[data-c="' + c + '"]');
+        var sku = tab && tab.getAttribute("data-sku");
         for (var i = 0; i < products.length; i++) if (products[i].sku === sku) return products[i];
         return null;
     }
 
-    // Only colours that can be bought take part. One left needs no swatches.
-    var colours = swatches.map(function (s) { return s.getAttribute("data-c"); });
-    var live = colours.filter(function (c) { return isBuyable(productFor(c)); });
-    swatches.forEach(function (s) { s.hidden = live.length < 2 || live.indexOf(s.getAttribute("data-c")) < 0; });
+    // Only colours that can be bought take part. One left needs no tabs.
+    var live = tabs.map(function (t) { return t.getAttribute("data-c"); })
+        .filter(function (c) { return isBuyable(productFor(c)); });
+    tabs.forEach(function (t) { t.hidden = live.length < 2 || live.indexOf(t.getAttribute("data-c")) < 0; });
 
-    // ---- images: the white player is only fetched once the page is in ----
-    var ready = {};
-    function load(c) {
-        if (ready[c]) return ready[c];
-        var imgs = [].slice.call(hero.querySelectorAll('img.sh-shot[data-c="' + c + '"]'));
-        ready[c] = Promise.all(imgs.map(function (img) {
-            if (img.dataset.srcset) { img.srcset = img.dataset.srcset; img.removeAttribute("data-srcset"); }
-            if (img.dataset.src) { img.src = img.dataset.src; img.removeAttribute("data-src"); }
-            return img.decode ? img.decode().catch(function () {}) : Promise.resolve();
-        }));
-        return ready[c];
+    // The players in a colour that can be bought; all of them if none can.
+    var allShots = [].slice.call(hero.querySelectorAll(".sh-shot"));
+    var shots = allShots.filter(function (img) { return !live.length || live.indexOf(img.getAttribute("data-c")) >= 0; });
+    if (!shots.length) return;
+    function colourOf(i) { return shots[i].getAttribute("data-c"); }
+
+    // ---- photos: each is fetched one turn ahead, once the page is in ----
+    var ready = [], pageIn = false;
+    function load(i) {
+        if (ready[i]) return ready[i];
+        var img = shots[i];
+        if (img.dataset.srcset) { img.srcset = img.dataset.srcset; img.removeAttribute("data-srcset"); }
+        if (img.dataset.src) { img.src = img.dataset.src; img.removeAttribute("data-src"); }
+        ready[i] = img.decode ? img.decode().catch(function () {}) : Promise.resolve();
+        return ready[i];
     }
 
-    // ---- showing a colour ----
-    var current = hero.getAttribute("data-c");
-    function show(c) {
-        current = c;
+    // ---- showing a player ----
+    var current = 0;
+    var keep = null;   // the colour someone picked, if they did
+    function next(i) {
+        for (var n = 1; n <= shots.length; n++) {
+            var j = (i + n) % shots.length;
+            if (!keep || colourOf(j) === keep) return j;
+        }
+        return i;
+    }
+    function pair(v) { return (v || "0,0").split(","); }
+    function show(i) {
+        current = i;
+        var img = shots[i], c = colourOf(i), st = hero.style;
+        var ring = pair(img.getAttribute("data-ring")), chip = pair(img.getAttribute("data-chip"));
+        allShots.forEach(function (s) { s.classList.toggle("is-on", s === img); });
         hero.setAttribute("data-c", c);
-        [].forEach.call(hero.querySelectorAll(".sh-shot"), function (el) {
-            el.classList.toggle("is-on", el.getAttribute("data-c") === c);
-        });
-        swatches.forEach(function (s) {
-            var on = s.getAttribute("data-c") === c;
-            s.classList.toggle("is-on", on);
-            s.setAttribute("aria-pressed", on ? "true" : "false");
+        st.setProperty("--ax", ring[0] + "%");
+        st.setProperty("--ay", ring[1] + "%");
+        st.setProperty("--bx", chip[0] + "%");
+        st.setProperty("--by", chip[1] + "%");
+        st.setProperty("--shot-x", (img.getAttribute("data-x") || 0) + "%");
+        tabs.forEach(function (t) {
+            var on = t.getAttribute("data-c") === c;
+            t.classList.toggle("is-on", on);
+            t.setAttribute("aria-pressed", on ? "true" : "false");
         });
         var p = productFor(c);
         if (p) {
@@ -71,25 +95,27 @@
             ctaPrice.textContent = displayPrice(p);
             ctaLabel.textContent = isBuyable(p) ? "Shop the tank" : "Back soon · Notify me";
         }
+        if (pageIn) load(next(i));
     }
-    function pick(c) { return load(c).then(function () { show(c); }); }
+    // The latest request wins: a tap overrides a turn still loading.
+    var asked = 0;
+    function go(i) {
+        var mine = ++asked;
+        return load(i).then(function () { if (mine === asked) show(i); });
+    }
 
-    // ---- on its own, every few seconds, while the hero is on screen and
-    // no product sheet is open over it ----
-    var picked = false, onScreen = true, timer = 0;
-    var sheet = document.getElementById("product_modal");
+    // ---- taking turns, while the hero is on screen and no sheet covers it ----
+    var pinned = false, onScreen = true, timer = 0;
     function cycle() {
         clearTimeout(timer);
-        var go = !picked && !reduced && live.length > 1 && onScreen && !document.hidden &&
-            !(sheet && sheet.classList.contains("active"));
         hero.classList.remove("is-rotating");
-        if (!go) return;
+        var run = !pinned && !reduced && next(current) !== current && onScreen && !document.hidden &&
+            !(sheet && sheet.classList.contains("active"));
+        if (!run) return;
         hero.style.setProperty("--sh-hold", HOLD + "ms");
-        void hero.offsetWidth;                  // restart the swatch's ring
+        void hero.offsetWidth;                  // restart the tab's bar
         hero.classList.add("is-rotating");
-        timer = setTimeout(function () {
-            pick(live[(live.indexOf(current) + 1) % live.length]).then(cycle);
-        }, HOLD);
+        timer = setTimeout(function () { go(next(current)).then(cycle); }, HOLD);
     }
     if ("IntersectionObserver" in window) {
         new IntersectionObserver(function (entries) {
@@ -106,30 +132,32 @@
         }).observe(sheet, { attributes: true, attributeFilter: ["class"] });
     }
 
-    swatches.forEach(function (s) {
-        s.addEventListener("click", function () {
-            picked = true;
-            cycle();
-            pick(s.getAttribute("data-c"));
+    // ---- a tab keeps to its colour's players ----
+    tabs.forEach(function (t) {
+        t.addEventListener("click", function () {
+            keep = t.getAttribute("data-c");
+            clearTimeout(timer);
+            hero.classList.remove("is-rotating");
+            go(colourOf(current) === keep ? current : next(current)).then(cycle);
         });
     });
 
     // ---- "Shop the tank" opens the sheet; a modified click opens the page ----
     cta.addEventListener("click", function (e) {
         if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-        var p = productFor(current);
+        var p = productFor(colourOf(current));
         if (!p || typeof openProductModal !== "function") return;
         e.preventDefault();
-        picked = true;
+        pinned = true;
         cycle();
         openProductModal(products.indexOf(p), cta);
     });
 
-    // ---- "Browse the store" glides down to the shelf. The page's <base>
-    // makes a bare "#..." link lead to the home page, so it names the store. ----
-    var more = hero.querySelector(".sh-more");
+    // ---- the scroll cue glides down to the shelf. The page's <base> makes a
+    // bare "#..." link lead to the home page, so it names the store. ----
+    var cue = hero.querySelector(".sh-scroll");
     var shelf = document.getElementById("product_filter_bar");
-    if (more && shelf) more.addEventListener("click", function (e) {
+    if (cue && shelf) cue.addEventListener("click", function (e) {
         e.preventDefault();
         shelf.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     });
@@ -156,17 +184,16 @@
         }, 4200);
     }
 
-    // ---- start: the right colour, the right price, the rest fetched later ----
-    var start = live.indexOf(current) >= 0 || !live.length ? current : live[0];
-    if (start === current) show(current);
-    else pick(start);                           // e.g. black sold out: white, once loaded
-    function warm() { live.forEach(load); }
+    // ---- start: the first player who can be bought; the next fetched later ----
+    if (shots[0] === allShots[0]) show(0);
+    else go(0);                                 // e.g. black sold out: the first white player, once loaded
+    function warm() { pageIn = true; load(next(current)); }
     if (document.readyState === "complete") warm();
     else window.addEventListener("load", warm, { once: true });
-    // First change after the entrance has played.
+    // First turn after the entrance has played.
     setTimeout(cycle, document.documentElement.getAttribute("data-splash") === "enter" ? 1600 : 400);
 
-    // ---- computers: the figure turns toward the mouse ----
+    // ---- computers: the player turns toward the mouse ----
     if (reduced || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     var tx = 0, ty = 0, x = 0, y = 0, raf = 0, box = null;
     function frame() {

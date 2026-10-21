@@ -58,8 +58,9 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
 - **Product sheet:** light on desktop (900 px and wider), dark on phones. On phones it's a centred card at 95% of the screen height over a blurred store. One theme for every product, not per product.
 - **Store hero** (top of `merch.html`, `css/store-hero.css`, `javascript/store-hero.js`):
   - Light editorial look after the Kinfield reference the owner chose: the black headline "Wear what the pros wear.", small mono labels, a tracking ring with a gold dot on the player, numbered colour tabs, a gold "Shop the tank" button. The owner rejected a framed box behind the players and a dark version.
-  - The two tank photos in `assets/images/store-hero/` swap every 3 seconds and fade into the page with no frame. The ring's position on each player is set by `--ax`/`--ay` in the CSS.
-  - Colours follow the catalogue: a colour that can't be bought leaves the hero, and the price and link come from the product. `build-store.mjs` drops the photo's `fetchpriority` on product pages, so the sheet's photo loads first.
+  - Six players (`assets/images/store-hero/shot-1…6`, 4:5, black and white tanks alternating) take turns every 3 seconds and fade into the page with no frame. Each `<img>` says the tank's colour (`data-c`), where the ring and the chip sit on him (`data-ring`, `data-chip`, % of the photo) and how far right to move him so his head clears the headline (`data-x`). To add a player, add an `<img>` with those and the photo at 760 and 960 px wide.
+  - The colour tabs follow the photo on show, and tapping one keeps to that colour's players. Colours follow the catalogue: a colour that can't be bought leaves the hero, players and all, and the price and link come from the product. `build-store.mjs` drops the first photo's `fetchpriority` on product pages, so the sheet's photo loads first.
+  - On phones there is no "Shop the tank" button (the owner's call); an animated scroll cue at the foot leads to the shelf. The owner tried and rejected dark and per-photo-colour backgrounds: keep it light.
 - **Bag:** a light floating panel on desktop, dark on phones.
 - **Order slip:** `order.html` stays dark.
 - **Shelf cards:**
