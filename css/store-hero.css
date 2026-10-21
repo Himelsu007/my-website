@@ -449,6 +449,13 @@ html[data-splash="enter"] .sh { --sh-delay: 1.15s; }
 body:has(#store_hero) #main-header:not(.scrolled) > .logo-link > img { display: none; }
 body:has(#store_hero) #main-header:not(.scrolled) > .logo-link > .logo-ink { display: inline; }
 
+/* ---------- phones: no button; the tabs sit at the foot, and the shelf
+   below is where they buy ---------- */
+@media (max-width: 599px) {
+    .sh-actions { display: none; }
+    .sh-strip { bottom: 18px; }
+}
+
 /* ---------- big phones and tablets upright: the same, larger ---------- */
 @media (min-width: 600px) and (max-width: 999px) {
     .sh {
