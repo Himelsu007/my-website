@@ -571,7 +571,9 @@
     font: 700 13px/1 'Barlow Condensed', Arial, sans-serif;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+    /* keeps the fade it shares with the menu (style.css), which a transition
+       list here would otherwise replace */
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, background-color 0.3s ease;
 }
 #main-header > a.store-link:hover {
     border-color: rgba(255, 215, 0, 0.6);

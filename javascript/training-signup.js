@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // signup-motion.js shakes the field and says what it needs
         const missing = (field, msg) => (window.lxSignup ? lxSignup.flag(field, msg) : alert(msg));
-        if (!name) return missing(document.getElementById("player-name"), "Add your first name.");
+        if (!name) return missing(document.getElementById("player-name"), "Add your full name.");
         if (!age)  return missing(document.querySelector('input[name="age_group"]'), "Pick your age group.");
         if (!days) return missing(document.querySelector('input[name="pref_days"]'), "Choose the days that suit you.");
         if (!time) return missing(document.querySelector('input[name="pref_time"]'), "Choose a time that suits you.");
