@@ -63,15 +63,16 @@ const events = [
 const SHOW_WAITLIST = true;
 
 
-const DEFAULT_EVENT_IMAGE = "assets/images/IMG_0916.avif";
+const DEFAULT_EVENT_IMAGE = "assets/images/venues/IMG_0916-320.avif";
 
-// Map a venue name → its photo (falls back to the default image)
+// Map a venue name → its photo (falls back to the default image).
+// The thumbnail is under 100px wide, so these are 320px copies.
 
 function venueImage(loc) {
     const l = (loc || "").toLowerCase();
-    if (l.includes("técnico") || l.includes("tecnico")) return "assets/images/tecnico.avif";
-    if (l.includes("castel")) return "assets/images/castelbranco.avif";
-    if (l.includes("islaámico") || l.includes("islamico") || l.includes("islâmico")) return "assets/images/IMG_0487.avif";
+    if (l.includes("técnico") || l.includes("tecnico")) return "assets/images/venues/tecnico-320.avif";
+    if (l.includes("castel")) return "assets/images/venues/castelbranco-320.avif";
+    if (l.includes("islaámico") || l.includes("islamico") || l.includes("islâmico")) return "assets/images/venues/IMG_0487-320.avif";
     return DEFAULT_EVENT_IMAGE;
 }
 

@@ -209,7 +209,7 @@ button {
     50% { opacity: 0.5; transform: scale(1.25); }
 }
 .nav-eyebrow-text {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.25em;
@@ -236,7 +236,7 @@ button {
     transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.3s ease;
 }
 .nav-cta-sub {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-weight: 600;
     font-size: 11px;
     letter-spacing: 0.14em;
@@ -274,7 +274,7 @@ button {
     transition: padding-left 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 .nav-num {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 13px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.3);
@@ -293,7 +293,7 @@ button {
     transition: color 0.3s ease;
 }
 .nav-desc {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 13px;
     color: rgba(255, 255, 255, 0.4);
     margin-left: auto;
@@ -466,13 +466,13 @@ section#upcoming_runs_container {
 .spots_progress_label span {
     font-size: 0.65rem;
     color: #9CA3AF;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-weight: 400;
 }
 
 .spots_progress_label strong {
     font-size: 0.65rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
 }
 
 .spots_progress_bar {
@@ -621,10 +621,12 @@ section#upcoming_runs_container {
 }
 
 /* Specific Backgrounds — applied to the image layer (::before) so they can zoom */
-.item-socks::before  { background-image: url('../assets/images/01822.avif'); }
-.item-tank::before   { background-image: url('../assets/images/IMG_0470.webp'); }
-.item-molten::before { background-image: url('../assets/images/wilson-ball-bg-02.avif'); }
-.item-tshirt::before { background-image: url('../assets/images/IMG_0465.avif'); }
+/* 800px copies: the cards are 240-360px wide, so this is enough for any
+   screen density and the hover zoom. */
+.item-socks::before  { background-image: url('../assets/images/home-cards/01822-800.avif'); }
+.item-tank::before   { background-image: url('../assets/images/home-cards/IMG_0470-800.webp'); }
+.item-molten::before { background-image: url('../assets/images/home-cards/wilson-ball-bg-02-800.avif'); }
+.item-tshirt::before { background-image: url('../assets/images/home-cards/IMG_0465-800.avif'); }
 
 /* HOME PAGE MERCH BUTTON        */
 /* ============================= */
@@ -675,7 +677,9 @@ section#upcoming_runs_container {
 /* ICON MOTION                   */
 /* ============================= */
 
+/* inline-block so the size holds before lordicon.js (loaded late) defines it. */
 #home_page_merch_button lord-icon {
+    display:inline-block;
     transition: transform 0.3s ease; width:25px;height:25px
 }
 
@@ -915,13 +919,13 @@ section#upcoming_runs_container {
     border:1px solid var(--bk-line); border-radius:14px;
     padding:13px 8px; display:flex; flex-direction:column; gap:2px;
 }
-#events_container .bk-weekday{ font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.18em; color:var(--bk-gold); }
+#events_container .bk-weekday{ font-family:'Inter','Inter Fallback',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.18em; color:var(--bk-gold); }
 #events_container .bk-day{ font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:2.3rem; line-height:1; color:#fff; }
-#events_container .bk-month{ font-family:'Inter',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.2em; color:var(--bk-dim); text-transform:uppercase; }
+#events_container .bk-month{ font-family:'Inter','Inter Fallback',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.2em; color:var(--bk-dim); text-transform:uppercase; }
 
 #events_container .bk-headline{ flex:1; min-width:0; display:flex; flex-direction:column; gap:7px; }
 #events_container .bk-format{
-    font-family:'Inter',sans-serif; font-size:10px; font-weight:700;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:10px; font-weight:700;
     letter-spacing:0.2em; text-transform:uppercase; color:var(--bk-gold);
 }
 #events_container .bk-title{
@@ -929,7 +933,7 @@ section#upcoming_runs_container {
     font-size:1.75rem; color:#fff; text-transform:uppercase;
     letter-spacing:0.02em; line-height:1.05; margin:0;
 }
-#events_container .bk-time{ display:flex; align-items:center; gap:7px; font-family:'Inter',sans-serif; font-size:13px; color:var(--bk-dim); }
+#events_container .bk-time{ display:flex; align-items:center; gap:7px; font-family:'Inter','Inter Fallback',sans-serif; font-size:13px; color:var(--bk-dim); }
 #events_container .bk-time svg{ color:var(--bk-gold); flex-shrink:0; }
 @keyframes bk-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.25)}}
 
@@ -970,7 +974,7 @@ section#upcoming_runs_container {
 #events_container .bk-loc-text{ display:flex; flex-direction:column; gap:3px; min-width:0; }
 #events_container .bk-loc-name{ font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1.1rem; color:#fff; }
 #events_container .bk-loc-sub{
-    font-family:'Inter',sans-serif;
+    font-family:'Inter','Inter Fallback',sans-serif;
     font-size:12px;
     font-weight:500;
     letter-spacing:0.02em;
@@ -978,9 +982,9 @@ section#upcoming_runs_container {
 }
 
 #events_container .bk-progress-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; }
-#events_container .bk-spots{ font-family:'Inter',sans-serif; font-size:13px; color:var(--bk-dim); }
+#events_container .bk-spots{ font-family:'Inter','Inter Fallback',sans-serif; font-size:13px; color:var(--bk-dim); }
 #events_container .bk-spots strong{ color:#fff; font-size:15px; }
-#events_container .bk-scarcity{ font-family:'Inter',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.03em; }
+#events_container .bk-scarcity{ font-family:'Inter','Inter Fallback',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.03em; }
 #events_container .s-open{ color:var(--bk-green); }
 #events_container .s-filling{ color:var(--bk-amber); }
 #events_container .s-full{ color:var(--bk-red); }
@@ -1005,14 +1009,14 @@ section#upcoming_runs_container {
     transform:scale(1.025);
     text-shadow:0 0 14px rgba(255,215,0,0.22);
 }
-#events_container .bk-price-label{ font-family:'Inter',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:var(--bk-dim); margin-top:4px; }
+#events_container .bk-price-label{ font-family:'Inter','Inter Fallback',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:var(--bk-dim); margin-top:4px; }
 
 #events_container .bk-cta{
     position:relative; overflow:hidden;
     display:inline-flex; align-items:center; gap:10px;
     padding:16px 30px; border-radius:99px;
     background:var(--bk-gold); color:#0a0a0a; text-decoration:none;
-    font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:13px; font-weight:700;
     letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap;
 }
 #events_container .bk-cta svg{ flex-shrink:0; transition:transform .3s var(--bk-ease); }
@@ -1101,7 +1105,7 @@ article.got_questions_container.lx-section-head{
 .lx-about-body{
     max-width:720px;
     margin:22px auto 0;
-    font-family:'Inter',sans-serif;
+    font-family:'Inter','Inter Fallback',sans-serif;
     color:#a1a1aa;
     font-size:0.98rem;
     line-height:1.75;
@@ -1151,7 +1155,7 @@ section#nike_elite_gear_heading_container.lx-section-head{ margin-bottom:64px; }
 .lx-section-head .lx-section-title .lx-accent-gold{ color:#FFD700; }
 .lx-section-head .lx-section-title .lx-accent-green{ color:#3FFF6F; }
 .lx-section-head .lx-section-sub{
-    font-family:'Inter',sans-serif;
+    font-family:'Inter','Inter Fallback',sans-serif;
     color:#a1a1aa;
     font-size:1rem;
     line-height:1.6;

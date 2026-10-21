@@ -92,7 +92,7 @@ body::-webkit-scrollbar{ display:none; }
    ===================================================== */
 /* Set once here rather than repeated on thirty rules. Everything on this page
    is Inter now; only size and weight vary. */
-.order-shell{ font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+.order-shell{ font-family:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,sans-serif; }
 
 .order-aside{ position:sticky; top:104px; }
 .order-aside .or-card{

@@ -43,7 +43,7 @@ html,body {
 /* ===== HEADER ===== */
 .auth-eyebrow{
     display:flex; align-items:center; gap:10px;
-    font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:11px; font-weight:600;
     letter-spacing:0.25em; text-transform:uppercase;
     color:rgba(255,255,255,0.5); margin-bottom:14px;
 }
@@ -67,7 +67,7 @@ html,body {
 .input-group label {
     display: block;
     color: var(--su-dim);
-    font-family:'Inter',sans-serif !important;
+    font-family:'Inter','Inter Fallback',sans-serif !important;
     font-size: 11px !important;
     font-weight:600;
     margin-bottom: 9px;
@@ -81,7 +81,7 @@ html,body {
     border: 1px solid var(--su-line);
     border-radius: 12px;
     color: #fff;
-    font-family:'Inter',sans-serif;
+    font-family:'Inter','Inter Fallback',sans-serif;
     font-size: 1rem;
     padding: 14px 16px;
     outline: none;
@@ -110,7 +110,7 @@ html,body {
     border: 1px solid var(--su-line);
     border-radius: 12px;
     color: var(--su-dim);
-    font-family:'Inter',sans-serif;
+    font-family:'Inter','Inter Fallback',sans-serif;
     font-weight:700;
     font-size:14px;
     cursor: pointer;
@@ -160,7 +160,7 @@ html,body {
 }
 .payment-title {
     color: var(--su-dim);
-    font-family:'Inter',sans-serif;
+    font-family:'Inter','Inter Fallback',sans-serif;
     font-size: 11px;
     font-weight:600;
     margin-bottom: 14px;
@@ -180,7 +180,7 @@ html,body {
     border-radius: 99px;
     background: var(--su-green);
     color: #fff;
-    font-family:'Inter',sans-serif;
+    font-family:'Inter','Inter Fallback',sans-serif;
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -271,7 +271,7 @@ html,body {
 
 .rs-tag{
     align-self:flex-start;
-    font-family:'Inter',sans-serif; font-size:10px; font-weight:700;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:10px; font-weight:700;
     letter-spacing:0.2em; text-transform:uppercase; color:var(--rs-gold);
 }
 
@@ -282,9 +282,9 @@ html,body {
     border:1px solid var(--rs-line); border-radius:14px;
     padding:12px 8px; display:flex; flex-direction:column; gap:2px;
 }
-.rs-weekday{ font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.18em; color:var(--rs-gold); }
+.rs-weekday{ font-family:'Inter','Inter Fallback',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.18em; color:var(--rs-gold); }
 .rs-day{ font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:2.2rem; line-height:1; color:#fff; }
-.rs-month{ font-family:'Inter',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--rs-dim); }
+.rs-month{ font-family:'Inter','Inter Fallback',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--rs-dim); }
 
 .rs-headline{ min-width:0; }
 .rs-title{
@@ -292,7 +292,7 @@ html,body {
     font-size:1.6rem; line-height:1.05; color:#fff;
     text-transform:uppercase; letter-spacing:0.02em; margin:0 0 7px;
 }
-.rs-time{ display:flex; align-items:center; gap:7px; font-family:'Inter',sans-serif; font-size:13px; color:var(--rs-dim); }
+.rs-time{ display:flex; align-items:center; gap:7px; font-family:'Inter','Inter Fallback',sans-serif; font-size:13px; color:var(--rs-dim); }
 .rs-time svg{ color:var(--rs-gold); flex-shrink:0; }
 
 /* Location */
@@ -317,7 +317,7 @@ html,body {
 .rs-pin svg{ filter:drop-shadow(0 2px 5px rgba(0,0,0,.85)); }
 .rs-loc-text{ display:flex; flex-direction:column; gap:3px; min-width:0; }
 .rs-loc-name{ font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1.05rem; color:#fff; }
-.rs-loc-sub{ font-family:'Inter',sans-serif; font-size:12px; font-weight:500; color:var(--rs-gold); }
+.rs-loc-sub{ font-family:'Inter','Inter Fallback',sans-serif; font-size:12px; font-weight:500; color:var(--rs-gold); }
 
 /* Price / spots */
 .rs-meta{
@@ -328,14 +328,14 @@ html,body {
 .rs-meta-value{ font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:1.9rem; line-height:1; color:var(--rs-gold); }
 .rs-meta-value.is-low{ color:#FFB020; }
 .rs-meta-value.is-full{ color:var(--rs-red); }
-.rs-meta-label{ font-family:'Inter',sans-serif; font-size:9.5px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--rs-dim); }
+.rs-meta-label{ font-family:'Inter','Inter Fallback',sans-serif; font-size:9.5px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--rs-dim); }
 .rs-meta-divider{ width:1px; height:38px; background:var(--rs-line); }
 
 /* How it works */
 .rs-steps{ display:flex; flex-direction:column; gap:11px; }
 .rs-step{
     display:flex; align-items:center; gap:12px;
-    font-family:'Inter',sans-serif; font-size:13px; color:var(--rs-dim);
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:13px; color:var(--rs-dim);
 }
 .rs-step-n{
     flex-shrink:0; width:22px; height:22px; border-radius:50%;
@@ -365,7 +365,7 @@ html,body {
 
 /* ===== GUEST TYPE COUNTERS (playing / watching) ===== */
 .guest-hint{
-    font-family:'Inter',sans-serif; font-size:12px; color:var(--su-dim);
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:12px; color:var(--su-dim);
     margin:-4px 0 12px; line-height:1.5;
 }
 .guest-row{ display:flex; flex-direction:column; gap:10px; }
@@ -378,7 +378,7 @@ html,body {
 }
 .guest-line-label{
     display:flex; align-items:center; gap:9px;
-    font-family:'Inter',sans-serif; font-size:14px; font-weight:600; color:#e4e4e7;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:14px; font-weight:600; color:#e4e4e7;
 }
 .guest-line-label svg{ color:var(--su-gold); flex-shrink:0; }
 .guest-line .guest-counter-wrapper{ margin-top:0; }
@@ -387,7 +387,7 @@ html,body {
 .guest-line #guest-watch-count{ font-size:1.2rem; min-width:24px; }
 
 .guest-total{
-    font-family:'Inter',sans-serif; font-size:13px; color:var(--su-dim);
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:13px; color:var(--su-dim);
     margin:14px 0 0; letter-spacing:0.02em;
 }
 .guest-total strong{ color:var(--su-gold); font-weight:700; }
@@ -440,7 +440,7 @@ html,body {
     margin-bottom:14px;
 }
 .payment-title{
-    color:var(--su-dim); font-family:'Inter',sans-serif;
+    color:var(--su-dim); font-family:'Inter','Inter Fallback',sans-serif;
     font-size:11px; font-weight:600; letter-spacing:0.16em;
     text-transform:uppercase; margin:0;
 }
@@ -473,10 +473,10 @@ html,body {
 
 .pay-info{ display:flex; flex-direction:column; gap:2px; min-width:0; flex:1; }
 .pay-name{
-    font-family:'Inter',sans-serif; font-size:14px; font-weight:600; color:#fff;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:14px; font-weight:600; color:#fff;
 }
 .pay-detail{
-    font-family:'Inter',sans-serif; font-size:12px; color:var(--su-dim);
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:12px; color:var(--su-dim);
     letter-spacing:.04em;
 }
 .pay-method[data-brand="mbway"] .pay-detail{
@@ -489,7 +489,7 @@ html,body {
     padding:8px 14px; border-radius:99px;
     background:transparent; border:1px solid rgba(255,215,0,0.35);
     color:var(--su-gold); text-decoration:none; cursor:pointer;
-    font-family:'Inter',sans-serif; font-size:12px; font-weight:700;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:12px; font-weight:700;
     letter-spacing:.06em; text-transform:uppercase;
     transition:all .25s ease;
 }
@@ -499,7 +499,7 @@ html,body {
 }
 
 .pay-note{
-    font-family:'Inter',sans-serif; font-size:12px; color:var(--su-dim);
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:12px; color:var(--su-dim);
     line-height:1.5; margin:14px 0 0;
 }
 
@@ -519,7 +519,7 @@ html,body {
     border:1px solid rgba(37,211,102,0.4);
     border-radius:12px;
     color:#25D366;
-    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:12.5px; font-weight:600;
     letter-spacing:0.02em;
 }
 .rs-registered svg{ flex-shrink:0; }
@@ -529,7 +529,7 @@ html,body {
 .rs-date--price .rs-day{ font-size:1.9rem; color:var(--su-gold); }
 
 .tp-tagline{
-    font-family:'Inter',sans-serif; font-size:13.5px; line-height:1.6;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:13.5px; line-height:1.6;
     color:var(--su-dim); margin:-6px 0 0;
 }
 .tp-features{
@@ -539,7 +539,7 @@ html,body {
 }
 .tp-features li{
     display:flex; align-items:flex-start; gap:10px;
-    font-family:'Inter',sans-serif; font-size:13.5px; line-height:1.5; color:#e4e4e7;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:13.5px; line-height:1.5; color:#e4e4e7;
 }
 .tp-features svg{ flex-shrink:0; margin-top:2px; color:var(--su-gold); }
 .tp-features + .rs-steps{ margin-top:16px; padding-top:16px; border-top:1px solid var(--su-line); }
@@ -550,7 +550,7 @@ html,body {
 .guest-names{ display:flex; flex-direction:column; gap:14px; margin-top:16px; }
 .guest-names[hidden]{ display:none; }
 .gn-group-label{
-    font-family:'Inter',sans-serif; font-size:10.5px; font-weight:700;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:10.5px; font-weight:700;
     letter-spacing:0.14em; text-transform:uppercase; color:var(--su-gold);
     margin:0 0 8px;
 }
@@ -559,7 +559,7 @@ html,body {
 .gn-num{
     flex-shrink:0; width:22px; height:22px; border-radius:50%;
     display:grid; place-items:center;
-    font-family:'Inter',sans-serif; font-size:10.5px; font-weight:700;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:10.5px; font-weight:700;
     color:var(--su-gold); border:1px solid rgba(255,215,0,0.35);
 }
 .gn-row input{
@@ -567,7 +567,7 @@ html,body {
     background:rgba(255,255,255,0.04);
     border:1px solid var(--su-line); border-radius:10px;
     padding:11px 13px; color:#fff;
-    font-family:'Inter',sans-serif; font-size:13.5px;
+    font-family:'Inter','Inter Fallback',sans-serif; font-size:13.5px;
     transition:border-color .2s ease, background .2s ease;
 }
 .gn-row input::placeholder{ color:#6b6b73; }

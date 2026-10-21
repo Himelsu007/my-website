@@ -205,7 +205,7 @@ button {
     50% { opacity: 0.5; transform: scale(1.25); }
 }
 .nav-eyebrow-text {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.25em;
@@ -231,7 +231,7 @@ button {
     transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.3s ease;
 }
 .nav-cta-sub {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-weight: 600;
     font-size: 11px;
     letter-spacing: 0.14em;
@@ -268,7 +268,7 @@ button {
     transition: padding-left 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 .nav-num {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 13px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.3);
@@ -287,7 +287,7 @@ button {
     transition: color 0.3s ease;
 }
 .nav-desc {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 13px;
     color: rgba(255, 255, 255, 0.4);
     margin-left: auto;
@@ -437,6 +437,17 @@ PRODUCT GRID (modern CSS Grid — auto-responsive)
     gap: 22px;
 }
 
+/* product-data.js fills the grid once the scripts have run (and marks it
+   data-loaded). Until then it holds a screen's height, so the footer is not
+   drawn on screen and then thrown 3000px down: that jump was almost all of
+   the store's layout-shift score. */
+@media (scripting: enabled) {
+    #products_grid:not([data-loaded]) {
+        min-height: 100vh;
+        min-height: calc(100svh / var(--lx-zoom, 1));
+    }
+}
+
 /* Force at least 2 columns on small viewports (auto-fill min would otherwise collapse to 1) */
 @media (max-width: 600px) {
     #products_grid {
@@ -465,7 +476,7 @@ PRODUCT GRID (modern CSS Grid — auto-responsive)
     padding: 60px 22px;
     color: #a1a1aa;
     text-align: center;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
 }
 
 /* ===============================
@@ -719,7 +730,7 @@ FEATURED PRODUCT
     left: 14px;
     background: #FFD700;
     color: #0a0a0a;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -1001,7 +1012,7 @@ FEATURED PRODUCT
     background: transparent;
     border: none;
     color: #FFD700;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
@@ -1025,7 +1036,7 @@ FEATURED PRODUCT
 .size_chart_table {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 12px;
     color: #d4d4d8;
 }
@@ -1087,7 +1098,7 @@ FEATURED PRODUCT
     background: transparent;
     border: none;
     color: #fff;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 16px;
     font-weight: 600;
     text-align: center;
@@ -1462,7 +1473,7 @@ PRODUCT INFO
 }
 #products_unavailable .unavailable_head p {
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 0.9rem;
     color: #a1a1aa;
 }
@@ -2229,7 +2240,7 @@ body.lx-scroll-locked {
     margin-bottom: 2px;
 }
 #product_modal .modal_variant_group h4 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.16em;
@@ -2359,7 +2370,7 @@ body.lx-scroll-locked {
     color: var(--pd-ink);
     border: 0;
     box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.6);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* ---------------- top bar ---------------- */
@@ -2447,7 +2458,7 @@ body.lx-scroll-locked {
     display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
 }
 #product_modal .modal_title {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 18px; font-weight: 600; line-height: 1.25; letter-spacing: -0.015em;
     text-transform: none;
     color: var(--pd-ink);
@@ -2455,7 +2466,7 @@ body.lx-scroll-locked {
 }
 #product_modal .modal_price {
     flex: none;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 22px; font-weight: 700; line-height: 1; letter-spacing: -0.025em;
     color: var(--pd-ink);
     text-shadow: none;
@@ -2476,7 +2487,7 @@ body.lx-scroll-locked {
 #product_modal .modal_section { margin-top: 20px; }
 #product_modal .modal_section_title,
 #product_modal .modal_variant_group h4 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 14px; font-weight: 600; letter-spacing: -0.005em;
     text-transform: none;
     color: var(--pd-ink);
@@ -2509,7 +2520,7 @@ body.lx-scroll-locked {
     border: 1px solid var(--pd-line);
     background: var(--pd-surface);
     color: var(--pd-ink-2);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 13.5px; font-weight: 500; letter-spacing: 0;
     display: inline-flex; align-items: center; justify-content: center; gap: 7px;
     box-shadow: none;
@@ -2554,7 +2565,7 @@ body.lx-scroll-locked {
     background: var(--pd-surface);
     color: var(--pd-ink);
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    font-family: 'Inter', 'Inter Fallback', sans-serif; font-size: 14px; font-weight: 600;
     letter-spacing: -0.005em; text-transform: none;
 }
 #product_modal .bag_btn:hover { border-color: var(--pd-ink); background: var(--pd-surface); }
@@ -2575,7 +2586,7 @@ body.lx-scroll-locked {
     border: 0;
     background: var(--pd-gold);
     color: var(--pd-on-gold);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 15px; font-weight: 600; letter-spacing: -0.005em;
     text-transform: none;
     box-shadow: none;
@@ -3134,7 +3145,7 @@ body:has(#product_modal.active) #lx_bag_pill {
 }
 .products_box .product_badge,
 #product_modal .product_badge {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 10px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase;
     line-height: 1.2;
@@ -3170,7 +3181,7 @@ body:has(#product_modal.active) #lx_bag_pill {
     margin: 0 auto;
     padding: 104px 16px 48px;
     color: #E4E4E7;
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: "Inter", "Inter Fallback", system-ui, sans-serif;
     line-height: 1.55;
 }
 .pp-static a { color: #FFD700; }

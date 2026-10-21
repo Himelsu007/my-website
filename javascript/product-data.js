@@ -12,8 +12,16 @@
 // two can never drift apart. It is a link to the product's own page
 // (store/<slug>/, written by tools/build-store.mjs) so Google can follow it;
 // a plain click opens the sheet here instead.
-function buildProductCard(product) {
+// A product's own page (store/<slug>/) opens on that product's sheet.
+const onProductPage = !!document.body.dataset.productSlug;
+
+// `position` is the card's place on the shelf. The first row is on screen
+// straight away, so those photos are fetched at once rather than when the lazy
+// loader gets to them, and the first two (the likely largest paint) go first.
+function buildProductCard(product, position = Infinity) {
     const absoluteIndex = products.indexOf(product);
+    const loading = position < 4 ? "eager" : "lazy";
+    const priority = position < 2 ? ' fetchpriority="high"' : "";
     const card = document.createElement("a");
     card.href = productPath(product);
     card.className = `products_box ${isSoldOutP(product) ? "is_sold_out" : ""} ${isSoon(product) ? "is_coming_soon" : ""}`;
@@ -21,7 +29,7 @@ function buildProductCard(product) {
     card.setAttribute("aria-label", `View details for ${product.name}, ${displayPrice(product)}`);
     card.innerHTML = `
         <div class="product_image_wrapper tile-${product.tile || "photo"}">
-            <img src="${product.image}" alt="${product.name}" class="product_image" loading="lazy" decoding="async">
+            <img src="${product.image}" alt="${product.name}" class="product_image" loading="${loading}"${priority} decoding="async">
             ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ""}
         </div>
         <div class="product_info">
@@ -71,9 +79,12 @@ function loadProducts(filter = "all") {
         unavailable.forEach(product => soonGrid.appendChild(buildProductCard(product)));
     }
 
-    visible.forEach((product) => {
-        container.appendChild(buildProductCard(product));
+    // Behind a product's sheet the shelf stays lazy: its photos would only
+    // compete with the sheet's.
+    visible.forEach((product, i) => {
+        container.appendChild(buildProductCard(product, onProductPage ? Infinity : i));
     });
+    container.dataset.loaded = "1";   // releases the height held for it in merch.css
 }
 
 // ========================================
@@ -1139,9 +1150,19 @@ function initModal() {
     });
 }
 
+// On the store the shelf is the page. The cards need nothing beyond this file
+// and the catalogue, so it is drawn as soon as this deferred script runs (the
+// page is parsed by then) instead of waiting for bag.js and the scripts after
+// it, and its photos start loading that much sooner. On a product's page the
+// sheet comes first, and the shelf is drawn with it as before: drawn early,
+// its photos landed and decoded just as the sheet opened, and held up the
+// sheet's first frame by two seconds on a phone.
+const drawShelfNow = !onProductPage && document.readyState !== "loading";
+if (drawShelfNow) loadProducts("all");
+
 document.addEventListener("DOMContentLoaded", () => {
     storeTitle = document.body.dataset.storeTitle || document.title;
-    loadProducts("all");
+    if (!drawShelfNow) loadProducts("all");
     initFilterBar();
     initModal();
     // On a product's own page (store/<slug>/) its sheet is open from the start.

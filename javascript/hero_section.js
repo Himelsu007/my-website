@@ -2,16 +2,22 @@
 // CONFIG & STATE
 // ============================================
 
+/* Each photo comes in two sizes (assets/images/hero/). They show at 18-35%
+   opacity under a vignette, so a phone never needs more than the 1200px copy.
+   The 12-megapixel originals took seconds to decode on a phone, and every
+   frame waited for them. HERO_SMALL must match the media queries on the
+   preloads in index.html, or the first photo is fetched twice. */
+const HERO_SMALL = window.matchMedia('(max-width: 768px)').matches;
 const luxuryImages = [
-    'assets/images/IMG_3728.avif',
-    'assets/images/castelbranco.avif',
-    'assets/images/IMG_0487.avif',
-    'assets/images/IMG_0630.avif',
-];
+    'assets/images/hero/IMG_3728',
+    'assets/images/hero/castelbranco',
+    'assets/images/hero/IMG_0487',
+    'assets/images/hero/IMG_0630',
+].map(base => `${base}-${HERO_SMALL ? 1200 : 1920}.avif`);
 
 
 let currentImageIndex = 0;
-let isAnimating = false;
+let heroSlides = [];
 
 // ============================================
 // BACKGROUND SLIDESHOW & PARALLAX
@@ -22,26 +28,53 @@ function createImageSlides() {
     const background = document.getElementById('heroBackground');
     if (!background || background.children.length > 0) return; // Prevent double creation
 
-    luxuryImages.forEach((imageUrl, index) => {
+    heroSlides = luxuryImages.map((imageUrl, index) => {
         const slide = document.createElement('div');
         slide.className = 'hero-image-slide';
-        slide.style.backgroundImage = `url(${imageUrl})`;
         slide.style.backgroundSize = 'cover';
         slide.style.backgroundPosition = 'center';
-        if (index === 0) slide.classList.add('active');
+        if (index === 0) {
+            slide.style.backgroundImage = `url(${imageUrl})`;
+            slide.classList.add('active');
+            slide.dataset.ready = '1';
+        }
         background.appendChild(slide);
+        return slide;
+    });
+}
+
+/* The other photos wait for the page to finish loading, so they never compete
+   with the first one or the rest of the page. Each joins the rotation only
+   once it is decoded, so a slide never fades in half drawn. */
+function loadRemainingSlides() {
+    luxuryImages.forEach((imageUrl, index) => {
+        if (index === 0 || !heroSlides[index]) return;
+        const img = new Image();
+        img.src = imageUrl;
+        const loaded = img.decode ? img.decode()
+            : new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; });
+        loaded.then(() => {
+            heroSlides[index].style.backgroundImage = `url(${imageUrl})`;
+            heroSlides[index].dataset.ready = '1';
+        }, () => {});
     });
 }
 
 
 function rotateImages() {
-    const slides = document.querySelectorAll('.hero-image-slide');
-    if (slides.length === 0) return;
+    if (heroSlides.length === 0) return;
 
     setInterval(() => {
-        slides[currentImageIndex].classList.remove('active');
-        currentImageIndex = (currentImageIndex + 1) % luxuryImages.length;
-        slides[currentImageIndex].classList.add('active');
+        // The next photo that has loaded; until one has, the first one stays.
+        let next = currentImageIndex;
+        for (let step = 1; step < heroSlides.length; step++) {
+            const i = (currentImageIndex + step) % heroSlides.length;
+            if (heroSlides[i].dataset.ready) { next = i; break; }
+        }
+        if (next === currentImageIndex) return;
+        heroSlides[currentImageIndex].classList.remove('active');
+        currentImageIndex = next;
+        heroSlides[currentImageIndex].classList.add('active');
     }, 3000);
 }
 
@@ -61,7 +94,7 @@ function handleScroll() {
         const scrollY = window.scrollY;
         if (scrollY > window.innerHeight * 1.2) return;
         const scale = 1 + (scrollY * 0.0001); // Slightly gentler zoom
-        document.querySelectorAll('.hero-image-slide').forEach(slide => {
+        heroSlides.forEach(slide => {
             slide.style.transform = `scale(${scale})`;
         });
     });
@@ -82,7 +115,7 @@ function startStatsAnimation() {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         const currentCount = Math.floor(progress * target);
-        gamesElement.innerHTML = currentCount + "+";
+        gamesElement.textContent = currentCount + "+";
 
         if (progress < 1) {
             window.requestAnimationFrame(step);
@@ -129,6 +162,8 @@ function triggerEntrance() {
 document.addEventListener('DOMContentLoaded', () => {
     createImageSlides();
     rotateImages();
+    if (document.readyState === 'complete') loadRemainingSlides();
+    else window.addEventListener('load', loadRemainingSlides, { once: true });
     triggerEntrance();
     startLocationSwapper();
     

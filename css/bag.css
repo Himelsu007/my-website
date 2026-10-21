@@ -102,7 +102,7 @@
 
 .lx_bag_list { flex: 1 1 auto; overflow-y: auto; padding: 8px 14px; }
 .lx_bag_empty {
-    color: #71717a; font-family: 'Inter', sans-serif;
+    color: #71717a; font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: .92rem; text-align: center; padding: 40px 0;
 }
 
@@ -123,7 +123,7 @@
     font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
     color: #fff; font-size: 1rem; line-height: 1.15;
 }
-.lx_bag_item_opt { font-family: 'Inter', sans-serif; font-size: 11px; color: #a1a1aa; }
+.lx_bag_item_opt { font-family: 'Inter', 'Inter Fallback', sans-serif; font-size: 11px; color: #a1a1aa; }
 .lx_bag_item_price {
     font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
     color: #FFD700; font-size: .95rem; font-variant-numeric: tabular-nums;
@@ -169,12 +169,12 @@
 .lx_bag_order[disabled] { opacity: .45; cursor: not-allowed; }
 .lx_bag_clear {
     background: none; border: none; color: #71717a;
-    font-family: 'Inter', sans-serif; font-size: .82rem;
+    font-family: 'Inter', 'Inter Fallback', sans-serif; font-size: .82rem;
     cursor: pointer; text-decoration: underline; padding: 2px;
 }
 .lx_bag_clear:hover { color: #a1a1aa; }
 .lx_bag_note {
-    margin: 0; font-family: 'Inter', sans-serif;
+    margin: 0; font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: .76rem; color: #5c5c66; line-height: 1.5; text-align: center;
 }
 
@@ -190,7 +190,7 @@
     border: 1px solid rgba(255,255,255,0.12);
     box-shadow: 0 14px 34px -14px rgba(0,0,0,0.9);
     color: #fff;
-    font-family: 'Inter', sans-serif; font-size: .88rem;
+    font-family: 'Inter', 'Inter Fallback', sans-serif; font-size: .88rem;
     transition: opacity .25s ease, transform .25s cubic-bezier(0.22,1,0.36,1);
 }
 #lx_bag_toast.in { opacity: 1; transform: translate(-50%, 0); }
@@ -257,7 +257,7 @@
 
 .lx_bag_field { display: flex; flex-direction: column; gap: 5px; }
 .lx_bag_field > span {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 10px; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase; color: #71717a;
 }
@@ -269,7 +269,7 @@
     border: 1px solid rgba(255, 255, 255, 0.10);
     background: rgba(255, 255, 255, 0.045);
     color: #fff;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 16px;            /* under 16px, iOS Safari zooms the page in on focus */
     outline: none;
     transition: border-color .22s ease, background .22s ease, box-shadow .22s ease;
@@ -294,7 +294,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
 
 .lx_bag_hint {
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: .74rem; color: #5c5c66; line-height: 1.5;
 }
 
@@ -317,7 +317,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
 .lx_bag_item_flag {
     display: block;
     margin-top: 4px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: .72rem; line-height: 1.4;
     color: #F0A020;
 }
@@ -363,7 +363,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
 
 .lx_bag_title { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
 .lx_bag_head_count {
-    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    font-family: 'Inter', 'Inter Fallback', sans-serif; font-size: 12px; font-weight: 500;
     color: #71717a; font-variant-numeric: tabular-nums;
 }
 .lx_bag_close { display: grid; place-items: center; }
@@ -376,7 +376,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
     display: flex; flex-direction: column; align-items: center; gap: 8px;
     padding: 64px 28px;
     text-align: center;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     color: #71717a;
 }
 .lx_bag_empty svg { color: #3f3f46; margin-bottom: 6px; }
@@ -424,14 +424,14 @@ select.lx_bag_input option { background: #141418; color: #fff; }
         background: var(--bag-ground);
         color: var(--bag-ink);
         box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.6);
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, sans-serif;
         animation: lxBagFloatIn .42s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     /* ---- head ---- */
     #lx_bag_drawer .lx_bag_head { padding: 24px 22px 16px 28px; border-bottom: 0; }
     #lx_bag_drawer .lx_bag_head h2 {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', 'Inter Fallback', sans-serif;
         font-size: 22px; font-weight: 600; letter-spacing: -0.02em;
         text-transform: none;
         color: var(--bag-ink);
@@ -475,14 +475,14 @@ select.lx_bag_input option { background: #141418; color: #fff; }
     #lx_bag_drawer .lx_bag_item img.tile-light { padding: 5px; }
     #lx_bag_drawer .lx_bag_item_id { grid-column: 2; grid-row: 1 / 3; align-self: center; gap: 3px; }
     #lx_bag_drawer .lx_bag_item_name {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', 'Inter Fallback', sans-serif;
         font-size: 14px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em;
         color: var(--bag-ink);
     }
     #lx_bag_drawer .lx_bag_item_opt { font-size: 12.5px; color: var(--bag-ink-3); }
     #lx_bag_drawer .lx_bag_item_price {
         margin-top: 4px;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', 'Inter Fallback', sans-serif;
         font-size: 15px; font-weight: 700; letter-spacing: -0.02em;
         color: var(--bag-ink);
     }
@@ -519,7 +519,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
     #lx_bag_drawer .lx_bag_qty button:hover { background: var(--bag-soft); border-color: transparent; }
     #lx_bag_drawer .lx_bag_qty span {
         min-width: 22px;
-        font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+        font-family: 'Inter', 'Inter Fallback', sans-serif; font-size: 13px; font-weight: 600;
         color: var(--bag-ink);
     }
 
@@ -540,7 +540,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
         border-radius: 18px;
     }
     #lx_bag_drawer .lx_bag_fulfil_label {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', 'Inter Fallback', sans-serif;
         font-size: 14px; font-weight: 600; letter-spacing: -0.005em;
         text-transform: none;
         color: var(--bag-ink);
@@ -555,7 +555,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
         border: 0; border-radius: 10px;
         background: transparent;
         color: var(--bag-ink-2);
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', 'Inter Fallback', sans-serif;
         font-size: 13.5px; font-weight: 600; letter-spacing: 0;
         text-transform: none;
     }
@@ -609,7 +609,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
     #lx_bag_drawer .lx_bag_total {
         padding-top: 12px;
         border-top: 1px solid var(--bag-line);
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', 'Inter Fallback', sans-serif;
         font-size: 15px; font-weight: 600; letter-spacing: -0.005em;
         text-transform: none;
         color: var(--bag-ink);
@@ -624,7 +624,7 @@ select.lx_bag_input option { background: #141418; color: #fff; }
         border: 0; border-radius: 99px;
         background: var(--bag-gold);
         color: #0B0B0D;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', 'Inter Fallback', sans-serif;
         font-size: 15.5px; font-weight: 600; letter-spacing: -0.005em;
         text-transform: none;
         box-shadow: none;

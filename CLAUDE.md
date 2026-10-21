@@ -45,6 +45,13 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
 - Product shots sit on pure white. Lift a light-grey studio background to white with ffmpeg `curves`.
 - The product sheet's gallery crops photos to fill its frame. The frame is tall on desktop (about 0.82 wide-to-tall) and wide on phones (about 1.1). Crop lifestyle photos to about 0.95 so heads and the product stay in frame on both.
 - Basketballs are shown whole (`contain`), with no delivery line.
+- Size every image to how it's shown, about 3× its on-screen width, never a camera original. A 12-megapixel photo takes seconds to decode on a phone and stalls scrolling while it does.
+- The home hero's photos are in `assets/images/hero/` in two sizes: `<name>-1200.avif` for phones, `<name>-1920.avif` for larger screens. `javascript/hero_section.js` picks one, and the two preloads at the top of `index.html` must name the same first photo.
+
+## Fonts
+
+- Barlow Condensed and Inter are served from `assets/fonts/` (`@font-face` in `css/fonts.css`), not Google Fonts. Don't add the Google Fonts link back.
+- Pages preload Barlow Condensed 900 and 700 so headings don't reflow when the font lands. The legal pages and the store also preload 400. Don't preload Inter: at 71 KB it delays the first paint more than it saves.
 
 ## Design decisions the owner has made
 

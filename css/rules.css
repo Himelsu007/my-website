@@ -91,7 +91,7 @@ body {
     50% { opacity: 0.5; transform: scale(1.25); }
 }
 .rules-phase-text {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.25em;
@@ -148,7 +148,7 @@ body {
     color: #ffffff;
 }
 .rules-meta-label {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 10px;
     font-weight: 500;
     text-transform: uppercase;
@@ -326,7 +326,7 @@ body {
 .rules-stat-label {
     display: block;
     margin-top: 8px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.2em;
@@ -446,7 +446,7 @@ body {
 .rules-table {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
     color: var(--rules-text);
 }
 .rules-table thead th {
