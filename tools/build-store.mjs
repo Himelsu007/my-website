@@ -13,8 +13,6 @@
 //   merch.html                the store's product list (ItemList JSON-LD)
 //   sitemap.xml               every product page and every photo
 //   feeds/google-merchant.xml the Merchant Center feed (one item per size)
-//   index.html                the store card in the home hero (lx:home-store):
-//                             a few things the store has, with their prices
 //
 // bump-assets.sh runs it, so it happens on every catalogue change. To run it
 // on its own:   node tools/build-store.mjs [path/to/product-catalog.js]
@@ -192,50 +190,6 @@ merch = swap(merch, /<!-- lx:store-ld -->[\s\S]*?<!-- \/lx:store-ld -->/, ldScri
 ]), "store JSON-LD block");
 const merchChanged = merch.replace(/\?v=\d+/g, "") !== read("merch.html").replace(/\?v=\d+/g, "");
 write("merch.html", merch);
-
-// ---- index.html: the store card in the home hero ----
-// The card under the WhatsApp one tells a first-time visitor there is a
-// store: a few things it has, one at a time (hero_section.js turns them),
-// each with its price. Only what can be bought is shown, so a price or a
-// sell-out in the catalogue reaches the home page on the next build. The
-// labels are short display names for the card; the full names stay Matrix's.
-const HOME_PICKS = [
-    { sku: "SLA", label: "Nike Pro Combat tank", thumb: "assets/images/home-store/tank-black-120.webp" },
-    { sku: "LILX-GEN-CREW-PNK", label: "Nike Elite crew socks", thumb: "assets/images/home-store/socks-pink-120.webp" },
-    { sku: "LILX-TOP-CMP-SS-BLK", label: "Nike compression tee", thumb: "assets/images/home-store/tee-black-120.webp" },
-    { sku: "LILX-BAL-EVO-NXT", label: "Wilson EVO NXT ball", thumb: "assets/images/home-store/ball-evo-nxt-120.webp" },
-];
-{
-    const picks = HOME_PICKS
-        .map(pick => ({ ...pick, p: products.find(p => p.sku === pick.sku) }))
-        .filter(({ p }) => p && inStock(p) && hasPrice(p));
-    const shown = picks.length ? picks : [{ ...HOME_PICKS[0], line: "Pro gear, socks and game balls" }];
-    const thumbs = shown.map((x, i) =>
-        `<img${i ? "" : ' class="is-on"'} src="${x.thumb}" alt="" width="120" height="120" decoding="async"${i ? ' fetchpriority="low"' : ""}>`);
-    const lines = shown.map((x, i) =>
-        `<span${i ? "" : ' class="is-on"'}>${esc(x.line || `${x.label} · ${euros(x.p.priceEUR)}`)}</span>`);
-    const card = `<!-- lx:home-store — written by tools/build-store.mjs from the catalogue -->
-    <a class="ios-wa ios-shop" href="merch.html" aria-label="Shop the Locked In store">
-        <span class="ios-thumbs" aria-hidden="true">
-            ${thumbs.join("\n            ")}
-        </span>
-        <span class="ios-body" aria-hidden="true">
-            <span class="ios-top">
-                <span class="ios-name">LOCKED IN STORE</span>
-                <span class="ios-time">new in</span>
-            </span>
-            <span class="ios-msg ios-lines">
-                ${lines.join("\n                ")}
-            </span>
-        </span>
-        <span class="ios-go" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1 13H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
-        </span>
-    </a>
-    <!-- /lx:home-store -->`;
-    const home = read("index.html");
-    write("index.html", swap(home, /<!-- lx:home-store [\s\S]*?<!-- \/lx:home-store -->/, card, "home store card"));
-}
 
 // ---- store/<slug>/index.html ----
 const storeTitle = unescape(merch.match(/<title>([^<]*)<\/title>/)[1].trim());

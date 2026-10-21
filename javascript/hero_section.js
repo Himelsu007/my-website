@@ -144,32 +144,9 @@ function startLocationSwapper() {
 }
 
 // ============================================
-// THE STORE CARD, THE LABEL, THE SCROLL CUE
+// THE LABEL AND THE SCROLL CUE
 // ============================================
 const heroReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// The store card shows one thing the store has at a time: its photo and its
-// line turn together, the line rising out as the next rises in.
-function startStoreCard() {
-    const card = document.querySelector('.ios-shop');
-    if (!card || heroReduced) return;
-    const thumbs = card.querySelectorAll('.ios-thumbs img');
-    const lines = card.querySelectorAll('.ios-lines > span');
-    if (lines.length < 2) return;
-    let i = 0;
-    setInterval(() => {
-        if (document.hidden) return;
-        const next = (i + 1) % lines.length;
-        lines[i].classList.remove('is-on');
-        lines[i].classList.add('is-out');
-        const out = lines[i];
-        setTimeout(() => out.classList.remove('is-out'), 600);
-        lines[next].classList.add('is-on');
-        if (thumbs[i]) thumbs[i].classList.remove('is-on');
-        if (thumbs[next]) thumbs[next].classList.add('is-on');
-        i = next;
-    }, 2800);
-}
 
 // The small label above the headline decodes from one line to the next.
 function startPhaseDecode() {
@@ -227,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     else window.addEventListener('load', loadRemainingSlides, { once: true });
     triggerEntrance();
     startLocationSwapper();
-    startStoreCard();
     startPhaseDecode();
     startScrollCue();
     

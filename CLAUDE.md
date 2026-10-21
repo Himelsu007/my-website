@@ -18,10 +18,9 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
 - `feeds/google-merchant.xml`
 - the `lx:store` block in `sitemap.xml`
 - the `lx:store-ld` block in `merch.html`
-- the `lx:home-store` block in `index.html` (the store card in the home hero)
 - `javascript/product-stock.js`
 
-`tools/build-store.mjs` writes the store pages, the feed, the sitemap block and the two HTML blocks from the catalogue. `tools/sync-stock.mjs` writes the stock file from Matrix, the owner's inventory app.
+`tools/build-store.mjs` writes the first four from the catalogue. `tools/sync-stock.mjs` writes the stock file from Matrix, the owner's inventory app.
 
 ## Product catalogue: `javascript/product-catalog.js`
 
@@ -79,7 +78,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
     - `theme-color` stays white on every page, and in `site.webmanifest`, for older iPhones and Android.
   - Full-screen overlays must be `visibility: hidden` when closed. iOS Safari paints the colour of fixed layers behind its bars, which showed up as black bands.
 - **Home page:** don't redesign it without asking first. A type-led "sentence as layout" redesign was rejected. Keep the current brand look: the plum "LOCKED IN?", the section labels, and the event cards with the moving border.
-  - First-time visitors didn't know there was a store, so the owner chose a store card for the hero: a second iPhone-style card under the WhatsApp one, turning through a few products with their prices (`HOME_PICKS` in `build-store.mjs`, thumbnails in `assets/images/home-store/` at 120 px). On the home page the header's Store link shows from the start, as a "Store" pill.
+  - First-time visitors didn't know there was a store, so on the home page the header's Store link shows from the start, as a "Store" pill. A store card under the WhatsApp card was tried and removed at the owner's request; the WhatsApp card itself is a clean pill (faces, "Join the group chat", green button).
   - The hero shares the store hero's motion: a light through "LOCKED IN?", the label above it decoding, and a scroll cue (computers and tall phones). On phones the stats sit in one row.
 
 ## Things that need the owner's Mac
