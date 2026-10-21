@@ -25,7 +25,7 @@ function buildProductCard(product) {
             ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ""}
         </div>
         <div class="product_info">
-            <span class="product_name barlow-condensed-regular">${product.name}</span>
+            <span class="product_name barlow-condensed-regular">${product.shelfName || product.name}</span>
             <span class="product_price">${displayPrice(product)}</span>
         </div>`;
     return card;

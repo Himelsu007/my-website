@@ -13,7 +13,7 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 <!-- lx:store — written by tools/build-store.mjs -->
 <url>
     <loc>https://www.lockedinlx.com/merch.html</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -74,31 +74,46 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
 <url>
     <loc>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-black/</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp</image:loc>
     </image:image>
+    <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-1.webp</image:loc>
+    </image:image>
+    <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-2.webp</image:loc>
+    </image:image>
 </url>
 
 <url>
     <loc>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-white/</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp</image:loc>
     </image:image>
+    <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-1.webp</image:loc>
+    </image:image>
+    <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-2.webp</image:loc>
+    </image:image>
 </url>
 
 <url>
     <loc>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-black/</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
         <image:loc>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp</image:loc>
+    </image:image>
+    <image:image>
+        <image:loc>https://www.lockedinlx.com/assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black-worn.webp</image:loc>
     </image:image>
 </url>
 

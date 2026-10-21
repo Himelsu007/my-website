@@ -19,6 +19,12 @@
 //
 // `lead` is the one-line headline over the description in the sheet.
 //
+// `shelfName` is what the card on the shelf says when the full name carries a
+// colour: the photo already shows the colour, so the shelf reads like a
+// showroom ("Porsche 911") and the sheet gives the full name ("Porsche 911,
+// Guards Red"). `name` stays the full one everywhere else: the sheet, the
+// order, Google, and the product's own page and address.
+//
 // Stock comes from Matrix: product-stock.js (written by tools/sync-stock.mjs)
 // holds what is left of every product, and lxApplyStock below turns it into
 // what can be bought. A size at 0 shows dimmed as "Out of stock", a product
@@ -37,6 +43,7 @@ const products = [
         // Compression Tank" records are told apart by colour tag, and these
         // SKUs are theirs, so an order lands on the right stock.
         name: "Nba Nike-Pro Combat Compression Tank (Black)",
+        shelfName: "Nba Nike-Pro Combat Compression Tank",
         sku: "SLA",
         matrixSku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TB",
         tile: "light",
@@ -45,6 +52,11 @@ const products = [
         category: "apparel",
         tag: "Best Seller",
         image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp",
+        images: [
+            "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp",
+            "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-1.webp",
+            "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-2.webp"
+        ],
         lead: "Our best seller. Sleeveless, second skin.",
         description: "The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.",
         optionTitle: "<strong>Size</strong>",
@@ -52,6 +64,7 @@ const products = [
     },
     {
         name: "Nba Nike-Pro Combat Compression Tank (White)",
+        shelfName: "Nba Nike-Pro Combat Compression Tank",
         sku: "AU09282",
         matrixSku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TW",
         tile: "light",
@@ -59,6 +72,11 @@ const products = [
         status: "available",
         category: "apparel",
         image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp",
+        images: [
+            "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp",
+            "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-1.webp",
+            "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-2.webp"
+        ],
         lead: "The tank, in white.",
         description: "The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.",
         optionTitle: "<strong>Size</strong>",
@@ -69,6 +87,7 @@ const products = [
         // one carries Matrix's own SKU, so its orders land on that stock; the
         // black one follows Matrix's LILX-{category}-{item}-{colour} pattern.
         name: "Nike Nba Compression Short Sleeves (Black)",
+        shelfName: "Nike Nba Compression Short Sleeves",
         sku: "LILX-TOP-CMP-SS-BLK",
         matrixSku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SB",
         tile: "light",
@@ -76,6 +95,10 @@ const products = [
         status: "available",
         category: "apparel",
         image: "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp",
+        images: [
+            "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black.webp",
+            "assets/images/products/nike-compression-short-sleeves/nike-compression-short-sleeves-black-worn.webp"
+        ],
         lead: "The base layer, in black.",
         description: "The Nike Pro NBA compression tee: Dri-FIT, light and tight to the body, made to be worn alone or under your jersey.",
         optionTitle: "<strong>Size</strong>",
@@ -83,6 +106,7 @@ const products = [
     },
     {
         name: "Nike Nba Compression Short Sleeves (White)",
+        shelfName: "Nike Nba Compression Short Sleeves",
         sku: "LILX-TOP-CMP-SS",
         matrixSku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SW",
         tile: "light",
@@ -98,6 +122,7 @@ const products = [
     {
         // Named as in Matrix's inventory, so orders link to that stock.
         name: "Nike Nba Elite Crew Socks Pink",
+        shelfName: "Nike NBA Elite Crew Socks",
         sku: "LILX-GEN-CREW-PNK",
         tile: "light",
         priceEUR: 20,
@@ -117,6 +142,7 @@ const products = [
         // Matrix has no SKU on this one yet; this follows its pattern, and the
         // name matches Matrix exactly so orders still link to the stock.
         name: "Nike Nba Elite Crew Socks - Light Blue",
+        shelfName: "Nike NBA Elite Crew Socks",
         sku: "LILX-GEN-CREW-LBL",
         matrixSku: "LILX-SOC-CREW-BLU-2",
         tile: "light",
@@ -159,6 +185,7 @@ const products = [
     },
     {
         name: "Nike NBA Elite Crew Socks White",
+        shelfName: "Nike NBA Elite Crew Socks",
         sku: "LILX-NBA-ELITE-CREW-SOCKS-SW",
         replaces: { name: "Nba Elite Crew Socks", colorIndex: 1 },
         tile: "light",
@@ -196,6 +223,7 @@ const products = [
     },
     {
         name: "Miami Heat Nike Black-Pink 2020 City Edition",
+        shelfName: "Miami Heat Nike 2020 City Edition",
         sku: "LILX-SOC-CREW-BLU",
         tile: "light",
         priceEUR: 18,
@@ -217,6 +245,7 @@ const products = [
         // pattern, so a matching record there links up (and its stock then
         // replaces the count below).
         name: "Nike Elite Crew Socks University Red",
+        shelfName: "Nike Elite Crew Socks",
         sku: "LILX-SOC-CREW-RED",
         tile: "light",
         priceEUR: 22,
@@ -324,6 +353,7 @@ const products = [
     },
     {
         name: "Nba Nike Elite Shooting Sleeve (White)",
+        shelfName: "Nba Nike Elite Shooting Sleeve",
         sku: "LILX-NBA-NIKE-ELITE-SHOOTING-SLEEVE-WHITE",
         tile: "dark",
         priceEUR: 35,
@@ -341,6 +371,7 @@ const products = [
     },
     {
         name: "Nba Nike Elite Shooting Sleeve (Black)",
+        shelfName: "Nba Nike Elite Shooting Sleeve",
         sku: "LILX-NBA-NIKE-ELITE-SHOOTING-SLEEVE-BLACK",
         tile: "light",
         priceEUR: 35,
