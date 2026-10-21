@@ -540,15 +540,16 @@
 /* ============================================
    THE STORE, FROM THE FIRST SECOND
    --------------------------------------------
-   First-time visitors didn't know there was a store: the header kept its
-   icon hidden until a scroll, and the hero never said it. Now the header's
-   Store link shows from the start, with its name, and the label above the
-   headline names the store among its lines. With it, the hero has the
+   First-time visitors didn't know there was a store: the hero never said
+   it. Now the store pill under the WhatsApp one does, and the label above
+   the headline names the store among its lines. The header's Store link
+   waits, like the menu, until the nav bar appears on scroll; then it shows
+   as a pill with its name. With it, the hero has the
    store hero's motion: a light through "LOCKED IN?", that label decoding,
    and a scroll cue.
    ============================================ */
 
-/* ---- header: "Store", visible and named ---- */
+/* ---- header: "Store", named, once the nav bar appears ---- */
 #main-header > .logo-link {
     /* centred on its own, so the wider Store link doesn't push it aside */
     position: absolute;
@@ -557,8 +558,6 @@
     transform: translate(-50%, -50%);
 }
 #main-header > a.store-link {
-    opacity: 1;
-    pointer-events: auto;
     display: inline-flex;
     align-items: center;
     gap: 7px;
