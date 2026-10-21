@@ -261,6 +261,9 @@ html[data-splash="enter"] .sh { --sh-delay: 1.15s; }
     pointer-events: none;
 }
 .sh-head > * { pointer-events: auto; }
+/* The headline's size is capped by the column it sits in (cqi), so a line
+   never runs wider than its column, on any screen. */
+.sh-head { container-type: inline-size; }
 .sh-eyebrow {
     display: flex;
     align-items: center;
@@ -302,6 +305,7 @@ html[data-splash="enter"] .sh { --sh-delay: 1.15s; }
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900;
     font-size: clamp(56px, 16.4vw, 80px);
+    font-size: min(clamp(56px, 16.4vw, 80px), 21.5cqi);
     line-height: 0.86;
     letter-spacing: -0.005em;
     text-transform: uppercase;
@@ -322,6 +326,11 @@ html[data-splash="enter"] .sh { --sh-delay: 1.15s; }
     animation: sh-rise 1s var(--ease) calc(var(--sh-delay) + 0.12s + var(--i) * 0.09s) both;
 }
 /* A light runs through the letters every few seconds. */
+/* The lines only need clipping top and bottom, for the rise; sideways a
+   letter should never be cut. */
+@supports (overflow: clip) {
+    .sh-line { overflow-x: visible; overflow-y: clip; }
+}
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
     .sh-line > span {
         background: linear-gradient(100deg, var(--ink) 0 42%, #8C8C8C 50%, var(--ink) 58% 100%);
@@ -523,7 +532,7 @@ body:has(#store_hero) #main-header:not(.scrolled) > .logo-link > .logo-ink { dis
         --shift-k: 0.78;
     }
     .sh-head { padding: 110px 40px 28px; }
-    .sh-title { font-size: clamp(76px, 12vw, 116px); }
+    .sh-title { font-size: clamp(76px, 12vw, 116px); font-size: min(clamp(76px, 12vw, 116px), 21.5cqi); }
     .sh-eyebrow { font-size: 11.5px; }
     /* clear of the scroll cue in the corner */
     .sh-actions { width: min(100% - 150px, 440px); }
@@ -556,7 +565,7 @@ body:has(#store_hero) #main-header:not(.scrolled) > .logo-link > .logo-ink { dis
     }
     .sh-eyebrow { font-size: 12px; margin-bottom: 26px; }
     .sh-rule { width: 120px; }
-    .sh-title { font-size: clamp(88px, 9.4vw, 184px); line-height: 0.84; }
+    .sh-title { font-size: clamp(88px, 9.4vw, 184px); font-size: min(clamp(88px, 9.4vw, 184px), 21.5cqi); line-height: 0.84; }
     .sh-sub {
         display: block;
         max-width: 28em;
