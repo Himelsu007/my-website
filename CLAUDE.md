@@ -55,7 +55,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
 
 ## Design decisions the owner has made
 
-- **Product sheet:** light on desktop (900 px and wider), dark on phones. On phones it's a centred card at 85% of the screen height over a blurred store. One theme for every product, not per product.
+- **Product sheet:** light on desktop (900 px and wider), dark on phones. On phones it's a centred card at 95% of the screen height over a blurred store. One theme for every product, not per product.
 - **Bag:** a light floating panel on desktop, dark on phones.
 - **Order slip:** `order.html` stays dark.
 - **Shelf cards:**
@@ -67,7 +67,10 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - large monitors: 90% for the site, 100% for the store
   - the store's header always matches the other pages' header
 - **Phones:**
-  - The store's status bar area is white (`.lx-statusbar`), with no line showing under it. iOS 26 Safari ignores `theme-color`. It colours the status bar from the CSS `background-color` of the frontmost fixed element at the top edge, and skips any element 10 px tall or less. `.lx-statusbar` is a 12 px strip whose white is clipped to an empty box: Safari reads it, nothing is drawn. Don't make it thinner, give it a border, or let its white show.
+  - Every page's status bar area is white, with no line showing under it, and so is the bar behind Safari's address bar while a product sheet is open (`css/statusbar.css`).
+    - iOS 26 Safari ignores `theme-color`. It colours each bar from the CSS `background-color` of the frontmost fixed element at that edge, and skips any element 10 px tall or less.
+    - `.lx-statusbar` (top, every page) and `.lx-chin` (bottom, store) are 12 px strips whose white is clipped to an empty box: Safari reads it, nothing is drawn. Don't make them thinner, give them a border, or let their white show.
+    - `theme-color` stays white on every page, and in `site.webmanifest`, for older iPhones and Android.
   - Full-screen overlays must be `visibility: hidden` when closed. iOS Safari paints the colour of fixed layers behind its bars, which showed up as black bands.
 - **Home page:** don't redesign it without asking first. A type-led "sentence as layout" redesign was rejected. Keep the current brand look: the plum "LOCKED IN?", the section labels, and the event cards with the moving border.
 

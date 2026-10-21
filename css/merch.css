@@ -2994,11 +2994,11 @@ body:has(#product_modal.active) #lx_bag_pill {
    ---------------------------------------------------------------------
    Desktop keeps the light two-column sheet. Phones and tablets get the
    same layout on the store's own dark ground, and on a phone it is a card
-   centred on the screen rather than a full-screen page: 85% of the height,
+   centred on the screen rather than a full-screen page: 95% of the height,
    with the store left visible and blurred around it — which says "you are
    still in the store" and leaves room to tap to close.
 
-   85% of the overlay, not 85vh: the overlay is position:fixed with
+   95% of the overlay, not 95vh: the overlay is position:fixed with
    inset:0, which on iOS is exactly the visible area, so the sheet can
    never run up behind Safari's toolbars (what hid the × before).
    ===================================================================== */
@@ -3036,10 +3036,13 @@ body:has(#product_modal.active) #lx_bag_pill {
 
 @media (max-width: 640px) {
     /* A card floating in the middle of the screen, not a sheet pinned to the
-       bottom edge: 85% tall, a 12px margin each side, rounded all round. */
+       bottom edge: 95% tall (it was 85%, then 12% taller), a 12px margin each
+       side, rounded all round. On a short screen it still keeps 12px clear
+       above and below, like the sides, so the strip behind the address bar
+       (css/statusbar.css) never lies over it. */
     #product_modal { align-items: center; justify-content: center; }
     #product_modal .modal_content {
-        height: 85%;
+        height: min(calc(85% * 1.12), calc(100% - 24px));
         width: calc(100% - 24px);
         max-height: none;
         border-radius: 24px;
@@ -3196,36 +3199,3 @@ body:has(#product_modal.active) #lx_bag_pill {
 .pp-actions { display: flex; gap: 20px; align-items: center; margin-top: 24px; }
 .pp-order { background: #FFD700; color: #000 !important; padding: 12px 20px; border-radius: 12px; font-weight: 600; text-decoration: none; }
 
-/* ===============================
-   STATUS BAR (phones)
-   The strip where the phone shows time, signal and battery is white on the
-   store. iOS 26 Safari ignores theme-color. It looks a few pixels into the
-   middle of the top edge for the frontmost fixed element and paints the
-   status bar in that element's background-color as written in the CSS, not
-   as drawn. It skips anything 10px tall or less (a 2px white line was
-   skipped, so the bar stayed black with the line showing under it), narrower
-   than 90% of the screen, see-through, or with a backdrop blur. The header
-   is all of those but the first: transparent at the top, blurred glass once
-   scrolled.
-
-   So this is an invisible 12px bar on the top edge, over the header. Its
-   white is clipped to an empty content box, so it is never drawn: Safari
-   reads white, nobody sees it. 12px clears every header button (the highest,
-   the menu once scrolled, starts at 13px). No border: Safari can take a
-   border's colour instead. theme-color is white too, for older iPhones and
-   Android Chrome.
-=============================== */
-.lx-statusbar { display: none; }
-@media (hover: none) and (pointer: coarse) {
-    .lx-statusbar {
-        display: block;
-        position: fixed;
-        top: 0; left: 0; right: 0;
-        box-sizing: border-box;
-        height: 12px;
-        padding-top: 12px;              /* no content box left... */
-        background-color: #fff;         /* ...so this is read, never painted */
-        background-clip: content-box;
-        z-index: 1001;     /* over the header (1000), under sheets and the bag */
-    }
-}

@@ -887,6 +887,13 @@ function initModal() {
     document.getElementById("products_unavailable_grid")
         ?.addEventListener("click", openFromCard);
 
+    // The white strip behind Safari's address bar (css/statusbar.css) lies
+    // over the bottom of the backdrop while the sheet is open, so a tap on it
+    // is a tap on the backdrop.
+    document.querySelector(".lx-chin")?.addEventListener("click", () => {
+        if (modal.classList.contains("active")) closeProductModal();
+    });
+
     // All modal interactions are delegated here
     modal.addEventListener("click", (e) => {
         // CLOSE (backdrop or X)

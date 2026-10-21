@@ -1,0 +1,55 @@
+/* =====================================================
+   SAFARI'S BARS — white behind the status bar, every page
+   -----------------------------------------------------
+   iOS 26 Safari ignores theme-color. It looks a few pixels into the
+   middle of the top edge (and of the bottom one, behind the address bar)
+   for the frontmost fixed element, and paints the bar in that element's
+   background-color as written in the CSS, not as drawn. It skips anything
+   10px tall or less (a 2px white line was skipped, so the bar stayed black
+   with the line showing under it), narrower than 90% of the screen,
+   see-through, or with a backdrop blur. The header is all of those but the
+   first: transparent at the top, blurred glass once scrolled.
+
+   So a bar gets an invisible 12px strip on its edge. The white is clipped
+   to an empty content box, so it is never drawn: Safari reads white,
+   nobody sees it. No border: Safari can take a border's colour instead.
+   theme-color is white too, for older iPhones and Android Chrome.
+   ===================================================== */
+.lx-statusbar,
+.lx-chin { display: none; }
+
+@media (hover: none) and (pointer: coarse) {
+    .lx-statusbar,
+    .lx-chin {
+        position: fixed;
+        left: 0; right: 0;
+        box-sizing: border-box;
+        height: 12px;
+        padding-top: 12px;              /* no content box left... */
+        background-color: #fff;         /* ...so this is read, never painted */
+        background-clip: content-box;
+    }
+
+    /* The status bar. Over the header (1000), under the menu, sheets and
+       the bag. 12px clears every header button: the highest, the menu once
+       scrolled, starts at 13px. */
+    .lx-statusbar {
+        display: block;
+        top: 0;
+        z-index: 1001;
+    }
+
+    /* Behind the address bar, only while a product sheet is open. The store
+       is locked under the sheet as a black fixed layer, and Safari filled
+       the bar with it. Over the sheet's backdrop (9999), under the bag. The
+       sheet keeps 12px clear of the edge (merch.css), so this covers only
+       backdrop, and a tap on it closes the sheet like one on the backdrop
+       (product-data.js). Gone while the full-screen photo is open: that
+       viewer lives inside the sheet's layer, so this would sit over it, and
+       it is black, like the bar behind it without this. */
+    body:has(#product_modal.active):not(:has(#image_lightbox.visible)) .lx-chin {
+        display: block;
+        bottom: 0;
+        z-index: 10000;
+    }
+}
