@@ -205,6 +205,7 @@ const products = [
     {
         // Named and coded as in Matrix, so orders land on that stock.
         name: "Nike Brooklyn Nets City Edition",
+        shelfName: "Nike NBA Elite Crew Socks",
         sku: "LILX-SOC-CREW-FADE",
         tile: "light",
         priceEUR: 20,
@@ -223,7 +224,7 @@ const products = [
     },
     {
         name: "Miami Heat Nike Black-Pink 2020 City Edition",
-        shelfName: "Miami Heat Nike 2020 City Edition",
+        shelfName: "Nike NBA Elite Crew Socks",
         sku: "LILX-SOC-CREW-BLU",
         tile: "light",
         priceEUR: 18,
