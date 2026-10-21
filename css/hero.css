@@ -414,10 +414,17 @@
    --------------------------------------------
    One clean pill: three faces from the group, what it is in two short
    lines, and WhatsApp's green button. No fake chat, typing dots or caption
-   under it: the card says it all. It rises in with the rest of the hero.
+   under it: the card says it all. Under it, its twin for the store: three
+   things it sells, "Shop the store", and the store's gold. The two are as
+   wide as each other and rise in with the rest of the hero.
    ============================================ */
 .ios-wa-wrap{
     display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+    width:fit-content;
+    max-width:100%;
     margin-top:8px;
     /* keeps the original hero reveal stagger for this slot */
     opacity:0;
@@ -488,6 +495,13 @@
 .ios-go svg{ width:20px; height:20px; }
 .ios-wa:hover .ios-go{ transform:scale(1.06); }
 
+/* the store's twin: product shots for faces, gold for green */
+.ios-wa--store .ios-avatars i{ background-color:#fff; background-size:86%; background-repeat:no-repeat; }
+.ios-wa--store .ios-go{ margin-left:auto; color:#0B0B0C; background:#FFD700; }
+.ios-wa--store:hover{ border-color:rgba(255,215,0,0.5); }
+.ios-wa--store:focus-visible{ outline-color:#FFD700; }
+.ios-wa .ios-go{ margin-left:auto; }
+
 @media (max-width:520px){
     .ios-wa{ gap:10px; }
     .ios-avatars i{ width:30px; height:30px; margin-left:-10px; }
@@ -495,6 +509,13 @@
     .ios-msg{ font-size:11.5px; }
     .ios-go{ width:36px; height:36px; }
     .ios-go svg{ width:18px; height:18px; }
+}
+/* the narrowest phones (320 px) */
+@media (max-width:340px){
+    .ios-wa{ gap:8px; }
+    .ios-avatars i{ width:26px; height:26px; margin-left:-11px; }
+    .ios-name{ font-size:13px; }
+    .ios-msg{ font-size:11px; }
 }
 
 /* Scroll zoom on the hero photo, run by the browser off the main thread
@@ -636,8 +657,8 @@
     66% { transform: scale(1.9); }
     84%, 100% { transform: scale(1); }
 }
-/* Shown where it has room below the stats: computers and tall phones */
-@media (min-width: 769px), (min-height: 760px) {
+/* On computers; on phones the runs below already peek out of the hero */
+@media (min-width: 769px) {
     .hero-scroll { display: flex; }
 }
 @supports (animation-timeline: scroll()) {
@@ -652,8 +673,15 @@
 }
 @keyframes hero-cue-out { to { opacity: 0; visibility: hidden; } }
 
-/* ---- phones: the stats in one row, not a tall stack ---- */
+/* ---- phones: as tall as what it holds, not the whole screen, so the runs
+   below show; and the stats in one row, not a tall stack ---- */
 @media (max-width: 768px) {
+    .hero-container {
+        height: auto;
+        min-height: 0;
+        padding-top: clamp(112px, 17vh, 150px);
+        padding-bottom: 44px;
+    }
     .stats {
         grid-template-columns: auto 1px auto 1px minmax(0, 1fr);
         gap: 14px;

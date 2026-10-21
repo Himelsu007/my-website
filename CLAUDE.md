@@ -78,7 +78,8 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
     - `theme-color` stays white on every page, and in `site.webmanifest`, for older iPhones and Android.
   - Full-screen overlays must be `visibility: hidden` when closed. iOS Safari paints the colour of fixed layers behind its bars, which showed up as black bands.
 - **Home page:** don't redesign it without asking first. A type-led "sentence as layout" redesign was rejected. Keep the current brand look: the plum "LOCKED IN?", the section labels, and the event cards with the moving border.
-  - First-time visitors didn't know there was a store, so on the home page the header's Store link shows from the start, as a "Store" pill. A store card under the WhatsApp card was tried and removed at the owner's request; the WhatsApp card itself is a clean pill (faces, "Join the group chat", green button).
+  - First-time visitors didn't know there was a store, so on the home page the header's Store link shows from the start, as a "Store" pill. Under the WhatsApp pill (faces, "Join the group chat", green button) sits its twin for the store (product shots from `assets/images/home-store/`, "Shop the store", gold button). A busier store card that turned through products and prices was tried and removed at the owner's request.
+  - On phones the hero is only as tall as its content, so the upcoming runs show below it.
   - The hero shares the store hero's motion: a light through "LOCKED IN?", the label above it decoding, and a scroll cue (computers and tall phones). On phones the stats sit in one row.
 
 ## Things that need the owner's Mac
