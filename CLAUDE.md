@@ -63,6 +63,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - On phones there is no "Shop the tank" button (the owner's call); an animated scroll cue at the foot leads to the shelf. The owner tried and rejected dark and per-photo-colour backgrounds: keep it light.
 - **Bag:** a light floating panel on desktop, dark on phones.
 - **Order slip:** `order.html` stays dark.
+- **Sign-up forms** (`private_run_sign_up.html`, `training_sign_up.html`): no `alert()` boxes. `javascript/signup-motion.js` gives them their motion: the summary card's steps tick off as they go, changing numbers roll, a missing answer shakes and says what it needs (`lxSignup.flag`), and sending draws a check on the button and bursts confetti (`lxSignup.success`). WhatsApp still opens straight from the tap.
 - **Shelf cards:**
   - no borders, rings or panels around them
   - hovering only lifts the card and zooms the photo, with no gold

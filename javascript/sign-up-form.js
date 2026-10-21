@@ -260,9 +260,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const playerName = document.getElementById("player-name").value.trim();
             const ageGroup = getSelectedAgeGroup();
 
-            /* ===== VALIDATION ===== */
-            if (!playerName) return alert("Please enter your name.");
-            if (!ageGroup) return alert("Please select your age group.");
+            /* ===== VALIDATION =====
+               signup-motion.js shakes the field and says what it needs. */
+            const missing = (field, msg) => (window.lxSignup ? lxSignup.flag(field, msg) : alert(msg));
+            if (!playerName) return missing(document.getElementById("player-name"), "Add your first name.");
+            if (!ageGroup) return missing(document.querySelector(".age-selector"), "Pick your age group.");
 
             /* ===== PREPARE MESSAGE ===== */
             const spotsNeeded = 1 + guests.play;
@@ -336,9 +338,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 showRegisteredBadge();
             }
 
-            // Subtle UI feedback letting the user know the action completed
-            generateBtn.innerText = "OPENED IN WHATSAPP";
-            generateBtn.style.opacity = "0.7";
+            // The button draws a check and confetti goes up (signup-motion.js)
+            if (window.lxSignup) {
+                lxSignup.success(generateBtn, isWaitlist
+                    ? { label: "Request sent \u2014 check WhatsApp", confetti: false }
+                    : { label: "Sent \u2014 check WhatsApp" });
+            } else {
+                generateBtn.innerText = "OPENED IN WHATSAPP";
+                generateBtn.style.opacity = "0.7";
+            }
         });
     }
 });

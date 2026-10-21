@@ -64,10 +64,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const days = pick("pref_days");
         const time = pick("pref_time");
 
-        if (!name) return alert("Please enter your name.");
-        if (!age)  return alert("Please select your age group.");
-        if (!days) return alert("Please choose which days suit you.");
-        if (!time) return alert("Please choose a preferred time.");
+        // signup-motion.js shakes the field and says what it needs
+        const missing = (field, msg) => (window.lxSignup ? lxSignup.flag(field, msg) : alert(msg));
+        if (!name) return missing(document.getElementById("player-name"), "Add your first name.");
+        if (!age)  return missing(document.querySelector('input[name="age_group"]'), "Pick your age group.");
+        if (!days) return missing(document.querySelector('input[name="pref_days"]'), "Choose the days that suit you.");
+        if (!time) return missing(document.querySelector('input[name="pref_time"]'), "Choose a time that suits you.");
 
         const message =
             `\u{1F3C0} *LOCKED IN — TRAINING BOOKING*\n\n` +
@@ -98,7 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         showBooked();
-        btn.innerText = "SENT — CHECK WHATSAPP";
+        // The button draws a check and confetti goes up (signup-motion.js)
+        if (window.lxSignup) lxSignup.success(btn, { label: "Sent — check WhatsApp" });
+        else btn.innerText = "SENT — CHECK WHATSAPP";
     });
 
     function showBooked() {

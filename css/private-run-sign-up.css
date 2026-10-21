@@ -575,3 +575,78 @@ html,body {
     outline:none; border-color:rgba(255,215,0,0.55);
     background:rgba(255,255,255,0.06);
 }
+
+/* =====================================================
+   MOTION (javascript/signup-motion.js)
+   -----------------------------------------------------
+   The page rises in piece by piece; the steps on the summary card tick
+   off as they go; a missing answer shakes and says what it needs; and
+   sending draws a check on the button, slides the "registered" banner in
+   and bursts confetti (a canvas the script adds and removes).
+   ===================================================== */
+@media (prefers-reduced-motion: no-preference) {
+    .signup-shell .run-summary { animation: su-rise 0.8s var(--su-ease) 0.05s both; }
+    .signup-shell .auth-container > * { animation: su-rise 0.7s var(--su-ease) both; }
+    .signup-shell .auth-container > :nth-child(2) { animation-delay: 0.08s; }
+    .signup-shell .auth-container > :nth-child(3) { animation-delay: 0.12s; }
+    .signup-shell .auth-container > :nth-child(4) { animation-delay: 0.16s; }
+    .signup-shell .auth-container > :nth-child(5) { animation-delay: 0.2s; }
+    .signup-shell .auth-container > :nth-child(6) { animation-delay: 0.24s; }
+    .signup-shell .auth-container > :nth-child(7) { animation-delay: 0.28s; }
+    .signup-shell .auth-container > :nth-child(8) { animation-delay: 0.32s; }
+    .signup-shell .auth-container > :nth-child(9) { animation-delay: 0.36s; }
+    .signup-shell .auth-container > :nth-child(n+10) { animation-delay: 0.4s; }
+    .rs-registered { animation: su-drop 0.6s var(--su-ease) both; }
+    .rs-registered svg polyline { stroke-dasharray: 24; stroke-dashoffset: 24; animation: su-draw 0.45s ease 0.25s forwards; }
+}
+/* starts at 1%, not 0, so the browser still counts its first paint */
+@keyframes su-rise { from { opacity: 0.01; transform: translateY(16px); } }
+@keyframes su-drop { from { opacity: 0; transform: translateY(-10px) scale(0.97); } }
+@keyframes su-draw { to { stroke-dashoffset: 0; } }
+
+/* ---- the steps tick off ---- */
+.rs-step { transition: color 0.35s ease; }
+.rs-step-n { position: relative; transition: background-color 0.35s ease, border-color 0.35s ease, color 0.2s ease; }
+.rs-step.is-done { color: #fff; }
+.rs-step.is-done .rs-step-n { background: #25D366; border-color: #25D366; color: transparent; }
+.rs-step.is-done .rs-step-n::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 12px no-repeat;
+    animation: su-tick 0.45s var(--su-ease) both;
+}
+@keyframes su-tick { from { opacity: 0; transform: scale(0.4) rotate(-20deg); } }
+
+/* ---- a missing answer ---- */
+.su-flagged .auth-input,
+.su-flagged .age-pill { border-color: rgba(255, 107, 107, 0.75); }
+.su-msg {
+    margin: 9px 0 0;
+    font-family: 'Inter', 'Inter Fallback', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #FF6B6B;
+    animation: su-drop 0.35s var(--su-ease) both;
+}
+
+/* ---- sent: a check drawn on the button ---- */
+#generate-pdf.su-sent,
+.whatsapp_btn.su-sent {
+    animation: none;
+    background: #1EBE57;
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+}
+.su-sent .su-check polyline { stroke-dasharray: 24; stroke-dashoffset: 24; animation: su-draw 0.45s ease 0.1s forwards; }
+.su-confetti {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9000;
+    pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+    .su-sent .su-check polyline { stroke-dashoffset: 0; animation: none; }
+    .rs-step.is-done .rs-step-n::after { animation: none; }
+}
