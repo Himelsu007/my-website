@@ -67,7 +67,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - large monitors: 90% for the site, 100% for the store
   - the store's header always matches the other pages' header
 - **Phones:**
-  - The store's status bar area is white (`.lx-statusbar`).
+  - The store's status bar area is white (`.lx-statusbar`), with no line showing under it. iOS 26 Safari ignores `theme-color`. It colours the status bar from the CSS `background-color` of the frontmost fixed element at the top edge, and skips any element 10 px tall or less. `.lx-statusbar` is a 12 px strip whose white is clipped to an empty box: Safari reads it, nothing is drawn. Don't make it thinner, give it a border, or let its white show.
   - Full-screen overlays must be `visibility: hidden` when closed. iOS Safari paints the colour of fixed layers behind its bars, which showed up as black bands.
 - **Home page:** don't redesign it without asking first. A type-led "sentence as layout" redesign was rejected. Keep the current brand look: the plum "LOCKED IN?", the section labels, and the event cards with the moving border.
 
