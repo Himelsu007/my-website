@@ -8,7 +8,7 @@ const events = [
         time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",    
         map: "https://maps.apple/p/qd6tPoDv6xcQE8",
-        spotsTaken: 0,
+        spotsTaken: 20,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
@@ -142,11 +142,16 @@ function renderEvents(tally, pending) {
     events.forEach((event, i) => {
         const total = event.spotsTotal || 0;
         const past  = isPastRun(event);
-        // A finished run is history - it reads its final number straight from
-        // this file and ignores the Sheet, so old rows can be deleted freely.
-        const shared = (!past && tally && typeof runKey === "function")
+        const shared = (tally && typeof runKey === "function")
             ? (Number(tally[runKey(event)]) || 0) : 0;
-        const taken = Math.min(total, (event.spotsTaken || 0) + shared);
+        // Upcoming: sign-ups in the Sheet come on top of the spotsTaken here
+        // (spots handed out outside the site). Finished: its final number is
+        // whichever is larger - the Sheet's count while its rows are still
+        // there, or spotsTaken once the final number is written into this
+        // file - not 0 the moment the run ends. Taking the larger, not the
+        // sum, means writing the final number here never counts it twice.
+        const base = event.spotsTaken || 0;
+        const taken = Math.min(total, past ? Math.max(base, shared) : base + shared);
         const registered = (typeof hasRegistered === "function") && hasRegistered(event);
         const spotsLeft = total - taken;
         const fillPercent = total > 0 ? Math.min(100, Math.round((taken / total) * 100)) : 0;
