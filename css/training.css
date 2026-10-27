@@ -104,76 +104,25 @@ body { background: var(--tr-bg); }
     gap: 22px;
 }
 
+/* The card itself is a Pixel Card (css/pixel-card.css, javascript/pixel-card.js):
+   its surface, edge and pixel animation replace the old grain, gold glow,
+   gold border and hover lift. This only lays out what sits inside it. */
 .tr-pack {
-    position: relative;
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
-    border: 1px solid var(--tr-line);
-    border-radius: 18px;
     padding: 34px 30px 30px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    transition: transform 0.5s cubic-bezier(0.19,1,0.22,1),
-                border-color 0.3s ease,
-                box-shadow 0.5s ease;
 }
 
-/* Ambient film-grain texture (matches hero / menu) */
-.tr-pack::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-    opacity: 0.4;
-    pointer-events: none;
-    z-index: 0;
-}
+/* The badge keeps its corner: pixel-card.css lifts every child onto
+   position: relative to sit above the canvas. */
+.tr-pack.pixel-card > .tr-pack-badge { position: absolute; z-index: 2; }
 
-/* Gold glow — blooms on hover; the featured card keeps a soft drift at rest */
-.tr-pack::after {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    background: radial-gradient(circle at 50% 0%, rgba(255,215,0,0.16), transparent 62%);
-    opacity: 0;
-    transition: opacity 0.55s ease;
-    pointer-events: none;
-    z-index: 0;
-}
-.tr-pack:hover::after { opacity: 1; }
-
-/* Keep content above the decorative layers */
-.tr-pack-name,
-.tr-pack-tagline,
-.tr-price-row,
-.tr-features,
-.tr-pack-cta { position: relative; z-index: 1; }
-.tr-pack-badge { z-index: 2; }   /* keeps its own position:absolute */
-
-.tr-pack:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255, 215, 0, 0.5);
-    box-shadow: 0 26px 50px -24px rgba(0,0,0,0.75);
-}
-
-.tr-pack--featured {
-    --accent: var(--tr-gold);
-    border: 1px solid rgba(255, 215, 0, 0.55);
-}
-/* Slow gold light drift on the featured card, even at rest */
-.tr-pack--featured::after {
-    opacity: 0.55;
-    animation: tr-glow-drift 7s ease-in-out infinite;
-}
-.tr-pack--featured:hover::after {
-    opacity: 1;
-    animation: none;
-}
-@keyframes tr-glow-drift {
-    0%, 100% { background: radial-gradient(circle at 30% 0%, rgba(255,215,0,0.14), transparent 62%); }
-    50%      { background: radial-gradient(circle at 72% 8%, rgba(255,215,0,0.18), transparent 64%); }
+/* A soft dark halo lifts the text off the pixels while they are out. */
+.tr-pack.pixel-card .tr-pack-name,
+.tr-pack.pixel-card .tr-pack-tagline,
+.tr-pack.pixel-card .tr-price-row,
+.tr-pack.pixel-card .tr-features {
+    text-shadow: 0 0 14px rgba(10, 10, 12, 0.95), 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .tr-pack[data-accent="blue"]  { --accent: #3B82F6; }
@@ -199,8 +148,7 @@ body { background: var(--tr-bg); }
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
     .tr-reveal { opacity: 1; transform: none; transition: none; }
-    .tr-pack--featured::after { animation: none; }
-    .tr-pack, .tr-price, .tr-features li, .tr-pack-cta::after { transition: none; }
+    .tr-price, .tr-features li, .tr-pack-cta::after { transition: none; }
 }
 
 .tr-pack-badge {
@@ -383,6 +331,12 @@ body { background: var(--tr-bg); }
     .tr-cta { margin-top: 64px; padding: 70px 22px 84px; }
 }
 @media (max-width: 480px) {
+    /* On a narrow card the badge sat on top of the pack's name; it leads
+       the card instead. */
+    .tr-pack.pixel-card > .tr-pack-badge {
+        position: relative; top: auto; right: auto;
+        align-self: flex-start; margin-bottom: 12px;
+    }
 }
 /* Arrow nudges on hover, with a gentle idle drift (matches the booking cards) */
 .tr-pack-cta svg{ flex-shrink:0; transition:transform .3s cubic-bezier(0.19,1,0.22,1); animation:tr-arrow 2.6s ease-in-out infinite; }

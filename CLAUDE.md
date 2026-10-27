@@ -63,6 +63,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - On phones there is no "Shop the tank" button (the owner's call); an animated scroll cue at the foot leads to the shelf. The owner tried and rejected dark and per-photo-colour backgrounds: keep it light.
 - **Bag:** a light floating panel on desktop, dark on phones.
 - **Order slip:** `order.html` stays dark.
+- **Training page pack cards** are React Bits' Pixel Card, ported to plain JS (`javascript/pixel-card.js`, `css/pixel-card.css`; turn one on with `data-pixel-card`). Pixels ripple out on hover, focus or tap, and once when a card scrolls into view. Shooting Drills uses the blue preset and Drills & Recovery the yellow one. Both use `data-pixel-fade="0.85"` and `data-pixel-opacity="0.75"` so the text stays readable over the pixels (the demo cards hold far less text). They replaced the old frame: grain, gold glow, gold border and hover lift.
 - **Sign-up forms** (`private_run_sign_up.html`, `training_sign_up.html`): no `alert()` boxes. `javascript/signup-motion.js` gives them their motion: the summary card's steps tick off as they go, changing numbers roll, a missing answer shakes and says what it needs (`lxSignup.flag`), and sending draws a check on the button and bursts confetti (`lxSignup.success`). WhatsApp still opens straight from the tap.
 - **Shelf cards:**
   - no borders, rings or panels around them
