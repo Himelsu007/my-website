@@ -448,6 +448,13 @@ function lxStockFor(p, option) {
     return 0;                                      // a size Matrix doesn't have
 }
 
+// Clothing sizes follow Matrix: when it counts a product by S / M / L / XL,
+// those are the sizes on offer, in that order, whatever was listed here (a
+// list of S, M, L once hid the white tank's XL and offered an S it never had).
+// Sizes that aren't letters (socks' 42 - 46, a ball's 7) stay as listed.
+var LX_SIZES = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "2XL", "3XL", "4XL"];
+function lxSizeRank(s) { return LX_SIZES.indexOf(String(s).replace(/\s+/g, "").toUpperCase()); }
+
 // Called by product-stock.js with Matrix's counts, keyed by our sku. Matrix
 // wins over a count set here by hand; a product neither of them counts keeps
 // its status and `unavailable` as written.
@@ -456,6 +463,14 @@ function lxApplyStock(counts) {
         if (counts && Object.prototype.hasOwnProperty.call(counts, p.sku)) p.stock = counts[p.sku];
         if (p.stock == null || p.status === "soon") return;
         var sized = p.options && p.options.length && !/quantity/i.test(p.optionTitle || "");
+        if (sized && typeof p.stock === "object") {
+            var held = Object.keys(p.stock);
+            var letters = function (o) { return lxSizeRank(o) >= 0; };
+            if (held.length && held.every(letters) && p.options.every(letters)) {
+                p.options = held.map(function (k) { return LX_SIZES[lxSizeRank(k)]; })
+                    .sort(function (a, b) { return lxSizeRank(a) - lxSizeRank(b); });
+            }
+        }
         if (sized) p.unavailable = p.options.filter(function (o) { return lxStockFor(p, o) <= 0; });
         p.status = lxStockFor(p) > 0 ? "available" : "soldout";
     });

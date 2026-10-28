@@ -6,24 +6,6 @@
     <link>https://www.lockedinlx.com/merch.html</link>
     <description>Basketball socks, balls and gear from Locked In Lx, Lisbon.</description>
     <item>
-        <g:id>SLA-S</g:id>
-        <g:item_group_id>SLA</g:item_group_id>
-        <g:title>Nba Nike-Pro Combat Compression Tank (Black) – Size S</g:title>
-        <g:description>Our best seller. Sleeveless, second skin. The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.</g:description>
-        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-black/</g:link>
-        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp</g:image_link>
-        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-1.webp</g:additional_image_link>
-        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-2.webp</g:additional_image_link>
-        <g:availability>out_of_stock</g:availability>
-        <g:price>50.00 EUR</g:price>
-        <g:brand>Nike</g:brand>
-        <g:condition>new</g:condition>
-        <g:product_type>Basketball &gt; Apparel</g:product_type>
-        <g:size>S</g:size>
-        <g:gender>unisex</g:gender>
-        <g:age_group>adult</g:age_group>
-    </item>
-    <item>
         <g:id>SLA-M</g:id>
         <g:item_group_id>SLA</g:item_group_id>
         <g:title>Nba Nike-Pro Combat Compression Tank (Black) – Size M</g:title>
@@ -60,20 +42,20 @@
         <g:age_group>adult</g:age_group>
     </item>
     <item>
-        <g:id>AU09282-S</g:id>
-        <g:item_group_id>AU09282</g:item_group_id>
-        <g:title>Nba Nike-Pro Combat Compression Tank (White) – Size S</g:title>
-        <g:description>The tank, in white. The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.</g:description>
-        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-white/</g:link>
-        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp</g:image_link>
-        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-1.webp</g:additional_image_link>
-        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-2.webp</g:additional_image_link>
-        <g:availability>out_of_stock</g:availability>
+        <g:id>SLA-XL</g:id>
+        <g:item_group_id>SLA</g:item_group_id>
+        <g:title>Nba Nike-Pro Combat Compression Tank (Black) – Size XL</g:title>
+        <g:description>Our best seller. Sleeveless, second skin. The Nike Pro Combat NBA compression tank: Dri-FIT, light and tight to the body, with nothing on your shoulders between you and your shot.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-black/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-1.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-2.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
         <g:price>50.00 EUR</g:price>
         <g:brand>Nike</g:brand>
         <g:condition>new</g:condition>
         <g:product_type>Basketball &gt; Apparel</g:product_type>
-        <g:size>S</g:size>
+        <g:size>XL</g:size>
         <g:gender>unisex</g:gender>
         <g:age_group>adult</g:age_group>
     </item>
@@ -104,12 +86,30 @@
         <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp</g:image_link>
         <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-1.webp</g:additional_image_link>
         <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-2.webp</g:additional_image_link>
-        <g:availability>out_of_stock</g:availability>
+        <g:availability>in_stock</g:availability>
         <g:price>50.00 EUR</g:price>
         <g:brand>Nike</g:brand>
         <g:condition>new</g:condition>
         <g:product_type>Basketball &gt; Apparel</g:product_type>
         <g:size>L</g:size>
+        <g:gender>unisex</g:gender>
+        <g:age_group>adult</g:age_group>
+    </item>
+    <item>
+        <g:id>AU09282-XL</g:id>
+        <g:item_group_id>AU09282</g:item_group_id>
+        <g:title>Nba Nike-Pro Combat Compression Tank (White) – Size XL</g:title>
+        <g:description>The tank, in white. The Nike Pro Combat NBA compression tank in white: Dri-FIT and tight to the body, made to be worn alone on warm nights or under your jersey.</g:description>
+        <g:link>https://www.lockedinlx.com/store/nba-nike-pro-combat-compression-tank-white/</g:link>
+        <g:image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white.webp</g:image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-1.webp</g:additional_image_link>
+        <g:additional_image_link>https://www.lockedinlx.com/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-white-worn-2.webp</g:additional_image_link>
+        <g:availability>in_stock</g:availability>
+        <g:price>50.00 EUR</g:price>
+        <g:brand>Nike</g:brand>
+        <g:condition>new</g:condition>
+        <g:product_type>Basketball &gt; Apparel</g:product_type>
+        <g:size>XL</g:size>
         <g:gender>unisex</g:gender>
         <g:age_group>adult</g:age_group>
     </item>
