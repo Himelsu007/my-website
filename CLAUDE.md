@@ -9,6 +9,10 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - updates the `?v=` stamps
   - syncs stock from Matrix (this only works on the owner's Mac)
   - rebuilds the generated store files listed below
+- Matrix publishes stock on its own. A minute after stock changes in Matrix (and once when it opens), it runs `tools/publish-stock.sh`:
+  - it syncs the stock, and stops at "unchanged" if nothing moved;
+  - otherwise it runs `./bump-assets.sh`, commits "Stock from Matrix" and pushes;
+  - it stops at "busy" while the repo has uncommitted changes, so commit or stash your work, or the store's stock waits.
 - Check it's live with `curl -sL "https://www.lockedinlx.com/<page>?nc=$RANDOM"` and wait until the `?v=` stamp matches the commit. Use `www` and `-L`, because the bare domain redirects. Pages are cached for 10 minutes.
 - When replacing an image, give it a new filename so browsers don't keep showing the old one.
 
@@ -31,8 +35,9 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - bag matching
 - So, to show a shorter name on the shelf, set `shelfName` and keep the full `name`, colour included, for the product sheet, orders and Google.
 - The shelf order is the catalogue order: the best-seller row (tanks and tees) first, then the newest arrivals, then the rest.
-- Stock comes from Matrix:
-  - A size at 0 shows dimmed with an "Out of stock" tooltip.
+- Stock and sizes come from Matrix (`lxApplyStock` in `product-catalog.js`), whatever `options` lists:
+  - Clothing sizes (S, M, L, XL) are every size Matrix holds, in order. A size at 0 shows dimmed with an "Out of stock" tooltip.
+  - Other sizes (socks' 42 - 46, a ball's 7) are only the ones in stock. The owner's socks are all 42 - 46.
   - A product at 0 moves to "Back Soon" (with a WhatsApp "Notify me"), and goes back onto the shelf when Matrix has stock again.
   - Quantity in the sheet and in the bag is capped by stock.
   - `matrixSku` is set where Matrix's SKU differs from ours.

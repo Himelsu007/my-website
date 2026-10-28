@@ -448,12 +448,16 @@ function lxStockFor(p, option) {
     return 0;                                      // a size Matrix doesn't have
 }
 
-// Clothing sizes follow Matrix: when it counts a product by S / M / L / XL,
-// those are the sizes on offer, in that order, whatever was listed here (a
-// list of S, M, L once hid the white tank's XL and offered an S it never had).
-// Sizes that aren't letters (socks' 42 - 46, a ball's 7) stay as listed.
+// Sizes follow Matrix, whatever was listed here.
+//  - Clothing (S / M / L / XL): every size Matrix holds, in that order; one at
+//    0 shows dimmed as "Out of stock". (A list of S, M, L once hid the white
+//    tank's XL and offered an S it never had.)
+//  - Anything else (socks' 42 - 46, a ball's 7): only the sizes in stock, so
+//    socks bought in 42 - 46 alone don't offer 34 - 38 and 38 - 42 greyed out.
+//    With nothing in stock, all of Matrix's sizes stay for the Back Soon card.
 var LX_SIZES = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "2XL", "3XL", "4XL"];
 function lxSizeRank(s) { return LX_SIZES.indexOf(String(s).replace(/\s+/g, "").toUpperCase()); }
+function lxSizeStart(s) { var m = String(s).match(/\d+(\.\d+)?/); return m ? parseFloat(m[0]) : 0; }
 
 // Called by product-stock.js with Matrix's counts, keyed by our sku. Matrix
 // wins over a count set here by hand; a product neither of them counts keeps
@@ -469,6 +473,10 @@ function lxApplyStock(counts) {
             if (held.length && held.every(letters) && p.options.every(letters)) {
                 p.options = held.map(function (k) { return LX_SIZES[lxSizeRank(k)]; })
                     .sort(function (a, b) { return lxSizeRank(a) - lxSizeRank(b); });
+            } else if (held.length && !held.some(letters) && !p.options.some(letters)) {
+                var have = held.filter(function (k) { return p.stock[k] > 0; });
+                p.options = (have.length ? have : held)
+                    .sort(function (a, b) { return lxSizeStart(a) - lxSizeStart(b); });
             }
         }
         if (sized) p.unavailable = p.options.filter(function (o) { return lxStockFor(p, o) <= 0; });
