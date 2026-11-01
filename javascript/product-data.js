@@ -317,7 +317,10 @@ function stopAutoSlideshow() {
 // ========================================
 /* opts.initial: the visitor landed on this product's own page — nothing to
    push, and the name is the page's main heading.
-   opts.fromHistory: Forward brought them back onto the product's entry. */
+   opts.fromHistory: Forward brought them back onto the product's entry.
+   opts.swap: the Colour row switched to another colour of the same model —
+   the sheet stays open and the address changes without a new Back step.
+   opts.size: a size to keep picked, if the new colour has it in stock. */
 function openProductModal(index, opener, opts = {}) {
     const modal = document.getElementById("product_modal");
     const product = products[index];
@@ -374,6 +377,33 @@ function openProductModal(index, opener, opts = {}) {
                     <h4 class="inter-medium">Colour</h4>
                 </div>
                 <div class="variant_pills color_pills">${swatches}</div>
+            </div>`;
+    }
+
+    // ---- OTHER COLOURS (colorGroup) ----
+    // Each colour of a model is its own product with its own card on the
+    // shelf; inside the sheet they sit side by side as buttons, and tapping
+    // one swaps the sheet over to that product.
+    let siblingHTML = "";
+    const family = product.colorGroup
+        ? products.filter(p => p.colorGroup === product.colorGroup) : [];
+    if (family.length > 1) {
+        siblingHTML = `
+            <div class="modal_variant_group modal_sibling_group">
+                <div class="modal_variant_header">
+                    <h4 class="inter-medium">Colour</h4>
+                </div>
+                <div class="sibling_pills" role="group" aria-label="Colour">${
+                    family.map(p => {
+                        const on = p === product;
+                        const label = p.colorName || p.name;
+                        return `<button class="pill sibling_pill${on ? " active" : ""}" type="button"
+                                    data-sibling="${products.indexOf(p)}" aria-pressed="${on}"
+                                    ${on ? "" : `aria-label="Show it in ${esc(label)}"`}>
+                                <span class="color_dot" data-swatch="${esc(label.toLowerCase())}"></span>${esc(label)}
+                            </button>`;
+                    }).join("")
+                }</div>
             </div>`;
     }
 
@@ -521,6 +551,8 @@ function openProductModal(index, opener, opts = {}) {
                     <p class="modal_description">${product.description || "Premium gear for elite performance."}</p>
                 </div>
 
+                ${siblingHTML}
+
                 <div class="modal_options">
                     ${colorHTML}
                     ${variantsHTML}
@@ -561,7 +593,11 @@ function openProductModal(index, opener, opts = {}) {
        position rather than the locked one. */
     /* The entry carries the product's own address, so the bar shows a link
        that can be shared or reloaded straight back onto this product. */
-    if (opts.initial) {
+    if (opts.swap) {
+        try {
+            history.replaceState({ lxModal: true, lxSlug: productSlug(product) }, "", productPath(product));
+        } catch (e) {}
+    } else if (opts.initial) {
         pageProductOpen = true;
     } else if (opts.fromHistory) {
         modalHistoryPushed = true;
@@ -610,6 +646,17 @@ function openProductModal(index, opener, opts = {}) {
     if (content) content.scrollTop = 0;  // always start at the image
     const firstFocusable = modal.querySelector(".close_modal");
     if (firstFocusable) firstFocusable.focus({ preventScroll: true });
+
+    // Switched colour: keep the size they had picked, if this colour has it.
+    if (opts.size) {
+        const same = [...modal.querySelectorAll(".variant_pills:not(.color_pills) .pill")]
+            .find(p => p.innerText.trim() === opts.size && !p.classList.contains("is-out") && !p.disabled);
+        if (same && !same.classList.contains("active")) same.click();
+    }
+    if (opts.swap) {
+        const pill = modal.querySelector(".sibling_pill.active");
+        if (pill) pill.focus({ preventScroll: true });
+    }
 }
 
 let modalHistoryPushed = false;
@@ -949,6 +996,18 @@ function initModal() {
                 inline.toggleAttribute("hidden");
                 link.textContent = willOpen ? "Hide size chart ›" : "View size chart ›";
             }
+            return;
+        }
+
+        // OTHER COLOUR of the same model: swap the sheet over to it.
+        const sibling = e.target.closest(".sibling_pill");
+        if (sibling) {
+            if (sibling.classList.contains("active")) return;
+            const picked = modal.querySelector(".variant_pills:not(.color_pills) .pill.active");
+            openProductModal(Number(sibling.dataset.sibling), slideshowState.openerElement, {
+                swap: true,
+                size: picked ? picked.innerText.trim() : ""
+            });
             return;
         }
 

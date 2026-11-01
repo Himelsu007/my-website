@@ -1859,11 +1859,16 @@ PRODUCT INFO
    Second option dimension, above size. Same pill shape as sizes so the two
    read as one system, with a swatch dot so the colour is visible at a glance.
    ======================================== */
-.color_pills .pill {
+.color_pills .pill,
+.sibling_pills .pill {
     display: inline-flex;
     align-items: center;
     gap: 8px;
 }
+/* Other colours of the same model (colorGroup in the catalogue): a row of
+   the same pills above the sizes; tapping one swaps the sheet to it. */
+.sibling_pills { display: flex; flex-wrap: wrap; gap: 8px; }
+#product_modal .modal_sibling_group { margin-top: 20px; }
 .color_dot {
     width: 14px;
     height: 14px;

@@ -19,6 +19,10 @@
 //
 // `lead` is the one-line headline over the description in the sheet.
 //
+// `colorGroup` ties the colours of one model together: the product sheet shows
+// a Colour row with a button per colour (`colorName`), and tapping one swaps
+// the sheet to that product. Each colour keeps its own card on the shelf.
+//
 // `shelfName` is what the card on the shelf says when the full name carries a
 // colour: the photo already shows the colour, so the shelf reads like a
 // showroom ("Porsche 911") and the sheet gives the full name ("Porsche 911,
@@ -43,6 +47,8 @@ const products = [
         // Compression Tank" records are told apart by colour tag, and these
         // SKUs are theirs, so an order lands on the right stock.
         name: "Nba Nike-Pro Combat Compression Tank (Black)",
+        colorGroup: "compression-tank",
+        colorName: "Black",
         shelfName: "Nba Nike-Pro Combat Compression Tank",
         sku: "SLA",
         matrixSku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TB",
@@ -64,6 +70,8 @@ const products = [
     },
     {
         name: "Nba Nike-Pro Combat Compression Tank (White)",
+        colorGroup: "compression-tank",
+        colorName: "White",
         shelfName: "Nba Nike-Pro Combat Compression Tank",
         sku: "AU09282",
         matrixSku: "LILX-NIKE-NBA-ELITE-PRO-TANK-TOP-TW",
@@ -87,6 +95,8 @@ const products = [
         // one carries Matrix's own SKU, so its orders land on that stock; the
         // black one follows Matrix's LILX-{category}-{item}-{colour} pattern.
         name: "Nike Nba Compression Short Sleeves (Black)",
+        colorGroup: "compression-tee",
+        colorName: "Black",
         shelfName: "Nike Nba Compression Short Sleeves",
         sku: "LILX-TOP-CMP-SS-BLK",
         matrixSku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SB",
@@ -106,6 +116,8 @@ const products = [
     },
     {
         name: "Nike Nba Compression Short Sleeves (White)",
+        colorGroup: "compression-tee",
+        colorName: "White",
         shelfName: "Nike Nba Compression Short Sleeves",
         sku: "LILX-TOP-CMP-SS",
         matrixSku: "LILX-NIKE-NBA-ELITE-PRO-COMPRESSION-SW",

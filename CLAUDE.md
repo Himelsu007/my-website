@@ -34,6 +34,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - its order-link code (use `replaces`)
   - bag matching
 - So, to show a shorter name on the shelf, set `shelfName` and keep the full `name`, colour included, for the product sheet, orders and Google.
+- Colours of one model (the black and white tanks, the black and white tees) are separate products with their own shelf cards. A shared `colorGroup` plus a `colorName` on each gives the product sheet a Colour row: one button per colour, and tapping one swaps the sheet to that product (photo, sizes, stock and address), keeping the picked size if it's in stock.
 - The shelf order is the catalogue order: the best-seller row (tanks and tees) first, then the newest arrivals, then the rest.
 - Stock and sizes come from Matrix (`lxApplyStock` in `product-catalog.js`), whatever `options` lists:
   - Clothing sizes (S, M, L, XL) are every size Matrix holds, in order. A size at 0 shows dimmed with an "Out of stock" tooltip.
