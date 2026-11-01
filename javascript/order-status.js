@@ -13,9 +13,11 @@
    Allowed values in that column (case does not matter):
        Requested · Confirmed · Ready · Delivered · Cancelled
 
-   If the Sheet is unreachable, not yet set up, or has no row for this
-   reference, the page falls back to "Order Requested" — which is true by
-   definition, because the buyer is holding the link.
+   A link lives as long as its order: once the row says Delivered or
+   Cancelled, or the row is deleted, the page closes the link (order.html).
+   A reference the Sheet doesn't have comes back as "gone" — after a short
+   grace for an order placed moments ago. If the Sheet is unreachable or not
+   set up, the page shows the order as before.
    ===================================================== */
 
 /* Same web app as javascript/signups-api.js — one deployment serves both.
@@ -95,12 +97,19 @@ const ORDERS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxpYeaAJK4zxhbO
         try { sessionStorage.setItem(cacheKey(ref), JSON.stringify(data)); } catch (e) {}
     }
 
-    /** Resolves to { key, note, updated, eta } — never rejects. */
+    /** Resolves to { key, note, updated, eta } — key "gone" when the Sheet has
+        no row for it — or null when it can't say. Never rejects. */
     function fetchStatus(ref) {
         if (!isConfigured() || !ref) return Promise.resolve(null);
         return fetch(ORDERS_ENDPOINT + "?order=" + encodeURIComponent(ref), { cache: "no-store" })
             .then(function (r) { return r.json(); })
             .then(function (d) {
+                /* No row for it: deleted from the Sheet (or not landed yet). */
+                if (d && d.ok && d.found === false) {
+                    var gone = { key: "gone", note: "", updated: "", eta: "" };
+                    writeCache(ref, gone);
+                    return gone;
+                }
                 if (!d || !d.ok || !d.status) return null;
                 var key = normalise(d.status);
                 if (!key) return null;

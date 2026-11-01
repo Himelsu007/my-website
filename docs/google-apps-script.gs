@@ -22,6 +22,8 @@
  *              18:00–20:00", "Tomorrow morning") and it replaces the
  *              estimate on the buyer's page; leave it blank and the page
  *              works one out itself.
+ *              The order link closes once its order is Delivered or
+ *              Cancelled, or once its row is deleted from this tab.
  */
 
 var SHEET_NAME  = 'Signups';
@@ -302,9 +304,9 @@ function etaText_(v) {
 function orderStatus_(ref) {
   try {
     var row = findOrderRow_(ref);
-    // An unknown reference is not an error: the order page falls back to
-    // "Order Requested", which is true for anyone holding the link.
-    if (!row) return json_({ ok: true, status: 'Requested', note: '', updated: '' });
+    // No row: the order was deleted (or is still landing). found:false lets
+    // the order page close the link — after a short grace for brand-new ones.
+    if (!row) return json_({ ok: true, found: false, status: '', note: '', updated: '' });
 
     var sh  = orders_();
     var val = sh.getRange(row, 4, 1, 3).getValues()[0];

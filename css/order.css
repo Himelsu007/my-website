@@ -542,6 +542,15 @@ body::-webkit-scrollbar{ display:none; }
 }
 .order-shell.is-empty .order-aside{ display:none; }
 
+/* ---- checking: held back until the Sheet says the order is still open ---- */
+.order-shell.is-checking .order-aside,
+.order-shell.is-checking .order-main{ visibility:hidden; }
+.order-shell.is-checking::after{
+    content:"Checking your order\2026";
+    position:fixed; left:0; right:0; top:46%; text-align:center;
+    font-size:13px; font-weight:600; letter-spacing:0.02em; color:var(--or-ink-3);
+}
+
 /* ---- empty / broken link ---- */
 .or-empty{
     font-size:14px; line-height:1.7;

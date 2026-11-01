@@ -33,13 +33,13 @@
          after it, so text is not drawn in a stand-in font and then reflowed. -->
     <link rel="preload" href="assets/fonts/barlow-condensed-900-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/barlow-condensed-700-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=20261028133618">
-    <link rel="stylesheet" href="css/fonts.css?v=20261028133618">
-    <link rel="stylesheet" href="css/footer.css?v=20261028133618">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261028133618">
-    <link rel="stylesheet" href="css/order.css?v=20261028133618">
-    <link rel="stylesheet" href="css/statusbar.css?v=20261028133618">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261028133618">
+    <link rel="stylesheet" href="css/style.css?v=20261101195137">
+    <link rel="stylesheet" href="css/fonts.css?v=20261101195137">
+    <link rel="stylesheet" href="css/footer.css?v=20261101195137">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261101195137">
+    <link rel="stylesheet" href="css/order.css?v=20261101195137">
+    <link rel="stylesheet" href="css/statusbar.css?v=20261101195137">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261101195137">
 </head>
 
 <body>
@@ -259,9 +259,9 @@
         <p class="barlow-condensed-regular">© 2026 Locked In Lx. All rights reserved.</p>
     </div>
 </footer>
-<script src="javascript/product-catalog.js?v=20261028133618"></script>
-<script src="javascript/order-status.js?v=20261028133618"></script>
-<script src="javascript/qrcode.min.js?v=20261028133618" defer></script>
+<script src="javascript/product-catalog.js?v=20261101195137"></script>
+<script src="javascript/order-status.js?v=20261101195137"></script>
+<script src="javascript/qrcode.min.js?v=20261101195137" defer></script>
 <script>
 /* =====================================================
    ORDER SLIP
@@ -387,18 +387,50 @@
 
     var order = null;
     try { order = parseOrder(window.location.hash); } catch (e) { order = null; }
+    var shell = document.querySelector(".order-shell");
 
-    if (!order) {
+    /* The link closed: no order, no items, no address — just the way back. */
+    function expireLink(why) {
         set("or_title", 'This link <span>has expired</span>');
         set("or_sub", "");
         set("or_body",
-            '<p class="or-empty">This order link is incomplete, so there is nothing to show. ' +
-            'Ask us to send it again on WhatsApp, or build the order fresh in the store.</p>' +
+            '<p class="or-empty">' + why + ' Need anything else? Message us on WhatsApp, ' +
+            'or build a new order in the store.</p>' +
             '<a class="or-back" href="merch.html">Back to the store</a>');
-        var shell = document.querySelector(".order-shell");
-        if (shell) shell.classList.add("is-empty");
+        document.documentElement.classList.remove("order-cancelled");
+        if (shell) { shell.classList.add("is-empty"); shell.classList.remove("is-checking"); }
+    }
+
+    if (!order) {
+        expireLink("This order link is incomplete, so there is nothing to show.");
         return;
     }
+
+    /* A link lives as long as its order. It dies once the order is completed
+       (delivered or collected), cancelled, or gone from the Sheet — the Sheet's
+       status says which (order-status.js). A brand-new order gets a grace
+       period, because its row is written as the buyer sends it and can land a
+       moment after they open the link. */
+    var LINK_GRACE_MS = 30 * 60 * 1000;
+    var statusApi = window.LXOrderStatus;
+    var pickupLink = order.fulfil && order.fulfil.method === "pickup";
+    function closedBecause(state) {
+        if (!state) return "";
+        if (state.key === "delivered") return "This order is complete — " + (pickupLink ? "collected" : "delivered") + " — so its link is closed.";
+        if (state.key === "cancelled") return "This order was cancelled, so its link is closed.";
+        if (state.key === "gone" && Date.now() - order.date.getTime() > LINK_GRACE_MS)
+            return "This order is no longer on our list, so its link is closed.";
+        return "";
+    }
+    var lastKnown = statusApi ? statusApi.cached(order.ref) : null;
+    if (closedBecause(lastKnown)) { expireLink(closedBecause(lastKnown)); return; }
+    /* No answer on file yet: hold the order back until the Sheet has spoken,
+       so a closed order's items and address never show, not even for the
+       second or two Apps Script takes. If the Sheet can't be reached, the
+       order shows after a few seconds, as it always did. */
+    var holding = !!(statusApi && statusApi.isConfigured() && !lastKnown);
+    function release() { holding = false; if (shell) shell.classList.remove("is-checking"); }
+    if (holding && shell) { shell.classList.add("is-checking"); setTimeout(release, 6000); }
 
     var total = order.lines.reduce(function (n, l) { return n + (l.price || 0) * l.qty; }, 0);
     var units = order.lines.reduce(function (n, l) { return n + l.qty; }, 0);
@@ -589,9 +621,15 @@
         }
 
         /* Paint from the last known answer first so a refresh does not flash
-           back to "Requested" while Apps Script thinks about it. */
+           back to "Requested" while Apps Script thinks about it. An answer that
+           closes the order closes the link instead. */
         paint(api.cached(order.ref));
-        api.fetch(order.ref).then(function (state) { if (state) paint(state); });
+        api.fetch(order.ref).then(function (state) {
+            var why = closedBecause(state);
+            if (why) { expireLink(why); return; }
+            if (state) paint(state);
+            release();
+        });
     })();
 
     /* ---- right card ---- */
@@ -659,7 +697,7 @@
     document.title = "Order " + order.ref + " | Locked In Lx";
 })();
 </script>
-<script src="javascript/scroll_detection_menu.js?v=20261028133618" defer></script>
-<script src="javascript/cookie-consent.js?v=20261028133618" defer></script>
+<script src="javascript/scroll_detection_menu.js?v=20261101195137" defer></script>
+<script src="javascript/cookie-consent.js?v=20261101195137" defer></script>
 </body>
 </html>
