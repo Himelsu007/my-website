@@ -663,3 +663,12 @@ select.lx_bag_input option { background: #141418; color: #fff; }
 @media (prefers-reduced-motion: reduce) {
     #lx_bag_drawer { animation: none !important; }
 }
+
+/* ---- email for order updates (both themes) ---- */
+.lx_bag_emailfld { margin-top: 14px; }
+.lx_bag_emailfld em {
+    font-style: normal; font-weight: 500; text-transform: none; letter-spacing: 0;
+    opacity: .7; margin-left: 4px;
+}
+.lx_bag_input[aria-invalid="true"]:not(:focus),
+#lx_bag_drawer .lx_bag_input[aria-invalid="true"]:not(:focus) { border-color: rgba(220, 60, 60, 0.75); }

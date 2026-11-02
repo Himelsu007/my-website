@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Order | Locked In Lx</title>
+    <!-- A short order link: lockedinlx.com/o/#XU4F-K7M2P9. Private, like the
+         order page it opens, so never indexed. -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#ffffff">
+    <base href="/">
+    <link rel="icon" type="image/png" href="assets/icons/favicon-96x96.png" sizes="96x96">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <link rel="stylesheet" href="css/fonts.css?v=20261102220357">
+    <style>
+        html, body { margin: 0; min-height: 100%; background: #000; color: #fff; }
+        body {
+            min-height: 100vh; min-height: 100dvh; display: grid; place-items: center;
+            font-family: Inter, 'Inter Fallback', -apple-system, sans-serif; padding: 24px; box-sizing: border-box;
+        }
+        .so { width: 100%; max-width: 420px; text-align: center; }
+        .so img { width: 140px; height: auto; margin-bottom: 36px; }
+        .so h1 {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase;
+            font-size: 2.4rem; line-height: 1; margin: 0 0 12px; letter-spacing: .01em;
+        }
+        .so h1 span { color: #FFD700; }
+        .so p { color: #a1a1aa; font-size: 15px; line-height: 1.6; margin: 0 0 24px; }
+        .so-dot {
+            width: 36px; height: 36px; margin: 0 auto 22px; border-radius: 50%;
+            border: 3px solid rgba(255,255,255,.12); border-top-color: #FFD700;
+            animation: so-spin .8s linear infinite;
+        }
+        @keyframes so-spin { to { transform: rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { .so-dot { animation-duration: 2.4s; } }
+        .so a.btn {
+            display: inline-flex; align-items: center; justify-content: center; min-height: 46px;
+            padding: 0 24px; margin: 4px; border-radius: 99px; text-decoration: none;
+            font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase;
+        }
+        .so a.btn-gold { background: #FFD700; color: #0a0a0a; }
+        .so a.btn-ghost { border: 1px solid rgba(255,255,255,.14); color: #fff; }
+        [hidden] { display: none !important; }
+    </style>
+</head>
+<body>
+<main class="so" id="main">
+    <img src="assets/icons/locked_in_small.svg" alt="Locked In Lx">
+    <div id="so_wait">
+        <div class="so-dot" aria-hidden="true"></div>
+        <h1>Opening your <span>order</span></h1>
+        <p>One moment&hellip;</p>
+    </div>
+    <div id="so_miss" hidden>
+        <h1>Order <span>not found</span></h1>
+        <p id="so_miss_text">We couldn&rsquo;t find this order. If you only just sent it, give it a minute and refresh. Otherwise, message us and we&rsquo;ll sort it out.</p>
+        <a class="btn btn-gold" id="so_wa" href="https://wa.me/351911861637" target="_blank" rel="noopener">Message us</a>
+        <a class="btn btn-ghost" href="merch.html">The store</a>
+    </div>
+</main>
+
+<script src="javascript/order-status.js?v=20261102220357"></script>
+<script>
+(function () {
+    "use strict";
+    var m = location.hash.replace(/^#/, "").trim().match(/^([2-9A-Z]{4})-([2-9A-Z]{6,12})$/i);
+
+    function missing(text) {
+        document.getElementById("so_wait").hidden = true;
+        document.getElementById("so_miss").hidden = false;
+        if (text) document.getElementById("so_miss_text").textContent = text;
+        if (m) document.getElementById("so_wa").href = "https://wa.me/351911861637?text=" +
+            encodeURIComponent("Hi! About order LX-" + m[1].toUpperCase() + " — ");
+    }
+
+    if (!m) { missing("This link is incomplete. Check you copied all of it, or message us."); return; }
+    if (typeof ORDERS_ENDPOINT !== "string" || !ORDERS_ENDPOINT) { missing(); return; }
+
+    var ref = m[1].toUpperCase(), key = m[2].toUpperCase();
+    /* The Sheet row is written as the buyer sends the order, so a link opened
+       straight away can arrive a moment before it: three tries. */
+    function attempt(n) {
+        fetch(ORDERS_ENDPOINT + "?short=" + encodeURIComponent(ref) + "&key=" + encodeURIComponent(key),
+              { cache: "no-store" })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                if (d && d.found && d.link) {
+                    var u = new URL(d.link, location.href);
+                    // The order page draws its scan code from this, not the long link.
+                    u.searchParams.set("s", ref + "-" + key);
+                    location.replace(u.href);
+                } else if (d && d.found === false && n < 2) {
+                    // Not there yet: the row may still be landing.
+                    setTimeout(function () { attempt(n + 1); }, 2000);
+                } else {
+                    missing();
+                }
+            })
+            .catch(function () { n < 2 ? setTimeout(function () { attempt(n + 1); }, 2000) : missing(); });
+    }
+    attempt(0);
+})();
+</script>
+</body>
+</html>
