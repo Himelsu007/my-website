@@ -64,6 +64,10 @@ function imagesOf(p) {
     return [...new Set(all.filter(Boolean))];
 }
 
+// Google (Merchant feed, image sitemap, product data) takes still photos
+// only, so a gallery clip (<name>-motion.webp) stays on the site.
+const stillsOf = p => imagesOf(p).filter(src => !/-motion\.webp$/.test(src));
+
 // Every product so far is Nike or Wilson; the name says which. A product
 // can still set `brand` in the catalogue if the name ever doesn't.
 function brandOf(p) {
@@ -116,7 +120,7 @@ function productLd(p) {
         url,
         description: describe(p) || undefined,
         sku: skuOf(p),
-        image: imagesOf(p).map(abs),
+        image: stillsOf(p).map(abs),
         brand: { "@type": "Brand", name: brandOf(p) },
         category: CATEGORY[p.category]
     };
@@ -333,7 +337,7 @@ ${pages.map(({ p, lastmod }) => `
     <loc>${pageUrl(p)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>${imageTags(imagesOf(p))}
+    <priority>0.8</priority>${imageTags(stillsOf(p))}
 </url>`).join("\n")}
 <!-- /lx:store -->`;
 let sitemap = prevSitemap;
@@ -351,7 +355,7 @@ write("sitemap.xml", sitemap);
 const x = s => esc(s).replace(/'/g, "&apos;");
 const items = [];
 for (const p of listed.filter(hasPrice)) {
-    const imgs = imagesOf(p).map(abs);
+    const imgs = stillsOf(p).map(abs);
     const sizes = sizesOf(p);
     const wearable = p.category === "socks" || p.category === "apparel" || p.category === "accessories";
     const variants = sizes ? sizes : [null];

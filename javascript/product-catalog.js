@@ -60,6 +60,7 @@ const products = [
         image: "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp",
         images: [
             "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp",
+            "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-motion.webp",
             "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-1.webp",
             "assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black-worn-2.webp"
         ],

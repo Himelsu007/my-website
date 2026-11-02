@@ -1556,6 +1556,9 @@ PRODUCT INFO
     object-fit: cover;
     padding: 0;
 }
+/* A gallery clip (<name>-motion.webp) is tall video: on the wide phone frame,
+   keep the upper part, where the players' heads are. */
+.modal_image_wrapper img[src*="-motion."] { object-position: 50% 22%; }
 
 /* ========================================
    MODAL — reachability and hit targets
