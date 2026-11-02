@@ -288,7 +288,7 @@
                 '<span class="lx_bag_fulfil_label">How do you want it?</span>' +
                 '<div class="lx_bag_methods">' +
                   '<button class="lx_bag_method" type="button" data-method="pickup">Pick up at a run</button>' +
-                  '<button class="lx_bag_method" type="button" data-method="delivery">Delivery in Lisbon</button>' +
+                  '<button class="lx_bag_method" type="button" data-method="delivery">Shipping</button>' +
                 '</div>' +
                 '<div class="lx_bag_panel" data-panel="pickup" hidden>' +
                   '<label class="lx_bag_field">' +
@@ -447,16 +447,22 @@
         });
         var ship = drawer.querySelector(".lx_bag_ship");
         if (ship) ship.textContent = f.method === "pickup" ? "Pickup at the run"
-                                   : f.method === "delivery" ? "Delivery in Lisbon"
+                                   : f.method === "delivery" ? "Shipping"
                                    : "Delivery or pickup";
 
         var sel = drawer.querySelector('[data-fld="run"]');
         if (sel && sel.options.length !== runs.length + 1) {
-            sel.innerHTML = '<option value="">Choose a run\u2026</option>' +
+            sel.innerHTML = '<option value="">' + (runs.length ? "Choose a run\u2026" : "No runs scheduled yet") + "</option>" +
                 runs.map(function (r) {
                     return '<option value="' + esc(r.date) + '">' +
                            esc(runLabel(r)) + " \u00b7 " + esc(r.location || "") + "</option>";
                 }).join("");
+        }
+        // A run picked on an earlier visit may have been played since: forget
+        // it, or the box shows blank instead of asking again.
+        if (f.run && !runs.some(function (r) { return r.date === f.run; })) {
+            f.run = ""; f.runLabel = ""; f.runWhere = ""; f.runStart = "";
+            try { localStorage.setItem(FKEY, JSON.stringify(f)); } catch (e) {}
         }
         if (sel) sel.value = f.run || "";
 
@@ -613,7 +619,11 @@
             if (product.colors && product.colors.indexOf(part) > -1) {
                 ci = product.colors.indexOf(part);
             } else if (product.options && product.options.indexOf(part) > -1) {
-                oi = product.options.indexOf(part);
+                /* The size itself ("s42_-_46"), not its place in the list: the
+                   list follows stock, so a position read later can point at a
+                   different size. Older links carry the position. */
+                oi = /^[\w -]+$/.test(part) ? "s" + part.replace(/ /g, "_")
+                                            : product.options.indexOf(part);
             }
         });
         return [lxProductCode(product.name), ci, oi, item.qty].join(".");

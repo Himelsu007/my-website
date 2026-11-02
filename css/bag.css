@@ -267,7 +267,7 @@
     padding: 11px 12px;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.10);
-    background: rgba(255, 255, 255, 0.045);
+    background-color: rgba(255, 255, 255, 0.045);
     color: #fff;
     font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 16px;            /* under 16px, iOS Safari zooms the page in on focus */
@@ -277,7 +277,7 @@
 .lx_bag_input::placeholder { color: #5c5c66; }
 .lx_bag_input:focus {
     border-color: rgba(255, 215, 0, 0.55);
-    background: rgba(255, 215, 0, 0.04);
+    background-color: rgba(255, 215, 0, 0.04);
     box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.10);
 }
 select.lx_bag_input {
@@ -577,14 +577,14 @@ select.lx_bag_input option { background: #141418; color: #fff; }
         padding: 12px 13px;
         border-radius: 11px;
         border: 1px solid var(--bag-line);
-        background: #FAFAFB;
+        background-color: #FAFAFB;      /* background-color only: background would wipe the select chevron */
         color: var(--bag-ink);
         font-size: 14.5px;
     }
     #lx_bag_drawer .lx_bag_input::placeholder { color: var(--bag-ink-3); }
     #lx_bag_drawer .lx_bag_input:focus {
         border-color: var(--bag-ink);
-        background: var(--bag-surface);
+        background-color: var(--bag-surface);
         box-shadow: 0 0 0 3px rgba(11, 11, 13, 0.07);
     }
     #lx_bag_drawer select.lx_bag_input option { background: #FFFFFF; color: #0B0B0D; }

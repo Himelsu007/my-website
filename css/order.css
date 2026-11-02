@@ -717,3 +717,62 @@ body::-webkit-scrollbar{ display:none; }
     .order-aside{ position:static; }
     .order-main .or-card{ padding:40px 38px 34px; }
 }
+
+/* =====================================================
+   ADDITIONS — copy the reference, linked items with a
+   quantity badge, and what happens next
+   ===================================================== */
+.or-refrow{ display:flex; align-items:center; gap:10px; margin:0 0 8px; }
+.or-refrow .or-ref{ margin:0; }
+.or-copy{
+    position:relative; flex:none;
+    width:30px; height:30px; display:inline-grid; place-items:center;
+    border-radius:9px; border:1px solid var(--or-line); background:var(--or-raise);
+    color:var(--or-ink-3); cursor:pointer;
+    transition:color .2s ease, border-color .2s ease, background .2s ease;
+}
+.or-copy:hover{ color:var(--or-ink); border-color:var(--or-chipline); }
+.or-copy-done{
+    position:absolute; left:calc(100% + 8px); top:50%; transform:translateY(-50%);
+    font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--or-green); white-space:nowrap;
+    opacity:0; transition:opacity .2s ease;
+}
+.or-copy.is-done{ color:var(--or-green); border-color:rgba(37,211,102,0.35); }
+.or-copy.is-done .or-copy-done{ opacity:1; }
+
+.or-thumbwrap{ position:relative; display:block; }
+.or-qty{
+    position:absolute; top:-7px; right:-7px;
+    min-width:22px; height:22px; padding:0 6px; box-sizing:border-box;
+    display:grid; place-items:center; border-radius:99px;
+    background:var(--or-accent); color:var(--or-on-accent);
+    font-size:11.5px; font-weight:800; font-variant-numeric:tabular-nums;
+    box-shadow:0 0 0 2px #121216;
+}
+a.or-name{ text-decoration:none; transition:color .2s ease; }
+a.or-name:hover{ color:var(--or-accent); }
+
+.or-next{ margin:4px 0 24px; }
+.or-next-list{
+    list-style:none; margin:0; padding:4px 16px;
+    background:var(--or-fill); border-radius:14px;
+}
+.or-next-list li{
+    display:grid; grid-template-columns:28px minmax(0,1fr); gap:14px;
+    padding:14px 0; border-bottom:1px solid var(--or-line);
+}
+.or-next-list li:last-child{ border-bottom:none; }
+.or-next-num{
+    width:28px; height:28px; display:grid; place-items:center; border-radius:50%;
+    border:1px solid var(--or-accent-line); color:var(--or-accent);
+    font-size:12.5px; font-weight:700;
+}
+.or-next-text{ display:flex; flex-direction:column; gap:3px; font-size:13.5px; line-height:1.55; color:var(--or-ink-3); }
+.or-next-text b{ font-size:14.5px; font-weight:600; color:var(--or-ink); }
+
+@media (max-width:560px){
+    .or-qty{ top:-6px; right:-6px; min-width:20px; height:20px; font-size:10.5px; }
+    .or-next-list{ padding:2px 13px; }
+    .or-next-list li{ gap:12px; padding:12px 0; }
+}

@@ -33,13 +33,13 @@
          after it, so text is not drawn in a stand-in font and then reflowed. -->
     <link rel="preload" href="assets/fonts/barlow-condensed-900-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/barlow-condensed-700-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=20261102164451">
-    <link rel="stylesheet" href="css/fonts.css?v=20261102164451">
-    <link rel="stylesheet" href="css/footer.css?v=20261102164451">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261102164451">
-    <link rel="stylesheet" href="css/order.css?v=20261102164451">
-    <link rel="stylesheet" href="css/statusbar.css?v=20261102164451">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261102164451">
+    <link rel="stylesheet" href="css/style.css?v=20261102214842">
+    <link rel="stylesheet" href="css/fonts.css?v=20261102214842">
+    <link rel="stylesheet" href="css/footer.css?v=20261102214842">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261102214842">
+    <link rel="stylesheet" href="css/order.css?v=20261102214842">
+    <link rel="stylesheet" href="css/statusbar.css?v=20261102214842">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261102214842">
 </head>
 
 <body>
@@ -143,7 +143,13 @@
                     <span class="or-month" id="or_month">&mdash;</span>
                 </div>
                 <div class="or-headline">
-                    <h1 class="or-ref" id="or_ref">LX&ndash;&ndash;&ndash;&ndash;</h1>
+                    <div class="or-refrow">
+                        <h1 class="or-ref" id="or_ref">LX&ndash;&ndash;&ndash;&ndash;</h1>
+                        <button class="or-copy" id="or_copy" type="button" aria-label="Copy the order reference">
+                            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                            <span class="or-copy-done" aria-hidden="true">Copied</span>
+                        </button>
+                    </div>
                     <!-- No status line here: the tracker below owns that, and two
                          readouts this close together WILL end up disagreeing. -->
                     <span class="or-refnote">Quote this reference</span>
@@ -262,9 +268,12 @@
         <p class="barlow-condensed-regular">© 2026 Locked In Lx. All rights reserved.</p>
     </div>
 </footer>
-<script src="javascript/product-catalog.js?v=20261102164451"></script>
-<script src="javascript/order-status.js?v=20261102164451"></script>
-<script src="javascript/qrcode.min.js?v=20261102164451" defer></script>
+<script src="javascript/product-catalog.js?v=20261102214842"></script>
+<!-- The store's size lists follow stock, and older order links name a size
+     by its place in that list: read them against the same list. -->
+<script src="javascript/product-stock.js?v=20261102214842"></script>
+<script src="javascript/order-status.js?v=20261102214842"></script>
+<script src="javascript/qrcode.min.js?v=20261102214842" defer></script>
 <script>
 /* =====================================================
    ORDER SLIP
@@ -366,7 +375,11 @@
             var bits = [];
             var color = (f[1] !== "" && product.colors) ? product.colors[+f[1]] : "";
             if (color) bits.push(color);
-            if (f[2] !== "" && product.options) bits.push(product.options[+f[2]]);
+            /* "s42_-_46" is the size as ordered; a bare number is a place in
+               the size list (older links), read against today's stock list. */
+            var size = /^s/.test(f[2]) ? f[2].slice(1).replace(/_/g, " ")
+                     : (f[2] !== "" && product.options) ? product.options[+f[2]] : "";
+            if (size) bits.push("Size " + size);
 
             return {
                 name:     product.name,
@@ -375,6 +388,9 @@
                 // the picked colour's own photo, when it has one
                 image:    (color && product.colorImages && product.colorImages[color]) || product.image,
                 tile:     product.tile || "photo",
+                // its page in the store, the same address build-store.mjs writes
+                href:     "store/" + (product.slug || String(product.name).toLowerCase()
+                              .replace(/[^\w]+/g, "-").replace(/^-|-$/g, "")) + "/",
                 price:    product.priceEUR || 0,
                 qty:      qty
             };
@@ -446,6 +462,21 @@
     set("or_count", units);
     set("or_count_label", units === 1 ? "Item" : "Items");
     set("or_total_small", money(total));
+
+    var copyBtn = document.getElementById("or_copy");
+    if (copyBtn) copyBtn.addEventListener("click", function () {
+        var done = function () {
+            copyBtn.classList.add("is-done");
+            setTimeout(function () { copyBtn.classList.remove("is-done"); }, 1600);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(order.ref).then(done, function () {});
+    });
+
+    /* When the order was sent, on a Lisbon clock: "Mon 2 Nov, 22:14". */
+    var placedAt = order.date.toLocaleString("en-GB", {
+        timeZone: "Europe/Lisbon", weekday: "short", day: "numeric", month: "short",
+        hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).replace(/^(\w+),? /, "$1 ");
 
     /* ---- how and when it gets to them ----
        One card for both questions, after the delivery option in a checkout:
@@ -609,7 +640,7 @@
                             : (i + 1)) +
                     '</span>' +
                     '<span class="or-track-text">' + esc(step.label) +
-                        '<span class="or-track-blurb">' + esc(step.blurb) + '</span>' +
+                        '<span class="or-track-blurb">' + esc(i === 0 ? "Placed " + placedAt : step.blurb) + '</span>' +
                     '</span>' +
                 '</li>';
             }).join("");
@@ -634,6 +665,27 @@
             release();
         });
     })();
+
+    /* ---- what happens next ----
+       The page is opened right after sending, when the buyer's one question
+       is "now what?". Three plain steps, the middle one for how it reaches them. */
+    function nextSteps() {
+        var pickup = order.fulfil && order.fulfil.method === "pickup";
+        var steps = [
+            ["We confirm on WhatsApp", "We check your sizes are in stock and message you. Nothing is charged before that."],
+            pickup
+                ? ["Collect it at the run", "Show the scan code at the court and we hand it over."]
+                : ["We bring it to you", "Free express delivery anywhere in Lisbon. Ordered before 18:00, it usually arrives the same evening."],
+            ["30 days to change your mind", "Wrong size, or not for you? Message us within 30 days."]
+        ];
+        return '<div class="or-next">' +
+            '<span class="or-listlabel">What happens next</span>' +
+            '<ol class="or-next-list">' + steps.map(function (st, i) {
+                return '<li><span class="or-next-num">' + (i + 1) + '</span>' +
+                    '<span class="or-next-text"><b>' + esc(st[0]) + '</b>' + esc(st[1]) + '</span></li>';
+            }).join("") + '</ol>' +
+        '</div>';
+    }
 
     /* ---- right card ---- */
     set("or_body",
@@ -663,10 +715,13 @@
                 }).join("");
 
                 return '<div class="or-row">' +
-                    '<img class="or-thumb tile-' + esc(l.tile) + '" src="' + esc(l.image) +
-                        '" alt="" width="56" height="56" loading="lazy" decoding="async">' +
+                    '<a class="or-thumbwrap" href="' + esc(l.href) + '" tabindex="-1" aria-hidden="true">' +
+                        '<img class="or-thumb tile-' + esc(l.tile) + '" src="' + esc(l.image) +
+                            '" alt="" width="64" height="64" loading="lazy" decoding="async">' +
+                        (l.qty > 1 ? '<b class="or-qty">\u00d7' + l.qty + '</b>' : '') +
+                    '</a>' +
                     '<div class="or-rowmain">' +
-                        '<span class="or-name">' + esc(l.name) + '</span>' +
+                        '<a class="or-name" href="' + esc(l.href) + '">' + esc(l.name) + '</a>' +
                         '<span class="or-chips">' + chips + '</span>' +
                     '</div>' +
                     '<div class="or-amount"><b>' + money(l.price * l.qty) + '</b>' +
@@ -681,7 +736,7 @@
         '<div class="or-summary">' +
             '<div class="or-sum-row"><span>Subtotal</span><b>' + money(total) + '</b></div>' +
             '<div class="or-sum-row"><span>' +
-                (order.fulfil && order.fulfil.method === "pickup" ? "Pickup at the run" : "Delivery in Lisbon") +
+                (order.fulfil && order.fulfil.method === "pickup" ? "Pickup at the run" : "Shipping") +
             '</span><b class="free">Free</b></div>' +
         '</div>' +
 
@@ -690,17 +745,14 @@
             '<span class="or-total-value">' + money(total) + '</span>' +
         '</div>' +
 
-        '<p class="or-note"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" ' +
-            'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-            '<path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/></svg>' +
-            '30-day returns \u00b7 nothing is charged until we confirm on WhatsApp</p>' +
+        nextSteps() +
 
         '<a class="or-back" href="merch.html">Back to the store</a>');
 
     document.title = "Order " + order.ref + " | Locked In Lx";
 })();
 </script>
-<script src="javascript/scroll_detection_menu.js?v=20261102164451" defer></script>
-<script src="javascript/cookie-consent.js?v=20261102164451" defer></script>
+<script src="javascript/scroll_detection_menu.js?v=20261102214842" defer></script>
+<script src="javascript/cookie-consent.js?v=20261102214842" defer></script>
 </body>
 </html>
