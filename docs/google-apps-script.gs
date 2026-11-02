@@ -726,6 +726,26 @@ function sendTestEmails() {
   ui.alert('Sent 7 test emails to ' + to + '.');
 }
 
+/* A real order-page link for the made-up test order, so "Track your order"
+   in a test email opens what a buyer would see. The page keeps a link with
+   no row in this Sheet open for 30 minutes, which is plenty for a test. */
+function testOrderLink_(how, where) {
+  var code = function (name) {          // lxProductCode in product-catalog.js
+    var h = 0x811c9dc5;
+    for (var i = 0; i < name.length; i++) {
+      h ^= name.charCodeAt(i);
+      h = (h + (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24)) >>> 0;
+    }
+    return ('000' + (h % 1679616).toString(36)).slice(-4);
+  };
+  var packed = how === 'pickup' ? 'p|' + where + '|Pavilh\u00e3o Isl\u00e2mico de Lisboa|20:15'
+                                : 'd|Himelsu|Rua da Prata 12, 3\u00baD|1100-052';
+  var fulfil = Utilities.base64EncodeWebSafe(packed, Utilities.Charset.UTF_8).replace(/=+$/, '');
+  return SITE + '/order.html#v1.TEST.' + Date.now().toString(36) + '.' + fulfil +
+    '~' + code('Nba Nike-Pro Combat Compression Tank (Black)') + '..sL.1' +
+    '~' + code('Nike NBA Elite Crew Socks White') + '..s42_-_46.2';
+}
+
 function testOrderEmails_() {
   var lines = [
     { name: 'Nba Nike-Pro Combat Compression Tank (Black)', option: 'L', qty: 1, price: 50,
@@ -733,9 +753,14 @@ function testOrderEmails_() {
     { name: 'Nike NBA Elite Crew Socks White', option: '42 - 46', qty: 2, price: 19,
       image: SITE + '/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp' }
   ];
-  var base = { ref: 'LX-TEST', note: '', total: 88, link: SITE + '/merch.html', customer: 'Himelsu',
+  var base = { ref: 'LX-TEST', note: '', total: 88, link: '', customer: 'Himelsu',
                lines: lines, eta: '' };
-  var d = function (x) { var o = JSON.parse(JSON.stringify(base)); for (var k in x) o[k] = x[k]; return o; };
+  var d = function (x) {
+    var o = JSON.parse(JSON.stringify(base));
+    for (var k in x) o[k] = x[k];
+    o.link = testOrderLink_(o.how, o.where);
+    return o;
+  };
   var del = { how: 'delivery', where: 'Rua da Prata 12, 3ºD, 1100-052' };
   var pick = { how: 'pickup', where: 'Sat 7 Nov run' };
   return [
@@ -751,29 +776,34 @@ function testOrderEmails_() {
 
 /* ------------------------------------------------------- the email itself
    Tables and inline styles, because that is what every mail app agrees on.
-   Dark like the order page. Barlow Condensed where the mail app loads web
-   fonts (Apple Mail, iOS), a bold condensed system font where it does not. */
+   Dark like the order page, set small: one condensed headline, quiet text,
+   gold only where it means something (the status, the total, the button).
+
+   Motion is a bonus for mail apps that play CSS animation (Apple Mail on
+   iPhone and Mac): the dot breathes, the current step fills, the sections
+   rise in turn and a light crosses the button. Every animated property is
+   only ever changed inside @keyframes, so an app that drops them (Gmail,
+   Outlook) shows the finished, still email, never a blank one. */
 function orderEmail_(o, key) {
   var pickup = o.how === 'pickup';
   var first = (o.customer || '').split(/\s+/)[0];
   var ref = o.ref;
   var copy = {
     requested: { eyebrow: 'Order received', head: ['We got', 'your order'],
-      sub: (first ? 'Thanks, ' + first + '! ' : 'Thanks! ') +
-           'We’re checking that everything is in stock and will confirm with you on WhatsApp. Nothing is charged until then.' },
+      sub: (first ? 'Thanks, ' + first + '. ' : 'Thanks. ') +
+           'We’re checking that everything is in stock and will confirm on WhatsApp. Nothing is charged until then.' },
     confirmed: { eyebrow: 'Stock confirmed', head: ['Everything', 'is in'],
-      sub: 'Good news: all of it is in stock. We’re getting your order ready now.' },
+      sub: 'All of it is in stock. We’re getting your order ready.' },
     ready: pickup
       ? { eyebrow: 'Set aside for you', head: ['Packed for', 'the run'],
-          sub: 'Your order is packed and coming to the ' + (o.where || 'run') +
+          sub: 'Your order is coming to the ' + (o.where || 'run') +
                '. Open your order page at the court and we’ll scan the code.' }
       : { eyebrow: 'Out for delivery', head: ['On its', 'way'],
-          sub: 'Your order is out for delivery' + (o.eta ? ': expect it ' + o.eta + '.' : ' and should reach you within 12 hours.') },
-    delivered: pickup
-      ? { eyebrow: 'Collected', head: ['Enjoy', 'the gear'],
-          sub: 'Thanks for picking up your order. Not the right fit? You have 30 days to swap or return it: just reply to this email.' }
-      : { eyebrow: 'Delivered', head: ['Enjoy', 'the gear'],
-          sub: 'Your order has been delivered. Not the right fit? You have 30 days to swap or return it: just reply to this email.' },
+          sub: o.eta ? 'Your order is out for delivery. Expect it ' + o.eta + '.'
+                     : 'Your order is out for delivery and should reach you within 12 hours.' },
+    delivered: { eyebrow: pickup ? 'Collected' : 'Delivered', head: ['Enjoy', 'the gear'],
+      sub: (pickup ? 'Thanks for picking up your order. ' : 'Your order has been delivered. ') +
+           'Not the right fit? You have 30 days to swap or return it. Just reply to this email.' },
     cancelled: { eyebrow: 'Order cancelled', head: ['Order', 'cancelled'],
       sub: 'Sorry, we had to cancel this order' +
            (o.note ? ': ' + o.note.charAt(0).toLowerCase() + o.note.slice(1).replace(/[.!?]*$/, '') + '.' : '.') +
@@ -784,119 +814,146 @@ function orderEmail_(o, key) {
     ? ['Requested', 'Confirmed', 'Set aside', 'Collected']
     : ['Requested', 'Confirmed', 'On its way', 'Delivered'];
   var at = ['requested', 'confirmed', 'ready', 'delivered'].indexOf(key);
+  var void_ = key === 'cancelled';
 
   var e = function (s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   };
   var money = function (v) { return (Math.round(v * 100) % 100 ? v.toFixed(2) : String(Math.round(v))) + '€'; };
-  var GOLD = '#FFD700', INK = '#FFFFFF', INK2 = '#C8C8D0', INK3 = '#A1A1AA', INK4 = '#7A7A84';
-  var CARD = '#111114', RAISE = '#18181D', LINE = '#26262D', GREEN = '#3FE07B', RED = '#FF6B6B';
-  var HEAD = "'Barlow Condensed','Arial Narrow','Helvetica Neue Condensed Black',Impact,Arial,sans-serif";
+
+  var GOLD = '#FFD200', INK = '#F4F4F5', INK2 = '#C4C4CC', INK3 = '#9A9AA4', INK4 = '#6E6E78', INK5 = '#4A4A52';
+  var CARD = '#0E0E11', RAISE = '#16161A', LINE = '#212127', TRACK = '#26262C', GREEN = '#3FE07B', RED = '#FF6B6B';
+  var ACCENT = void_ ? RED : GOLD;
+  var HEAD = "'Barlow Condensed','Arial Narrow','Helvetica Neue',Arial,sans-serif";
   var BODY = "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
+  var T = function (size, weight, color, extra) {
+    return 'font-family:' + BODY + ';font-size:' + size + 'px;font-weight:' + weight + ';color:' + color + ';' + (extra || '');
+  };
+  var CAPS = 'text-transform:uppercase;letter-spacing:.18em;';
 
-  var bar = key === 'cancelled'
-    ? '<tr><td colspan="4" style="padding:0 0 8px"><div style="height:4px;border-radius:4px;background:' + RED + ';opacity:.7"></div></td></tr>' +
-      '<tr><td colspan="4" style="font:600 10px/1.4 ' + BODY + ';letter-spacing:.14em;text-transform:uppercase;color:' + RED + '">Cancelled</td></tr>'
-    : '<tr>' + steps.map(function (s, i) {
-        return '<td width="25%" style="padding:0 ' + (i < 3 ? '6px' : '0') + ' 8px 0"><div style="height:4px;border-radius:4px;background:' +
-               (i <= at ? GOLD : LINE) + '"></div></td>';
-      }).join('') + '</tr><tr>' + steps.map(function (s, i) {
-        return '<td valign="top" style="padding-right:6px;font:600 10px/1.4 ' + BODY + ';letter-spacing:.12em;text-transform:uppercase;color:' +
-               (i === at ? GOLD : i < at ? INK2 : INK4) + '">' + e(s) + '</td>';
-      }).join('') + '</tr>';
+  var units = o.lines.reduce(function (n, l) { return n + (Number(l.qty) || 1); }, 0);
 
-  var items = o.lines.map(function (l) {
+  /* progress: four thin segments; the current one fills (animated) */
+  var bar;
+  if (void_) {
+    bar = '<tr><td style="padding:0 0 9px"><div style="height:3px;border-radius:3px;background:' + RED + ';opacity:.75"></div></td></tr>' +
+          '<tr><td style="' + T(9.5, 600, RED, CAPS) + '">Cancelled</td></tr>';
+  } else {
+    bar = '<tr>' + steps.map(function (s, i) {
+      var fill = i < at ? '<div style="height:3px;border-radius:3px;background:' + GOLD + '"></div>'
+               : i === at ? '<div style="height:3px;border-radius:3px;background:' + TRACK + '"><div class="lx-fill" style="height:3px;width:100%;border-radius:3px;background:' + GOLD + '"></div></div>'
+               : '<div style="height:3px;border-radius:3px;background:' + TRACK + '"></div>';
+      return '<td width="25%" style="padding:0 ' + (i < 3 ? '5px' : '0') + ' 9px 0">' + fill + '</td>';
+    }).join('') + '</tr><tr>' + steps.map(function (s, i) {
+      return '<td valign="top" style="padding-right:5px;' + T(9.5, 600, i === at ? GOLD : i < at ? INK3 : INK5, CAPS + 'letter-spacing:.14em;') + '">' + e(s) + '</td>';
+    }).join('') + '</tr>';
+  }
+
+  var items = o.lines.map(function (l, i) {
     var size = l.option ? String(l.option).split(' · ').map(function (p) {
       return /^(XS|S|M|L|XL|XXL|\d[\d -]*)$/i.test(p.trim()) ? 'Size ' + p.trim() : p.trim();
     }).join(' · ') : '';
+    var top = i ? 'border-top:1px solid ' + LINE + ';' : '';
     return '<tr>' +
-      '<td width="56" valign="middle" style="padding:12px 14px 12px 0;border-bottom:1px solid ' + LINE + '">' +
-        (l.image ? '<img src="' + e(l.image) + '" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:#FFFFFF;object-fit:contain">'
-                 : '<div style="width:56px;height:56px;border-radius:12px;background:' + RAISE + '"></div>') +
+      '<td width="44" valign="middle" style="padding:12px 14px 12px 0;' + top + '">' +
+        (l.image ? '<img src="' + e(l.image) + '" width="44" height="44" alt="" style="display:block;width:44px;height:44px;border-radius:10px;background:#FFFFFF;object-fit:contain">'
+                 : '<div style="width:44px;height:44px;border-radius:10px;background:' + RAISE + '"></div>') +
       '</td>' +
-      '<td valign="middle" style="padding:12px 0;border-bottom:1px solid ' + LINE + '">' +
-        '<div style="font:800 15px/1.2 ' + HEAD + ';letter-spacing:.02em;text-transform:uppercase;color:' + INK + '">' + e(l.name) + '</div>' +
-        '<div style="padding-top:5px;font:500 12px/1.4 ' + BODY + ';color:' + INK3 + '">' +
+      '<td valign="middle" style="padding:12px 0;' + top + '">' +
+        '<div style="' + T(13, 600, INK, 'line-height:1.35;') + '">' + e(l.name) + '</div>' +
+        '<div style="padding-top:3px;' + T(11.5, 400, INK4, 'line-height:1.4;') + '">' +
           e(size) + (size ? ' · ' : '') + 'Qty ' + (l.qty || 1) + '</div>' +
       '</td>' +
-      '<td valign="middle" align="right" style="padding:12px 0 12px 12px;border-bottom:1px solid ' + LINE + ';font:800 17px/1 ' + HEAD + ';color:' + INK + ';white-space:nowrap">' +
+      '<td valign="middle" align="right" style="padding:12px 0 12px 12px;' + top + T(13, 600, INK2, 'white-space:nowrap;font-variant-numeric:tabular-nums;') + '">' +
         money((Number(l.price) || 0) * (l.qty || 1)) + '</td>' +
     '</tr>';
   }).join('');
 
-  var fulfil = (o.how && key !== 'cancelled')
-    ? '<tr><td style="padding:0 0 22px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' + RAISE + ';border-radius:14px"><tr><td style="padding:14px 16px">' +
-        '<div style="font:600 10px/1.4 ' + BODY + ';letter-spacing:.16em;text-transform:uppercase;color:' + INK4 + '">' + (pickup ? 'Pickup' : 'Delivery') + '</div>' +
-        '<div style="padding-top:4px;font:600 15px/1.4 ' + BODY + ';color:' + INK + '">' +
+  var fulfil = (o.how && !void_)
+    ? '<tr><td class="lx-in lx-d3" style="padding:0 0 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' + RAISE + ';border-radius:12px"><tr><td style="padding:13px 15px">' +
+        '<div style="' + T(9.5, 600, INK4, CAPS) + '">' + (pickup ? 'Pickup' : 'Delivery') + '</div>' +
+        '<div style="padding-top:5px;' + T(13.5, 600, INK, 'line-height:1.4;') + '">' +
           e(pickup ? (o.where || 'At the run') : (o.eta ? o.eta : 'Free express delivery in Lisbon')) + '</div>' +
-        (!pickup && o.where ? '<div style="padding-top:2px;font:400 13px/1.5 ' + BODY + ';color:' + INK3 + '">' + e((o.customer ? o.customer + ', ' : '') + o.where) + '</div>' : '') +
+        (!pickup && o.where ? '<div style="padding-top:2px;' + T(12, 400, INK3, 'line-height:1.5;') + '">' + e((o.customer ? o.customer + ', ' : '') + o.where) + '</div>' : '') +
       '</td></tr></table></td></tr>'
     : '';
 
-  var note = (o.note && key !== 'cancelled')
-    ? '<tr><td style="padding:0 0 22px;font:400 14px/1.6 ' + BODY + ';color:' + INK2 + '"><span style="color:' + GOLD + '">Note:</span> ' + e(o.note) + '</td></tr>'
+  var note = (o.note && !void_)
+    ? '<tr><td class="lx-in lx-d3" style="padding:0 0 22px;' + T(13, 400, INK2, 'line-height:1.6;') + '"><span style="color:' + GOLD + '">Note</span>&nbsp; ' + e(o.note) + '</td></tr>'
     : '';
+
+  var button = (o.link && !void_)
+    ? '<tr><td class="lx-in lx-d5" style="padding:26px 0 0"><a class="lx-btn" href="' + e(o.link) + '" style="display:inline-block;background-color:' + GOLD + ';' +
+        T(13, 600, '#0A0A0A', 'text-decoration:none;letter-spacing:.01em;padding:13px 24px;border-radius:99px;') + '">Track your order&nbsp;&nbsp;→</a></td></tr>'
+    : '';
+
+  var css =
+    '@font-face{font-family:"Barlow Condensed";font-weight:800 900;src:url(' + FONT_HEAD + ') format("woff2")}' +
+    'a{color:' + INK2 + '}' +
+    '@media (max-width:480px){.lx-pad{padding:26px 20px!important}.lx-h{font-size:27px!important}}' +
+    '@media (prefers-reduced-motion:no-preference){' +
+      '@keyframes lx-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}' +
+      '@keyframes lx-breathe{0%,100%{opacity:1;box-shadow:0 0 0 0 ' + (void_ ? 'rgba(255,107,107,.45)' : 'rgba(255,210,0,.45)') + '}50%{opacity:.55;box-shadow:0 0 0 5px rgba(0,0,0,0)}}' +
+      '@keyframes lx-fill{from{width:0}to{width:100%}}' +
+      '@keyframes lx-shine{0%,55%{background-position:160% 0}100%{background-position:-60% 0}}' +
+      '.lx-in{animation:lx-rise .7s cubic-bezier(.2,.7,.2,1) both}' +
+      '.lx-d1{animation-delay:.05s}.lx-d2{animation-delay:.15s}.lx-d3{animation-delay:.25s}.lx-d4{animation-delay:.35s}.lx-d5{animation-delay:.45s}' +
+      '.lx-dot{animation:lx-breathe 2.4s ease-in-out infinite}' +
+      '.lx-fill{animation:lx-fill 1.4s cubic-bezier(.3,.7,.2,1) .5s both}' +
+      '.lx-btn{background-image:linear-gradient(110deg,rgba(255,255,255,0) 35%,rgba(255,255,255,.55) 50%,rgba(255,255,255,0) 65%);background-size:250% 100%;background-repeat:no-repeat;animation:lx-shine 4.5s ease-in-out 1.2s infinite}' +
+    '}';
 
   var html =
 '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
 '<meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark">' +
-'<style>@font-face{font-family:"Barlow Condensed";font-weight:800 900;src:url(' + FONT_HEAD + ') format("woff2")}' +
-'a{color:' + GOLD + '}@media (max-width:480px){.lx-pad{padding:28px 20px!important}.lx-h{font-size:40px!important}}</style></head>' +
+'<style>' + css + '</style></head>' +
 '<body style="margin:0;padding:0;background:#000000">' +
-'<div style="display:none;max-height:0;overflow:hidden">' + e(copy.eyebrow + ' · ' + ref + ' — ' + copy.sub) + '</div>' +
-'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000"><tr><td align="center" style="padding:28px 12px 40px">' +
-'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">' +
+'<div style="display:none;max-height:0;overflow:hidden;opacity:0">' + e(copy.eyebrow + ' · ' + ref + ' — ' + copy.sub) + '</div>' +
+'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000"><tr><td align="center" style="padding:32px 12px 40px">' +
+'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:500px">' +
 
-/* logo row */
-'<tr><td style="padding:0 6px 18px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>' +
-  '<td><a href="' + SITE + '" style="text-decoration:none"><img src="' + EMAIL_LOGO + '" width="133" height="16" alt="LOCKED IN LX" style="display:block;border:0;color:#FFFFFF;font:800 16px ' + HEAD + '"></a></td>' +
-  '<td align="right" style="font:600 11px/1 ' + BODY + ';letter-spacing:.16em;color:' + INK4 + '">' + e(ref) + '</td>' +
+'<tr><td style="padding:0 4px 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>' +
+  '<td><a href="' + SITE + '" style="text-decoration:none"><img src="' + EMAIL_LOGO + '" width="104" height="13" alt="LOCKED IN LX" style="display:block;border:0;' + T(12, 800, '#FFFFFF') + '"></a></td>' +
+  '<td align="right" style="' + T(10, 600, INK4, 'letter-spacing:.18em;') + '">' + e(ref) + '</td>' +
 '</tr></table></td></tr>' +
 
-/* card */
-'<tr><td class="lx-pad" style="background:' + CARD + ';border-radius:22px;padding:36px 32px">' +
+'<tr><td class="lx-pad" style="background:' + CARD + ';border-radius:18px;padding:32px 28px 30px">' +
 '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' +
-  '<tr><td style="padding:0 0 14px;font:600 11px/1 ' + BODY + ';letter-spacing:.22em;text-transform:uppercase;color:' + INK3 + '">' +
-    '<span style="color:' + (key === 'cancelled' ? RED : GOLD) + '">●</span>&nbsp; ' + e(copy.eyebrow) + '</td></tr>' +
-  '<tr><td class="lx-h" style="padding:0 0 14px;font:900 46px/0.95 ' + HEAD + ';text-transform:uppercase;letter-spacing:.01em;color:' + INK + '">' +
-    e(copy.head[0]) + ' <span style="color:' + (key === 'cancelled' ? RED : GOLD) + '">' + e(copy.head[1]) + '</span></td></tr>' +
-  '<tr><td style="padding:0 0 26px;font:400 15px/1.65 ' + BODY + ';color:' + INK3 + '">' + e(copy.sub) + '</td></tr>' +
-  '<tr><td style="padding:0 0 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + bar + '</table></td></tr>' +
+  '<tr><td class="lx-in lx-d1" style="padding:0 0 12px;' + T(10, 600, INK3, CAPS + 'letter-spacing:.22em;') + '">' +
+    '<span class="lx-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + ACCENT + ';vertical-align:2px"></span>&nbsp;&nbsp;' + e(copy.eyebrow) + '</td></tr>' +
+  '<tr><td class="lx-in lx-d1 lx-h" style="padding:0 0 10px;font-family:' + HEAD + ';font-size:30px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:.01em;color:' + INK + '">' +
+    e(copy.head[0]) + ' <span style="color:' + ACCENT + '">' + e(copy.head[1]) + '</span></td></tr>' +
+  '<tr><td class="lx-in lx-d2" style="padding:0 0 24px;' + T(13.5, 400, INK3, 'line-height:1.65;') + '">' + e(copy.sub) + '</td></tr>' +
+  '<tr><td class="lx-in lx-d2" style="padding:0 0 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + bar + '</table></td></tr>' +
   fulfil + note +
-  '<tr><td style="padding:0 0 4px;font:600 11px/1 ' + BODY + ';letter-spacing:.2em;text-transform:uppercase;color:' + INK4 + '">Your order</td></tr>' +
-  '<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + items + '</table></td></tr>' +
-  '<tr><td style="padding:14px 0 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' +
-    '<tr><td style="padding:3px 0;font:400 13px ' + BODY + ';color:' + INK3 + '">Subtotal</td><td align="right" style="font:600 13px ' + BODY + ';color:' + INK2 + '">' + money(o.total) + '</td></tr>' +
-    '<tr><td style="padding:3px 0;font:400 13px ' + BODY + ';color:' + INK3 + '">' + (pickup ? 'Pickup at the run' : 'Shipping') + '</td><td align="right" style="font:600 13px ' + BODY + ';color:' + GREEN + '">Free</td></tr>' +
+  '<tr><td class="lx-in lx-d4" style="padding:0 0 2px;' + T(9.5, 600, INK4, CAPS) + '">Your order · ' + units + (units === 1 ? ' item' : ' items') + '</td></tr>' +
+  '<tr><td class="lx-in lx-d4"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + items + '</table></td></tr>' +
+  '<tr><td class="lx-in lx-d4" style="padding:8px 0 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ' + LINE + '">' +
+    '<tr><td style="padding:12px 0 3px;' + T(12.5, 400, INK4) + '">Subtotal</td><td align="right" style="padding:12px 0 3px;' + T(12.5, 500, INK3) + '">' + money(o.total) + '</td></tr>' +
+    '<tr><td style="padding:3px 0 12px;' + T(12.5, 400, INK4) + '">' + (pickup ? 'Pickup at the run' : 'Shipping') + '</td><td align="right" style="padding:3px 0 12px;' + T(12.5, 500, GREEN) + '">Free</td></tr>' +
+    '<tr><td style="padding:12px 0 0;border-top:1px solid ' + LINE + ';' + T(10, 600, INK2, CAPS) + '">Total</td>' +
+        '<td align="right" style="padding:10px 0 0;border-top:1px solid ' + LINE + ';font-family:' + HEAD + ';font-size:22px;font-weight:900;line-height:1;color:' + (void_ ? INK3 : GOLD) + '">' + money(o.total) + '</td></tr>' +
   '</table></td></tr>' +
-  '<tr><td style="padding:14px 0 28px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,215,0,0.10);border:1px solid rgba(255,215,0,0.32);border-radius:14px"><tr>' +
-    '<td style="padding:12px 16px;font:800 13px/1 ' + BODY + ';letter-spacing:.18em;text-transform:uppercase;color:' + INK2 + '">Total</td>' +
-    '<td align="right" style="padding:12px 16px;font:900 24px/1 ' + HEAD + ';color:' + GOLD + '">' + money(o.total) + '</td>' +
-  '</tr></table></td></tr>' +
-  (o.link && key !== 'cancelled'
-    ? '<tr><td align="center"><a href="' + e(o.link) + '" style="display:inline-block;background:' + GOLD + ';color:#0A0A0A;text-decoration:none;font:700 15px/1 ' + BODY + ';padding:16px 34px;border-radius:99px">Track your order →</a></td></tr>'
-    : '') +
+  button +
 '</table></td></tr>' +
 
-/* footer */
-'<tr><td align="center" style="padding:24px 16px 0;font:400 12.5px/1.7 ' + BODY + ';color:' + INK4 + '">' +
-  'Questions? Just reply to this email or <a href="https://wa.me/351911861637?text=' + encodeURIComponent('Hi! About order ' + ref + ' — ') + '" style="color:' + INK2 + '">message us on WhatsApp</a>.<br>' +
-  'Locked In Lx · Lisbon · <a href="' + SITE + '" style="color:' + INK3 + '">lockedinlx.com</a><br>' +
-  '<span style="color:#55555E">You’re getting this because you left your email with order ' + e(ref) + '.</span>' +
+'<tr><td align="center" style="padding:22px 16px 0;' + T(11.5, 400, INK4, 'line-height:1.75;') + '">' +
+  'Questions? Reply to this email or <a href="https://wa.me/351911861637?text=' + encodeURIComponent('Hi! About order ' + ref + ' — ') + '" style="color:' + INK2 + '">message us on WhatsApp</a>.<br>' +
+  '<span style="color:' + INK5 + '">Locked In Lx · Lisbon · <a href="' + SITE + '" style="color:' + INK5 + '">lockedinlx.com</a></span>' +
 '</td></tr>' +
 '</table></td></tr></table></body></html>';
 
   var text = 'LOCKED IN LX — ' + copy.eyebrow + ' (' + ref + ')\n\n' + copy.sub + '\n\n' +
     o.lines.map(function (l) { return (l.qty || 1) + '× ' + l.name + (l.option ? ' (' + l.option + ')' : '') + ' — ' + money((Number(l.price) || 0) * (l.qty || 1)); }).join('\n') +
-    '\nTotal: ' + money(o.total) + (o.link && key !== 'cancelled' ? '\n\nTrack your order: ' + o.link : '') +
+    '\nTotal: ' + money(o.total) + (o.link && !void_ ? '\n\nTrack your order: ' + o.link : '') +
     '\n\nQuestions? Reply to this email.';
 
   var subject = {
     requested: 'We got your order ' + ref,
-    confirmed: 'Stock confirmed — order ' + ref,
-    ready: pickup ? 'Packed for the run — order ' + ref : 'On its way — order ' + ref,
-    delivered: (pickup ? 'Collected' : 'Delivered') + ' — order ' + ref,
+    confirmed: 'Stock confirmed · ' + ref,
+    ready: (pickup ? 'Packed for the run · ' : 'On its way · ') + ref,
+    delivered: (pickup ? 'Collected · ' : 'Delivered · ') + ref,
     cancelled: 'Order ' + ref + ' was cancelled'
   }[key];
 
