@@ -801,8 +801,9 @@ function orderEmail_(o, key) {
       : { eyebrow: 'Out for delivery', head: ['On its', 'way'],
           sub: o.eta ? 'Your order is out for delivery. Expect it ' + o.eta + '.'
                      : 'Your order is out for delivery and should reach you within 12 hours.' },
-    delivered: { eyebrow: pickup ? 'Collected' : 'Delivered', head: ['Enjoy', 'the gear'],
-      sub: (pickup ? 'Thanks for picking up your order. ' : 'Your order has been delivered. ') +
+    delivered: { eyebrow: pickup ? 'Collected' : 'Delivered', head: ['Thanks for', 'ordering'],
+      sub: (pickup ? 'You picked up your order' : 'Your order has been delivered') +
+           (first ? ', ' + first : '') + '. Enjoy the gear, and see you at the next run. ' +
            'Not the right fit? You have 30 days to swap or return it. Just reply to this email.' },
     cancelled: { eyebrow: 'Order cancelled', head: ['Order', 'cancelled'],
       sub: 'Sorry, we had to cancel this order' +
@@ -883,9 +884,14 @@ function orderEmail_(o, key) {
     ? '<tr><td class="lx-in lx-d3" style="padding:0 0 22px;' + T(13, 400, INK2, 'line-height:1.6;') + '"><span style="color:' + GOLD + '">Note</span>&nbsp; ' + e(o.note) + '</td></tr>'
     : '';
 
-  var button = (o.link && !void_)
-    ? '<tr><td class="lx-in lx-d5" style="padding:26px 0 0"><a class="lx-btn" href="' + e(o.link) + '" style="display:inline-block;background-color:' + GOLD + ';' +
-        T(13, 600, '#0A0A0A', 'text-decoration:none;letter-spacing:.01em;padding:13px 24px;border-radius:99px;') + '">Track your order&nbsp;&nbsp;→</a></td></tr>'
+  /* A delivered order's page closes (see order.html), so the thank-you
+     points back to the store instead of at an expired link. */
+  var done = key === 'delivered';
+  var btnHref = done ? SITE + '/merch.html' : o.link;
+  var button = (btnHref && !void_)
+    ? '<tr><td class="lx-in lx-d5" style="padding:26px 0 0"><a class="lx-btn" href="' + e(btnHref) + '" style="display:inline-block;background-color:' + GOLD + ';' +
+        T(13, 600, '#0A0A0A', 'text-decoration:none;letter-spacing:.01em;padding:13px 24px;border-radius:99px;') + '">' +
+        (done ? 'Shop the store' : 'Track your order') + '&nbsp;&nbsp;→</a></td></tr>'
     : '';
 
   var css =
@@ -946,14 +952,14 @@ function orderEmail_(o, key) {
 
   var text = 'LOCKED IN LX — ' + copy.eyebrow + ' (' + ref + ')\n\n' + copy.sub + '\n\n' +
     o.lines.map(function (l) { return (l.qty || 1) + '× ' + l.name + (l.option ? ' (' + l.option + ')' : '') + ' — ' + money((Number(l.price) || 0) * (l.qty || 1)); }).join('\n') +
-    '\nTotal: ' + money(o.total) + (o.link && !void_ ? '\n\nTrack your order: ' + o.link : '') +
+    '\nTotal: ' + money(o.total) + (key === 'delivered' ? '\n\nShop the store: ' + SITE + '/merch.html' : o.link && !void_ ? '\n\nTrack your order: ' + o.link : '') +
     '\n\nQuestions? Reply to this email.';
 
   var subject = {
     requested: 'We got your order ' + ref,
     confirmed: 'Stock confirmed · ' + ref,
     ready: (pickup ? 'Packed for the run · ' : 'On its way · ') + ref,
-    delivered: (pickup ? 'Collected · ' : 'Delivered · ') + ref,
+    delivered: 'Thanks for ordering · ' + ref,
     cancelled: 'Order ' + ref + ' was cancelled'
   }[key];
 
