@@ -182,7 +182,9 @@ function doPost(e) {
       ]);
       // "We got your order", if they left an address. Never allowed to fail
       // the order itself.
-      try { emailOrderRow_(orders_().getLastRow(), 'Requested'); } catch (err) {}
+      if (autoEmails_()) {
+        try { emailOrderRow_(orders_().getLastRow(), 'Requested'); } catch (err) {}
+      }
       return json_({ ok: true });
     }
 
@@ -232,6 +234,9 @@ function doGet(e) {
   // Names live behind Matrix's key (Script property MATRIX_KEY): the order
   // list carries customer names, the roster carries players' names.
   if (p.orders) return matrixOk_(p) ? orderList_(p.since, p.limit) : json_({ ok: false, error: 'locked' });
+  // ?orderEmail=LX-XU4F&status=Confirmed&key=...  -> that email, to preview
+  //   &send=1 sends it (Matrix's Customers page); see orderEmailApi_
+  if (p.orderEmail) return matrixOk_(p) ? orderEmailApi_(p) : json_({ ok: false, error: 'locked' });
   if (p.roster) return matrixOk_(p) ? rosterFor_(String(p.roster)) : json_({ ok: false, error: 'locked' });
 
   try {
@@ -294,6 +299,7 @@ function orderList_(since, limit) {
         customer: String(r[9] || ''),
         eta: etaText_(r[12]),
         email: String(r[14] || ''),
+        emailed: String(r[15] || ''),
         shortLink: r[13] ? shortUrl_(String(r[1]), String(r[13])) : '',
         lines: lines
       });
@@ -642,7 +648,8 @@ function onOpen() {
     .addItem('Rebuild roster from Signups', 'backfillRoster')
     .addItem('Repair Signups & Roster', 'repairSignupsAndRoster')
     .addSeparator()
-    .addItem('Turn on order emails', 'turnOnOrderEmails')
+    .addItem('Automatic order emails: on', 'turnOnOrderEmails')
+    .addItem('Automatic order emails: off', 'turnOffOrderEmails')
     .addItem('Send test emails\u2026', 'sendTestEmails')
     .addToUi();
 }
@@ -695,10 +702,12 @@ function rosterFor_(key) {
    show the Locked In logo; from the Google account that owns this Sheet
    otherwise. Replies go to REPLY_TO either way.
 
-   Turning it on, once: Locked In menu > "Turn on order emails". Google asks
-   for permission to send email as you; say yes. Until then nothing is sent
-   except the "Order received" email, which goes out from doPost.
-   Try it first with Locked In menu > "Send test emails\u2026".
+   Sent by hand from Matrix by default: its Customers page previews an
+   order's email and sends it through orderEmailApi_ (?orderEmail=...).
+   Automatic sending (the "Order received" email from doPost, and one per
+   Status change) only happens after Locked In menu > "Automatic order
+   emails: on", and stops again with "...: off".
+   Try the design with Locked In menu > "Send test emails\u2026".
 
    Column P (Emailed) remembers the last status each buyer was told about,
    so setting the same status twice never sends the same email twice. */
@@ -802,7 +811,7 @@ function canSendAs_() {
  */
 function onOrderEdit(e) {
   try {
-    if (!e || !e.range) return;
+    if (!e || !e.range || !autoEmails_()) return;
     var sh = e.range.getSheet();
     if (sh.getName() !== ORDERS_NAME) return;
     var c0 = e.range.getColumn(), c1 = c0 + e.range.getNumColumns() - 1;
@@ -817,14 +826,81 @@ function onOrderEdit(e) {
   } catch (err) {}
 }
 
+/** Off unless switched on from the menu: emails go out by hand from Matrix. */
+function autoEmails_() {
+  return PropertiesService.getScriptProperties().getProperty('AUTO_EMAILS') === 'on';
+}
+
 function turnOnOrderEmails() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (t.getHandlerFunction() === 'onOrderEdit') ScriptApp.deleteTrigger(t);
   });
   ScriptApp.newTrigger('onOrderEdit').forSpreadsheet(ss).onEdit().create();
+  PropertiesService.getScriptProperties().setProperty('AUTO_EMAILS', 'on');
   orders_();   // widens the tab to the Key / Email / Emailed columns
-  SpreadsheetApp.getUi().alert('Order emails are on. Buyers who left an email hear from you each time Status changes.');
+  SpreadsheetApp.getUi().alert('Automatic order emails are on: buyers who left an email hear from you when the order arrives and each time Status changes.');
+}
+
+function turnOffOrderEmails() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'onOrderEdit') ScriptApp.deleteTrigger(t);
+  });
+  PropertiesService.getScriptProperties().setProperty('AUTO_EMAILS', 'off');
+  orders_();
+  SpreadsheetApp.getUi().alert('Automatic order emails are off. Send them from Matrix\u2019s Customers page.');
+}
+
+/**
+ * Matrix's Customers page: one order's email, to look at or to send.
+ *
+ *   ?orderEmail=LX-XU4F&key=<MATRIX_KEY>
+ *     &status=  requested | confirmed | ready | delivered | cancelled
+ *               (blank: the order's Status in the Sheet; Sheet words like
+ *               "Out for delivery" work too)
+ *     &to=      another address (blank: the Email column)
+ *     &note=    replaces the Note column for this email (cancel reason, etc.)
+ *     &eta=     replaces the ETA column ("Today 19:00-21:00")
+ *     &send=1   send it; without this nothing is sent and the reply has html
+ *
+ * Reply: { ok, found, ref, status, to, from, subject, emailed, sent, html? }.
+ * `emailed` is the last status already sent (column P). Sending by hand
+ * always sends, even the same status twice, and updates column P.
+ */
+function orderEmailApi_(p) {
+  try {
+    var row = findOrderRow_(String(p.orderEmail));
+    if (!row) return json_({ ok: true, found: false });
+    var sh = orders_();
+    var r = sh.getRange(row, 1, 1, 16).getValues()[0];
+    var o = orderFromRow_(r);
+    if (p.note != null && String(p.note).trim()) o.note = String(p.note).trim();
+    if (p.eta != null && String(p.eta).trim()) o.eta = String(p.eta).trim();
+    var key = statusKey_(p.status || o.status);
+    if (!key) return json_({ ok: false, error: 'unknown status' });
+    var to = String(p.to || o.email || '').trim();
+    var mail = orderEmail_(o, key);
+    var out = {
+      ok: true, found: true, ref: o.ref, status: key,
+      to: validEmail_(to) ? to : '',
+      from: canSendAs_() ? SEND_AS : Session.getEffectiveUser().getEmail(),
+      subject: mail.subject,
+      emailed: String(r[15] || ''),
+      sent: false
+    };
+    if (String(p.send) === '1') {
+      if (!out.to) { out.ok = false; out.error = 'no email address'; return json_(out); }
+      sendOrderEmail_(out.to, o, key);
+      sh.getRange(row, 16).setValue(key);
+      out.sent = true;
+      out.emailed = key;
+    } else {
+      out.html = mail.html;
+    }
+    return json_(out);
+  } catch (err) {
+    return json_({ ok: false, error: String(err) });
+  }
 }
 
 /** Every email, with a made-up order, to one address - to see them before buyers do. */
