@@ -686,8 +686,10 @@ function rosterFor_(key) {
 /* ======================================================= ORDER EMAILS =====
    A buyer who leaves an email at checkout gets one when the order arrives,
    and one each time you move Status on to Confirmed, Ready, Delivered or
-   Cancelled. Sent from the Google account that owns this Sheet, with
-   replies going to REPLY_TO.
+   Cancelled. Sent from SEND_AS (support@lockedinlx.com) when Gmail has it
+   under Settings > Accounts > "Send mail as", which is what lets Apple Mail
+   show the Locked In logo; from the Google account that owns this Sheet
+   otherwise. Replies go to REPLY_TO either way.
 
    Turning it on, once: Locked In menu > "Turn on order emails". Google asks
    for permission to send email as you; say yes. Until then nothing is sent
@@ -698,6 +700,7 @@ function rosterFor_(key) {
    so setting the same status twice never sends the same email twice. */
 
 var REPLY_TO   = 'support@lockedinlx.com';
+var SEND_AS    = 'support@lockedinlx.com';
 var SITE       = 'https://www.lockedinlx.com';
 var EMAIL_LOGO = SITE + '/assets/images/email/locked-in-lx-wordmark.png';
 var FONT_HEAD  = SITE + '/assets/fonts/barlow-condensed-900-latin.woff2';
@@ -756,6 +759,15 @@ function emailOrderRow_(row, status) {
 
 function sendOrderEmail_(to, o, key) {
   var mail = orderEmail_(o, key);
+  if (canSendAs_()) {
+    GmailApp.sendEmail(to, mail.subject, mail.text, {
+      from: SEND_AS,
+      htmlBody: mail.html,
+      name: 'Locked In Lx',
+      replyTo: REPLY_TO
+    });
+    return;
+  }
   MailApp.sendEmail({
     to: to,
     subject: mail.subject,
@@ -764,6 +776,20 @@ function sendOrderEmail_(to, o, key) {
     name: 'Locked In Lx',
     replyTo: REPLY_TO
   });
+}
+
+/* Whether Gmail lists SEND_AS under "Send mail as". Asked once per run:
+   seven test emails should not mean seven lookups. */
+var sendAsOk_ = null;
+function canSendAs_() {
+  if (sendAsOk_ === null) {
+    try {
+      sendAsOk_ = GmailApp.getAliases().some(function (a) {
+        return String(a).toLowerCase() === SEND_AS;
+      });
+    } catch (err) { sendAsOk_ = false; }
+  }
+  return sendAsOk_;
 }
 
 /**
@@ -805,7 +831,8 @@ function sendTestEmails() {
   var to = ans.getResponseText().trim() || 'himelsu@icloud.com';
   if (!validEmail_(to)) { ui.alert('That does not look like an email address.'); return; }
   testOrderEmails_().forEach(function (t) { sendOrderEmail_(to, t.o, t.key); });
-  ui.alert('Sent 7 test emails to ' + to + '.');
+  ui.alert('Sent 7 test emails to ' + to + ', from ' +
+    (canSendAs_() ? SEND_AS : Session.getEffectiveUser().getEmail() + ' (' + SEND_AS + ' is not under Gmail\u2019s "Send mail as" yet)') + '.');
 }
 
 /* A real order-page link for the made-up test order, so "Track your order"
@@ -1045,5 +1072,22 @@ function orderEmail_(o, key) {
     cancelled: 'Order ' + ref + ' was cancelled'
   }[key];
 
-  return { subject: subject, html: html, text: text };
+  return { subject: subject, html: asciiHtml_(html), text: plainText_(text) };
+}
+
+/* Mail apps that can't tell how an email is encoded guess, and Apple Mail
+   guessed wrong: "\u2019" came out as ",\u00c4\u00f4" and "\u20ac" as ",\u00c7\u00a8". Written as
+   &#8217; and &#8364; the HTML is plain ASCII, which reads the same in every
+   encoding, customer names and addresses with accents included. */
+function asciiHtml_(html) {
+  return html.replace(/[^\x00-\x7F]/gu, function (c) { return '&#' + c.codePointAt(0) + ';'; });
+}
+
+/* The plain-text copy can't use &#...; codes, so its punctuation goes ASCII. */
+function plainText_(text) {
+  return text
+    .replace(/[\u2018\u2019]/g, "'").replace(/[\u201c\u201d]/g, '"')
+    .replace(/[\u2013\u2014]/g, '-').replace(/\u00b7/g, '-')
+    .replace(/\u2192/g, '->').replace(/\u00d7/g, 'x').replace(/\u2026/g, '...')
+    .replace(/\u20ac/g, ' EUR');
 }
