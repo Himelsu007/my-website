@@ -90,6 +90,16 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - On phones the hero is only as tall as its content, so the upcoming runs show below it.
   - The hero shares the store hero's motion: a light through "LOCKED IN?", the label above it decoding, and a scroll cue (computers and tall phones). On phones the stats sit in one row.
 
+## Orders, order emails and the Sheet script
+
+- An order goes to WhatsApp with a short link, `lockedinlx.com/o/#XU4F-K7M2P9` (the reference, then a random key from `crypto.getRandomValues`). `o/index.html` asks the Sheet for the full order link and forwards to `order.html?s=…`, whose scan code then encodes the short link. The key stops anyone walking references to other people's addresses.
+- The bag asks for an optional "Email for order updates". It goes to the Sheet only, never into the order link.
+- `docs/google-apps-script.gs` runs behind the Player Roster Sheet. The owner pastes it into Extensions → Apps Script and then has to Deploy → New version; the site and Matrix only see the deployed version.
+  - Keep that file plain ASCII: write special characters as `’`-style escapes. Pasted through the clipboard, anything else arrived garbled (`,Äô` for `’`). Copy it with `LANG=en_US.UTF-8 pbcopy`.
+  - Order emails are sent by hand from Matrix (the owner's call: an accidental Status edit in the Sheet must not email a customer). Matrix uses `?orderEmail=<ref>&key=…[&status&to&note&eta][&send=1]` and the status route `{kind:'status', ref, status, key}`, both locked behind the Sheet's `MATRIX_KEY`. Automatic sending exists but is off unless the Sheet's Locked In menu turns it on.
+  - Emails go out from support@lockedinlx.com (iCloud+ domain, through Gmail's "Send mail as"), with the Gmail account as fallback.
+  - Locked In → "Send test emails…" sends all seven designs to any address; "Repair Signups & Roster" rebuilds those tabs if they are turned into a Google Sheets Table again.
+
 ## Things that need the owner's Mac
 
 - The Matrix stock sync. In the cloud, `sync-stock.mjs` finds no Matrix, keeps the last stock, and the rest of the build still runs.
