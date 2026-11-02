@@ -154,6 +154,25 @@ function doPost(e) {
 
     // Store order - logged so you have a row to move along, instead of
     // copying references out of WhatsApp by hand.
+    // Matrix changing an order's Status: {kind:'status', ref, status, key}.
+    // Locked behind MATRIX_KEY. Sends no email by itself (that's a separate
+    // click in Matrix), unless automatic emails are switched on.
+    if (d.kind === 'status') {
+      if (!matrixOk_(d)) return json_({ ok: false, error: 'locked' });
+      var srow = findOrderRow_(d.ref);
+      if (!srow) return json_({ ok: false, error: 'no such order' });
+      var label = { requested: 'Requested', confirmed: 'Confirmed', ready: 'Ready',
+                    delivered: 'Delivered', cancelled: 'Cancelled' }[statusKey_(d.status)];
+      if (!label) return json_({ ok: false, error: 'unknown status' });
+      var osh = orders_();
+      osh.getRange(srow, 4).setValue(label);
+      statusChanged_(osh, srow);
+      if (autoEmails_() && label !== 'Requested') {
+        try { emailOrderRow_(srow, label); } catch (err) {}
+      }
+      return json_({ ok: true, status: label });
+    }
+
     if (d.kind === 'order') {
       var ref = String(d.ref || '').trim();
       if (!ref) return json_({ ok: false, error: 'no ref' });
@@ -304,7 +323,8 @@ function orderList_(since, limit) {
         lines: lines
       });
     }
-    return json_({ ok: true, orders: out });
+    // canUpdate: Matrix may send Status changes back ({kind:'status'} above).
+    return json_({ ok: true, canUpdate: true, orders: out });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }
@@ -624,20 +644,24 @@ function onEdit(e) {
     if (last < 2) return;                          // header only
 
     var stamp = new Date();
-    for (var r = first; r <= last; r++) {
-      var row = sh.getRange(r, 1, 1, 14).getValues()[0];
-      if (!row[1]) continue;                       // no reference, not an order
-      sh.getRange(r, 6).setValue(stamp);           // Updated \u2014 what the buyer's page shows
-      var link = row[13] ? shortUrl_(String(row[1]), String(row[13])) : row[7];
-      var msg = orderMessage_(row[1], row[3], row[8], row[4], link);
-      var cell = sh.getRange(r, 12);
-      if (msg) cell.setFormula(tellFormula_(msg)); else cell.clearContent();
-    }
+    for (var r = first; r <= last; r++) statusChanged_(sh, r, stamp);
   } catch (err) {
     // A simple trigger cannot report anything useful to anyone, and throwing
     // here would leave the edit looking broken. The status itself is saved
     // either way; only the convenience link is lost.
   }
+}
+
+/** After a row's Status changes, by hand or from Matrix: stamp Updated
+    (what the buyer's page shows) and rewrite the "Tell them" link. */
+function statusChanged_(sh, r, stamp) {
+  var row = sh.getRange(r, 1, 1, 14).getValues()[0];
+  if (!row[1]) return;                             // no reference, not an order
+  sh.getRange(r, 6).setValue(stamp || new Date());
+  var link = row[13] ? shortUrl_(String(row[1]), String(row[13])) : row[7];
+  var msg = orderMessage_(row[1], row[3], row[8], row[4], link);
+  var cell = sh.getRange(r, 12);
+  if (msg) cell.setFormula(tellFormula_(msg)); else cell.clearContent();
 }
 
 /** Adds a "Locked In" menu so you can refresh without opening the editor. */
