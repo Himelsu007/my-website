@@ -23,6 +23,8 @@
     <meta name="twitter:title" content="Game Rules & Format Guide | Locked In Lx">
     <meta name="twitter:description" content="Every Locked In Lx format explained — 4v4, 5v5 and the overflow protocol.">
     <meta name="twitter:image" content="https://www.lockedinlx.com/assets/images/og-banner.png">
+    <meta name="twitter:image:alt" content="Locked In Lx — pick up basketball in Lisbon">
+    <meta name="twitter:site" content="@locked_in_lx">
     <meta name="keywords" content="basketball rules, pickup game rules, Locked In Lx, Lisbon basketball, 4 vs 4 format, 5 vs 5, owner rules, overflow protocol">
     <meta name="robots" content="index, follow">
 
@@ -32,19 +34,20 @@
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon-lx.svg">
     <link rel="shortcut icon" href="assets/icons/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
 
     <!-- Fonts the first screen is set in, fetched alongside the CSS instead of
          after it, so text is not drawn in a stand-in font and then reflowed. -->
     <link rel="preload" href="assets/fonts/barlow-condensed-900-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/barlow-condensed-700-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=20261101200109">
-    <link rel="stylesheet" href="css/fonts.css?v=20261101200109">
-    <link rel="stylesheet" href="css/footer.css?v=20261101200109">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261101200109">
-    <link rel="stylesheet" href="css/rules.css?v=20261101200109">
-    <link rel="stylesheet" href="css/responsive.css?v=20261101200109">
-    <link rel="stylesheet" href="css/statusbar.css?v=20261101200109">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261101200109">
+    <link rel="stylesheet" href="css/style.css?v=20261102005939">
+    <link rel="stylesheet" href="css/fonts.css?v=20261102005939">
+    <link rel="stylesheet" href="css/footer.css?v=20261102005939">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261102005939">
+    <link rel="stylesheet" href="css/rules.css?v=20261102005939">
+    <link rel="stylesheet" href="css/responsive.css?v=20261102005939">
+    <link rel="stylesheet" href="css/statusbar.css?v=20261102005939">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261102005939">
 
     <script type="application/ld+json">
     {
@@ -71,6 +74,7 @@
 </head>
 
 <body>
+<a class="lx-skip" href="#main">Skip to content</a>
 <!-- White behind the phone's status bar: see css/statusbar.css. -->
 <div class="lx-statusbar" aria-hidden="true"></div>
 
@@ -90,7 +94,7 @@
 
 <nav id="side-menu" class="nav-overlay">
     <div class="nav-grain"></div>
-    <div class="nav-watermark">LOCKED&nbsp;IN</div>
+    <div class="nav-watermark" aria-hidden="true">LOCKED&nbsp;IN</div>
 
     <button id="menu-close" class="close-btn" aria-label="Close menu">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -158,6 +162,8 @@
         </div>
     </div>
 </nav>
+
+<main id="main" tabindex="-1">
 
 <!-- =======================  HERO  ======================= -->
 <section class="rules-hero">
@@ -423,6 +429,8 @@
     </div>
 </section>
 
+</main>
+
 <footer id="lx-main-footer" class="lx-footer">
     <div class="lx-footer-content">
 
@@ -442,6 +450,7 @@
             <h3 class="barlow-condensed-bold footer-heading">CONTACT US</h3>
             <ul class="footer-link-list">
                 <li class="barlow-condensed-regular text-muted">Lisboa, Portugal</li>
+                <li><a href="tel:+351911861637" class="barlow-condensed-regular">+351 911 861 637</a></li>
                 <li><a href="mailto:support@lockedinlx.com" class="barlow-condensed-regular">support@lockedinlx.com</a></li>
                 <li><a href="index.html#faq_box_container" class="barlow-condensed-regular">FAQ</a></li>
             </ul>
@@ -474,7 +483,7 @@
     </div>
 </footer>
 
-<script src="javascript/scroll_detection_menu.js?v=20261101200109" defer></script>
+<script src="javascript/scroll_detection_menu.js?v=20261102005939" defer></script>
 <script>
     // Quick-nav active-state on scroll + smooth anchor offset
     document.addEventListener("DOMContentLoaded", () => {
@@ -497,6 +506,6 @@
         chips[0]?.classList.add("active");
     });
 </script>
-<script src="javascript/cookie-consent.js?v=20261101200109" defer></script>
+<script src="javascript/cookie-consent.js?v=20261102005939" defer></script>
 </body>
 </html>

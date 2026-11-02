@@ -271,7 +271,7 @@ button {
     font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 13px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.5);
     letter-spacing: 0.1em;
     min-width: 42px;
     transition: color 0.3s ease;
@@ -289,7 +289,7 @@ button {
 .nav-desc {
     font-family: 'Inter', 'Inter Fallback', sans-serif;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.55);
     margin-left: auto;
     align-self: center;
     transition: color 0.3s ease, transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -306,7 +306,7 @@ button {
 .nav-link:hover { padding-left: 18px; }
 .nav-link:hover .nav-num { color: var(--main-yellow); }
 .nav-link:hover .nav-label { color: #fff; }
-.nav-link:hover .nav-desc { color: rgba(255, 255, 255, 0.65); transform: translateX(-6px); }
+.nav-link:hover .nav-desc { color: rgba(255, 255, 255, 0.8); transform: translateX(-6px); }
 .nav-link:hover .nav-arrow { opacity: 1; transform: translateX(0); }
 
 .nav-link.active .nav-label { color: var(--main-yellow); }
@@ -337,7 +337,7 @@ button {
     font-size: 13px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.55);
 }
 .nav-socials { display: flex; gap: 14px; }
 .nav-socials a {
@@ -2357,7 +2357,7 @@ body.lx-scroll-locked {
     --pd-line:    #E3E3E8;
     --pd-ink:     #0B0B0D;
     --pd-ink-2:   #54545E;
-    --pd-ink-3:   #8B8B95;
+    --pd-ink-3:   #6E6E78;
     --pd-gold:    #FFD700;
     --pd-soft:    #ECECEF;
     --pd-line-hi: #C9C9D0;
@@ -2598,7 +2598,7 @@ body.lx-scroll-locked {
 #product_modal .modal_cta_row .whatsapp_btn.disabled {
     background: var(--pd-soft);
     border: 0;
-    color: var(--pd-ink-3);
+    color: var(--pd-ink-2);
 }
 #product_modal .modal_cta_row .bag_btn.disabled {
     border-color: var(--pd-line);

@@ -2,59 +2,42 @@
 # Locked In Lx — robots.txt
 # https://www.lockedinlx.com
 # -----------------------------------------------
+# A crawler follows only the most specific group that names it, so every
+# group below repeats the same Disallow lines.
 
-# === ALL BOTS — DEFAULT RULES ===
+# === EVERYONE (Google, Bing, Apple, AI search) ===
 User-agent: *
-Allow: /
-
-# Block irrelevant system paths
-Disallow: /cgi-bin/
-
-# === GOOGLE ===
-User-agent: Googlebot
 Allow: /
 Allow: /css/
 Allow: /javascript/
-Allow: /assets/images/
+Allow: /assets/
+Allow: /feeds/
+# Repo internals: not pages
+Disallow: /tools/
+Disallow: /docs/
+Disallow: /CLAUDE.md
+Disallow: /bump-assets.sh
+Disallow: /skills-lock.json
 
-User-agent: Googlebot-Image
-Allow: /assets/images/
-
-# === BING / MICROSOFT COPILOT ===
-User-agent: Bingbot
-Allow: /
-
-# === AI INDEXING BOTS ===
-# ChatGPT
+# === AI SEARCH: welcome, same rules ===
 User-agent: GPTBot
-Allow: /
-
-# Google Gemini / AI Overviews
-User-agent: Google-Extended
-Allow: /
-
-# OpenAI Search
 User-agent: OAI-SearchBot
-Allow: /
-
-# Perplexity
+User-agent: ChatGPT-User
+User-agent: Google-Extended
 User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: Applebot-Extended
 Allow: /
+Disallow: /tools/
+Disallow: /docs/
+Disallow: /CLAUDE.md
+Disallow: /bump-assets.sh
+Disallow: /skills-lock.json
 
-# Apple Siri / Spotlight
-User-agent: Applebot
-Allow: /
-
-# === BLOCK JUNK / SCRAPER BOTS ===
+# === SCRAPERS: blocked ===
 User-agent: AhrefsBot
-Disallow: /
-
 User-agent: SemrushBot
-Disallow: /
-
 User-agent: MJ12bot
-Disallow: /
-
 User-agent: DotBot
 Disallow: /
 

@@ -53,3 +53,26 @@
         z-index: 10000;
     }
 }
+
+/* =====================================================
+   SKIP LINK — every page
+   -----------------------------------------------------
+   The first stop for the Tab key: jumps past the header and menu to
+   <main id="main">. Off-screen until focused. Absolute, not fixed, so
+   Safari never reads it when colouring the status bar.
+   ===================================================== */
+.lx-skip {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10100;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: #fff;
+    color: #000;
+    font: 600 15px/1.2 Inter, system-ui, sans-serif;
+    text-decoration: none;
+    transform: translateY(-200%);
+}
+.lx-skip:focus { transform: none; outline: 2px solid #000; outline-offset: 2px; }
+main:focus { outline: none; }

@@ -90,7 +90,11 @@ function inStock(p) {
 }
 
 const availabilityLabel = p => (inStock(p) ? "In stock" : p.status === "soon" ? "Coming soon" : "Out of stock");
-const pageTitle = p => `${p.name} | Locked In Lx Store, Lisbon`;
+// Search shows about 60 characters: keep "Lisbon" only where it fits.
+const pageTitle = p => {
+    const t = `${p.name} | Locked In Lx Lisbon`;
+    return t.length <= 60 ? t : `${p.name} | Locked In Lx`;
+};
 
 function metaDescription(p) {
     const tail = hasPrice(p) ? ` ${euros(p.priceEUR)} at Locked In Lx, Lisbon. Order on WhatsApp.` : " Locked In Lx, Lisbon.";
@@ -249,6 +253,7 @@ function productPage(p) {
     h = swap(h, metaTag("name", "twitter:title"), `<meta name="twitter:title" content="${esc(title)}">`, "twitter:title");
     h = swap(h, metaTag("name", "twitter:description"), `<meta name="twitter:description" content="${esc(desc)}">`, "twitter:description");
     h = swap(h, metaTag("name", "twitter:image"), `<meta name="twitter:image" content="${esc(image)}">`, "twitter:image");
+    h = swap(h, metaTag("name", "twitter:image:alt"), `<meta name="twitter:image:alt" content="${esc(p.name)}">`, "twitter:image:alt");
     h = swap(h, /<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${url}">`, "canonical");
     h = swap(h, /<!-- lx:store-ld -->[\s\S]*?<!-- \/lx:store-ld -->/, ldScript([
         productLd(p),

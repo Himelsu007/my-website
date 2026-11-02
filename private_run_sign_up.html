@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="javascript/ios-no-zoom.js?v=20261101200109"></script>
+    <script src="javascript/ios-no-zoom.js?v=20261102005939"></script>
     
     <title>Join a Run | Locked In Lx</title>
     <meta name="description" content="Reserve your spot on a Locked In Lx pickup run in Lisbon. Pick your run, register, and confirm on WhatsApp.">
@@ -24,6 +24,8 @@
     <meta name="twitter:title" content="Join a Run | Locked In Lx">
     <meta name="twitter:description" content="Reserve your spot on a Locked In Lx pickup run in Lisbon.">
     <meta name="twitter:image" content="https://www.lockedinlx.com/assets/images/og-banner.png">
+    <meta name="twitter:image:alt" content="Locked In Lx — pick up basketball in Lisbon">
+    <meta name="twitter:site" content="@locked_in_lx">
     <meta name="keywords" content="join basketball game, private runs, Lisbon basketball, hooper schedule, Locked In Lx, pickup basketball, court reservation">
     <meta name="robots" content="index, follow">
     
@@ -43,7 +45,7 @@
     <meta name="language" content="EN">
     <meta name="target" content="all">
     
-    <link rel="canonical" href="https://www.lockedinlx.com/join-a-game">
+    <link rel="canonical" href="https://www.lockedinlx.com/private_run_sign_up.html">
     <link rel="icon" type="image/png" href="assets/icons/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon-lx.svg">
     <link rel="shortcut icon" href="assets/icons/favicon.ico">
@@ -54,21 +56,22 @@
          after it, so text is not drawn in a stand-in font and then reflowed. -->
     <link rel="preload" href="assets/fonts/barlow-condensed-900-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/barlow-condensed-700-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=20261101200109">
-    <link rel="stylesheet" href="css/fonts.css?v=20261101200109">
-    <link rel="stylesheet" href="css/footer.css?v=20261101200109">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261101200109">
-    <link rel="stylesheet" href="css/private-run-sign-up.css?v=20261101200109">
-    <link rel="stylesheet" href="css/statusbar.css?v=20261101200109">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261101200109">
+    <link rel="stylesheet" href="css/style.css?v=20261102005939">
+    <link rel="stylesheet" href="css/fonts.css?v=20261102005939">
+    <link rel="stylesheet" href="css/footer.css?v=20261102005939">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261102005939">
+    <link rel="stylesheet" href="css/private-run-sign-up.css?v=20261102005939">
+    <link rel="stylesheet" href="css/statusbar.css?v=20261102005939">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261102005939">
 </head>
 
 <body>
+<a class="lx-skip" href="#main">Skip to content</a>
 <!-- White behind the phone's status bar: see css/statusbar.css. -->
 <div class="lx-statusbar" aria-hidden="true"></div>
 <header id="main-header">
     <button class="menu-trigger" id="menu-open" aria-label="Open Menu">
-        <img src="assets/icons/menu.svg" alt="">
+        <img src="assets/icons/menu.svg" alt="Menu">
     </button>
 
     <a href="index.html" class="logo-link">
@@ -82,7 +85,7 @@
 
 <nav id="side-menu" class="nav-overlay">
     <div class="nav-grain"></div>
-    <div class="nav-watermark">LOCKED&nbsp;IN</div>
+    <div class="nav-watermark" aria-hidden="true">LOCKED&nbsp;IN</div>
 
     <button id="menu-close" class="close-btn" aria-label="Close menu">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -151,6 +154,8 @@
     </div>
 </nav>
 
+<main id="main" tabindex="-1">
+
 <div class="signup-shell">
 
   <!-- ===== RUN SUMMARY (populated by sign-up-form.js) ===== -->
@@ -174,7 +179,7 @@
       </div>
 
       <a class="rs-location" id="rs-location" href="#" target="_blank" rel="noopener">
-        <span class="rs-map"><img id="rs-map-img" src="assets/images/venues/IMG_0916-320.avif" alt="" decoding="async"><span class="rs-pin"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg></span></span>
+        <span class="rs-map"><img id="rs-map-img" src="assets/images/venues/IMG_0916-320.avif" alt="Basketball court at the run venue in Lisbon" decoding="async"><span class="rs-pin"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg></span></span>
         <span class="rs-loc-text">
           <span class="rs-loc-name" id="rs-loc-name">Venue</span>
           <span class="rs-loc-sub">Lisboa &middot; View location &rsaquo;</span>
@@ -313,6 +318,8 @@
     </button>
   </div>
 </div>
+</main>
+
 <footer id="lx-main-footer" class="lx-footer">
     <div class="lx-footer-content">
 
@@ -332,6 +339,7 @@
             <h3 class="barlow-condensed-bold footer-heading">CONTACT US</h3>
             <ul class="footer-link-list">
                 <li class="barlow-condensed-regular text-muted">Lisboa, Portugal</li>
+                <li><a href="tel:+351911861637" class="barlow-condensed-regular">+351 911 861 637</a></li>
                 <li><a href="mailto:support@lockedinlx.com" class="barlow-condensed-regular">support@lockedinlx.com</a></li>
                 <li><a href="index.html#faq_box_container" class="barlow-condensed-regular">FAQ</a></li>
             </ul>
@@ -363,12 +371,12 @@
         <p class="barlow-condensed-regular">© 2026 Locked In Lx. All rights reserved.</p>
     </div>
 </footer>
-    <script src="javascript/scroll_detection_menu.js?v=20261101200109" defer></script>
-    <script src="javascript/signups-api.js?v=20261101200109" defer></script>
-<script src="javascript/local-signups.js?v=20261101200109" defer></script>
-<script src="javascript/events.js?v=20261101200109" defer></script>
-<script src="javascript/signup-motion.js?v=20261101200109" defer></script>
-    <script src="javascript/sign-up-form.js?v=20261101200109" defer></script>
-<script src="javascript/cookie-consent.js?v=20261101200109" defer></script>
+    <script src="javascript/scroll_detection_menu.js?v=20261102005939" defer></script>
+    <script src="javascript/signups-api.js?v=20261102005939" defer></script>
+<script src="javascript/local-signups.js?v=20261102005939" defer></script>
+<script src="javascript/events.js?v=20261102005939" defer></script>
+<script src="javascript/signup-motion.js?v=20261102005939" defer></script>
+    <script src="javascript/sign-up-form.js?v=20261102005939" defer></script>
+<script src="javascript/cookie-consent.js?v=20261102005939" defer></script>
 </body> 
 </html>

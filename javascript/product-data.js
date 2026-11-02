@@ -162,7 +162,11 @@ function slugify(s) {
 const productSlug = p => p.slug || slugify(p.name);
 const productPath = p => `/store/${productSlug(p)}/`;
 const productUrl  = p => `${window.location.origin}${productPath(p)}`;
-const productTitle = p => `${p.name} | Locked In Lx Store, Lisbon`;
+// Same as pageTitle in tools/build-store.mjs: about 60 characters fit in search.
+const productTitle = p => {
+    const t = `${p.name} | Locked In Lx Lisbon`;
+    return t.length <= 60 ? t : `${p.name} | Locked In Lx`;
+};
 let storeTitle = "";
 
 // Euro after the figure, the way it is written in Portugal.
@@ -513,7 +517,7 @@ function openProductModal(index, opener, opts = {}) {
                     <svg class="ic-close" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
                 </button>
                 <span class="modal_topbar_title">Product Details</span>
-                <span class="modal_topbar_crumb">Store <i>/</i> ${catLabel || "Gear"} <i>/</i> <b>${product.name}</b></span>
+                <span class="modal_topbar_crumb">Store <i aria-hidden="true">/</i> ${catLabel || "Gear"} <i aria-hidden="true">/</i> <b>${product.name}</b></span>
                 <span class="modal_topbar_spacer" aria-hidden="true"></span>
             </div>
 
@@ -531,7 +535,7 @@ function openProductModal(index, opener, opts = {}) {
 
             ${hasMultiple ? `<div class="modal_thumbs" role="tablist" aria-label="Product images">${
                 imagesToLoad.map((src, i) =>
-                    `<button class="modal_thumb${i === 0 ? " active" : ""}" type="button" data-slide="${i}" aria-label="Show image ${i + 1}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`
+                    `<button class="modal_thumb${i === 0 ? " active" : ""}" type="button" data-slide="${i}" aria-label="Show image ${i + 1}"><img src="${src}" alt="${product.name} — view ${i + 1}" loading="lazy" decoding="async"></button>`
                 ).join("")}</div>` : ""}
 
             <div class="modal_details">
@@ -582,7 +586,7 @@ function openProductModal(index, opener, opts = {}) {
         <!-- LIGHTBOX -->
         <div class="lightbox" id="image_lightbox" aria-hidden="true">
             <button class="lightbox_close" type="button" aria-label="Close fullscreen">&times;</button>
-            <img class="lightbox_img" src="" alt="">
+            <img class="lightbox_img" src="" alt="${product.name}">
         </div>
     `;
 

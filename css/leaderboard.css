@@ -78,7 +78,7 @@
 }
 #leaderboard_section .lb-first  .lb-pod-rank{ background:var(--lb-gold); }
 #leaderboard_section .lb-second .lb-pod-rank{ background:var(--lb-silver); }
-#leaderboard_section .lb-third  .lb-pod-rank{ background:var(--lb-bronze); color:#fff; }
+#leaderboard_section .lb-third  .lb-pod-rank{ background:var(--lb-bronze); }
 
 #leaderboard_section .lb-pod-name{
     font-family:'Barlow Condensed',sans-serif; font-weight:800;
@@ -321,7 +321,7 @@
 #leaderboard_section .lb-foot{
     max-width:1000px; margin:16px auto 0; padding:0 24px;
     text-align:center; font-family:'Inter','Inter Fallback',sans-serif;
-    font-size:12px; color:rgba(255,255,255,.35); letter-spacing:.02em;
+    font-size:12px; color:rgba(255,255,255,.55); letter-spacing:.02em;
 }
 
 /* ===================== RESPONSIVE ===================== */
