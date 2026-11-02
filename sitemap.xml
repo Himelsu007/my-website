@@ -347,6 +347,13 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 <!-- /lx:store -->
 
 <url>
+    <loc>https://www.lockedinlx.com/about.html</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+</url>
+
+<url>
     <loc>https://www.lockedinlx.com/private_run_sign_up.html</loc>
     <lastmod>2026-05-11</lastmod>
     <changefreq>weekly</changefreq>
