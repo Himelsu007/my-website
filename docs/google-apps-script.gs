@@ -453,6 +453,87 @@ function backfillRoster() {
   refreshTotals();
 }
 
+/* ====================================================== repair tabs =====
+   Locked In menu > "Repair Signups & Roster". For when a tab has been turned
+   into a Google Sheets Table, or its columns typed, hidden or renamed: a Table
+   flags plain names as invalid "people chips" and spot counts as bad
+   checkboxes. Copies every row into fresh, plain tabs with the headers this
+   script writes, rebuilds the Roster from Signups (people you added by hand
+   stay) and refreshes Totals. The old tabs are kept, renamed "(old)", until
+   you have looked and deleted them yourself. */
+function repairSignupsAndRoster() {
+  var ui = SpreadsheetApp.getUi();
+  var ok = ui.alert('Repair Signups & Roster',
+    'This copies Signups and Roster into fresh, plain tabs and rebuilds the Roster from Signups ' +
+    '(people you added by hand are kept). The current tabs are kept, renamed "(old)". Continue?',
+    ui.ButtonSet.OK_CANCEL);
+  if (ok !== ui.Button.OK) return;
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'd MMM HH:mm');
+
+  // ---- Signups: every row, first 12 columns, values only
+  var oldS = ss.getSheetByName(SHEET_NAME);
+  var signups = [];
+  if (oldS && oldS.getLastRow() > 1) {
+    oldS.getRange(2, 1, oldS.getLastRow() - 1, 12).getValues().forEach(function (r) {
+      if (!String(r[0]).trim() && !String(r[5]).trim()) return;   // empty row
+      signups.push([
+        r[0] instanceof Date ? r[0] : (r[0] ? new Date(r[0]) : ''),
+        String(r[1] || ''), String(r[2] || ''), String(r[3] || ''), String(r[4] || ''),
+        String(r[5] || '').trim(), String(r[6] || ''),
+        Number(r[7]) || 0, Number(r[8]) || 0, Number(r[9]) || 1,
+        String(r[10] || ''), String(r[11] || '')
+      ]);
+    });
+  }
+
+  // ---- Roster: keep the people added by hand (anything not from the form)
+  var oldR = ss.getSheetByName(ROSTER_NAME);
+  var manual = [];
+  if (oldR && oldR.getLastRow() > 1) {
+    oldR.getRange(2, 1, oldR.getLastRow() - 1, 8).getValues().forEach(function (r) {
+      if (String(r[2] || '').trim() && String(r[6] || '').trim() !== 'Form') {
+        manual.push([String(r[0] || ''), String(r[1] || ''), String(r[2]).trim(),
+                     String(r[3] || ''), String(r[4] || ''), '', String(r[6] || 'Manual'),
+                     r[7] instanceof Date ? r[7] : new Date()]);
+      }
+    });
+  }
+
+  // ---- out with the old (kept, renamed), in with plain tabs in the same place
+  var sIndex = oldS ? oldS.getIndex() : ss.getNumSheets() + 1;
+  var rIndex = oldR ? oldR.getIndex() : ss.getNumSheets() + 2;
+  if (oldS) oldS.setName(SHEET_NAME + ' (old ' + stamp + ')');
+  if (oldR) oldR.setName(ROSTER_NAME + ' (old ' + stamp + ')');
+
+  var s = ss.insertSheet(SHEET_NAME, Math.max(0, sIndex - 1));
+  var sHead = ['Timestamp', 'Run Key', 'Run', 'When', 'Where',
+               'Player', 'Age Group', 'Playing Guests', 'Watching Guests', 'Spots',
+               'Playing Guest Names', 'Watching Guest Names'];
+  s.getRange(1, 1, 1, 12).setValues([sHead]).setFontWeight('bold');
+  if (signups.length) {
+    s.getRange(2, 1, signups.length, 12).setValues(signups);
+    s.getRange(2, 1, signups.length, 1).setNumberFormat('d mmm yyyy, hh:mm');
+  }
+  s.setFrozenRows(1);
+  s.autoResizeColumns(1, 12);
+
+  var r = ss.insertSheet(ROSTER_NAME, Math.max(0, rIndex - 1));
+  r.getRange(1, 1, 1, 8).setValues([['Run', 'When', 'Name', 'Type', 'Role', 'Status', 'Source', 'Added']])
+    .setFontWeight('bold');
+  r.setFrozenRows(1);
+
+  backfillRoster();          // the form's people, from the fresh Signups
+  // Hand-added people after them, as they were: the bench fills in row order.
+  if (manual.length) r.getRange(r.getLastRow() + 1, 1, manual.length, 8).setValues(manual);
+  refreshTotals();
+  r.autoResizeColumns(1, 8);
+
+  ui.alert('Done. ' + signups.length + ' sign-ups copied, ' + manual.length +
+    ' hand-added roster rows kept. Check the new tabs, then delete the "(old)" ones.');
+}
+
 /* ================================================== telling the buyer */
 /*
  * Move an order along in column D and this writes the message to send.
@@ -555,6 +636,7 @@ function onOpen() {
     .createMenu('Locked In')
     .addItem('Refresh roster & totals', 'refreshTotals')
     .addItem('Rebuild roster from Signups', 'backfillRoster')
+    .addItem('Repair Signups & Roster', 'repairSignupsAndRoster')
     .addSeparator()
     .addItem('Turn on order emails', 'turnOnOrderEmails')
     .addItem('Send test emails…', 'sendTestEmails')
