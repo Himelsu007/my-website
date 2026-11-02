@@ -24,6 +24,9 @@
  *              works one out itself.
  *              The order link closes once its order is Delivered or
  *              Cancelled, or once its row is deleted from this tab.
+ *              Buyers who leave an email get one when the order arrives and
+ *              on each Status change: see ORDER EMAILS at the bottom, and
+ *              run "Turn on order emails" from the Locked In menu once.
  */
 
 var SHEET_NAME  = 'Signups';
@@ -91,9 +94,10 @@ function orders_() {
   if (!sh) {
     sh = ss.insertSheet(ORDERS_NAME);
     sh.appendRow(['Timestamp', 'Ref', 'Items', 'Status', 'Note', 'Updated',
-                  'Total', 'Link', 'Fulfilment', 'Customer', 'Lines', 'Tell them', 'ETA']);
+                  'Total', 'Link', 'Fulfilment', 'Customer', 'Lines', 'Tell them', 'ETA',
+                  'Key', 'Email', 'Emailed']);
     sh.setFrozenRows(1);
-    sh.getRange('A1:M1').setFontWeight('bold');
+    sh.getRange('A1:P1').setFontWeight('bold');
     sh.setColumnWidth(3, 320);
     sh.setColumnWidth(8, 240);
     sh.setColumnWidth(9, 220);
@@ -113,15 +117,15 @@ function orders_() {
       .setAllowInvalid(true)
       .build();
     sh.getRange(2, 4, sh.getMaxRows() - 1, 1).setDataValidation(rule);
-  } else if (sh.getLastColumn() < 13) {
+  } else if (sh.getLastColumn() < 16) {
     // An Orders tab made before these columns existed is narrower. Widen it in
     // place rather than making people start a new tab — existing rows keep
     // every value where it was, because new columns only ever go on the end.
-    sh.insertColumnsAfter(sh.getLastColumn(), 13 - sh.getLastColumn());
-    sh.getRange(1, 9, 1, 5)
-      .setValues([['Fulfilment', 'Customer', 'Lines', 'Tell them', 'ETA']])
-      .setFontWeight('bold');
-    sh.getRange(2, 13, sh.getMaxRows() - 1, 1).setNumberFormat('@');
+    var had = sh.getLastColumn();
+    if (sh.getMaxColumns() < 16) sh.insertColumnsAfter(sh.getMaxColumns(), 16 - sh.getMaxColumns());
+    var heads = ['Fulfilment', 'Customer', 'Lines', 'Tell them', 'ETA', 'Key', 'Email', 'Emailed'];
+    sh.getRange(1, 9, 1, 8).setValues([heads]).setFontWeight('bold');
+    if (had < 13) sh.getRange(2, 13, sh.getMaxRows() - 1, 1).setNumberFormat('@');
   }
   return sh;
 }
@@ -164,8 +168,17 @@ function doPost(e) {
         String(d.customer || ''),
         JSON.stringify(d.lines || []),
         '',
+        '',
+        // The short link's secret half: lockedinlx.com/o#<ref>-<key> opens
+        // this row's Link, but only with the key, so references can't be
+        // guessed through to other people's addresses.
+        /^[A-Za-z0-9]{6,12}$/.test(String(d.key || '')) ? String(d.key) : '',
+        validEmail_(d.email) ? String(d.email).trim() : '',
         ''
       ]);
+      // "We got your order", if they left an address. Never allowed to fail
+      // the order itself.
+      try { emailOrderRow_(orders_().getLastRow(), 'Requested'); } catch (err) {}
       return json_({ ok: true });
     }
 
@@ -210,6 +223,8 @@ function doGet(e) {
   var p = (e && e.parameter) ? e.parameter : {};
   var ref = String(p.order || '').trim();
   if (ref) return orderStatus_(ref);
+  // ?short=XU4F&key=K7M2P9 -> the full order link behind a short one
+  if (p.short) return shortLink_(String(p.short), String(p.key || ''));
   // Names live behind Matrix's key (Script property MATRIX_KEY): the order
   // list carries customer names, the roster carries players' names.
   if (p.orders) return matrixOk_(p) ? orderList_(p.since, p.limit) : json_({ ok: false, error: 'locked' });
@@ -246,7 +261,7 @@ function orderList_(since, limit) {
     var n = sh.getLastRow() - 1;
     if (n < 1) return json_({ ok: true, orders: [] });
 
-    var rows = sh.getRange(2, 1, n, 13).getValues();
+    var rows = sh.getRange(2, 1, n, 16).getValues();
     var after = since ? new Date(String(since)).getTime() : 0;
     if (isNaN(after)) after = 0;
     var cap = Math.min(Math.max(parseInt(limit, 10) || 100, 1), 500);
@@ -274,6 +289,8 @@ function orderList_(since, limit) {
         fulfilment: String(r[8] || ''),
         customer: String(r[9] || ''),
         eta: etaText_(r[12]),
+        email: String(r[14] || ''),
+        shortLink: r[13] ? shortUrl_(String(r[1]), String(r[13])) : '',
         lines: lines
       });
     }
@@ -298,6 +315,21 @@ function etaText_(v) {
       : Utilities.formatDate(v, tz, 'EEE d MMM, HH:mm');
   }
   return String(v || '').trim();
+}
+
+/** The full order link behind lockedinlx.com/o#<ref>-<key>. */
+function shortLink_(ref, key) {
+  try {
+    ref = ref.trim().toUpperCase();
+    if (!/^LX-/.test(ref)) ref = 'LX-' + ref;
+    var row = findOrderRow_(ref);
+    if (!row) return json_({ ok: true, found: false });
+    var r = orders_().getRange(row, 1, 1, 16).getValues()[0];
+    if (!r[13] || String(r[13]) !== String(key).trim()) return json_({ ok: true, found: false });
+    return json_({ ok: true, found: true, link: String(r[7] || '') });
+  } catch (err) {
+    return json_({ ok: false, error: String(err) });
+  }
 }
 
 /** One order's status, for the buyer's tracking link. */
@@ -502,10 +534,11 @@ function onEdit(e) {
 
     var stamp = new Date();
     for (var r = first; r <= last; r++) {
-      var row = sh.getRange(r, 1, 1, 12).getValues()[0];
+      var row = sh.getRange(r, 1, 1, 14).getValues()[0];
       if (!row[1]) continue;                       // no reference, not an order
       sh.getRange(r, 6).setValue(stamp);           // Updated — what the buyer's page shows
-      var msg = orderMessage_(row[1], row[3], row[8], row[4], row[7]);
+      var link = row[13] ? shortUrl_(String(row[1]), String(row[13])) : row[7];
+      var msg = orderMessage_(row[1], row[3], row[8], row[4], link);
       var cell = sh.getRange(r, 12);
       if (msg) cell.setFormula(tellFormula_(msg)); else cell.clearContent();
     }
@@ -522,6 +555,9 @@ function onOpen() {
     .createMenu('Locked In')
     .addItem('Refresh roster & totals', 'refreshTotals')
     .addItem('Rebuild roster from Signups', 'backfillRoster')
+    .addSeparator()
+    .addItem('Turn on order emails', 'turnOnOrderEmails')
+    .addItem('Send test emails…', 'sendTestEmails')
     .addToUi();
 }
 
@@ -563,4 +599,306 @@ function rosterFor_(key) {
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }
+}
+
+/* ======================================================= ORDER EMAILS =====
+   A buyer who leaves an email at checkout gets one when the order arrives,
+   and one each time you move Status on to Confirmed, Ready, Delivered or
+   Cancelled. Sent from the Google account that owns this Sheet, with
+   replies going to REPLY_TO.
+
+   Turning it on, once: Locked In menu > "Turn on order emails". Google asks
+   for permission to send email as you; say yes. Until then nothing is sent
+   except the "Order received" email, which goes out from doPost.
+   Try it first with Locked In menu > "Send test emails…".
+
+   Column P (Emailed) remembers the last status each buyer was told about,
+   so setting the same status twice never sends the same email twice. */
+
+var REPLY_TO   = 'support@lockedinlx.com';
+var SITE       = 'https://www.lockedinlx.com';
+var EMAIL_LOGO = SITE + '/assets/images/email/locked-in-lx-wordmark.png';
+var FONT_HEAD  = SITE + '/assets/fonts/barlow-condensed-900-latin.woff2';
+
+/** "Ready", "out for delivery", "done" … -> the five keys the emails know. */
+function statusKey_(raw) {
+  var v = String(raw || '').trim().toLowerCase();
+  if (/^(requested|request|new|pending|received)$/.test(v)) return 'requested';
+  if (/^(confirmed|confirm|accepted|in ?stock)$/.test(v)) return 'confirmed';
+  if (/^(ready|packed|prepared|out for delivery|shipped)$/.test(v)) return 'ready';
+  if (/^(delivered|done|complete|completed|collected|handed)$/.test(v)) return 'delivered';
+  if (/^(cancelled|canceled|cancel|refunded|void)$/.test(v)) return 'cancelled';
+  return '';
+}
+
+function validEmail_(s) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim());
+}
+
+/** Everything one email needs, read off an Orders row. */
+function orderFromRow_(r) {
+  var f = String(r[8] || '');
+  var lines = [];
+  try { lines = JSON.parse(r[10] || '[]'); } catch (err) { lines = []; }
+  return {
+    ref: String(r[1] || ''),
+    status: String(r[3] || 'Requested'),
+    note: String(r[4] || '').trim(),
+    total: Number(r[6]) || 0,
+    link: String(r[13] || '') ? shortUrl_(String(r[1]), String(r[13])) : String(r[7] || ''),
+    how: /^pickup/i.test(f) ? 'pickup' : /^delivery/i.test(f) ? 'delivery' : '',
+    where: f.replace(/^[^—]*—\s*/, '').trim(),
+    customer: String(r[9] || '').trim(),
+    lines: lines,
+    eta: etaText_(r[12]),
+    email: String(r[14] || '').trim()
+  };
+}
+
+function shortUrl_(ref, key) {
+  return SITE + '/o#' + String(ref).replace(/^LX-/i, '') + '-' + key;
+}
+
+/** Send the email for `status` on Orders row `row`, if the buyer left an address. */
+function emailOrderRow_(row, status) {
+  var sh = orders_();
+  var r = sh.getRange(row, 1, 1, 16).getValues()[0];
+  var o = orderFromRow_(r);
+  var key = statusKey_(status || o.status);
+  if (!key || !validEmail_(o.email)) return false;
+  if (String(r[15] || '').toLowerCase() === key) return false;   // told already
+  sendOrderEmail_(o.email, o, key);
+  sh.getRange(row, 16).setValue(key);
+  return true;
+}
+
+function sendOrderEmail_(to, o, key) {
+  var mail = orderEmail_(o, key);
+  MailApp.sendEmail({
+    to: to,
+    subject: mail.subject,
+    htmlBody: mail.html,
+    body: mail.text,
+    name: 'Locked In Lx',
+    replyTo: REPLY_TO
+  });
+}
+
+/**
+ * Installable trigger (made by "Turn on order emails"). The simple onEdit
+ * above cannot send email, so this one does, and only that.
+ */
+function onOrderEdit(e) {
+  try {
+    if (!e || !e.range) return;
+    var sh = e.range.getSheet();
+    if (sh.getName() !== ORDERS_NAME) return;
+    var c0 = e.range.getColumn(), c1 = c0 + e.range.getNumColumns() - 1;
+    if (4 < c0 || 4 > c1) return;
+    var first = Math.max(2, e.range.getRow());
+    var last = e.range.getRow() + e.range.getNumRows() - 1;
+    for (var row = first; row <= last; row++) {
+      var status = sh.getRange(row, 4).getValue();
+      // "Requested" was the order-received email, sent when it came in.
+      if (statusKey_(status) && statusKey_(status) !== 'requested') emailOrderRow_(row, status);
+    }
+  } catch (err) {}
+}
+
+function turnOnOrderEmails() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'onOrderEdit') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('onOrderEdit').forSpreadsheet(ss).onEdit().create();
+  orders_();   // widens the tab to the Key / Email / Emailed columns
+  SpreadsheetApp.getUi().alert('Order emails are on. Buyers who left an email hear from you each time Status changes.');
+}
+
+/** Every email, with a made-up order, to one address — to see them before buyers do. */
+function sendTestEmails() {
+  var ui = SpreadsheetApp.getUi();
+  var ans = ui.prompt('Send test emails', 'Send all seven to which address?', ui.ButtonSet.OK_CANCEL);
+  if (ans.getSelectedButton() !== ui.Button.OK) return;
+  var to = ans.getResponseText().trim() || 'himelsu@icloud.com';
+  if (!validEmail_(to)) { ui.alert('That does not look like an email address.'); return; }
+  testOrderEmails_().forEach(function (t) { sendOrderEmail_(to, t.o, t.key); });
+  ui.alert('Sent 7 test emails to ' + to + '.');
+}
+
+function testOrderEmails_() {
+  var lines = [
+    { name: 'Nba Nike-Pro Combat Compression Tank (Black)', option: 'L', qty: 1, price: 50,
+      image: SITE + '/assets/images/products/nike-pro-combat-tank/nike-pro-combat-tank-black.webp' },
+    { name: 'Nike NBA Elite Crew Socks White', option: '42 - 46', qty: 2, price: 19,
+      image: SITE + '/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp' }
+  ];
+  var base = { ref: 'LX-TEST', note: '', total: 88, link: SITE + '/merch.html', customer: 'Himelsu',
+               lines: lines, eta: '' };
+  var d = function (x) { var o = JSON.parse(JSON.stringify(base)); for (var k in x) o[k] = x[k]; return o; };
+  var del = { how: 'delivery', where: 'Rua da Prata 12, 3ºD, 1100-052' };
+  var pick = { how: 'pickup', where: 'Sat 7 Nov run' };
+  return [
+    { key: 'requested', o: d(del) },
+    { key: 'confirmed', o: d(del) },
+    { key: 'ready',     o: d(Object.assign({ eta: 'Today 19:00–21:00' }, del)) },
+    { key: 'ready',     o: d(pick) },
+    { key: 'delivered', o: d(del) },
+    { key: 'delivered', o: d(pick) },
+    { key: 'cancelled', o: d({ how: 'delivery', where: del.where, note: 'The white socks sold out before we could pack them' }) }
+  ];
+}
+
+/* ------------------------------------------------------- the email itself
+   Tables and inline styles, because that is what every mail app agrees on.
+   Dark like the order page. Barlow Condensed where the mail app loads web
+   fonts (Apple Mail, iOS), a bold condensed system font where it does not. */
+function orderEmail_(o, key) {
+  var pickup = o.how === 'pickup';
+  var first = (o.customer || '').split(/\s+/)[0];
+  var ref = o.ref;
+  var copy = {
+    requested: { eyebrow: 'Order received', head: ['We got', 'your order'],
+      sub: (first ? 'Thanks, ' + first + '! ' : 'Thanks! ') +
+           'We’re checking that everything is in stock and will confirm with you on WhatsApp. Nothing is charged until then.' },
+    confirmed: { eyebrow: 'Stock confirmed', head: ['Everything', 'is in'],
+      sub: 'Good news: all of it is in stock. We’re getting your order ready now.' },
+    ready: pickup
+      ? { eyebrow: 'Set aside for you', head: ['Packed for', 'the run'],
+          sub: 'Your order is packed and coming to the ' + (o.where || 'run') +
+               '. Open your order page at the court and we’ll scan the code.' }
+      : { eyebrow: 'Out for delivery', head: ['On its', 'way'],
+          sub: 'Your order is out for delivery' + (o.eta ? ': expect it ' + o.eta + '.' : ' and should reach you within 12 hours.') },
+    delivered: pickup
+      ? { eyebrow: 'Collected', head: ['Enjoy', 'the gear'],
+          sub: 'Thanks for picking up your order. Not the right fit? You have 30 days to swap or return it: just reply to this email.' }
+      : { eyebrow: 'Delivered', head: ['Enjoy', 'the gear'],
+          sub: 'Your order has been delivered. Not the right fit? You have 30 days to swap or return it: just reply to this email.' },
+    cancelled: { eyebrow: 'Order cancelled', head: ['Order', 'cancelled'],
+      sub: 'Sorry, we had to cancel this order' +
+           (o.note ? ': ' + o.note.charAt(0).toLowerCase() + o.note.slice(1).replace(/[.!?]*$/, '') + '.' : '.') +
+           ' Nothing has been charged.' }
+  }[key];
+
+  var steps = pickup
+    ? ['Requested', 'Confirmed', 'Set aside', 'Collected']
+    : ['Requested', 'Confirmed', 'On its way', 'Delivered'];
+  var at = ['requested', 'confirmed', 'ready', 'delivered'].indexOf(key);
+
+  var e = function (s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  };
+  var money = function (v) { return (Math.round(v * 100) % 100 ? v.toFixed(2) : String(Math.round(v))) + '€'; };
+  var GOLD = '#FFD700', INK = '#FFFFFF', INK2 = '#C8C8D0', INK3 = '#A1A1AA', INK4 = '#7A7A84';
+  var CARD = '#111114', RAISE = '#18181D', LINE = '#26262D', GREEN = '#3FE07B', RED = '#FF6B6B';
+  var HEAD = "'Barlow Condensed','Arial Narrow','Helvetica Neue Condensed Black',Impact,Arial,sans-serif";
+  var BODY = "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
+
+  var bar = key === 'cancelled'
+    ? '<tr><td colspan="4" style="padding:0 0 8px"><div style="height:4px;border-radius:4px;background:' + RED + ';opacity:.7"></div></td></tr>' +
+      '<tr><td colspan="4" style="font:600 10px/1.4 ' + BODY + ';letter-spacing:.14em;text-transform:uppercase;color:' + RED + '">Cancelled</td></tr>'
+    : '<tr>' + steps.map(function (s, i) {
+        return '<td width="25%" style="padding:0 ' + (i < 3 ? '6px' : '0') + ' 8px 0"><div style="height:4px;border-radius:4px;background:' +
+               (i <= at ? GOLD : LINE) + '"></div></td>';
+      }).join('') + '</tr><tr>' + steps.map(function (s, i) {
+        return '<td valign="top" style="padding-right:6px;font:600 10px/1.4 ' + BODY + ';letter-spacing:.12em;text-transform:uppercase;color:' +
+               (i === at ? GOLD : i < at ? INK2 : INK4) + '">' + e(s) + '</td>';
+      }).join('') + '</tr>';
+
+  var items = o.lines.map(function (l) {
+    var size = l.option ? String(l.option).split(' · ').map(function (p) {
+      return /^(XS|S|M|L|XL|XXL|\d[\d -]*)$/i.test(p.trim()) ? 'Size ' + p.trim() : p.trim();
+    }).join(' · ') : '';
+    return '<tr>' +
+      '<td width="56" valign="middle" style="padding:12px 14px 12px 0;border-bottom:1px solid ' + LINE + '">' +
+        (l.image ? '<img src="' + e(l.image) + '" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:#FFFFFF;object-fit:contain">'
+                 : '<div style="width:56px;height:56px;border-radius:12px;background:' + RAISE + '"></div>') +
+      '</td>' +
+      '<td valign="middle" style="padding:12px 0;border-bottom:1px solid ' + LINE + '">' +
+        '<div style="font:800 15px/1.2 ' + HEAD + ';letter-spacing:.02em;text-transform:uppercase;color:' + INK + '">' + e(l.name) + '</div>' +
+        '<div style="padding-top:5px;font:500 12px/1.4 ' + BODY + ';color:' + INK3 + '">' +
+          e(size) + (size ? ' · ' : '') + 'Qty ' + (l.qty || 1) + '</div>' +
+      '</td>' +
+      '<td valign="middle" align="right" style="padding:12px 0 12px 12px;border-bottom:1px solid ' + LINE + ';font:800 17px/1 ' + HEAD + ';color:' + INK + ';white-space:nowrap">' +
+        money((Number(l.price) || 0) * (l.qty || 1)) + '</td>' +
+    '</tr>';
+  }).join('');
+
+  var fulfil = (o.how && key !== 'cancelled')
+    ? '<tr><td style="padding:0 0 22px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' + RAISE + ';border-radius:14px"><tr><td style="padding:14px 16px">' +
+        '<div style="font:600 10px/1.4 ' + BODY + ';letter-spacing:.16em;text-transform:uppercase;color:' + INK4 + '">' + (pickup ? 'Pickup' : 'Delivery') + '</div>' +
+        '<div style="padding-top:4px;font:600 15px/1.4 ' + BODY + ';color:' + INK + '">' +
+          e(pickup ? (o.where || 'At the run') : (o.eta ? o.eta : 'Free express delivery in Lisbon')) + '</div>' +
+        (!pickup && o.where ? '<div style="padding-top:2px;font:400 13px/1.5 ' + BODY + ';color:' + INK3 + '">' + e((o.customer ? o.customer + ', ' : '') + o.where) + '</div>' : '') +
+      '</td></tr></table></td></tr>'
+    : '';
+
+  var note = (o.note && key !== 'cancelled')
+    ? '<tr><td style="padding:0 0 22px;font:400 14px/1.6 ' + BODY + ';color:' + INK2 + '"><span style="color:' + GOLD + '">Note:</span> ' + e(o.note) + '</td></tr>'
+    : '';
+
+  var html =
+'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+'<meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark">' +
+'<style>@font-face{font-family:"Barlow Condensed";font-weight:800 900;src:url(' + FONT_HEAD + ') format("woff2")}' +
+'a{color:' + GOLD + '}@media (max-width:480px){.lx-pad{padding:28px 20px!important}.lx-h{font-size:40px!important}}</style></head>' +
+'<body style="margin:0;padding:0;background:#000000">' +
+'<div style="display:none;max-height:0;overflow:hidden">' + e(copy.eyebrow + ' · ' + ref + ' — ' + copy.sub) + '</div>' +
+'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000"><tr><td align="center" style="padding:28px 12px 40px">' +
+'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">' +
+
+/* logo row */
+'<tr><td style="padding:0 6px 18px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>' +
+  '<td><a href="' + SITE + '" style="text-decoration:none"><img src="' + EMAIL_LOGO + '" width="133" height="16" alt="LOCKED IN LX" style="display:block;border:0;color:#FFFFFF;font:800 16px ' + HEAD + '"></a></td>' +
+  '<td align="right" style="font:600 11px/1 ' + BODY + ';letter-spacing:.16em;color:' + INK4 + '">' + e(ref) + '</td>' +
+'</tr></table></td></tr>' +
+
+/* card */
+'<tr><td class="lx-pad" style="background:' + CARD + ';border-radius:22px;padding:36px 32px">' +
+'<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' +
+  '<tr><td style="padding:0 0 14px;font:600 11px/1 ' + BODY + ';letter-spacing:.22em;text-transform:uppercase;color:' + INK3 + '">' +
+    '<span style="color:' + (key === 'cancelled' ? RED : GOLD) + '">●</span>&nbsp; ' + e(copy.eyebrow) + '</td></tr>' +
+  '<tr><td class="lx-h" style="padding:0 0 14px;font:900 46px/0.95 ' + HEAD + ';text-transform:uppercase;letter-spacing:.01em;color:' + INK + '">' +
+    e(copy.head[0]) + ' <span style="color:' + (key === 'cancelled' ? RED : GOLD) + '">' + e(copy.head[1]) + '</span></td></tr>' +
+  '<tr><td style="padding:0 0 26px;font:400 15px/1.65 ' + BODY + ';color:' + INK3 + '">' + e(copy.sub) + '</td></tr>' +
+  '<tr><td style="padding:0 0 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + bar + '</table></td></tr>' +
+  fulfil + note +
+  '<tr><td style="padding:0 0 4px;font:600 11px/1 ' + BODY + ';letter-spacing:.2em;text-transform:uppercase;color:' + INK4 + '">Your order</td></tr>' +
+  '<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + items + '</table></td></tr>' +
+  '<tr><td style="padding:14px 0 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' +
+    '<tr><td style="padding:3px 0;font:400 13px ' + BODY + ';color:' + INK3 + '">Subtotal</td><td align="right" style="font:600 13px ' + BODY + ';color:' + INK2 + '">' + money(o.total) + '</td></tr>' +
+    '<tr><td style="padding:3px 0;font:400 13px ' + BODY + ';color:' + INK3 + '">' + (pickup ? 'Pickup at the run' : 'Shipping') + '</td><td align="right" style="font:600 13px ' + BODY + ';color:' + GREEN + '">Free</td></tr>' +
+  '</table></td></tr>' +
+  '<tr><td style="padding:14px 0 28px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,215,0,0.10);border:1px solid rgba(255,215,0,0.32);border-radius:14px"><tr>' +
+    '<td style="padding:12px 16px;font:800 13px/1 ' + BODY + ';letter-spacing:.18em;text-transform:uppercase;color:' + INK2 + '">Total</td>' +
+    '<td align="right" style="padding:12px 16px;font:900 24px/1 ' + HEAD + ';color:' + GOLD + '">' + money(o.total) + '</td>' +
+  '</tr></table></td></tr>' +
+  (o.link && key !== 'cancelled'
+    ? '<tr><td align="center"><a href="' + e(o.link) + '" style="display:inline-block;background:' + GOLD + ';color:#0A0A0A;text-decoration:none;font:700 15px/1 ' + BODY + ';padding:16px 34px;border-radius:99px">Track your order →</a></td></tr>'
+    : '') +
+'</table></td></tr>' +
+
+/* footer */
+'<tr><td align="center" style="padding:24px 16px 0;font:400 12.5px/1.7 ' + BODY + ';color:' + INK4 + '">' +
+  'Questions? Just reply to this email or <a href="https://wa.me/351911861637?text=' + encodeURIComponent('Hi! About order ' + ref + ' — ') + '" style="color:' + INK2 + '">message us on WhatsApp</a>.<br>' +
+  'Locked In Lx · Lisbon · <a href="' + SITE + '" style="color:' + INK3 + '">lockedinlx.com</a><br>' +
+  '<span style="color:#55555E">You’re getting this because you left your email with order ' + e(ref) + '.</span>' +
+'</td></tr>' +
+'</table></td></tr></table></body></html>';
+
+  var text = 'LOCKED IN LX — ' + copy.eyebrow + ' (' + ref + ')\n\n' + copy.sub + '\n\n' +
+    o.lines.map(function (l) { return (l.qty || 1) + '× ' + l.name + (l.option ? ' (' + l.option + ')' : '') + ' — ' + money((Number(l.price) || 0) * (l.qty || 1)); }).join('\n') +
+    '\nTotal: ' + money(o.total) + (o.link && key !== 'cancelled' ? '\n\nTrack your order: ' + o.link : '') +
+    '\n\nQuestions? Reply to this email.';
+
+  var subject = {
+    requested: 'We got your order ' + ref,
+    confirmed: 'Stock confirmed — order ' + ref,
+    ready: pickup ? 'Packed for the run — order ' + ref : 'On its way — order ' + ref,
+    delivered: (pickup ? 'Collected' : 'Delivered') + ' — order ' + ref,
+    cancelled: 'Order ' + ref + ' was cancelled'
+  }[key];
+
+  return { subject: subject, html: html, text: text };
 }

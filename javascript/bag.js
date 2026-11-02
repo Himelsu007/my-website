@@ -211,6 +211,13 @@
         return false;
     }
 
+    /* Blank is fine; anything typed has to look like an address, or the
+       updates would quietly go nowhere. */
+    function emailOk(f) {
+        var e = String((f || readF()).email || "").trim();
+        return !e || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+    }
+
     /* One line for the chat: enough to act on without opening anything. */
     function fulfilLine(f) {
         if (f.method === "pickup")   return "Pickup \u2014 " + (f.runLabel || f.run) + " run";
@@ -305,6 +312,11 @@
                     '<input class="lx_bag_input" data-fld="postcode" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="8" placeholder="1100-052"></label>' +
                   '<p class="lx_bag_hint">Express delivery, Lisbon only. No delivery fee.</p>' +
                 '</div>' +
+                /* Optional, and only for updates: each status change on the
+                   order is emailed to it (see ORDER EMAILS in the Sheet script). */
+                '<label class="lx_bag_field lx_bag_emailfld"><span>Email for order updates <em>optional</em></span>' +
+                  '<input class="lx_bag_input" data-fld="email" type="email" autocomplete="email" inputmode="email" ' +
+                  'autocapitalize="off" spellcheck="false" placeholder="you@example.com"></label>' +
               '</div>' +
             '</div>' +
             '<div class="lx_bag_foot">' +
@@ -472,7 +484,7 @@
             f.postcode = fmtPostcode(f.postcode);
             try { localStorage.setItem(FKEY, JSON.stringify(f)); } catch (e) {}
         }
-        ["name", "street", "postcode"].forEach(function (k) {
+        ["name", "street", "postcode", "email"].forEach(function (k) {
             var el = drawer.querySelector('[data-fld="' + k + '"]');
             if (el && el.value !== (f[k] || "") && document.activeElement !== el) {
                 el.value = f[k] || "";
@@ -486,8 +498,10 @@
 
         /* An order that includes something we cannot supply is worse than no
            order — it gets agreed on WhatsApp and then walked back. */
+        var emailEl = drawer.querySelector('[data-fld="email"]');
+        if (emailEl) emailEl.setAttribute("aria-invalid", emailOk(f) ? "false" : "true");
         drawer.querySelector(".lx_bag_order").disabled =
-            read().length === 0 || stale > 0 || !fulfilReady(f);
+            read().length === 0 || stale > 0 || !fulfilReady(f) || !emailOk(f);
     }
 
     function wireFulfil() {
@@ -596,6 +610,15 @@
     /* Unambiguous alphabet: no I/O/0/1 to misread over the phone. */
     var REF_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
 
+    /* The short link's secret half: six characters from the same unambiguous
+       alphabet, from the browser's secure random source. */
+    function makeKey() {
+        var out = "", buf = new Uint8Array(6);
+        (window.crypto || window.msCrypto).getRandomValues(buf);
+        for (var i = 0; i < buf.length; i++) out += REF_ALPHABET.charAt(buf[i] % REF_ALPHABET.length);
+        return out;
+    }
+
     function makeRef() {
         var out = "";
         for (var i = 0; i < 4; i++) {
@@ -656,14 +679,24 @@
                    "~" + codes.join("~");
         }
 
+        /* The chat gets a short link (lockedinlx.com/o/#XU4F-K7M2P9) when the
+           order is logged to the Sheet, which is what the short one opens.
+           The second half is a key only this buyer has, so nobody can walk
+           through references to other people's orders. */
+        var key = "", shown = link;
+        if (link !== base && ordersOn()) {
+            key = makeKey();
+            shown = new URL("o/", document.baseURI).href + "#" + ref + "-" + key;
+        }
+
         var how = fulfilLine(f);
         var msg = "LOCKED IN LX\n" +
                   "Order LX-" + ref + "\n" +
                   n + (n === 1 ? " item" : " items") + " · " + money(sum) +
                   (how ? "\n" + how : "") + "\n\n" +
-                  link;
+                  shown;
 
-        logOrder("LX-" + ref, items, sum, link);
+        logOrder("LX-" + ref, items, sum, link, key, String(f.email || "").trim());
         window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg), "_blank");
     }
 
@@ -687,9 +720,13 @@
         return (p && p.sku) || "";
     }
 
-    function logOrder(ref, items, sum, link) {
-        if (typeof ORDERS_ENDPOINT !== "string" ||
-            !/^https:\/\/script\.google\.com\//.test(ORDERS_ENDPOINT)) return;
+    function ordersOn() {
+        return typeof ORDERS_ENDPOINT === "string" &&
+               /^https:\/\/script\.google\.com\//.test(ORDERS_ENDPOINT);
+    }
+
+    function logOrder(ref, items, sum, link, key, email) {
+        if (!ordersOn()) return;
         try {
             fetch(ORDERS_ENDPOINT, {
                 method: "POST",
@@ -701,6 +738,8 @@
                     ref: ref,
                     total: sum,
                     link: link,
+                    key: key || "",
+                    email: email || "",
                     fulfilment: fulfilLine(readF()),
                     /* The chat line deliberately leaves the name out to stay
                        short, so it has to travel separately or the Sheet only
@@ -718,7 +757,9 @@
                        reader that problem. */
                     lines: items.map(function (i) {
                         return { name: i.name, sku: skuFor(i), option: i.option || "",
-                                 qty: i.qty, price: i.price };
+                                 qty: i.qty, price: i.price,
+                                 // for the photo in the order emails
+                                 image: i.image ? new URL(i.image, document.baseURI).href : "" };
                     })
                 })
             }).catch(function () {});

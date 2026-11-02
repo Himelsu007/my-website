@@ -8,7 +8,7 @@ VER=$(date +%Y%m%d%H%M%S)
 python3 - "$VER" <<'PY'
 import re, sys, glob
 ver = sys.argv[1]
-for p in glob.glob('*.html'):
+for p in glob.glob('*.html') + ['o/index.html']:  # o/: the short order link
     s = open(p, encoding='utf-8').read(); before = s
     s = re.sub(r'(<script[^>]*\bsrc=")(javascript/[^"?]+\.js)(?:\?v=\d+)?(")',
                lambda m: f'{m.group(1)}{m.group(2)}?v={ver}{m.group(3)}', s)
