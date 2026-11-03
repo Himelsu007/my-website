@@ -1,0 +1,109 @@
+/* =====================================================
+   LEGAL PAGES — set for reading
+   -----------------------------------------------------
+   Privacy, Cookies, Store Terms, Terms of Participation and the waiver are
+   read top to bottom, so they get body type: Inter at a comfortable size and
+   line length, real lists and tables. The gold pill heading above each page
+   (style.css) stays as it was.
+   ===================================================== */
+.legal-doc {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px 24px;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #D4D4D8;
+}
+.legal-doc .legal-updated {
+    margin: 0 0 28px;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: .04em;
+    color: #9A9AA4;
+}
+.legal-doc .legal-lead {
+    font-size: 17px;
+    color: #E4E4E7;
+    margin: 0 0 8px;
+}
+.legal-doc h3 {
+    margin: 40px 0 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 1.1;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+.legal-doc h3 .n { color: #FFD700; margin-right: 8px; }
+.legal-doc h4 {
+    margin: 22px 0 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+.legal-doc p { margin: 0 0 12px; }
+.legal-doc ul { margin: 0 0 14px; padding-left: 20px; }
+.legal-doc li { margin: 6px 0; }
+.legal-doc li::marker { color: #FFD700; }
+.legal-doc strong { color: #FFFFFF; font-weight: 600; }
+.legal-doc a { color: #FFD700; text-underline-offset: 3px; }
+.legal-doc code {
+    font: 13px/1.4 'SF Mono', Menlo, monospace;
+    background: rgba(255, 255, 255, .07);
+    padding: 1px 6px;
+    border-radius: 5px;
+    color: #E4E4E7;
+}
+.legal-doc .legal-note {
+    background: rgba(255, 215, 0, .07);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    color: #E4E4E7;
+}
+
+/* Who gets what, and why: a table on wide screens, stacked cards on phones. */
+.legal-doc table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 16px;
+    font-size: 14.5px;
+    line-height: 1.55;
+}
+.legal-doc th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #9A9AA4;
+    padding: 8px 10px 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .18);
+}
+.legal-doc td {
+    padding: 10px 10px 10px 0;
+    vertical-align: top;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+.legal-doc td:first-child { color: #FFFFFF; font-weight: 600; }
+
+@media (max-width: 640px) {
+    .legal-doc { padding: 0 18px 20px; font-size: 15.5px; }
+    .legal-doc h3 { font-size: 22px; margin-top: 34px; }
+    .legal-doc thead { display: none; }
+    .legal-doc table, .legal-doc tbody, .legal-doc tr, .legal-doc td { display: block; width: 100%; }
+    .legal-doc tr { padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, .1); }
+    .legal-doc td { border: 0; padding: 2px 0; }
+    .legal-doc td[data-label]::before {
+        content: attr(data-label) " \2014  ";
+        color: #9A9AA4;
+        font-size: 12px;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+}

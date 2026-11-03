@@ -56,13 +56,14 @@
     <link rel="preload" href="assets/fonts/barlow-condensed-900-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/barlow-condensed-700-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/barlow-condensed-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=20261103081200">
-    <link rel="stylesheet" href="css/fonts.css?v=20261103081200">
-    <link rel="stylesheet" href="css/responsive.css?v=20261103081200">
-    <link rel="stylesheet" href="css/footer.css?v=20261103081200">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261103081200">
-    <link rel="stylesheet" href="css/statusbar.css?v=20261103081200">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261103081200">
+    <link rel="stylesheet" href="css/style.css?v=20261103113924">
+    <link rel="stylesheet" href="css/fonts.css?v=20261103113924">
+    <link rel="stylesheet" href="css/responsive.css?v=20261103113924">
+    <link rel="stylesheet" href="css/footer.css?v=20261103113924">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261103113924">
+    <link rel="stylesheet" href="css/statusbar.css?v=20261103113924">
+    <link rel="stylesheet" href="css/legal.css?v=20261103113924">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261103113924">
 </head>
 
 <body>
@@ -161,42 +162,36 @@
 </div>
 
 <section class="legal_container">
-    <article id="legal_container_child">
-        <h3 class="barlow-condensed-black" > This website uses limited cookies to improve functionality.  </h3> <br>
-        
-        <h3 class="barlow-condensed-black" > Analytics Cookies: </h3> <br> 
-        <p class="barlow-condensed-regular">
-            Usage patterns, including time spent per visit and specific pages viewed, 
-            could be gathered by Google Analytics in anonymized form.
-        </p>
-        <br><h3 class="barlow-condensed-black" > Purpose of collection </h3> <br> 
-        <p class="barlow-condensed-regular"> 
-            Cookies help us: <br>
-            <br> - Understand which sessions interest players
-            <br> - Improve scheduling
-            <br> - Optimize community communication
+    <article class="legal-doc">
+        <p class="legal-updated">Last updated: 3 November 2026</p>
+        <p class="legal-lead">lockedinlx.com uses very little: what the site needs to work, saved in your own browser, and website statistics only if you say yes.</p>
 
-        </p> <br>
-        <h3 class="barlow-condensed-black" > Trustpilot Reviews: </h3> <br>
-        <p class="barlow-condensed-regular">
-            Our reviews are hosted by Trustpilot and shown on the home page through a
-            widget that Trustpilot serves from its own domain. When that widget loads,
-            Trustpilot may set its own cookies under trustpilot.com. We do not receive
-            those cookies and we cannot edit, remove or reorder the reviews. Trustpilot's
-            own privacy and cookie notices govern that data.
-        </p> <br>
-        <h3 class="barlow-condensed-black" > Consent </h3> <br> 
-        <p class="barlow-condensed-regular"> 
-            Only when a visitor agrees through the banner do analytics cookies take effect.
-            It is possible to turn off cookies through the browser's configuration options.
-        </p> <br>
+        <h3><span class="n">1</span>What the site saves in your browser</h3>
+        <p>These stay on your device and are never sent to us on their own. They don&rsquo;t need your consent, because the site needs them to do what you ask.</p>
+        <table>
+            <thead><tr><th>Name</th><th>What it holds</th></tr></thead>
+            <tbody>
+                <tr><td><code>lx_bag</code></td><td data-label="Holds">The products in your bag</td></tr>
+                <tr><td><code>lx_fulfil</code></td><td data-label="Holds">Delivery or pickup choice, and the name, address and email you typed into the bag</td></tr>
+                <tr><td><code>lx_local_signups_v1</code></td><td data-label="Holds">The runs you signed up for on this device, to show &ldquo;You&rsquo;re registered&rdquo;</td></tr>
+                <tr><td><code>lx_signup_tally_cache_v1</code></td><td data-label="Holds">The last spot count we loaded, so it shows straight away</td></tr>
+                <tr><td><code>lx_order_status_&hellip;</code></td><td data-label="Holds">The last status of an order you opened</td></tr>
+                <tr><td><code>lx_cookie_consent</code></td><td data-label="Holds">Your answer to the cookie banner</td></tr>
+            </tbody>
+        </table>
 
+        <h3><span class="n">2</span>Statistics, only if you accept</h3>
+        <p>If you click <strong>Accept</strong> in the banner, we load Google Analytics. It sets cookies (<code>_ga</code> and <code>_ga_&hellip;</code>, kept for up to two years) to count visits and see which pages and runs people look at, with your IP address shortened. If you click <strong>Decline</strong>, or don&rsquo;t answer, it never loads.</p>
+
+        <h3><span class="n">3</span>Trustpilot reviews</h3>
+        <p>Our reviews are hosted by Trustpilot and shown on the home page through a widget that Trustpilot serves from its own domain. When it loads, Trustpilot may set its own cookies under trustpilot.com. We don&rsquo;t receive them, and we can&rsquo;t edit, remove or reorder the reviews. Trustpilot&rsquo;s own privacy and cookie notices cover that data.</p>
+
+        <h3><span class="n">4</span>Your choice</h3>
+        <p>You can change your answer here at any time, and you can also block or delete cookies and site data in your browser&rsquo;s settings. More about your data is in the <a href="privacy_policy.html">Privacy Policy</a>.</p>
         <div class="ck-reset-row">
             <span class="ck-status" id="ck-status">Checking your current choice&hellip;</span>
             <button type="button" class="ck-btn ck-btn--no" id="ck-reset">Change my choice</button>
         </div>
-        
-
     </article>
 </section>
 
@@ -221,7 +216,7 @@
             <h3 class="barlow-condensed-bold footer-heading">CONTACT US</h3>
             <ul class="footer-link-list">
                 <li class="barlow-condensed-regular text-muted">Lisboa, Portugal</li>
-                <li><a href="mailto:himelsu@icloud.com" class="barlow-condensed-regular">himelsu@icloud.com</a></li>
+                <li><a href="mailto:support@lockedinlx.com" class="barlow-condensed-regular">support@lockedinlx.com</a></li>
                 <li><a href="about.html" class="barlow-condensed-regular">About Us</a></li>
                 <li><a href="index.html#faq_box_container" class="barlow-condensed-regular">FAQ</a></li>
             </ul>
@@ -244,7 +239,7 @@
                 <li><a href="privacy_policy.html" class="barlow-condensed-regular">Privacy Policy</a></li>
                 <li><a href="cookies.html" class="barlow-condensed-regular">Cookies</a></li>
                 <li><a href="injury_waiver.html" class="barlow-condensed-regular">Injury Waiver</a></li>
-                <li><a href="whatsap_merchandise_disclaimer.html" class="barlow-condensed-regular">WhatsApp Sales Disclaimer</a></li>
+                <li><a href="whatsap_merchandise_disclaimer.html" class="barlow-condensed-regular">Store Terms</a></li>
             </ul>
         </div>
     </div>
@@ -254,8 +249,8 @@
     </div>
 </footer>
 
-    <script src="javascript/scroll_detection_menu.js?v=20261103081200" defer></script>
-<script src="javascript/cookie-consent.js?v=20261103081200" defer></script>
+    <script src="javascript/scroll_detection_menu.js?v=20261103113924" defer></script>
+<script src="javascript/cookie-consent.js?v=20261103113924" defer></script>
 <script defer>
     window.addEventListener("load", function () {
         var status = document.getElementById("ck-status");

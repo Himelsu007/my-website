@@ -999,7 +999,7 @@ function sendTestEmails() {
   var ui = SpreadsheetApp.getUi();
   var ans = ui.prompt('Send test emails', 'Send all seven to which address?', ui.ButtonSet.OK_CANCEL);
   if (ans.getSelectedButton() !== ui.Button.OK) return;
-  var to = ans.getResponseText().trim() || 'himelsu@icloud.com';
+  var to = ans.getResponseText().trim() || SEND_AS;
   if (!validEmail_(to)) { ui.alert('That does not look like an email address.'); return; }
   testOrderEmails_().forEach(function (t) { sendOrderEmail_(to, t.o, t.key); });
   ui.alert('Sent 7 test emails to ' + to + ', from ' +
@@ -1019,7 +1019,7 @@ function testOrderLink_(how, where) {
     return ('000' + (h % 1679616).toString(36)).slice(-4);
   };
   var packed = how === 'pickup' ? 'p|' + where + '|Pavilh\u00e3o Isl\u00e2mico de Lisboa|20:15'
-                                : 'd|Himelsu|Rua da Prata 12, 3\u00baD|1100-052';
+                                : 'd|Test Customer|Rua da Prata 12, 3\u00baD|1100-052';
   var fulfil = Utilities.base64EncodeWebSafe(packed, Utilities.Charset.UTF_8).replace(/=+$/, '');
   return SITE + '/order.html#v1.TEST.' + Date.now().toString(36) + '.' + fulfil +
     '~' + code('Nba Nike-Pro Combat Compression Tank (Black)') + '..sL.1' +
@@ -1033,7 +1033,7 @@ function testOrderEmails_() {
     { name: 'Nike NBA Elite Crew Socks White', option: '42 - 46', qty: 2, price: 19,
       image: SITE + '/assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-back.webp' }
   ];
-  var base = { ref: 'LX-TEST', note: '', total: 88, link: '', customer: 'Himelsu',
+  var base = { ref: 'LX-TEST', note: '', total: 88, link: '', customer: 'Test Customer',
                lines: lines, eta: '' };
   var d = function (x) {
     var o = JSON.parse(JSON.stringify(base));

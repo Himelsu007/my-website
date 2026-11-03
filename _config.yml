@@ -1,0 +1,8 @@
+# GitHub Pages builds this site with Jekyll. Everything is served as it is,
+# except these: notes, scripts and tools for running the site, not pages.
+exclude:
+  - CLAUDE.md
+  - docs/
+  - tools/
+  - bump-assets.sh
+  - skills-lock.json
