@@ -865,14 +865,20 @@ function sendOrderEmail_(to, o, key) {
 
 /* Whether Gmail lists SEND_AS under "Send mail as". Asked once per run:
    seven test emails should not mean seven lookups. */
-var sendAsOk_ = null;
+var sendAsOk_ = null, sendAsWhy_ = '';
 function canSendAs_() {
   if (sendAsOk_ === null) {
     try {
-      sendAsOk_ = GmailApp.getAliases().some(function (a) {
-        return String(a).toLowerCase() === SEND_AS;
-      });
-    } catch (err) { sendAsOk_ = false; }
+      var aliases = GmailApp.getAliases();
+      sendAsOk_ = aliases.some(function (a) { return String(a).toLowerCase() === SEND_AS; });
+      // Why not, in words, for "Send test emails" and Matrix's preview.
+      if (!sendAsOk_) sendAsWhy_ = aliases.length
+        ? 'Gmail\u2019s "Send mail as" has ' + aliases.join(', ') + ' but not ' + SEND_AS
+        : 'Gmail shows this script no "Send mail as" addresses (in Gmail settings, tick "Treat as an alias" for ' + SEND_AS + ')';
+    } catch (err) {
+      sendAsOk_ = false;
+      sendAsWhy_ = 'Google didn\u2019t give this script access to Gmail (' + (err && err.message || err) + ')';
+    }
   }
   return sendAsOk_;
 }
@@ -956,6 +962,7 @@ function orderEmailApi_(p) {
       ok: true, found: true, ref: o.ref, status: key,
       to: validEmail_(to) ? to : '',
       from: canSendAs_() ? SEND_AS : Session.getEffectiveUser().getEmail(),
+      fromNote: sendAsWhy_,
       subject: mail.subject,
       emailed: String(r[15] || ''),
       sent: false
@@ -984,7 +991,7 @@ function sendTestEmails() {
   if (!validEmail_(to)) { ui.alert('That does not look like an email address.'); return; }
   testOrderEmails_().forEach(function (t) { sendOrderEmail_(to, t.o, t.key); });
   ui.alert('Sent 7 test emails to ' + to + ', from ' +
-    (canSendAs_() ? SEND_AS : Session.getEffectiveUser().getEmail() + ' (' + SEND_AS + ' is not under Gmail\u2019s "Send mail as" yet)') + '.');
+    (canSendAs_() ? SEND_AS + '.' : Session.getEffectiveUser().getEmail() + ', not ' + SEND_AS + '. ' + sendAsWhy_ + '.'));
 }
 
 /* A real order-page link for the made-up test order, so "Track your order"
