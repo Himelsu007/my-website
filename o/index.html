@@ -65,10 +65,11 @@
     "use strict";
     var m = location.hash.replace(/^#/, "").trim().match(/^([2-9A-Z]{4})-([2-9A-Z]{6,12})$/i);
 
-    function missing(text) {
+    function missing(text, title) {
         document.getElementById("so_wait").hidden = true;
         document.getElementById("so_miss").hidden = false;
         if (text) document.getElementById("so_miss_text").textContent = text;
+        if (title) document.querySelector("#so_miss h1").innerHTML = title;
         if (m) document.getElementById("so_wa").href = "https://wa.me/351911861637?text=" +
             encodeURIComponent("Hi! About order LX-" + m[1].toUpperCase() + " — ");
     }
@@ -84,7 +85,10 @@
               { cache: "no-store" })
             .then(function (r) { return r.json(); })
             .then(function (d) {
-                if (d && d.found && d.link) {
+                if (d && d.found && d.expired) {
+                    // Delivered, cancelled or older than 18 days: the Sheet says why.
+                    missing(d.why || "This order link has expired.", "Link <span>expired</span>");
+                } else if (d && d.found && d.link) {
                     /* The order itself is the fragment of the stored link. Open it
                        on this site, whatever address it was stored with (an
                        order placed on a test copy stores that copy's). */

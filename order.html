@@ -432,7 +432,13 @@
     var LINK_GRACE_MS = 30 * 60 * 1000;
     var statusApi = window.LXOrderStatus;
     var pickupLink = order.fulfil && order.fulfil.method === "pickup";
+    /* And at the latest 18 days after it was placed (the owner's rule): long
+       enough for any delivery or run, short enough that old links don't keep
+       an address on show. */
+    var LINK_DAYS = 18;
     function closedBecause(state) {
+        if (Date.now() - order.date.getTime() > LINK_DAYS * 86400000)
+            return "Order links stay open for " + LINK_DAYS + " days, and this one is older.";
         if (!state) return "";
         if (state.key === "delivered") return "This order is complete — " + (pickupLink ? "collected" : "delivered") + " — so its link is closed.";
         if (state.key === "cancelled") return "This order was cancelled, so its link is closed.";

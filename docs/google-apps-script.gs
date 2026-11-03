@@ -356,6 +356,14 @@ function shortLink_(ref, key) {
     if (!row) return json_({ ok: true, found: false });
     var r = orders_().getRange(row, 1, 1, 16).getValues()[0];
     if (!r[13] || String(r[13]) !== String(key).trim()) return json_({ ok: true, found: false });
+    // Closed like the order page: Delivered, Cancelled, or LINK_DAYS old.
+    var st = statusKey_(r[3]);
+    var placed = (r[0] instanceof Date) ? r[0].getTime() : new Date(r[0]).getTime();
+    var why = st === 'delivered' ? 'This order is complete, so its link is closed.'
+            : st === 'cancelled' ? 'This order was cancelled, so its link is closed.'
+            : (placed && Date.now() - placed > LINK_DAYS * 86400000)
+              ? 'Order links stay open for ' + LINK_DAYS + ' days, and this one is older.' : '';
+    if (why) return json_({ ok: true, found: true, expired: true, why: why });
     return json_({ ok: true, found: true, link: String(r[7] || '') });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
@@ -738,8 +746,12 @@ function rosterFor_(key) {
 
 var REPLY_TO   = 'support@lockedinlx.com';
 var SEND_AS    = 'support@lockedinlx.com';
+var LINK_DAYS  = 18;   // order links close this long after the order (order.html too)
 var SITE       = 'https://www.lockedinlx.com';
-var EMAIL_LOGO = SITE + '/assets/images/email/locked-in-lx-wordmark.png';
+// A gold light through the wordmark every few seconds, like the site's hero.
+// GIF because it's the one animation every mail app plays; its first frame is
+// the plain logo, which is all Outlook on Windows shows.
+var EMAIL_LOGO = SITE + '/assets/images/email/locked-in-lx-wordmark-glint.gif';
 var FONT_HEAD  = SITE + '/assets/fonts/barlow-condensed-900-latin.woff2';
 
 /** "Ready", "out for delivery", "done" ... -> the five keys the emails know. */
