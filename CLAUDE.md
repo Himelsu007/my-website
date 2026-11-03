@@ -13,6 +13,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - it syncs the stock, and stops at "unchanged" if nothing moved;
   - otherwise it runs `./bump-assets.sh`, commits "Stock from Matrix" and pushes;
   - it stops at "busy" while the repo has uncommitted changes, so commit or stash your work, or the store's stock waits.
+- The site is published by `.github/workflows/static.yml`, which uploads the repo as it is (no Jekyll) after removing `CLAUDE.md`, `docs/`, `tools/`, `bump-assets.sh` and `skills-lock.json`. Anything else in the repo is public, so keep personal details out of it.
 - Check it's live with `curl -sL "https://www.lockedinlx.com/<page>?nc=$RANDOM"` and wait until the `?v=` stamp matches the commit. Use `www` and `-L`, because the bare domain redirects. Pages are cached for 10 minutes.
 - When replacing an image, give it a new filename so browsers don't keep showing the old one.
 
@@ -100,6 +101,12 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - Emails go out from support@lockedinlx.com (iCloud+ domain, through Gmail's "Send mail as"), with the Gmail account as fallback.
   - Email photos are 132 px JPGs on white in `assets/images/email/p/` (same paths as `assets/images/products/`), made by `tools/email-thumbs.sh` during `./bump-assets.sh`, because not every mail app shows WebP. A new product photo gets one on the next bump.
   - Locked In → "Send test emails…" sends all seven designs to any address; "Repair Signups & Roster" rebuilds those tabs if they are turned into a Google Sheets Table again.
+
+## Legal pages
+
+- Privacy Policy, Cookie Policy, Store Terms (`whatsap_merchandise_disclaimer.html`, kept at that address), Terms of Participation and the Injury Waiver were rewritten in plain English on 3 Nov 2026, set for reading with `css/legal.css`. Update the "Last updated" line with any change.
+- The owner's name is not shown anywhere on the site (their choice): it's "Locked In Lx, Lisbon, Portugal" and support@lockedinlx.com.
+- The facts they state, which must stay in step with the site: refunds for runs and training are full if cancelled 2+ hours before, 50% after that, full if Locked In cancels (the home FAQ says the same); data is kept 12 months, accounting records 10 years; payment is MB WAY, bank transfer or cash, on delivery or at pickup; 30-day returns; order links close on delivery, cancellation or after 18 days.
 
 ## Things that need the owner's Mac
 
