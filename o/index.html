@@ -11,7 +11,7 @@
     <base href="/">
     <link rel="icon" type="image/png" href="assets/icons/favicon-96x96.png" sizes="96x96">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/fonts.css?v=20261102234120">
+    <link rel="stylesheet" href="css/fonts.css?v=20261103081200">
     <style>
         html, body { margin: 0; min-height: 100%; background: #000; color: #fff; }
         body {
@@ -59,7 +59,7 @@
     </div>
 </main>
 
-<script src="javascript/order-status.js?v=20261102234120"></script>
+<script src="javascript/order-status.js?v=20261103081200"></script>
 <script>
 (function () {
     "use strict";
@@ -85,7 +85,10 @@
             .then(function (r) { return r.json(); })
             .then(function (d) {
                 if (d && d.found && d.link) {
-                    var u = new URL(d.link, location.href);
+                    /* The order itself is the fragment of the stored link. Open it
+                       on this site, whatever address it was stored with (an
+                       order placed on a test copy stores that copy's). */
+                    var u = new URL("order.html" + new URL(d.link, location.href).hash, document.baseURI);
                     // The order page draws its scan code from this, not the long link.
                     u.searchParams.set("s", ref + "-" + key);
                     location.replace(u.href);

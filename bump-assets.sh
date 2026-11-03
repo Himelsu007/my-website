@@ -28,3 +28,6 @@ if command -v node >/dev/null 2>&1; then
 else
     echo "node not found: store pages, sitemap and feed NOT rebuilt" >&2
 fi
+
+# A small JPG of every product photo for the order emails (tools/email-thumbs.sh).
+sh tools/email-thumbs.sh

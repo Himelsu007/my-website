@@ -778,7 +778,55 @@ function orderFromRow_(r) {
 }
 
 function shortUrl_(ref, key) {
-  return SITE + '/o#' + String(ref).replace(/^LX-/i, '') + '-' + key;
+  return SITE + '/o/#' + String(ref).replace(/^LX-/i, '') + '-' + key;
+}
+
+/* A product photo as the email shows it: the 132px JPG on white that
+   tools/email-thumbs.sh makes of every product photo, always on the live
+   site. The bag stores whatever address the photo had at checkout (WebP,
+   and from a local test copy even localhost), which mail apps can't all
+   open. */
+function emailImage_(url) {
+  var m = String(url || '').match(/(?:^|\/)assets\/images\/products\/(.+)\.(webp|png|jpe?g|avif)$/i);
+  if (m) return SITE + '/assets/images/email/p/' + m[1] + '.jpg';
+  var a = String(url || '').match(/(?:^|\/)(assets\/.+)$/);
+  return a ? SITE + '/' + a[1] : String(url || '');
+}
+
+/* The order as schema.org data, for mail apps that read it (Apple Mail's
+   order card, Gmail). Kept ASCII with \u escapes, because &#...; codes
+   are not decoded inside a script. */
+function orderLd_(o, key) {
+  var pickup = o.how === 'pickup';
+  var status = {
+    requested: 'OrderProcessing', confirmed: 'OrderProcessing',
+    ready: pickup ? 'OrderPickupAvailable' : 'OrderInTransit',
+    delivered: 'OrderDelivered', cancelled: 'OrderCancelled'
+  }[key];
+  var ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Order',
+    merchant: { '@type': 'Organization', name: 'Locked In Lx', url: SITE },
+    orderNumber: o.ref,
+    orderStatus: 'https://schema.org/' + status,
+    priceCurrency: 'EUR',
+    price: (Number(o.total) || 0).toFixed(2),
+    acceptedOffer: o.lines.map(function (l) {
+      return {
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Product', name: String(l.name || ''), image: l.image ? emailImage_(l.image) : undefined },
+        price: (Number(l.price) || 0).toFixed(2),
+        priceCurrency: 'EUR',
+        eligibleQuantity: { '@type': 'QuantitativeValue', value: Number(l.qty) || 1 }
+      };
+    })
+  };
+  if (o.link && key !== 'cancelled') ld.url = o.link;
+  return JSON.stringify(ld).replace(/[^\x00-\x7F<>&]/g, function (c) {
+    return '\\u' + ('000' + c.charCodeAt(0).toString(16)).slice(-4);
+  }).replace(/[<>&]/g, function (c) {
+    return '\\u' + ('000' + c.charCodeAt(0).toString(16)).slice(-4);
+  });
 }
 
 /** Send the email for `status` on Orders row `row`, if the buyer left an address. */
@@ -1071,7 +1119,7 @@ function orderEmail_(o, key) {
     var top = i ? 'border-top:1px solid ' + LINE + ';' : '';
     return '<tr>' +
       '<td width="44" valign="middle" style="padding:12px 14px 12px 0;' + top + '">' +
-        (l.image ? '<img src="' + e(l.image) + '" width="44" height="44" alt="" style="display:block;width:44px;height:44px;border-radius:10px;background:#FFFFFF;object-fit:contain">'
+        (l.image ? '<img src="' + e(emailImage_(l.image)) + '" width="44" height="44" alt="" style="display:block;width:44px;height:44px;border-radius:10px;background:#FFFFFF;object-fit:contain">'
                  : '<div style="width:44px;height:44px;border-radius:10px;background:' + RAISE + '"></div>') +
       '</td>' +
       '<td valign="middle" style="padding:12px 0;' + top + '">' +
@@ -1126,7 +1174,8 @@ function orderEmail_(o, key) {
   var html =
 '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
 '<meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark">' +
-'<style>' + css + '</style></head>' +
+'<style>' + css + '</style>' +
+'<script type="application/ld+json">' + orderLd_(o, key) + '</script></head>' +
 '<body style="margin:0;padding:0;background:#000000">' +
 '<div style="display:none;max-height:0;overflow:hidden;opacity:0">' + e(copy.eyebrow + ' \u00b7 ' + ref + ' \u2014 ' + copy.sub) + '</div>' +
 '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000"><tr><td align="center" style="padding:32px 12px 40px">' +

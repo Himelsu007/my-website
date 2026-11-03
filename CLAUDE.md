@@ -98,6 +98,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
   - Keep that file plain ASCII: write special characters as `’`-style escapes. Pasted through the clipboard, anything else arrived garbled (`,Äô` for `’`). Copy it with `LANG=en_US.UTF-8 pbcopy`.
   - Order emails are sent by hand from Matrix (the owner's call: an accidental Status edit in the Sheet must not email a customer). Matrix uses `?orderEmail=<ref>&key=…[&status&to&note&eta][&send=1]` and the status route `{kind:'status', ref, status, key}`, both locked behind the Sheet's `MATRIX_KEY`. Automatic sending exists but is off unless the Sheet's Locked In menu turns it on.
   - Emails go out from support@lockedinlx.com (iCloud+ domain, through Gmail's "Send mail as"), with the Gmail account as fallback.
+  - Email photos are 132 px JPGs on white in `assets/images/email/p/` (same paths as `assets/images/products/`), made by `tools/email-thumbs.sh` during `./bump-assets.sh`, because not every mail app shows WebP. A new product photo gets one on the next bump.
   - Locked In → "Send test emails…" sends all seven designs to any address; "Repair Signups & Roster" rebuilds those tabs if they are turned into a Google Sheets Table again.
 
 ## Things that need the owner's Mac
