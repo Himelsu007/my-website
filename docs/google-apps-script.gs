@@ -785,8 +785,55 @@ function orderFromRow_(r) {
     customer: String(r[9] || '').trim(),
     lines: lines,
     eta: etaText_(r[12]),
+    etaRaw: r[12],
+    date: r[0] instanceof Date ? r[0] : (r[0] ? new Date(r[0]) : null),
     email: String(r[14] || '').trim()
   };
+}
+
+/* Dates for the emails: "4 November 2026" to read, ISO 8601 for the markup. */
+function dateText_(d) {
+  return d && !isNaN(d) ? Utilities.formatDate(d, Session.getScriptTimeZone(), 'd MMMM yyyy') : '';
+}
+function isoDate_(d, dayOnly) {
+  return Utilities.formatDate(d, Session.getScriptTimeZone(), dayOnly ? 'yyyy-MM-dd' : "yyyy-MM-dd'T'HH:mm:ssXXX");
+}
+
+/* The ETA column as an arrival window { from, until } for the markup, or
+   null when it can't be read. It holds what Matrix or the owner typed:
+   "Today 19:00-21:00", "Tomorrow 18:00", "Sat 7 Nov, 18:00", "18:00", or a
+   Date. Only what it says is used: no time means the whole day. */
+function etaWindow_(raw, now) {
+  now = now || new Date();
+  if (raw instanceof Date && !isNaN(raw)) {
+    if (raw.getFullYear() >= 1950) return { from: isoDate_(raw), until: isoDate_(raw) };
+    raw = Utilities.formatDate(raw, Session.getScriptTimeZone(), 'HH:mm');
+  }
+  var s = String(raw || '').toLowerCase();
+  if (!s.trim()) return null;
+  var day = null;
+  var months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+  var days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  var md = s.match(/\b(\d{1,2})\s*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b/);
+  var wd = s.match(/\b(sun|mon|tue|wed|thu|fri|sat)[a-z]*\b/);
+  if (/\btoday\b|\btonight\b/.test(s)) day = new Date(now);
+  else if (/\btomorrow\b/.test(s)) { day = new Date(now); day.setDate(day.getDate() + 1); }
+  else if (md) {
+    day = new Date(now.getFullYear(), months.indexOf(md[2]), Number(md[1]));
+    if (day < now - 60 * 864e5) day.setFullYear(day.getFullYear() + 1);
+  } else if (wd) {
+    day = new Date(now);
+    day.setDate(day.getDate() + (days.indexOf(wd[1]) - now.getDay() + 7) % 7);
+  }
+  var times = [], m, re = /\b(\d{1,2})[:h.](\d{2})\b/g;
+  while ((m = re.exec(s))) if (Number(m[1]) < 24 && Number(m[2]) < 60) times.push([Number(m[1]), Number(m[2])]);
+  if (!day && !times.length) return null;
+  if (!day) day = new Date(now);
+  if (!times.length) return { from: isoDate_(day, true), until: isoDate_(day, true) };
+  var at = function (t) { var d = new Date(day); d.setHours(t[0], t[1], 0, 0); return d; };
+  var from = at(times[0]), until = at(times[times.length > 1 ? 1 : 0]);
+  if (until < from) until.setDate(until.getDate() + 1);
+  return { from: isoDate_(from), until: isoDate_(until) };
 }
 
 function shortUrl_(ref, key) {
@@ -834,6 +881,31 @@ function orderLd_(o, key) {
     })
   };
   if (o.link && key !== 'cancelled') ld.url = o.link;
+  ld.seller = ld.merchant;
+  if (o.date && !isNaN(o.date)) ld.orderDate = isoDate_(o.date);
+  if (o.customer) ld.customer = { '@type': 'Person', name: o.customer };
+  /* No carrier: orders are hand-delivered in Lisbon or handed over at the
+     run, so the order page is where the order is tracked. */
+  if (o.how && key !== 'cancelled') {
+    var dl = {
+      '@type': 'ParcelDelivery',
+      hasDeliveryMethod: 'http://purl.org/goodrelations/v1#' + (pickup ? 'DeliveryModePickUp' : 'DeliveryModeOwnFleet'),
+      deliveryAddress: { '@type': 'PostalAddress', addressLocality: 'Lisbon', addressCountry: 'PT' },
+      partOfOrder: { '@type': 'Order', orderNumber: o.ref },
+      itemShipped: ld.acceptedOffer.map(function (a) { return a.itemOffered; })
+    };
+    var when = etaWindow_(o.etaRaw != null && o.etaRaw !== '' ? o.etaRaw : o.eta);
+    // A pickup is at the run it names ("Sat 7 Nov run").
+    if (!when && pickup) when = etaWindow_(o.where);
+    // "Out for delivery" without an ETA promises the next 12 hours.
+    if (!when && key === 'ready' && !pickup) {
+      var now = new Date();
+      when = { from: isoDate_(now), until: isoDate_(new Date(now.getTime() + 12 * 36e5)) };
+    }
+    if (when) { dl.expectedArrivalFrom = when.from; dl.expectedArrivalUntil = when.until; }
+    if (!pickup && o.link && key !== 'delivered') dl.trackingUrl = o.link;
+    ld.orderDelivery = dl;
+  }
   return JSON.stringify(ld).replace(/[^\x00-\x7F<>&]/g, function (c) {
     return '\\u' + ('000' + c.charCodeAt(0).toString(16)).slice(-4);
   }).replace(/[<>&]/g, function (c) {
@@ -965,7 +1037,7 @@ function orderEmailApi_(p) {
     var r = sh.getRange(row, 1, 1, 16).getValues()[0];
     var o = orderFromRow_(r);
     if (p.note != null && String(p.note).trim()) o.note = String(p.note).trim();
-    if (p.eta != null && String(p.eta).trim()) o.eta = String(p.eta).trim();
+    if (p.eta != null && String(p.eta).trim()) o.eta = o.etaRaw = String(p.eta).trim();
     var key = statusKey_(p.status || o.status);
     if (!key) return json_({ ok: false, error: 'unknown status' });
     var to = String(p.to || o.email || '').trim();
@@ -1039,6 +1111,7 @@ function testOrderEmails_() {
     var o = JSON.parse(JSON.stringify(base));
     for (var k in x) o[k] = x[k];
     o.link = testOrderLink_(o.how, o.where);
+    o.date = new Date();
     return o;
   };
   var del = { how: 'delivery', where: 'Rua da Prata 12, 3\u00baD, 1100-052' };
@@ -1070,7 +1143,7 @@ function orderEmail_(o, key) {
   var ref = o.ref;
   var copy = {
     requested: { eyebrow: 'Order received', head: ['We got', 'your order'],
-      sub: (first ? 'Thanks, ' + first + '. ' : 'Thanks. ') +
+      sub: (first ? 'Thanks for your order with Locked In Lx, ' + first + '. ' : 'Thanks for your order with Locked In Lx. ') +
            'We\u2019re checking that everything is in stock and will confirm on WhatsApp. Nothing is charged until then.' },
     confirmed: { eyebrow: 'Stock confirmed', head: ['Everything', 'is in'],
       sub: 'All of it is in stock. We\u2019re getting your order ready.' },
@@ -1097,11 +1170,28 @@ function orderEmail_(o, key) {
   var at = ['requested', 'confirmed', 'ready', 'delivered'].indexOf(key);
   var void_ = key === 'cancelled';
 
+  /* The plain words an order email uses, for people skimming and for Apple
+     Mail, whose reader looks for them to offer Wallet's "Track" button: what
+     the email is, the order number and date, who sold it, and that more
+     updates follow. The headline above stays the brand's. */
+  var statusWord = {
+    requested: 'Received', confirmed: 'Confirmed',
+    ready: pickup ? 'Ready for pickup' : 'Out for delivery',
+    delivered: pickup ? 'Picked up' : 'Delivered', cancelled: 'Cancelled'
+  }[key];
+  var dated = dateText_(o.date);
+  var promise = {
+    requested: 'We\u2019ll email you as your order moves along: when it\u2019s confirmed, when it\u2019s ' +
+               (pickup ? 'ready for pickup' : 'out for delivery') + ' and when it\u2019s ' + (pickup ? 'picked up.' : 'delivered.'),
+    confirmed: 'We\u2019ll email you again when your order is ' + (pickup ? 'ready for pickup.' : 'out for delivery.'),
+    ready: 'We\u2019ll email you again once your order is ' + (pickup ? 'picked up.' : 'delivered.')
+  }[key] || '';
+
   var e = function (s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   };
-  var money = function (v) { return (Math.round(v * 100) % 100 ? v.toFixed(2) : String(Math.round(v))) + '\u20ac'; };
+  var money = function (v) { return '\u20ac' + (Number(v) || 0).toFixed(2); };
 
   var GOLD = '#FFD200', INK = '#F4F4F5', INK2 = '#C4C4CC', INK3 = '#9A9AA4', INK4 = '#6E6E78', INK5 = '#4A4A52';
   var CARD = '#0E0E11', RAISE = '#16161A', LINE = '#212127', TRACK = '#26262C', GREEN = '#3FE07B', RED = '#FF6B6B';
@@ -1144,7 +1234,8 @@ function orderEmail_(o, key) {
       '<td valign="middle" style="padding:12px 0;' + top + '">' +
         '<div style="' + T(13, 600, INK, 'line-height:1.35;') + '">' + e(l.name) + '</div>' +
         '<div style="padding-top:3px;' + T(11.5, 400, INK4, 'line-height:1.4;') + '">' +
-          e(size) + (size ? ' \u00b7 ' : '') + 'Qty ' + (l.qty || 1) + '</div>' +
+          e(size) + (size ? ' \u00b7 ' : '') + 'Qty ' + (l.qty || 1) +
+          ((l.qty || 1) > 1 ? ' \u00b7 ' + money(Number(l.price) || 0) + ' each' : '') + '</div>' +
       '</td>' +
       '<td valign="middle" align="right" style="padding:12px 0 12px 12px;' + top + T(13, 600, INK2, 'white-space:nowrap;font-variant-numeric:tabular-nums;') + '">' +
         money((Number(l.price) || 0) * (l.qty || 1)) + '</td>' +
@@ -1159,6 +1250,19 @@ function orderEmail_(o, key) {
         (!pickup && o.where ? '<div style="padding-top:2px;' + T(12, 400, INK3, 'line-height:1.5;') + '">' + e((o.customer ? o.customer + ', ' : '') + o.where) + '</div>' : '') +
       '</td></tr></table></td></tr>'
     : '';
+
+  var fact = function (label, value, color) {
+    return '<tr><td style="padding:4px 12px 4px 0;' + T(12.5, 400, INK4, 'white-space:nowrap;') + '">' + label + '</td>' +
+      '<td align="right" style="padding:4px 0;' + T(12.5, 600, color || INK, 'font-variant-numeric:tabular-nums;') + '">' + e(value) + '</td></tr>';
+  };
+  var facts = '<tr><td class="lx-in lx-d2" style="padding:0 0 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ' + LINE + ';border-bottom:1px solid ' + LINE + '">' +
+      '<tr><td colspan="2" style="padding:8px 0 0"></td></tr>' +
+      fact('Order number:', ref) +
+      (dated ? fact('Order date:', dated) : '') +
+      fact('Order status:', statusWord, ACCENT) +
+      fact('Sold by:', 'Locked In Lx') +
+      '<tr><td colspan="2" style="padding:0 0 8px"></td></tr>' +
+    '</table></td></tr>';
 
   var note = (o.note && !void_)
     ? '<tr><td class="lx-in lx-d3" style="padding:0 0 22px;' + T(13, 400, INK2, 'line-height:1.6;') + '"><span style="color:' + GOLD + '">Note</span>&nbsp; ' + e(o.note) + '</td></tr>'
@@ -1196,7 +1300,7 @@ function orderEmail_(o, key) {
 '<style>' + css + '</style>' +
 '<script type="application/ld+json">' + orderLd_(o, key) + '</script></head>' +
 '<body style="margin:0;padding:0;background:#000000">' +
-'<div style="display:none;max-height:0;overflow:hidden;opacity:0">' + e(copy.eyebrow + ' \u00b7 ' + ref + ' \u2014 ' + copy.sub) + '</div>' +
+'<div style="display:none;max-height:0;overflow:hidden;opacity:0">' + e('Order ' + ref + ' from Locked In Lx: ' + statusWord.toLowerCase() + '. ' + copy.sub) + '</div>' +
 '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000"><tr><td align="center" style="padding:32px 12px 40px">' +
 '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:500px">' +
 
@@ -1212,6 +1316,7 @@ function orderEmail_(o, key) {
   '<tr><td class="lx-in lx-d1 lx-h" style="padding:0 0 10px;font-family:' + HEAD + ';font-size:30px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:.01em;color:' + INK + '">' +
     e(copy.head[0]) + ' <span style="color:' + ACCENT + '">' + e(copy.head[1]) + '</span></td></tr>' +
   '<tr><td class="lx-in lx-d2" style="padding:0 0 24px;' + T(13.5, 400, INK3, 'line-height:1.65;') + '">' + e(copy.sub) + '</td></tr>' +
+  facts +
   '<tr><td class="lx-in lx-d2" style="padding:0 0 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + bar + '</table></td></tr>' +
   fulfil + note +
   '<tr><td class="lx-in lx-d4" style="padding:0 0 2px;' + T(9.5, 600, INK4, CAPS) + '">Your order \u00b7 ' + units + (units === 1 ? ' item' : ' items') + '</td></tr>' +
@@ -1223,25 +1328,47 @@ function orderEmail_(o, key) {
         '<td align="right" style="padding:10px 0 0;border-top:1px solid ' + LINE + ';font-family:' + HEAD + ';font-size:22px;font-weight:900;line-height:1;color:' + (void_ ? INK3 : GOLD) + '">' + money(o.total) + '</td></tr>' +
   '</table></td></tr>' +
   button +
+  (promise ? '<tr><td class="lx-in lx-d5" style="padding:' + (button ? '16px' : '24px') + ' 0 0;' + T(12.5, 400, INK3, 'line-height:1.6;') + '">' + e(promise) + '</td></tr>' : '') +
 '</table></td></tr>' +
 
 '<tr><td align="center" style="padding:22px 16px 0;' + T(11.5, 400, INK4, 'line-height:1.75;') + '">' +
   'Questions? Reply to this email or <a href="https://wa.me/351911861637?text=' + encodeURIComponent('Hi! About order ' + ref + ' \u2014 ') + '" style="color:' + INK2 + '">message us on WhatsApp</a>.<br>' +
-  '<span style="color:' + INK5 + '">Locked In Lx \u00b7 Lisbon \u00b7 <a href="' + SITE + '" style="color:' + INK5 + '">lockedinlx.com</a></span>' +
+  '<span style="color:' + INK5 + '">Locked In Lx \u00b7 Lisbon, Portugal \u00b7 <a href="' + SITE + '" style="color:' + INK5 + '">lockedinlx.com</a></span>' +
 '</td></tr>' +
 '</table></td></tr></table></body></html>';
 
-  var text = 'LOCKED IN LX \u2014 ' + copy.eyebrow + ' (' + ref + ')\n\n' + copy.sub + '\n\n' +
-    o.lines.map(function (l) { return (l.qty || 1) + '\u00d7 ' + l.name + (l.option ? ' (' + l.option + ')' : '') + ' \u2014 ' + money((Number(l.price) || 0) * (l.qty || 1)); }).join('\n') +
-    '\nTotal: ' + money(o.total) + (key === 'delivered' ? '\n\nShop the store: ' + SITE + '/merch.html' : o.link && !void_ ? '\n\nTrack your order: ' + o.link : '') +
-    '\n\nQuestions? Reply to this email.';
+  var title = {
+    requested: 'Order confirmation', confirmed: 'Order confirmed',
+    ready: pickup ? 'Ready for pickup' : 'Out for delivery',
+    delivered: pickup ? 'Order picked up' : 'Order delivered', cancelled: 'Order cancelled'
+  }[key];
+  var text = 'Locked In Lx \u2014 ' + title + '\n\n' +
+    'Order number: ' + ref + '\n' +
+    (dated ? 'Order date: ' + dated + '\n' : '') +
+    'Order status: ' + statusWord + '\n' +
+    'Sold by: Locked In Lx (lockedinlx.com)\n\n' +
+    copy.sub + '\n\n' +
+    'Items:\n' +
+    o.lines.map(function (l) {
+      var q = Number(l.qty) || 1, p = Number(l.price) || 0;
+      return q + ' \u00d7 ' + l.name + (l.option ? ' (' + l.option + ')' : '') + ' \u2014 ' +
+        (q > 1 ? money(p) + ' each, ' : '') + money(p * q);
+    }).join('\n') + '\n' +
+    (pickup ? 'Pickup at the run' : 'Shipping') + ': Free\n' +
+    'Total: ' + money(o.total) + '\n' +
+    (o.how && !void_ ? '\n' + (pickup ? 'Pickup: ' + (o.where || 'at the run')
+                                     : 'Delivery: ' + (o.eta ? o.eta + ', ' : '') + (o.where || 'Lisbon')) + '\n' : '') +
+    (o.note && !void_ ? '\nNote: ' + o.note + '\n' : '') +
+    (key === 'delivered' ? '\nShop the store: ' + SITE + '/merch.html\n' : o.link && !void_ ? '\nTrack your order: ' + o.link + '\n' : '') +
+    (promise ? '\n' + promise + '\n' : '') +
+    '\nQuestions? Reply to this email.\n\nLocked In Lx \u00b7 Lisbon, Portugal \u00b7 lockedinlx.com';
 
   var subject = {
-    requested: 'We got your order ' + ref,
-    confirmed: 'Stock confirmed \u00b7 ' + ref,
-    ready: (pickup ? 'Packed for the run \u00b7 ' : 'On its way \u00b7 ') + ref,
-    delivered: 'Thanks for ordering \u00b7 ' + ref,
-    cancelled: 'Order ' + ref + ' was cancelled'
+    requested: 'Order confirmation ' + ref + ' \u00b7 Locked In Lx',
+    confirmed: 'Your order ' + ref + ' is confirmed',
+    ready: 'Your order ' + ref + (pickup ? ' is ready for pickup' : ' is on its way'),
+    delivered: 'Your order ' + ref + (pickup ? ' has been picked up' : ' has been delivered'),
+    cancelled: 'Your order ' + ref + ' has been cancelled'
   }[key];
 
   return { subject: subject, html: asciiHtml_(html), text: plainText_(text) };
@@ -1261,5 +1388,5 @@ function plainText_(text) {
     .replace(/[\u2018\u2019]/g, "'").replace(/[\u201c\u201d]/g, '"')
     .replace(/[\u2013\u2014]/g, '-').replace(/\u00b7/g, '-')
     .replace(/\u2192/g, '->').replace(/\u00d7/g, 'x').replace(/\u2026/g, '...')
-    .replace(/\u20ac/g, ' EUR');
+    .replace(/\u20ac(\d)/g, 'EUR $1').replace(/\u20ac/g, ' EUR');
 }
