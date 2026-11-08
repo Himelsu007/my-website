@@ -76,3 +76,19 @@
 }
 .lx-skip:focus { transform: none; outline: 2px solid #000; outline-offset: 2px; }
 main:focus { outline: none; }
+
+/* =====================================================
+   SIDEWAYS SWIPES — every page
+   -----------------------------------------------------
+   The owner's rule: a sideways swipe moves nothing except a carousel.
+   Nothing can widen the page (clip, unlike hidden, keeps sticky elements
+   working) and there is no rubber band at its side edges, so a sideways
+   swipe outside a carousel does nothing. Carousels are their own scroll
+   boxes and keep their swipe. Not ours to block: iPhone's swipe in from
+   the screen's edge (Back and Forward) and Android's back gesture.
+   ===================================================== */
+html,
+body {
+    overflow-x: clip;
+    overscroll-behavior-x: none;
+}
