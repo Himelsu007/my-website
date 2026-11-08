@@ -32,10 +32,77 @@ function buildProductCard(product, position = Infinity) {
             ${product.tag ? `<span class="product_badge">${product.tag}</span>` : ""}
         </div>
         <div class="product_info">
+            <span class="product_meta">${esc(productMeta(product))}</span>
             <span class="product_name barlow-condensed-regular">${product.shelfName || product.name}</span>
             <span class="product_price">${displayPrice(product)}</span>
         </div>`;
     return card;
+}
+
+/* "Nike \u00b7 Tank": who makes it and what it is, read off the catalogue's own
+   name and category, so it can't say anything the catalogue doesn't. */
+function productMeta(p) {
+    const n = String(p.name || "");
+    const maker = /wilson/i.test(n) ? "Wilson" : /nike|nba/i.test(n) ? "Nike" : "";
+    const kind = /tank/i.test(n) ? "Tank"
+               : /short sleeves|tee\b|t-shirt/i.test(n) ? "Tee"
+               : /headband/i.test(n) ? "Headband"
+               : /wristband/i.test(n) ? "Wristbands"
+               : /sleeve/i.test(n) ? "Shooting sleeve"
+               : ({ socks: "Socks", balls: "Basketball", apparel: "Apparel", accessories: "Accessory" })[p.category] || "";
+    return [maker, kind, variantOf(p)].filter(Boolean).join(" \u00b7 ");
+}
+
+/* What tells this one apart on a shelf of look-alikes: its colour, or the
+   part of its full name the shorter shelf name leaves off ("Pink",
+   "Brooklyn Nets City Edition"). */
+function variantOf(p) {
+    if (p.colorName) return p.colorName;
+    const name = String(p.name || ""), shelf = String(p.shelfName || "");
+    if (!shelf) return "";
+    if (name.toLowerCase().startsWith(shelf.toLowerCase()))
+        return name.slice(shelf.length).replace(/^[\s\-\u2013(]+|[)\s]+$/g, "");
+    return name.replace(/^(nike|nba)\s+/i, "");
+}
+
+/* The "All" shelf as rows with a purpose, after curated stores: the
+   best-seller row (tanks and tees) first, as the shelf always led with,
+   then the rest by category. Order inside each row is the catalogue's. */
+const SHELF_ROWS = [
+    { title: "Best sellers", filter: "apparel",     test: p => p.category === "apparel" },
+    { title: "Elite crew socks", filter: "socks",   test: p => p.category === "socks" },
+    { title: "Basketballs", filter: "balls",        test: p => p.category === "balls" },
+    { title: "Accessories", filter: "accessories",  test: p => p.category === "accessories" }
+];
+
+/* Every buyable product in the order the "All" shelf shows them, for the
+   sheet's Previous and Next. */
+function shelfOrder() {
+    const buyable = products.filter(isBuyable);
+    const seen = new Set();
+    return SHELF_ROWS.flatMap(r => buyable.filter(p => r.test(p)))
+        .concat(buyable)
+        .filter(p => !seen.has(p) && seen.add(p));
+}
+
+/* What goes with this: other categories first (a tank pairs with socks and
+   a sleeve, not with the other tank), one of each colour family, three at most. */
+const PAIR_WITH = { apparel: ["socks", "accessories"], socks: ["apparel", "accessories"],
+                    balls: ["socks", "apparel"], accessories: ["apparel", "socks"] };
+function pairsFor(product) {
+    // Taken in turns from each paired category (socks, then an accessory,
+    // then socks again), so three suggestions are three different things.
+    const lanes = (PAIR_WITH[product.category] || []).map(c => {
+        const families = new Set();
+        return products.filter(p => p.category === c && isBuyable(p)).filter(p => {
+            const fam = p.colorGroup || p.name;
+            return !families.has(fam) && families.add(fam);
+        });
+    });
+    const out = [];
+    for (let i = 0; out.length < 3 && lanes.some(l => l[i]); i++)
+        lanes.forEach(l => { if (l[i] && out.length < 3) out.push(l[i]); });
+    return out;
 }
 
 function loadProducts(filter = "all") {
@@ -80,9 +147,44 @@ function loadProducts(filter = "all") {
 
     // Behind a product's sheet the shelf stays lazy: its photos would only
     // compete with the sheet's.
-    visible.forEach((product, i) => {
-        container.appendChild(buildProductCard(product, onProductPage ? Infinity : i));
-    });
+    container.classList.toggle("is-rows", filter === "all");
+    if (filter === "all") {
+        let pos = 0;
+        const placed = new Set();
+        const rows = [];
+        SHELF_ROWS.concat([{ title: "More gear", filter: "all", test: () => true }]).forEach(row => {
+            const items = visible.filter(p => !placed.has(p) && row.test(p));
+            if (!items.length) return;
+            items.forEach(p => placed.add(p));
+            // A row of one or two leaves a field of empty paper: small rows
+            // share one ("Basketballs & accessories").
+            const last = rows[rows.length - 1];
+            if (last && (last.items.length < 3 || items.length < 3) && last.items.length + items.length <= 4) {
+                last.title = last.title + " & " + row.title.toLowerCase();
+                last.filter = "all";
+                last.items = last.items.concat(items);
+            } else {
+                rows.push({ title: row.title, filter: row.filter, items });
+            }
+        });
+        rows.forEach(row => {
+            const items = row.items;
+            const section = document.createElement("section");
+            section.className = "shelf_row";
+            section.setAttribute("aria-label", row.title);
+            section.innerHTML = `<div class="shelf_row_head"><h2 class="shelf_row_title">${row.title}</h2>${
+                row.filter !== "all" ? `<button class="shelf_row_all" type="button" data-see="${row.filter}">See all <span aria-hidden="true">\u2192</span></button>` : ""}</div>`;
+            const grid = document.createElement("div");
+            grid.className = "shelf_row_grid";
+            items.forEach(product => grid.appendChild(buildProductCard(product, onProductPage ? Infinity : pos++)));
+            section.appendChild(grid);
+            container.appendChild(section);
+        });
+    } else {
+        visible.forEach((product, i) => {
+            container.appendChild(buildProductCard(product, onProductPage ? Infinity : i));
+        });
+    }
     container.dataset.loaded = "1";   // releases the height held for it in merch.css
 }
 
@@ -132,6 +234,12 @@ function initFilterBar() {
     // it stays out of the row until a product is announced again.
     const soonChip = bar.querySelector('[data-filter="coming-soon"]');
     if (soonChip) soonChip.hidden = !products.some(isSoon);
+    document.getElementById("products_grid")?.addEventListener("click", (e) => {
+        const see = e.target.closest(".shelf_row_all");
+        if (!see) return;
+        const chip = bar.querySelector(`.filter_chip[data-filter="${see.dataset.see}"]`);
+        if (chip) { chip.click(); bar.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    });
     bar.addEventListener("click", (e) => {
         const chip = e.target.closest(".filter_chip");
         if (!chip) return;
@@ -571,6 +679,28 @@ function openProductModal(index, opener, opts = {}) {
                     <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/></svg><span><b>30-day returns</b>Just message us</span></li>
                     <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12.5a8.3 8.3 0 0 1-12.2 7.3L3 21l1.3-4.6A8.3 8.3 0 1 1 20 12.5z"/></svg><span><b>No online payment</b>Confirm on WhatsApp</span></li>
                 </ul>
+                ${(() => {
+                    const pairs = pairsFor(product);
+                    return pairs.length ? `<div class="modal_section modal_pairs">
+                        <h3 class="modal_section_title">Pairs well with</h3>
+                        <div class="pairs_list">${pairs.map(p => `<button class="pair_item" type="button" data-pair="${products.indexOf(p)}">
+                            <span class="pair_img tile-${p.tile || "photo"}"><img src="${p.image}" alt="" loading="lazy" decoding="async"></span>
+                            <span class="pair_text"><span class="pair_meta">${esc(productMeta(p))}</span><span class="pair_name">${esc(p.shelfName || p.name)}</span></span>
+                            <span class="pair_price">${displayPrice(p)}</span>
+                        </button>`).join("")}</div>
+                    </div>` : "";
+                })()}
+                ${(() => {
+                    const order = shelfOrder();
+                    const at = order.indexOf(product);
+                    if (at < 0 || order.length < 2) return "";
+                    const prev = order[(at - 1 + order.length) % order.length];
+                    const next = order[(at + 1) % order.length];
+                    return `<nav class="modal_flip" aria-label="More products">
+                        <button class="flip_btn" type="button" data-pair="${products.indexOf(prev)}"><span class="flip_dir">\u2190 Previous</span><span class="flip_name">${esc(prev.name)}</span></button>
+                        <button class="flip_btn flip_next" type="button" data-pair="${products.indexOf(next)}"><span class="flip_dir">Next \u2192</span><span class="flip_name">${esc(next.name)}</span></button>
+                    </nav>`;
+                })()}
                 ${product.sku ? `<p class="modal_sku">SKU <span>${esc(product.sku)}</span></p>` : ""}
             </div>
             </div><!-- /.modal_scroll -->
@@ -1000,6 +1130,15 @@ function initModal() {
                 inline.toggleAttribute("hidden");
                 link.textContent = willOpen ? "Hide size chart ›" : "View size chart ›";
             }
+            return;
+        }
+
+        // PAIRS WELL WITH, PREVIOUS / NEXT: the sheet swaps to that product,
+        // like the Colour row, and starts again at the top.
+        const pairBtn = e.target.closest("[data-pair]");
+        if (pairBtn) {
+            openProductModal(Number(pairBtn.dataset.pair), slideshowState.openerElement, { swap: true });
+            modal.querySelector(".modal_scroll")?.scrollTo({ top: 0 });
             return;
         }
 
