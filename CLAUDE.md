@@ -72,6 +72,11 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
 - **Order slip:** `order.html` stays dark.
 - **Training page pack cards** are React Bits' Pixel Card, ported to plain JS (`javascript/pixel-card.js`, `css/pixel-card.css`; turn one on with `data-pixel-card`). Pixels ripple out on hover, focus or tap, and once when a card scrolls into view. Shooting Drills uses the blue preset and Drills & Recovery the yellow one. Both use `data-pixel-fade="0.85"` and `data-pixel-opacity="0.75"` so the text stays readable over the pixels (the demo cards hold far less text). They replaced the old frame: grain, gold glow, gold border and hover lift.
 - **Sign-up forms** (`private_run_sign_up.html`, `training_sign_up.html`): no `alert()` boxes. `javascript/signup-motion.js` gives them their motion: the summary card's steps tick off as they go, changing numbers roll, a missing answer shakes and says what it needs (`lxSignup.flag`), and sending draws a check on the button and bursts confetti (`lxSignup.success`). WhatsApp still opens straight from the tap.
+- **Shelf** (after curated.supply, the owner's reference, 8 Nov 2026; `css/store-curated.css`):
+  - it continues the store hero's paper (`#ECEBE7`) instead of dropping into black. Products sit small and centred on white tiles; name and price share one line in ink; category pills are white, the picked one black.
+  - "All" is rows: Best sellers (tanks and tees, first), Elite crew socks, then the rest by category; a row under three products shares one with the next ("Basketballs & accessories"). Each row's "See all" presses the matching category pill. Back Soon stays last, greyed.
+  - each card has a quiet line like "Nike · Socks · University Red", read off the catalogue (`productMeta` in `product-data.js`), so look-alike products are told apart. Don't invent "New in" or "Staff picks" rows: the catalogue has no such markers yet.
+  - the product sheet ends with "Pairs well with" (three, from other categories) and Previous / Next in shelf order; both swap the sheet in place like the Colour row.
 - **Shelf cards:**
   - no borders, rings or panels around them
   - hovering only lifts the card and zooms the photo, with no gold
