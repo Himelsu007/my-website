@@ -135,7 +135,11 @@
 
 /* ---- phones: each row slides sideways, the next card peeking in ---- */
 @media (max-width: 640px) {
-    .shelf_area { padding: 24px 0 64px; }
+    /* The row runs to the screen's edges by exactly the shelf's side padding:
+       one number for both, so a row can never stick out past the screen and
+       let the whole page be dragged sideways (it once did, by 10px). */
+    .shelf_area { padding: 24px 0 64px; --shelf-pad: 16px; }
+    .shelf_area #products_grid { padding-left: var(--shelf-pad); padding-right: var(--shelf-pad); }
     .shelf_row + .shelf_row { margin-top: 44px; }
     .shelf_row_title { font-size: 25px; }
     .shelf_row_head { margin-bottom: 14px; }
@@ -146,10 +150,11 @@
         grid-template-columns: none;
         gap: 14px;
         overflow-x: auto;
+        overscroll-behavior-x: contain;    /* a swipe at the row's end stays in the row */
         scroll-snap-type: x mandatory;
-        margin: 0 -22px;
-        padding: 0 22px 4px;
-        scroll-padding: 0 22px;
+        margin: 0 calc(-1 * var(--shelf-pad));
+        padding: 0 var(--shelf-pad) 4px;
+        scroll-padding: 0 var(--shelf-pad);
         scrollbar-width: none;
     }
     .shelf_row_grid::-webkit-scrollbar { display: none; }
@@ -216,3 +221,12 @@
     #product_modal .pair_item:hover, #product_modal .flip_btn:hover { transform: none; }
 }
 .shelf_area .product_meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* The store never moves sideways under a finger, whatever is ever too wide:
+   the shelf clips anything that runs past it (clip, unlike hidden, doesn't
+   make the shelf a scroll box), and on phones the page itself can't be
+   panned left or right. The rows keep their own sideways swipe. */
+.shelf_area { overflow-x: hidden; overflow-x: clip; }
+@media (max-width: 900px) {
+    html, body { overflow-x: hidden; }
+}
