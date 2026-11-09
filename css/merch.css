@@ -1301,8 +1301,10 @@ FEATURED PRODUCT
 
 /* Smooth Pause on Hover */
 /* Grayscale effect for sold out items */
+/* Sold out: the product fades towards its white ground instead of the whole
+   photo being darkened (brightness() turned the white background grey). */
 .sold_out_img img {
-    filter: grayscale(100%) brightness(0.6);
+    filter: grayscale(100%) opacity(0.55);
 }
 
 /* The Sold Out Button inside the Modal */
