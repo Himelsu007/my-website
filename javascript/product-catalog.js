@@ -133,12 +133,12 @@ const products = [
         options: ["S", "M", "L"]
     },
     {
-        // New on 9 Nov 2026, not in Matrix yet: no matrixSku and no stock, so
-        // sizes aren't capped until it's added there (then set matrixSku).
-        name: "Nike Nba Compression Long Sleeves (White)",
+        // New on 9 Nov 2026. Named exactly as in Matrix, which is how its stock
+        // is found (the white one's Matrix SKU is a long LILX-NIKE-NBA-... one).
+        name: "Nike Pro NBA Compression Long Sleeve \u2014 White",
         colorGroup: "compression-long-sleeve",
         colorName: "White",
-        shelfName: "Nike Nba Compression Long Sleeves",
+        shelfName: "Nike Pro NBA Compression Long Sleeve",
         sku: "LILX-TOP-CMP-LS",
         tag: "New",
         tile: "light",
@@ -152,10 +152,10 @@ const products = [
         options: ["M", "L", "XL"]
     },
     {
-        name: "Nike Nba Compression Long Sleeves (Black)",
+        name: "Nike Pro NBA Compression Long Sleeve \u2014 Black",
         colorGroup: "compression-long-sleeve",
         colorName: "Black",
-        shelfName: "Nike Nba Compression Long Sleeves",
+        shelfName: "Nike Pro NBA Compression Long Sleeve",
         sku: "LILX-TOP-CMP-LS-BLK",
         tag: "New",
         tile: "light",
