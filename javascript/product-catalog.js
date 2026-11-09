@@ -133,6 +133,42 @@ const products = [
         options: ["S", "M", "L"]
     },
     {
+        // New on 9 Nov 2026, not in Matrix yet: no matrixSku and no stock, so
+        // sizes aren't capped until it's added there (then set matrixSku).
+        name: "Nike Nba Compression Long Sleeves (White)",
+        colorGroup: "compression-long-sleeve",
+        colorName: "White",
+        shelfName: "Nike Nba Compression Long Sleeves",
+        sku: "LILX-TOP-CMP-LS",
+        tag: "New",
+        tile: "light",
+        priceEUR: 60,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-compression-long-sleeves/nike-compression-long-sleeves-white.webp",
+        lead: "The long-sleeve base layer, in white.",
+        description: "The Nike Pro NBA compression long sleeve: Dri-FIT, light and tight to the body, with the arms covered for colder gyms or under your jersey.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["M", "L", "XL"]
+    },
+    {
+        name: "Nike Nba Compression Long Sleeves (Black)",
+        colorGroup: "compression-long-sleeve",
+        colorName: "Black",
+        shelfName: "Nike Nba Compression Long Sleeves",
+        sku: "LILX-TOP-CMP-LS-BLK",
+        tag: "New",
+        tile: "light",
+        priceEUR: 60,
+        status: "available",
+        category: "apparel",
+        image: "assets/images/products/nike-compression-long-sleeves/nike-compression-long-sleeves-black.webp",
+        lead: "The long-sleeve base layer, in black.",
+        description: "The Nike Pro NBA compression long sleeve in black: Dri-FIT, light and tight to the body, with the arms covered for colder gyms or under your jersey.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["M", "L", "XL"]
+    },
+    {
         // Named as in Matrix's inventory, so orders link to that stock.
         name: "Nike Nba Elite Crew Socks Pink",
         shelfName: "Nike NBA Elite Crew Socks",

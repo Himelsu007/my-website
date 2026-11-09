@@ -45,6 +45,7 @@ function productMeta(p) {
     const n = String(p.name || "");
     const maker = /wilson/i.test(n) ? "Wilson" : /nike|nba/i.test(n) ? "Nike" : "";
     const kind = /tank/i.test(n) ? "Tank"
+               : /long sleeves?/i.test(n) ? "Long sleeve"
                : /short sleeves|tee\b|t-shirt/i.test(n) ? "Tee"
                : /headband/i.test(n) ? "Headband"
                : /wristband/i.test(n) ? "Wristbands"
@@ -69,7 +70,7 @@ function variantOf(p) {
    best-seller row (tanks and tees) first, as the shelf always led with,
    then the rest by category. Order inside each row is the catalogue's. */
 const SHELF_ROWS = [
-    { title: "Best sellers", filter: "apparel",     test: p => p.category === "apparel" },
+    { title: "Tanks & tees", filter: "apparel",     test: p => p.category === "apparel" },
     { title: "Elite crew socks", filter: "socks",   test: p => p.category === "socks" },
     { title: "Basketballs", filter: "balls",        test: p => p.category === "balls" },
     { title: "Accessories", filter: "accessories",  test: p => p.category === "accessories" }

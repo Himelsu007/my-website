@@ -852,6 +852,79 @@ function emailImage_(url) {
   return a ? SITE + '/' + a[1] : String(url || '');
 }
 
+/* The email photo for an order line. Lines written by the bag carry the
+   photo's address; lines typed into the Sheet by hand don't, so the photo
+   is found by product name in the site's catalogue instead. */
+function lineImage_(l) {
+  if (l && l.image) return emailImage_(l.image);
+  var img = catalogImageFor_(l && l.name);
+  return img ? emailImage_(img) : '';
+}
+
+function catalogKey_(s) {
+  return String(s || '').toLowerCase().replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ').trim();
+}
+
+/* The name without its colour: "Tank (White)" -> "tank". */
+function catalogBase_(s) {
+  return catalogKey_(String(s || '').replace(/\s*\([^)]*\)\s*$/, ''));
+}
+
+/* product-catalog.js read as text (never run), cached for six hours:
+   { byName: {name: image}, byShelf: {shelf name or base name: image} }. */
+function catalogImages_() {
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get('lx-catalog-images');
+  if (hit) { try { return JSON.parse(hit); } catch (err) {} }
+  var out = { byName: {}, byShelf: {} };
+  try {
+    var res = UrlFetchApp.fetch(SITE + '/javascript/product-catalog.js?nc=' + Date.now(), { muteHttpExceptions: true });
+    if (res.getResponseCode() !== 200) return out;
+    out = parseCatalogImages_(res.getContentText());
+    if (Object.keys(out.byName).length) cache.put('lx-catalog-images', JSON.stringify(out), 6 * 60 * 60);
+  } catch (err) {}
+  return out;
+}
+
+/* Each product's name, shelfName and image, taken from the stretch of text
+   between one line starting `name:` and the next (an inline
+   `replaces: { name: ... }` is not a product), so a product with no photo can't borrow
+   the next product's. */
+function parseCatalogImages_(js) {
+  var out = { byName: {}, byShelf: {} };
+  var starts = [], re = /(^|\n)[ \t]*name:\s*"((?:[^"\\]|\\.)*)"/g, m;
+  while ((m = re.exec(js))) starts.push({ at: m.index, name: m[2] });
+  for (var i = 0; i < starts.length; i++) {
+    var seg = js.slice(starts[i].at, i + 1 < starts.length ? starts[i + 1].at : js.length);
+    var img = seg.match(/(^|\n)[ \t]*image:\s*"((?:[^"\\]|\\.)*)"/);
+    if (!img) continue;
+    var shelf = seg.match(/shelfName:\s*"((?:[^"\\]|\\.)*)"/);
+    var name = starts[i].name;
+    out.byName[catalogKey_(name)] = img[2];
+    var base = catalogBase_(name);
+    if (!out.byShelf[base]) out.byShelf[base] = img[2];
+    if (shelf && !out.byShelf[catalogKey_(shelf[1])]) out.byShelf[catalogKey_(shelf[1])] = img[2];
+  }
+  return out;
+}
+
+/* The full name first (case and spacing ignored); if its colour doesn't
+   match, the model's shelf name. A " - L" / " \u2014 L" size tail typed
+   after the name is dropped. */
+function catalogImageFor_(name) {
+  if (!name) return '';
+  var c = catalogImages_();
+  var tries = [String(name), String(name).replace(/\s+[\u2014\u2013-]\s+(XS|S|M|L|XL|XXL|\d[\d -]*)\s*$/i, '')];
+  for (var i = 0; i < tries.length; i++) {
+    var k = catalogKey_(tries[i]);
+    if (c.byName[k]) return c.byName[k];
+    if (c.byShelf[k]) return c.byShelf[k];
+    var b = catalogBase_(tries[i]);
+    if (c.byShelf[b]) return c.byShelf[b];
+  }
+  return '';
+}
+
 /* The order as schema.org data, for mail apps that read it (Apple Mail's
    order card, Gmail). Kept ASCII with \u escapes, because &#...; codes
    are not decoded inside a script. */
@@ -873,7 +946,7 @@ function orderLd_(o, key) {
     acceptedOffer: o.lines.map(function (l) {
       return {
         '@type': 'Offer',
-        itemOffered: { '@type': 'Product', name: String(l.name || ''), image: l.image ? emailImage_(l.image) : undefined },
+        itemOffered: { '@type': 'Product', name: String(l.name || ''), image: lineImage_(l) || undefined },
         price: (Number(l.price) || 0).toFixed(2),
         priceCurrency: 'EUR',
         eligibleQuantity: { '@type': 'QuantitativeValue', value: Number(l.qty) || 1 }
@@ -1226,9 +1299,10 @@ function orderEmail_(o, key) {
       return /^(XS|S|M|L|XL|XXL|\d[\d -]*)$/i.test(p.trim()) ? 'Size ' + p.trim() : p.trim();
     }).join(' \u00b7 ') : '';
     var top = i ? 'border-top:1px solid ' + LINE + ';' : '';
+    var img = lineImage_(l);
     return '<tr>' +
       '<td width="44" valign="middle" style="padding:12px 14px 12px 0;' + top + '">' +
-        (l.image ? '<img src="' + e(emailImage_(l.image)) + '" width="44" height="44" alt="" style="display:block;width:44px;height:44px;border-radius:10px;background:#FFFFFF;object-fit:contain">'
+        (img ? '<img src="' + e(img) + '" width="44" height="44" alt="" style="display:block;width:44px;height:44px;border-radius:10px;background:#FFFFFF;object-fit:contain">'
                  : '<div style="width:44px;height:44px;border-radius:10px;background:' + RAISE + '"></div>') +
       '</td>' +
       '<td valign="middle" style="padding:12px 0;' + top + '">' +
