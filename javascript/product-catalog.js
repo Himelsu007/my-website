@@ -252,6 +252,42 @@ const products = [
         options: ["38 - 41", "42 - 45", "46 - 49"]
     },
     {
+        name: "Nike NBA Elite Crew Socks White/Red",
+        shelfName: "Nike NBA Elite Crew Socks",
+        sku: "LILX-NBA-ELITE-CREW-SOCKS-WR",
+        tile: "light",
+        priceEUR: 19,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-back.webp",
+        images: [
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-back.webp",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-side.webp"
+        ],
+        lead: "The classic, with red stripes.",
+        description: "The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with red stripes down the back.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["38 - 41", "42 - 45", "46 - 49"]
+    },
+    {
+        name: "Nike NBA Elite Crew Socks White/Pink",
+        shelfName: "Nike NBA Elite Crew Socks",
+        sku: "LILX-NBA-ELITE-CREW-SOCKS-WP",
+        tile: "light",
+        priceEUR: 19,
+        status: "available",
+        category: "socks",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-back.webp",
+        images: [
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-back.webp",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-side.webp"
+        ],
+        lead: "The classic, with pink stripes.",
+        description: "The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with pink stripes down the back.",
+        optionTitle: "<strong>Size</strong>",
+        options: ["38 - 41", "42 - 45", "46 - 49"]
+    },
+    {
         // Named and coded as in Matrix, so orders land on that stock.
         name: "Nike Brooklyn Nets City Edition",
         shelfName: "Nike NBA Elite Crew Socks",
