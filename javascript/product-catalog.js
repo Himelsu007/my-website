@@ -180,7 +180,7 @@ const products = [
         image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink.webp",
         images: [
             "assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink.webp",
-            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink-side.webp"
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-pink-side-v2.webp"
         ],
         lead: "Pink, locked in.",
         description: "The Nike NBA Elite crew in pink, with white stripes down the back and a white heel.",
