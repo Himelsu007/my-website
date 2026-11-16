@@ -259,10 +259,10 @@ const products = [
         priceEUR: 19,
         status: "available",
         category: "socks",
-        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-back.webp",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-back-v2.webp",
         images: [
-            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-back.webp",
-            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-side.webp"
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-back-v2.webp",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-red-side-v2.webp"
         ],
         lead: "The classic, with red stripes.",
         description: "The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with red stripes down the back.",
@@ -277,10 +277,10 @@ const products = [
         priceEUR: 19,
         status: "available",
         category: "socks",
-        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-back.webp",
+        image: "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-back-v2.webp",
         images: [
-            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-back.webp",
-            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-side.webp"
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-back-v2.webp",
+            "assets/images/products/nba-elite-crew-socks/nike-elite-socks-white-pink-side-v2.webp"
         ],
         lead: "The classic, with pink stripes.",
         description: "The NBA Elite crew locks in from the first step and stays put until the final bucket: no slipping, no distractions. White, with pink stripes down the back.",
