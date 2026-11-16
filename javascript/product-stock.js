@@ -12,6 +12,8 @@ lxApplyStock({
     "LILX-GEN-CREW-LBL": {"42 - 46": 1},
     "LILX-NBA-ELITE-CREW-SOCKS": {"42 - 46": 4},
     "LILX-NBA-ELITE-CREW-SOCKS-SW": {"38 - 41": 0, "42 - 46": 2, "46 - 49": 0},
+    "LILX-NBA-ELITE-CREW-SOCKS-WR": {"38 - 41": 0, "42 - 45": 1, "46 - 49": 0},
+    "LILX-NBA-ELITE-CREW-SOCKS-WP": {"38 - 41": 0, "42 - 45": 1, "46 - 49": 0},
     "LILX-SOC-CREW-FADE": {"42 - 46": 1},
     "LILX-SOC-CREW-BLU": {"42 - 46": 0},
     "LILX-SOC-CREW-RED": {"42 - 46": 1, "46 - 50": 0},
