@@ -202,13 +202,21 @@
        in the wrong half of the city. */
     function fulfilReady(f) {
         f = f || readF();
+        /* A name either way: a pickup at the court is handed to a person. */
+        if (!(f.name && f.name.trim())) return false;
         if (f.method === "pickup")   return !!f.run;
         if (f.method === "delivery") {
-            return !!(f.name && f.name.trim()) &&
-                   !!(f.street && f.street.trim()) &&
-                   /^\d{4}(-\d{3})?$/.test((f.postcode || "").trim());
+            var abroad = (f.country || "PT") !== "PT";
+            return !!(f.street && f.street.trim()) &&
+                   (!abroad || !!(f.city && f.city.trim())) &&
+                   !!shipQuote(f);
         }
         return false;
+    }
+
+    /* The fee for this fulfilment, or null while the address is unfinished. */
+    function shipQuote(f) {
+        return window.lxShip ? window.lxShip.quote(f || readF()) : null;
     }
 
     /* Blank is fine; anything typed has to look like an address, or the
@@ -221,7 +229,11 @@
     /* One line for the chat: enough to act on without opening anything. */
     function fulfilLine(f) {
         if (f.method === "pickup")   return "Pickup \u2014 " + (f.runLabel || f.run) + " run";
-        if (f.method === "delivery") return "Delivery \u2014 " + f.street + ", " + f.postcode;
+        if (f.method === "delivery") {
+            var abroad = (f.country || "PT") !== "PT";
+            return "Delivery \u2014 " + f.street + ", " + f.postcode +
+                   (abroad ? " " + (f.city || "") + ", " + window.lxShip.countryName(f.country) : "");
+        }
         return "";
     }
 
@@ -234,8 +246,10 @@
        fragment is split on "." and "~" and an address contains both. */
     function packF(f) {
         var parts = f.method === "pickup"
-            ? ["p", f.runLabel || f.run || "", f.runWhere || "", f.runStart || startFor(f.run)]
-            : ["d", f.name || "", f.street || "", f.postcode || ""];
+            ? ["p", f.runLabel || f.run || "", f.runWhere || "", f.runStart || startFor(f.run), f.name || ""]
+            : ["d", f.name || "", f.street || "", f.postcode || "",
+               f.country || "PT", (f.country || "PT") !== "PT" ? f.city || "" : "",
+               String((shipQuote(f) || {}).fee || 0)];
         var bytes = new TextEncoder().encode(parts.join("|"));
         var bin = "";
         bytes.forEach(function (b) { bin += String.fromCharCode(b); });
@@ -297,6 +311,9 @@
                   '<button class="lx_bag_method" type="button" data-method="pickup">Pick up at a run</button>' +
                   '<button class="lx_bag_method" type="button" data-method="delivery">Shipping</button>' +
                 '</div>' +
+                /* Asked for both: the run hands the order to a person too. */
+                '<label class="lx_bag_field lx_bag_namefld" hidden><span>Name</span>' +
+                  '<input class="lx_bag_input" data-fld="name" type="text" autocomplete="name" placeholder="Your full name"></label>' +
                 '<div class="lx_bag_panel" data-panel="pickup" hidden>' +
                   '<label class="lx_bag_field">' +
                     '<span>Which run</span>' +
@@ -304,13 +321,19 @@
                   '</label>' +
                 '</div>' +
                 '<div class="lx_bag_panel" data-panel="delivery" hidden>' +
-                  '<label class="lx_bag_field"><span>Name</span>' +
-                    '<input class="lx_bag_input" data-fld="name" type="text" autocomplete="name" placeholder="Your full name"></label>' +
+                  '<label class="lx_bag_field"><span>Country</span>' +
+                    '<select class="lx_bag_input" data-fld="country" autocomplete="country">' +
+                      (window.lxShip ? window.lxShip.COUNTRIES : [["PT", "Portugal"]]).map(function (c) {
+                          return '<option value="' + c[0] + '">' + c[1] + '</option>';
+                      }).join("") +
+                    '</select></label>' +
                   '<label class="lx_bag_field"><span>Street &amp; door</span>' +
                     '<input class="lx_bag_input" data-fld="street" type="text" autocomplete="street-address" placeholder="Rua da Prata 12, 3ºD"></label>' +
                   '<label class="lx_bag_field"><span>Postcode</span>' +
-                    '<input class="lx_bag_input" data-fld="postcode" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="8" placeholder="1100-052"></label>' +
-                  '<p class="lx_bag_hint">Express delivery, Lisbon only. No delivery fee.</p>' +
+                    '<input class="lx_bag_input" data-fld="postcode" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="10" placeholder="1100-052"></label>' +
+                  '<label class="lx_bag_field lx_bag_cityfld" hidden><span>City</span>' +
+                    '<input class="lx_bag_input" data-fld="city" type="text" autocomplete="address-level2" placeholder="Madrid"></label>' +
+                  '<p class="lx_bag_hint lx_bag_shiphint">Free in Lisbon \u00b7 3\u20ac Greater Lisbon \u00b7 6\u20ac rest of Portugal \u00b7 38\u20ac EU</p>' +
                 '</div>' +
                 /* Optional, and only for updates: each status change on the
                    order is emailed to it (see ORDER EMAILS in the Sheet script). */
@@ -322,7 +345,7 @@
             '<div class="lx_bag_foot">' +
               '<div class="lx_bag_summary">' +
                 '<div class="lx_bag_row"><span>Subtotal</span><span class="lx_bag_subtotal">0€</span></div>' +
-                '<div class="lx_bag_row"><span class="lx_bag_ship">Delivery or pickup</span><span>Free</span></div>' +
+                '<div class="lx_bag_row"><span class="lx_bag_ship">Delivery or pickup</span><span class="lx_bag_shipfee is-pending">Choose one</span></div>' +
               '</div>' +
               '<div class="lx_bag_total"><span>Total</span><strong>0€</strong></div>' +
               '<button class="lx_bag_order whatsapp_btn" type="button">Order all on WhatsApp</button>' +
@@ -437,7 +460,6 @@
         drawer.classList.toggle("is-empty", items.length === 0);
         drawer.querySelector(".lx_bag_head_count").textContent =
             n ? n + (n === 1 ? " item" : " items") : "";
-        totalEl.textContent = money(total());
         if (subtotalEl) subtotalEl.textContent = money(total());
         stale = blocked;
         refreshGate();
@@ -457,10 +479,34 @@
         drawer.querySelectorAll(".lx_bag_panel").forEach(function (panel) {
             panel.hidden = panel.dataset.panel !== f.method;
         });
+        /* No fee is shown until there is an address to price: "Free" before
+           anyone says where they live is a promise we might not keep. */
+        var q = shipQuote(f);
         var ship = drawer.querySelector(".lx_bag_ship");
-        if (ship) ship.textContent = f.method === "pickup" ? "Pickup at the run"
+        if (ship) ship.textContent = q ? q.label
                                    : f.method === "delivery" ? "Shipping"
                                    : "Delivery or pickup";
+        var fee = drawer.querySelector(".lx_bag_shipfee");
+        if (fee) {
+            fee.textContent = q ? (q.fee ? money(q.fee) : "Free")
+                            : f.method === "delivery" ? "Enter your address" : "Choose one";
+            fee.classList.toggle("is-pending", !q);
+        }
+        if (totalEl) totalEl.textContent = money(total() + (q ? q.fee : 0));
+        var hint = drawer.querySelector(".lx_bag_shiphint");
+        // Phones hide the summary rows, so the fee is said here too.
+        if (hint) hint.textContent = q && q.eta ? q.label + ": " + (q.fee ? money(q.fee) : "free") + " \u00b7 " + q.eta
+            : "Free in Lisbon \u00b7 3\u20ac Greater Lisbon \u00b7 6\u20ac rest of Portugal \u00b7 38\u20ac EU";
+        var nameFld = drawer.querySelector(".lx_bag_namefld");
+        if (nameFld) nameFld.hidden = !f.method;
+        var abroad = (f.country || "PT") !== "PT";
+        var cityFld = drawer.querySelector(".lx_bag_cityfld");
+        if (cityFld) cityFld.hidden = !abroad;
+        var pcEl = drawer.querySelector('[data-fld="postcode"]');
+        if (pcEl) {
+            pcEl.inputMode = abroad ? "text" : "numeric";
+            pcEl.placeholder = abroad ? "Postcode" : "1100-052";
+        }
 
         var sel = drawer.querySelector('[data-fld="run"]');
         if (sel && sel.options.length !== runs.length + 1) {
@@ -480,11 +526,12 @@
 
         // A postcode saved unformatted ("1100052") would otherwise sit there
         // failing validation with nothing on screen saying why.
-        if (f.postcode && f.postcode !== fmtPostcode(f.postcode)) {
+        if (!abroad && f.postcode && f.postcode !== fmtPostcode(f.postcode)) {
             f.postcode = fmtPostcode(f.postcode);
             try { localStorage.setItem(FKEY, JSON.stringify(f)); } catch (e) {}
         }
-        ["name", "street", "postcode", "email"].forEach(function (k) {
+        if (!f.country) f.country = "PT";
+        ["name", "country", "street", "postcode", "city", "email"].forEach(function (k) {
             var el = drawer.querySelector('[data-fld="' + k + '"]');
             if (el && el.value !== (f[k] || "") && document.activeElement !== el) {
                 el.value = f[k] || "";
@@ -512,7 +559,9 @@
                 writeF(f);
                 // Land the eye on the first thing still to fill in.
                 var first = drawer.querySelector('.lx_bag_panel[data-panel="' + f.method + '"] .lx_bag_input');
-                if (first && f.method === "delivery") first.focus();
+                var nm = drawer.querySelector('[data-fld="name"]');
+                if (nm && !nm.value) nm.focus();
+                else if (first && f.method === "delivery") first.focus();
             });
         });
 
@@ -521,7 +570,7 @@
             if (!el) return;
             var f = readF();
             var k = el.dataset.fld;
-            if (k === "postcode") {
+            if (k === "postcode" && (f.country || "PT") === "PT") {
                 // Reformat in place, then put the caret back after the same
                 // number of digits — otherwise every keystroke mid-field would
                 // throw it to the end.
@@ -544,6 +593,14 @@
             writeF(f);
         });
         drawer.addEventListener("change", function (e) {
+            if (e.target.closest('[data-fld="country"]')) {
+                var fc = readF();
+                fc.country = e.target.value;
+                // A Portuguese postcode means nothing in Spain, and back.
+                fc.postcode = "";
+                writeF(fc);
+                return;
+            }
             if (e.target.closest('[data-fld="run"]')) {
                 var f = readF();
                 var run = upcomingRuns().filter(function (r) { return r.date === e.target.value; })[0];
@@ -690,13 +747,17 @@
         }
 
         var how = fulfilLine(f);
+        var q = shipQuote(f);
+        var ship = q ? q.fee : 0;
         var msg = "LOCKED IN LX\n" +
                   "Order LX-" + ref + "\n" +
-                  n + (n === 1 ? " item" : " items") + " · " + money(sum) +
-                  (how ? "\n" + how : "") + "\n\n" +
+                  n + (n === 1 ? " item" : " items") + " · " + money(sum + ship) +
+                  (ship ? " incl. " + money(ship) + " shipping" : "") +
+                  (how ? "\n" + how : "") +
+                  (f.name ? "\nName: " + String(f.name).trim() : "") + "\n\n" +
                   shown;
 
-        logOrder("LX-" + ref, items, sum, link, key, String(f.email || "").trim());
+        logOrder("LX-" + ref, items, sum + ship, link, key, String(f.email || "").trim(), ship);
         window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg), "_blank");
     }
 
@@ -725,7 +786,7 @@
                /^https:\/\/script\.google\.com\//.test(ORDERS_ENDPOINT);
     }
 
-    function logOrder(ref, items, sum, link, key, email) {
+    function logOrder(ref, items, sum, link, key, email, shipping) {
         if (!ordersOn()) return;
         try {
             fetch(ORDERS_ENDPOINT, {
@@ -740,6 +801,9 @@
                     link: link,
                     key: key || "",
                     email: email || "",
+                    /* Included in total; on its own so the books can tell
+                       postage from sales. */
+                    shipping: shipping || 0,
                     fulfilment: fulfilLine(readF()),
                     /* The chat line deliberately leaves the name out to stay
                        short, so it has to travel separately or the Sheet only

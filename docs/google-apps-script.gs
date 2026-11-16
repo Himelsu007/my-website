@@ -779,6 +779,10 @@ function orderFromRow_(r) {
     status: String(r[3] || 'Requested'),
     note: String(r[4] || '').trim(),
     total: Number(r[6]) || 0,
+    /* Shipping has no column of its own: it is whatever the total holds
+       beyond the lines (the site adds it to the total since Nov 2026). */
+    ship: Math.max(0, (Number(r[6]) || 0) - lines.reduce(function (n, l) {
+      return n + (Number(l.price) || 0) * (Number(l.qty) || 1); }, 0)),
     link: String(r[13] || '') ? shortUrl_(String(r[1]), String(r[13])) : String(r[7] || ''),
     how: /^pickup/i.test(f) ? 'pickup' : /^delivery/i.test(f) ? 'delivery' : '',
     where: f.replace(/^[^\u2014]*\u2014\s*/, '').trim(),
@@ -1320,7 +1324,7 @@ function orderEmail_(o, key) {
     ? '<tr><td class="lx-in lx-d3" style="padding:0 0 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' + RAISE + ';border-radius:12px"><tr><td style="padding:13px 15px">' +
         '<div style="' + T(9.5, 600, INK4, CAPS) + '">' + (pickup ? 'Pickup' : 'Delivery') + '</div>' +
         '<div style="padding-top:5px;' + T(13.5, 600, INK, 'line-height:1.4;') + '">' +
-          e(pickup ? (o.where || 'At the run') : (o.eta ? o.eta : 'Free express delivery in Lisbon')) + '</div>' +
+          e(pickup ? (o.where || 'At the run') : (o.eta ? o.eta : o.ship ? 'Sent by post' : 'Free express delivery in Lisbon')) + '</div>' +
         (!pickup && o.where ? '<div style="padding-top:2px;' + T(12, 400, INK3, 'line-height:1.5;') + '">' + e((o.customer ? o.customer + ', ' : '') + o.where) + '</div>' : '') +
       '</td></tr></table></td></tr>'
     : '';
@@ -1396,8 +1400,8 @@ function orderEmail_(o, key) {
   '<tr><td class="lx-in lx-d4" style="padding:0 0 2px;' + T(9.5, 600, INK4, CAPS) + '">Your order \u00b7 ' + units + (units === 1 ? ' item' : ' items') + '</td></tr>' +
   '<tr><td class="lx-in lx-d4"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + items + '</table></td></tr>' +
   '<tr><td class="lx-in lx-d4" style="padding:8px 0 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ' + LINE + '">' +
-    '<tr><td style="padding:12px 0 3px;' + T(12.5, 400, INK4) + '">Subtotal</td><td align="right" style="padding:12px 0 3px;' + T(12.5, 500, INK3) + '">' + money(o.total) + '</td></tr>' +
-    '<tr><td style="padding:3px 0 12px;' + T(12.5, 400, INK4) + '">' + (pickup ? 'Pickup at the run' : 'Shipping') + '</td><td align="right" style="padding:3px 0 12px;' + T(12.5, 500, GREEN) + '">Free</td></tr>' +
+    '<tr><td style="padding:12px 0 3px;' + T(12.5, 400, INK4) + '">Subtotal</td><td align="right" style="padding:12px 0 3px;' + T(12.5, 500, INK3) + '">' + money(o.total - (o.ship || 0)) + '</td></tr>' +
+    '<tr><td style="padding:3px 0 12px;' + T(12.5, 400, INK4) + '">' + (pickup ? 'Pickup at the run' : 'Shipping') + '</td><td align="right" style="padding:3px 0 12px;' + T(12.5, 500, o.ship ? INK3 : GREEN) + '">' + (o.ship ? money(o.ship) : 'Free') + '</td></tr>' +
     '<tr><td style="padding:12px 0 0;border-top:1px solid ' + LINE + ';' + T(10, 600, INK2, CAPS) + '">Total</td>' +
         '<td align="right" style="padding:10px 0 0;border-top:1px solid ' + LINE + ';font-family:' + HEAD + ';font-size:22px;font-weight:900;line-height:1;color:' + (void_ ? INK3 : GOLD) + '">' + money(o.total) + '</td></tr>' +
   '</table></td></tr>' +
@@ -1428,7 +1432,7 @@ function orderEmail_(o, key) {
       return q + ' \u00d7 ' + l.name + (l.option ? ' (' + l.option + ')' : '') + ' \u2014 ' +
         (q > 1 ? money(p) + ' each, ' : '') + money(p * q);
     }).join('\n') + '\n' +
-    (pickup ? 'Pickup at the run' : 'Shipping') + ': Free\n' +
+    (pickup ? 'Pickup at the run' : 'Shipping') + ': ' + (o.ship ? money(o.ship) : 'Free') + '\n' +
     'Total: ' + money(o.total) + '\n' +
     (o.how && !void_ ? '\n' + (pickup ? 'Pickup: ' + (o.where || 'at the run')
                                      : 'Delivery: ' + (o.eta ? o.eta + ', ' : '') + (o.where || 'Lisbon')) + '\n' : '') +

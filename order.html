@@ -33,13 +33,13 @@
          after it, so text is not drawn in a stand-in font and then reflowed. -->
     <link rel="preload" href="assets/fonts/barlow-condensed-900-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/barlow-condensed-700-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=20261116105317">
-    <link rel="stylesheet" href="css/fonts.css?v=20261116105317">
-    <link rel="stylesheet" href="css/footer.css?v=20261116105317">
-    <link rel="stylesheet" href="css/cookie-consent.css?v=20261116105317">
-    <link rel="stylesheet" href="css/order.css?v=20261116105317">
-    <link rel="stylesheet" href="css/statusbar.css?v=20261116105317">
-    <link rel="stylesheet" href="css/desktop-scale.css?v=20261116105317">
+    <link rel="stylesheet" href="css/style.css?v=20261116144121">
+    <link rel="stylesheet" href="css/fonts.css?v=20261116144121">
+    <link rel="stylesheet" href="css/footer.css?v=20261116144121">
+    <link rel="stylesheet" href="css/cookie-consent.css?v=20261116144121">
+    <link rel="stylesheet" href="css/order.css?v=20261116144121">
+    <link rel="stylesheet" href="css/statusbar.css?v=20261116144121">
+    <link rel="stylesheet" href="css/desktop-scale.css?v=20261116144121">
 </head>
 
 <body>
@@ -267,12 +267,13 @@
         <p class="barlow-condensed-regular">© 2026 Locked In Lx. All rights reserved.</p>
     </div>
 </footer>
-<script src="javascript/product-catalog.js?v=20261116105317"></script>
+<script src="javascript/product-catalog.js?v=20261116144121"></script>
 <!-- The store's size lists follow stock, and older order links name a size
      by its place in that list: read them against the same list. -->
-<script src="javascript/product-stock.js?v=20261116105317"></script>
-<script src="javascript/order-status.js?v=20261116105317"></script>
-<script src="javascript/qrcode.min.js?v=20261116105317" defer></script>
+<script src="javascript/product-stock.js?v=20261116144121"></script>
+<script src="javascript/shipping.js?v=20261116144121"></script>
+<script src="javascript/order-status.js?v=20261116144121"></script>
+<script src="javascript/qrcode.min.js?v=20261116144121" defer></script>
 <script>
 /* =====================================================
    ORDER SLIP
@@ -347,9 +348,17 @@
             var p = new TextDecoder().decode(bytes).split("|");
             /* The start time is a fourth field added later; anything that is not
                a clock time is ignored rather than printed as one. */
+            /* The name (pickup) and country, city and fee (delivery) came
+               later still: older links have none, and were all free. */
             if (p[0] === "p") return { method: "pickup", when: p[1], where: p[2],
-                                       start: /^\d{1,2}:\d{2}$/.test(p[3] || "") ? p[3] : "" };
-            if (p[0] === "d") return { method: "delivery", name: p[1], street: p[2], postcode: p[3] };
+                                       start: /^\d{1,2}:\d{2}$/.test(p[3] || "") ? p[3] : "",
+                                       name: p[4] || "", fee: 0, zone: "pickup" };
+            if (p[0] === "d") {
+                var country = p[4] || "PT";
+                return { method: "delivery", name: p[1], street: p[2], postcode: p[3],
+                         country: country, city: p[5] || "", fee: +p[6] || 0,
+                         zone: window.lxShip ? (window.lxShip.zoneOf(country, p[3]) || "lisbon") : "lisbon" };
+            }
         } catch (e) {}
         return null;
     }
@@ -456,7 +465,11 @@
     function release() { holding = false; if (shell) shell.classList.remove("is-checking"); }
     if (holding && shell) { shell.classList.add("is-checking"); setTimeout(release, 6000); }
 
-    var total = order.lines.reduce(function (n, l) { return n + (l.price || 0) * l.qty; }, 0);
+    var subtotal = order.lines.reduce(function (n, l) { return n + (l.price || 0) * l.qty; }, 0);
+    var shipFee = (order.fulfil && order.fulfil.fee) || 0;
+    var total = subtotal + shipFee;
+    var shipZone = (order.fulfil && order.fulfil.zone) || "lisbon";
+    var shipInfo = (window.lxShip && window.lxShip.ZONES[shipZone]) || { label: "Shipping", eta: "" };
     var units = order.lines.reduce(function (n, l) { return n + l.qty; }, 0);
 
     /* ---- left card ---- */
@@ -517,12 +530,15 @@
             title = (f.when || "At the run") + (f.start ? " \u00b7 from " + f.start : "");
         } else {
             label = "Estimated delivery";
-            title = deliveryEta(order.date.getTime(), Date.now());
+            /* Same-day only inside Lisbon; elsewhere the post sets the pace. */
+            title = shipZone === "lisbon" ? deliveryEta(order.date.getTime(), Date.now()) : shipInfo.eta;
         }
 
         var lines = pickup
-            ? [f.where]
-            : [f.name, [f.street, f.postcode].filter(Boolean).join(", ")];
+            ? [f.where, f.name]
+            : [f.name, [f.street, f.postcode, f.country && f.country !== "PT" ? f.city : "",
+                        f.country && f.country !== "PT" && window.lxShip ? window.lxShip.countryName(f.country) : ""]
+                       .filter(Boolean).join(", ")];
 
         box.innerHTML =
             '<span class="or-fulfil-label">' + esc(label) + '</span>' +
@@ -535,7 +551,7 @@
                         return '<span class="or-eta-sub">' + esc(l) + '</span>';
                     }).join("") +
                 '</div>' +
-                '<span class="or-eta-chip">Free</span>' +
+                '<span class="or-eta-chip">' + (shipFee ? money(shipFee) : "Free") + '</span>' +
             '</div>';
         box.hidden = false;
     }
@@ -687,7 +703,9 @@
             ["We confirm on WhatsApp", "We check your sizes are in stock and message you. Nothing is charged before that."],
             pickup
                 ? ["Collect it at the run", "Show the scan code at the court and we hand it over."]
-                : ["We bring it to you", "Free express delivery anywhere in Lisbon. Ordered before 18:00, it usually arrives the same evening."],
+                : shipZone === "lisbon"
+                    ? ["We bring it to you", "Free express delivery anywhere in Lisbon. Ordered before 18:00, it usually arrives the same evening."]
+                    : ["We send it to you", shipInfo.label + ": " + shipInfo.eta.charAt(0).toLowerCase() + shipInfo.eta.slice(1) + " once we confirm."],
             ["30 days to change your mind", "Wrong size, or not for you? Message us within 30 days."]
         ];
         return '<div class="or-next">' +
@@ -746,10 +764,10 @@
         /* The breakdown a receipt owes you before it gives you a total. With
            delivery free it adds up to the same number — saying so is the point. */
         '<div class="or-summary">' +
-            '<div class="or-sum-row"><span>Subtotal</span><b>' + money(total) + '</b></div>' +
+            '<div class="or-sum-row"><span>Subtotal</span><b>' + money(subtotal) + '</b></div>' +
             '<div class="or-sum-row"><span>' +
                 (order.fulfil && order.fulfil.method === "pickup" ? "Pickup at the run" : "Shipping") +
-            '</span><b class="free">Free</b></div>' +
+            '</span>' + (shipFee ? '<b>' + money(shipFee) + '</b>' : '<b class="free">Free</b>') + '</div>' +
         '</div>' +
 
         '<div class="or-total">' +
@@ -764,7 +782,7 @@
     document.title = "Order " + order.ref + " | Locked In Lx";
 })();
 </script>
-<script src="javascript/scroll_detection_menu.js?v=20261116105317" defer></script>
-<script src="javascript/cookie-consent.js?v=20261116105317" defer></script>
+<script src="javascript/scroll_detection_menu.js?v=20261116144121" defer></script>
+<script src="javascript/cookie-consent.js?v=20261116144121" defer></script>
 </body>
 </html>

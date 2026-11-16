@@ -112,7 +112,7 @@ Static HTML/CSS/JS for www.lockedinlx.com: Lisbon pickup basketball runs, traini
 
 - Privacy Policy, Cookie Policy, Store Terms (`whatsap_merchandise_disclaimer.html`, kept at that address), Terms of Participation and the Injury Waiver were rewritten in plain English on 3 Nov 2026, set for reading with `css/legal.css`. Update the "Last updated" line with any change.
 - The owner's name is not shown anywhere on the site (their choice): it's "Locked In Lx, Lisbon, Portugal" and support@lockedinlx.com.
-- The facts they state, which must stay in step with the site: refunds for runs and training are full if cancelled 2+ hours before, 50% after that, full if Locked In cancels (the home FAQ says the same); data is kept 12 months, accounting records 10 years; payment is MB WAY, bank transfer or cash, on delivery or at pickup; 30-day returns; order links close on delivery, cancellation or after 18 days.
+- The facts they state, which must stay in step with the site: refunds for runs and training are full if cancelled 2+ hours before, 50% after that, full if Locked In cancels (the home FAQ says the same); data is kept 12 months, accounting records 10 years; payment is MB WAY, bank transfer or cash, on delivery or at pickup (posted orders paid before sending); shipping is free in Lisbon (1000–1999), 3€ Greater Lisbon (2600–2899), 6€ rest of Portugal, 38€ EU, all set in `javascript/shipping.js` (bag, order slip, Google data) and written into each order link; customers pay postage on returns from outside Lisbon unless faulty; 30-day returns; order links close on delivery, cancellation or after 18 days.
 
 ## Things that need the owner's Mac
 

@@ -37,6 +37,26 @@ if (fs.existsSync(stockPath)) vm.runInContext(fs.readFileSync(stockPath, "utf8")
 const products = vm.runInContext("products", ctx);
 
 const read = f => fs.readFileSync(path.join(ROOT, f), "utf8");
+
+// The same fees the bag charges (javascript/shipping.js), so Google is never
+// told a price the bag doesn't ask.
+const shipCtx = vm.createContext({ window: {} });
+vm.runInContext(read("javascript/shipping.js"), shipCtx);
+const SHIP = shipCtx.window.lxShip;
+const days = (lo, hi) => ({ "@type": "QuantitativeValue", minValue: lo, maxValue: hi, unitCode: "DAY" });
+const shipTo = (fee, region, transit) => ({
+    "@type": "OfferShippingDetails",
+    shippingRate: { "@type": "MonetaryAmount", value: fee, currency: "EUR" },
+    shippingDestination: { "@type": "DefinedRegion", ...region },
+    deliveryTime: { "@type": "ShippingDeliveryTime", handlingTime: days(0, 1), transitTime: transit }
+});
+const pcRange = (a, b) => ({ addressCountry: "PT", postalCodeRange: { postalCodeBegin: a, postalCodeEnd: b } });
+const SHIPPING_LD = [
+    shipTo(SHIP.FEES.lisbon, pcRange("1000-000", "1999-999"), days(0, 1)),
+    shipTo(SHIP.FEES.greater, pcRange("2600-000", "2899-999"), days(1, 2)),
+    shipTo(SHIP.FEES.portugal, { addressCountry: "PT" }, days(2, 4)),
+    shipTo(SHIP.FEES.eu, { addressCountry: SHIP.COUNTRIES.map(c => c[0]).filter(c => c !== "PT") }, days(5, 10))
+];
 const write = (f, s) => {
     fs.mkdirSync(path.dirname(path.join(ROOT, f)), { recursive: true });
     fs.writeFileSync(path.join(ROOT, f), s);
@@ -109,8 +129,7 @@ function metaDescription(p) {
 }
 
 // ---- Product structured data ----
-// Shipping and returns say what the product sheet says: free delivery, a day
-// at most, 30-day returns.
+// Shipping by zone (shipping.js) and 30-day returns.
 function productLd(p) {
     const url = pageUrl(p);
     const node = {
@@ -134,16 +153,7 @@ function productLd(p) {
                 : p.status === "soon" ? "https://schema.org/PreOrder" : "https://schema.org/OutOfStock",
             itemCondition: "https://schema.org/NewCondition",
             seller: { "@type": "Organization", name: "Locked In Lx", url: `${ORIGIN}/` },
-            shippingDetails: {
-                "@type": "OfferShippingDetails",
-                shippingRate: { "@type": "MonetaryAmount", value: 0, currency: "EUR" },
-                shippingDestination: { "@type": "DefinedRegion", addressCountry: "PT" },
-                deliveryTime: {
-                    "@type": "ShippingDeliveryTime",
-                    handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
-                    transitTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" }
-                }
-            },
+            shippingDetails: SHIPPING_LD,
             hasMerchantReturnPolicy: {
                 "@type": "MerchantReturnPolicy",
                 applicableCountry: "PT",
