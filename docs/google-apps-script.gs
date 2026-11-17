@@ -859,9 +859,17 @@ function emailImage_(url) {
 /* The email photo for an order line. Lines written by the bag carry the
    photo's address; lines typed into the Sheet by hand don't, so the photo
    is found by product name in the site's catalogue instead. */
+/* The catalogue's current photo first, matched by exact name: the address
+   the bag saved goes stale when a photo is renamed (-v2), and its thumb is
+   gone. The looser shelf-name match comes last, since several colours
+   share one shelf name and it could pick the wrong one. */
 function lineImage_(l) {
-  if (l && l.image) return emailImage_(l.image);
-  var img = catalogImageFor_(l && l.name);
+  if (!l) return '';
+  var c = catalogImages_();
+  var exact = c.byName[catalogKey_(l.name)];
+  if (exact) return emailImage_(exact);
+  if (l.image) return emailImage_(l.image);
+  var img = catalogImageFor_(l.name);
   return img ? emailImage_(img) : '';
 }
 
