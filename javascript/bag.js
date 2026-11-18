@@ -256,9 +256,36 @@
         return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
     }
 
+    /* ---------------- the order just sent ----------------
+       Tapping the order button only opens WhatsApp: we never learn whether
+       they pressed Send there. So the bag empties, but the order is kept for
+       48 hours — the pill turns into a green check, and the bag shows the
+       order with a way to reopen the same message if WhatsApp never sent. */
+    var LKEY = "lx_last_order";
+    var LAST_MS = 48 * 3600 * 1000;
+
+    function readLast() {
+        try {
+            var o = JSON.parse(localStorage.getItem(LKEY));
+            if (o && o.ref && Date.now() - o.at < LAST_MS) return o;
+            if (o) localStorage.removeItem(LKEY);
+        } catch (e) {}
+        return null;
+    }
+    function writeLast(o) {
+        try {
+            if (o) localStorage.setItem(LKEY, JSON.stringify(o));
+            else localStorage.removeItem(LKEY);
+        } catch (e) {}
+    }
+
     /* ---------------- DOM ---------------- */
-    var pill, drawer, backdrop, listEl, totalEl, subtotalEl, toastEl;
+    var pill, drawer, backdrop, listEl, totalEl, subtotalEl, toastEl, sentEl, lastLinkEl;
     var stale = 0;              // lines the catalogue can no longer honour
+    var view = "bag";           // "bag", or "sent" for the order just sent
+    var justSent = false;       // pop the pill when they come back from WhatsApp
+
+    var CHECK_SVG = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 
     function build() {
         pill = document.createElement("button");
@@ -269,7 +296,9 @@
         pill.innerHTML =
             '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
             '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>' +
-            '<span class="lx_bag_count">0</span>';
+            '<span class="lx_bag_count">0</span>' +
+            '<span class="lx_bag_check">' + CHECK_SVG + '</span>' +
+            '<span class="lx_bag_sentlbl">Sent</span>';
 
         backdrop = document.createElement("div");
         backdrop.id = "lx_bag_backdrop";
@@ -301,6 +330,7 @@
                delivery form never squeezes the lines into a sliver; only the
                money and the button are pinned. */
             '<div class="lx_bag_body">' +
+              '<button class="lx_bag_lastlink" type="button" hidden></button>' +
               '<div class="lx_bag_list"></div>' +
               /* Asked here rather than over WhatsApp afterwards: this is the
                  last moment we have their attention, and every order that
@@ -342,6 +372,7 @@
                   'autocapitalize="off" spellcheck="false" placeholder="you@example.com"></label>' +
               '</div>' +
             '</div>' +
+            '<div class="lx_bag_sent" aria-live="polite"></div>' +
             '<div class="lx_bag_foot">' +
               '<div class="lx_bag_summary">' +
                 '<div class="lx_bag_row"><span>Subtotal</span><span class="lx_bag_subtotal">0€</span></div>' +
@@ -365,6 +396,38 @@
         listEl  = drawer.querySelector(".lx_bag_list");
         totalEl = drawer.querySelector(".lx_bag_total strong");
         subtotalEl = drawer.querySelector(".lx_bag_subtotal");
+        sentEl  = drawer.querySelector(".lx_bag_sent");
+        lastLinkEl = drawer.querySelector(".lx_bag_lastlink");
+
+        lastLinkEl.addEventListener("click", function () { view = "sent"; render(); });
+        sentEl.addEventListener("click", function (e) {
+            var btn = e.target.closest("[data-sent-act]");
+            if (!btn) return;
+            var act = btn.getAttribute("data-sent-act");
+            var last = readLast();
+            if (act === "resend" && last && last.wa) {
+                window.open(last.wa, "_blank");
+                justSent = true;
+            }
+            if (act === "back") { view = "bag"; render(); }
+            if (act === "new") {
+                writeLast(null);
+                view = "bag";
+                render();
+                if (!read().length) close();   // nothing left to show
+            }
+        });
+
+        /* Back from WhatsApp: a short "Sent" on the pill says it went. */
+        document.addEventListener("visibilitychange", function () {
+            if (document.visibilityState !== "visible" || !justSent) return;
+            justSent = false;
+            if (!pill.classList.contains("is-sent")) return;
+            pill.classList.remove("pop");
+            void pill.offsetWidth;
+            pill.classList.add("pop");
+            setTimeout(function () { pill.classList.remove("pop"); }, 2600);
+        });
 
         pill.addEventListener("click", open);
         backdrop.addEventListener("click", close);
@@ -413,8 +476,22 @@
         var items = read();
         var n = count();
 
-        pill.hidden = n === 0;
+        /* An empty bag with an order just sent shows a green check instead of
+           disappearing; adding something turns it back into the bag. */
+        var last = readLast();
+        var sent = n === 0 && !!last;
+        pill.hidden = n === 0 && !last;
+        pill.classList.toggle("is-sent", sent);
+        if (!sent) pill.classList.remove("pop");
+        pill.setAttribute("aria-label", sent ? "Order " + last.ref + " sent. Show it" : "Open your bag");
         pill.querySelector(".lx_bag_count").textContent = n;
+
+        if (!last) view = "bag";
+        drawer.classList.toggle("is-sent", view === "sent");
+        lastLinkEl.hidden = !(last && n && view === "bag");
+        if (last) lastLinkEl.innerHTML = '<span class="lx_bag_lastdot">' + CHECK_SVG + '</span>' +
+            "Order LX-" + esc(last.ref) + " sent · <u>View</u>";
+        if (view === "sent" && last) paintSent(last, n);
 
         var checked = audit();
         // A line that can't be filled as it stands holds the order back.
@@ -463,6 +540,34 @@
         if (subtotalEl) subtotalEl.textContent = money(total());
         stale = blocked;
         refreshGate();
+    }
+
+    /* The order just sent: what went, and the three ways on from it. */
+    function paintSent(last, n) {
+        var units = last.lines.reduce(function (s, l) { return s + l.qty; }, 0);
+        sentEl.innerHTML =
+            '<div class="lx_bag_sent_mark"><svg viewBox="0 0 52 52" width="56" height="56" aria-hidden="true">' +
+              '<circle cx="26" cy="26" r="24"/><path d="M15 27l7.5 7.5L37.5 19"/></svg></div>' +
+            '<h3 class="lx_bag_sent_title">Order sent</h3>' +
+            '<p class="lx_bag_sent_ref">LX-' + esc(last.ref) + ' · ' + units + (units === 1 ? " item" : " items") +
+              ' · ' + money(last.total) + '</p>' +
+            '<p class="lx_bag_sent_note">We confirm everything with you on WhatsApp.</p>' +
+            '<div class="lx_bag_sent_lines">' + last.lines.map(function (l) {
+                return '<div class="lx_bag_sent_line">' +
+                    '<img class="tile-' + tileFor(l) + '" src="' + esc(l.image) + '" alt="" loading="lazy" decoding="async">' +
+                    '<span class="lx_bag_sent_name">' + esc(l.name) +
+                      (l.option ? '<small>' + esc(l.option) + '</small>' : "") + '</span>' +
+                    '<span class="lx_bag_sent_qty">' + l.qty + '×</span>' +
+                '</div>';
+            }).join("") + '</div>' +
+            (last.ship ? '<p class="lx_bag_sent_ship">Includes ' + money(last.ship) + ' shipping</p>' : "") +
+            '<div class="lx_bag_sent_actions">' +
+              (last.link ? '<a class="lx_bag_sent_slip" href="' + esc(last.link) + '" target="_blank" rel="noopener">View order slip</a>' : "") +
+              '<button class="lx_bag_sent_resend" type="button" data-sent-act="resend">Didn’t send? Open WhatsApp again</button>' +
+              (n ? '<button class="lx_bag_sent_new" type="button" data-sent-act="back">Back to your bag</button>'
+                 : '<button class="lx_bag_sent_new" type="button" data-sent-act="new">Start a new order</button>') +
+            '</div>';
+        drawer.querySelector(".lx_bag_head_count").textContent = "";
     }
 
     /* Paints the fulfilment block from stored state and decides whether the
@@ -623,6 +728,7 @@
         /* Re-paint on open, not just on change. The catalogue may have moved
            since this bag was filled — that is the whole point of the audit,
            and it has to run when they come back, not when they left. */
+        if (!read().length && readLast()) view = "sent";
         render();
         backdrop.hidden = false;
         drawer.hidden = false;
@@ -635,16 +741,17 @@
     function close() {
         backdrop.hidden = true;
         drawer.hidden = true;
+        view = "bag";
         // Releases only the bag's claim — if the product modal is still open it
         // keeps the page locked.
         if (window.LXScrollLock) LXScrollLock.release("bag");
     }
 
-    function toast(msg) {
-        toastEl.innerHTML = esc(msg) + ' <button type="button">View bag</button>';
+    function toast(msg, label, then) {
+        toastEl.innerHTML = esc(msg) + ' <button type="button">' + esc(label || "View bag") + '</button>';
         toastEl.hidden = false;
         toastEl.classList.add("in");
-        toastEl.querySelector("button").onclick = function () { hideToast(); open(); };
+        toastEl.querySelector("button").onclick = function () { hideToast(); (then || open)(); };
         clearTimeout(toast._t);
         toast._t = setTimeout(hideToast, 4000);
     }
@@ -712,7 +819,7 @@
     /* Takes any list of bag-shaped items, so the single-product "WhatsApp
        Order" button in the modal lands in the chat looking exactly like a
        bag order — same header, same reference, same slip. */
-    function sendOrder(items) {
+    function sendOrder(items, fromBag) {
         if (!items || !items.length) return;
 
         var ref   = makeRef();
@@ -746,8 +853,14 @@
             shown = new URL("o/", document.baseURI).href + "#" + ref + "-" + key;
         }
 
-        var how = fulfilLine(f);
-        var q = shipQuote(f);
+        /* Only a finished delivery or pickup goes in the message, and only
+           then is its fee added. The product sheet's own WhatsApp button skips
+           the bag's form, and a half-typed address left from an earlier visit
+           used to arrive as "Delivery — undefined" with a fee the slip,
+           which only carries finished details, never showed. */
+        var ready = fulfilReady(f);
+        var how = ready ? fulfilLine(f) : "";
+        var q = ready ? shipQuote(f) : null;
         var ship = q ? q.fee : 0;
         var msg = "LOCKED IN LX\n" +
                   "Order LX-" + ref + "\n" +
@@ -757,8 +870,36 @@
                   (f.name ? "\nName: " + String(f.name).trim() : "") + "\n\n" +
                   shown;
 
-        logOrder("LX-" + ref, items, sum + ship, link, key, String(f.email || "").trim(), ship);
-        window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg), "_blank");
+        var wa = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
+        logOrder("LX-" + ref, items, sum + ship, link, key, String(f.email || "").trim(), ship, ready);
+        window.open(wa, "_blank");
+
+        writeLast({
+            ref: ref, at: Date.now(), wa: wa, total: sum + ship, ship: ship,
+            link: link !== base ? link : "",
+            lines: items.map(function (i) {
+                return { name: i.name, option: i.option || "", qty: i.qty, price: i.price,
+                         image: i.image || imageOf(i.name) };
+            })
+        });
+        justSent = true;
+        if (fromBag) {
+            view = "sent";
+            write([]);          // re-renders: the drawer now shows the order sent
+        } else {
+            render();
+            /* A bag with other things in it stays as it is: those are a
+               separate order. */
+            if (read().length) toast("Order LX-" + ref + " sent.", "View", function () {
+                view = "sent"; open();
+            });
+        }
+    }
+
+    function imageOf(name) {
+        if (typeof products === "undefined") return "";
+        var p = products.filter(function (x) { return x.name === name; })[0];
+        return (p && p.image) || "";
     }
 
     /* The same order the seller is about to read in WhatsApp, dropped into the
@@ -786,7 +927,7 @@
                /^https:\/\/script\.google\.com\//.test(ORDERS_ENDPOINT);
     }
 
-    function logOrder(ref, items, sum, link, key, email, shipping) {
+    function logOrder(ref, items, sum, link, key, email, shipping, ready) {
         if (!ordersOn()) return;
         try {
             fetch(ORDERS_ENDPOINT, {
@@ -804,7 +945,7 @@
                     /* Included in total; on its own so the books can tell
                        postage from sales. */
                     shipping: shipping || 0,
-                    fulfilment: fulfilLine(readF()),
+                    fulfilment: ready ? fulfilLine(readF()) : "",
                     /* The chat line deliberately leaves the name out to stay
                        short, so it has to travel separately or the Sheet only
                        ever sees an address with nobody attached to it. */
@@ -830,7 +971,7 @@
         } catch (e) {}
     }
 
-    function order() { sendOrder(read()); }
+    function order() { sendOrder(read(), true); }
 
     /* ---------------- public hook used by the modal ---------------- */
     window.LXBag = {

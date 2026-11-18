@@ -676,3 +676,127 @@ select.lx_bag_input option { background: #141418; color: #fff; }
 
 /* Shipping before there is an address to price it: a prompt, not a figure. */
 #lx_bag_drawer .lx_bag_row .lx_bag_shipfee.is-pending { color: #8a8a94; font-weight: 400; }
+
+/* =====================================================
+   ORDER SENT — green check on the pill, the order in the bag
+   -----------------------------------------------------
+   After the order goes to WhatsApp the bag empties; for 48 hours the pill
+   is a green check (with a short "Sent" when they come back) and the bag
+   shows what was sent, the slip, and a way to reopen the message.
+   ===================================================== */
+.lx_bag_check, .lx_bag_sentlbl { display: none; }
+#lx_bag_pill.is-sent {
+    background: linear-gradient(180deg, #1fae55, #16944a);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 30px -10px rgba(22, 148, 74, 0.7), inset 0 1px 0 rgba(255,255,255,0.18);
+}
+#lx_bag_pill.is-sent:hover { border-color: rgba(255, 255, 255, 0.4); }
+#lx_bag_pill.is-sent .lx_bag_count { display: none; }
+#lx_bag_pill.is-sent .lx_bag_check {
+    display: grid; place-items: center;
+    width: 21px; height: 21px; border-radius: 999px;
+    background: #fff; color: #16944a;
+}
+#lx_bag_pill.is-sent .lx_bag_sentlbl {
+    display: inline-block; overflow: hidden; white-space: nowrap;
+    max-width: 0; margin-left: -9px; opacity: 0;
+    font-weight: 700; font-size: 15px; letter-spacing: .08em; text-transform: uppercase;
+    transition: max-width .4s cubic-bezier(0.22,1,0.36,1), margin .4s ease, opacity .3s ease;
+}
+#lx_bag_pill.is-sent.pop .lx_bag_sentlbl { max-width: 60px; margin-left: 0; opacity: 1; }
+#lx_bag_pill.is-sent.pop { animation: lxSentPop .5s cubic-bezier(0.34,1.4,0.5,1); }
+@keyframes lxSentPop { 0% { transform: scale(.86); } 100% { transform: scale(1); } }
+
+/* The drawer's sent view replaces the lines, the form and the footer. */
+.lx_bag_sent { display: none; }
+#lx_bag_drawer.is-sent .lx_bag_body,
+#lx_bag_drawer.is-sent .lx_bag_foot { display: none; }
+#lx_bag_drawer.is-sent .lx_bag_sent {
+    flex: 1 1 auto; overflow-y: auto;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 34px 24px 26px; text-align: center;
+    font-family: 'Inter', 'Inter Fallback', sans-serif; color: #a1a1aa;
+}
+.lx_bag_sent_mark svg { display: block; }
+.lx_bag_sent_mark circle { fill: #16944a; }
+.lx_bag_sent_mark path {
+    fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 36; stroke-dashoffset: 36;
+    animation: lxSentDraw .45s .15s ease-out forwards;
+}
+@keyframes lxSentDraw { to { stroke-dashoffset: 0; } }
+.lx_bag_sent_title {
+    margin: 16px 0 4px; color: #fff;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 1.7rem; letter-spacing: .04em; text-transform: uppercase;
+}
+.lx_bag_sent_ref { margin: 0; color: #e4e4e7; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.lx_bag_sent_note, .lx_bag_sent_ship { color: #a1a1aa; }
+.lx_bag_sent_note { margin: 6px 0 20px; font-size: 13px; line-height: 1.5; }
+.lx_bag_sent_lines { width: 100%; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.lx_bag_sent_line {
+    display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px;
+    padding: 8px; border-radius: 12px; background: rgba(255,255,255,0.04);
+}
+.lx_bag_sent_line img {
+    width: 44px; height: 44px; object-fit: contain; border-radius: 8px; background: #fff;
+}
+.lx_bag_sent_name { min-width: 0; color: #fff; font-size: 13px; font-weight: 600; line-height: 1.3; }
+.lx_bag_sent_name small { display: block; color: #a1a1aa; font-size: 11.5px; font-weight: 400; }
+.lx_bag_sent_qty { color: #a1a1aa; font-size: 13px; font-variant-numeric: tabular-nums; }
+.lx_bag_sent_ship { margin: 10px 0 0; font-size: 12px; }
+.lx_bag_sent_actions { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+.lx_bag_sent_slip {
+    display: grid; place-items: center; height: 52px; border-radius: 99px;
+    background: #FFD700; color: #0a0a0a; text-decoration: none;
+    font-size: 15px; font-weight: 600;
+}
+.lx_bag_sent_resend {
+    height: 48px; border-radius: 99px; cursor: pointer;
+    border: 1px solid rgba(37, 211, 102, 0.55); background: rgba(37, 211, 102, 0.08);
+    color: #4ade80; font: 600 14px 'Inter', 'Inter Fallback', sans-serif;
+}
+.lx_bag_sent_new {
+    background: none; border: 0; padding: 6px; cursor: pointer;
+    color: #a1a1aa; font: 500 13px 'Inter', 'Inter Fallback', sans-serif;
+    text-decoration: underline; text-underline-offset: 3px;
+}
+.lx_bag_sent_new:hover { color: #fff; }
+
+/* In the bag, a line back to the order sent. */
+.lx_bag_lastlink {
+    display: flex; align-items: center; gap: 8px; width: 100%;
+    margin: 10px 0 2px; padding: 10px 12px; border-radius: 12px; cursor: pointer;
+    border: 0; background: rgba(22, 148, 74, 0.14); color: #4ade80; text-align: left;
+    font: 500 12.5px 'Inter', 'Inter Fallback', sans-serif;
+}
+.lx_bag_lastlink[hidden] { display: none; }
+.lx_bag_lastdot {
+    display: grid; place-items: center; flex: 0 0 auto;
+    width: 18px; height: 18px; border-radius: 99px; background: #16944a; color: #fff;
+}
+.lx_bag_lastdot svg { width: 11px; height: 11px; }
+
+@media (min-width: 900px) {
+    #lx_bag_drawer.is-sent .lx_bag_sent { color: var(--bag-ink-3); padding: 30px 28px 26px; }
+    #lx_bag_drawer .lx_bag_sent_title {
+        color: var(--bag-ink); font-family: 'Inter', 'Inter Fallback', sans-serif;
+        font-weight: 700; font-size: 24px; letter-spacing: -0.02em; text-transform: none;
+    }
+    #lx_bag_drawer .lx_bag_sent_ref { color: var(--bag-ink-2); }
+    #lx_bag_drawer .lx_bag_sent_note,
+    #lx_bag_drawer .lx_bag_sent_ship { color: var(--bag-ink-3); }
+    #lx_bag_drawer .lx_bag_sent_line { background: var(--bag-surface); }
+    #lx_bag_drawer .lx_bag_sent_name { color: var(--bag-ink); }
+    #lx_bag_drawer .lx_bag_sent_name small,
+    #lx_bag_drawer .lx_bag_sent_qty { color: var(--bag-ink-3); }
+    #lx_bag_drawer .lx_bag_sent_slip { height: 56px; background: var(--bag-gold); color: #0B0B0D; }
+    #lx_bag_drawer .lx_bag_sent_resend { color: #13803f; background: rgba(22, 148, 74, 0.07); border-color: rgba(22, 148, 74, 0.4); }
+    #lx_bag_drawer .lx_bag_sent_new { color: var(--bag-ink-3); }
+    #lx_bag_drawer .lx_bag_sent_new:hover { color: var(--bag-ink); }
+    #lx_bag_drawer .lx_bag_lastlink { margin-top: 4px; background: rgba(22, 148, 74, 0.09); color: #13803f; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #lx_bag_pill.is-sent.pop { animation: none; }
+    .lx_bag_sent_mark path { animation: none; stroke-dashoffset: 0; }
+}
