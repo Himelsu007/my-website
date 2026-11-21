@@ -2,12 +2,12 @@
 // change stock in Matrix and publish (./bump-assets.sh runs the sync).
 // Keyed by our sku; a number, or { size: count }.
 lxApplyStock({
-    "SLA": {"M": 1, "XL": 1, "L": 1},
-    "AU09282": {"M": 1, "L": 1, "XL": 1},
+    "SLA": {"M": 2, "XL": 2, "L": 3},
+    "AU09282": {"M": 1, "L": 2, "XL": 1},
     "LILX-TOP-CMP-SS-BLK": {"S": 0, "M": 3, "L": 2},
-    "LILX-TOP-CMP-SS": {"S": 0, "M": 1, "L": 1},
+    "LILX-TOP-CMP-SS": {"S": 0, "M": 1, "L": 2},
     "LILX-TOP-CMP-LS": {"S": 0, "M": 0, "L": 1},
-    "LILX-TOP-CMP-LS-BLK": {"S": 0, "M": 0, "L": 1, "XL": 0},
+    "LILX-TOP-CMP-LS-BLK": {"S": 0, "M": 0, "L": 2, "XL": 0},
     "LILX-GEN-CREW-PNK": {"42 - 46": 1},
     "LILX-GEN-CREW-LBL": {"42 - 46": 1},
     "LILX-NBA-ELITE-CREW-SOCKS": {"42 - 46": 4},
