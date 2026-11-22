@@ -51,7 +51,7 @@ const events = [
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
-    },,
+    },
 
 
     //     {

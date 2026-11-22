@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const idx = parseInt(urlParams.get("run"), 10);
         let run = Number.isInteger(idx) ? events[idx] : null;
         // Fall back to matching on title (e.g. an old link without ?run=)
-        if (!run) run = events.find(e => e.title === eventName) || null;
+        if (!run) run = events.find(e => e && e.title === eventName) || null;
         if (!run) return;                       // leave the neutral defaults in place
         selectedRun = run;
         if (typeof hasRegistered === "function" && hasRegistered(run)) setTimeout(showRegisteredBadge, 0);
