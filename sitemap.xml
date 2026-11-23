@@ -13,7 +13,7 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 <!-- lx:store — written by tools/build-store.mjs -->
 <url>
     <loc>https://www.lockedinlx.com/merch.html</loc>
-    <lastmod>2026-11-16</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -118,7 +118,7 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
 <url>
     <loc>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-black/</loc>
-    <lastmod>2026-11-16</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -131,7 +131,7 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
 <url>
     <loc>https://www.lockedinlx.com/store/nike-nba-compression-short-sleeves-white/</loc>
-    <lastmod>2026-11-16</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
