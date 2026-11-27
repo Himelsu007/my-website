@@ -22,6 +22,18 @@
         "/private/tmp/claude-501/-Users-himelsuencoge-Coding-locked-in-website/57226c07-044f-4fbb-82d2-87557499f075/scratchpad"
       ],
       "port": 4177
+    },
+    {
+      "name": "training-demo",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4190",
+        "--directory",
+        "/private/tmp/claude-501/-Users-himelsuencoge-Coding-locked-in-website/a5e0e7ac-fecf-4364-b64b-5dcb4dd2a30e/scratchpad/wt"
+      ],
+      "port": 4190
     }
   ]
 }

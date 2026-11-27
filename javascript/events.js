@@ -3,57 +3,44 @@ const events = [
     {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date:  "November 28th",
-        time: "8:10PM-10PM",
+        date:  "December 5th",
+        time: "8:15PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
-        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
+        map: "https://maps.apple/p/Xm1ZhhE9aKcVhj",
         spotsTaken: 0,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
     },
+
     {
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
         date:  "November 21st",
         time: "8:10PM-10PM",
         location: "Pavilhão Islâmico de Lisboa",
-        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
+        map: "https://maps.apple/p/Xm1ZhhE9aKcVhj",
         spotsTaken: 20,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
     },
-    {
+
+    { 
         type: "PICKUP GAME",
         title: "FULL COURT 5V5",
-        date:  "November 14th",
-        time: "8:15PM-10PM",
+        date: "November 14th",
+        time: "8:10PM - 10PM",
         location: "Pavilhão Islâmico de Lisboa",
-        map: "https://maps.apple/p/qd6tPoDv6xcQE8",
+        map: "https://maps.apple/p/Xm1ZhhE9aKcVhj",
         spotsTaken: 20,
         spotsTotal: 20,
         price: "€5",
         priceLabel: "Entry Fee",
         waitlist: false
-    },
-
-
-    //     {
-    //     type: "PICKUP GAME",
-    //     title: "FULL COURT 5V5",
-    //     date: "May 23rd",
-    //     time: "7:15PM - 9:00PM",
-    //     location: "Manuel CastelBranco",
-    //     map: "https://maps.apple/p/4s78.LUWnt8Ggq",
-    //     spotsTaken: 20,
-    //     spotsTotal: 20,
-    //     price: "€5",
-    //     priceLabel: "Entry Fee",
-    //     waitlist: false
-    // }
+    }
 ];
 
 
